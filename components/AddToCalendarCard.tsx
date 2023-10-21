@@ -5,6 +5,7 @@ import {
   AddToCalendarButton,
   AddToCalendarButtonType,
 } from "add-to-calendar-button-react";
+import { SignedIn } from "@clerk/nextjs";
 
 type AddToCalendarCardProps = AddToCalendarButtonType & {
   onClick: any;
@@ -166,6 +167,11 @@ export function AddToCalendarCard({
             />
           </div>
         </div>
+        <SignedIn>
+          <button className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full">
+            Save
+          </button>
+        </SignedIn>
       </div>
     </div>
   );
