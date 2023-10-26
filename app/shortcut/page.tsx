@@ -82,7 +82,7 @@ export default async function Page({
     }));
 
   // Convert the response into a friendly text-stream using the SDK's wrappers
-  const stream = OpenAIStream(response);
+  const stream = response ? OpenAIStream(response) : "";
 
-  return <Tokens stream={stream} />;
+  return stream && <Tokens stream={stream} />;
 }
