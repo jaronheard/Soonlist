@@ -1,38 +1,40 @@
 "use client";
 
+// External imports
 import { useEffect, useRef, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import Footer from "../components/Footer";
+import { trackGoal } from "fathom-client";
+
+// Local component imports
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Leaderboard from "../components/Leaderboard";
+import { Form } from "./Form";
+import { Output } from "./Output";
+
+// Utility imports
 import { useChat } from "ai/react";
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
-import { trackGoal } from "fathom-client";
 import {
-  SAMPLE_ICS,
   generatedIcsArrayToEvents,
   formatDataOnPaste,
   reportIssue,
   getLastMessages,
+  Status,
 } from "../utils/utils";
-import Leaderboard from "../components/Leaderboard";
-import { Form } from "./Form";
-import { Output } from "./Output";
-import { Status } from "../utils/utils";
 
 export default function Page() {
+  // State variables
   const [issueStatus, setIssueStatus] = useState<Status>("idle");
   const [finished, setFinished] = useState(false);
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
     useState(false);
+
+  // Refs
   const eventRef = useRef<null | HTMLDivElement>(null);
 
-  const scrollToEvents = () => {
-    if (eventRef.current !== null) {
-      eventRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
+  // Custom hooks and utility functions
   const {
     input,
     setInput,
@@ -48,6 +50,7 @@ export default function Page() {
 
   const { lastUserMessage, lastAssistantMessage } = getLastMessages(messages);
 
+  // Event handlers
   const handlePaste = async (e: any) => formatDataOnPaste(e, setInput);
 
   const onSubmit = (e: any) => {
@@ -58,7 +61,7 @@ export default function Page() {
     handleSubmit(e);
   };
 
-  // set events when changing from not finished to finished
+  // Effects
   useEffect(() => {
     if (finished) {
       const events = generatedIcsArrayToEvents(lastAssistantMessage);
@@ -69,6 +72,13 @@ export default function Page() {
   }, [finished]);
 
   const isDev = process.env.NODE_ENV === "development";
+
+  // Helper functions
+  const scrollToEvents = () => {
+    if (eventRef.current !== null) {
+      eventRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
