@@ -5,7 +5,7 @@ import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import { cn } from "@/utils/utils";
+import { cn } from "@/lib/utils";
 
 export function SaveButton(props: AddToCalendarButtonType) {
   const { user } = useUser();

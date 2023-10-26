@@ -16,7 +16,7 @@ import {
   generatedIcsArrayToEvents,
   getLastMessages,
   reportIssue,
-} from "@/utils/utils";
+} from "@/lib/utils";
 
 export default function Page() {
   // State variables

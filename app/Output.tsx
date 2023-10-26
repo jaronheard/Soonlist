@@ -7,7 +7,7 @@ import {
   convertIcsToJson,
   generateIssueDescription,
   generateIssueTitle,
-} from "@/utils/utils";
+} from "@/lib/utils";
 
 export function Output({
   events,

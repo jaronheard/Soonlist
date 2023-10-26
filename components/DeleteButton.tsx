@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { SignedIn, useUser } from "@clerk/nextjs";
-import { cn } from "@/utils/utils";
+import { cn } from "@/lib/utils";
 
 export type DeleteButtonProps = {
   userId: string;
