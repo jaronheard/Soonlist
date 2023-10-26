@@ -76,15 +76,15 @@ export default function Page() {
   };
 
   return (
-    <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center py-2">
       <Toaster
         position="top-center"
         reverseOrder={false}
         toastOptions={{ duration: 2000 }}
       />
       <Header />
-      <main className="flex flex-1 w-full flex-col items-center justify-center px-4 mt-12 sm:mt-20">
-        <h1 className="sm:text-6xl text-4xl max-w-[708px] font-bold text-slate-900 text-center">
+      <main className="mt-12 flex w-full flex-1 flex-col items-center justify-center px-4 sm:mt-20">
+        <h1 className="max-w-[708px] text-center text-4xl font-bold text-slate-900 sm:text-6xl">
           Now: ⌨️✨📅
         </h1>
         <div className="p">
@@ -92,7 +92,7 @@ export default function Page() {
           calendarable event
         </div>
         <div className="p-2"></div>
-        <h2 className="sm:text-3xl text-xl max-w-[708px] font-bold text-slate-900 text-center opacity-70">
+        <h2 className="max-w-[708px] text-center text-xl font-bold text-slate-900 opacity-70 sm:text-3xl">
           Soon: 📣🫂🎉
         </h2>
         <div className="p text-sm opacity-70">

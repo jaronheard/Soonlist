@@ -1,5 +1,6 @@
 "use client";
 import { Message } from "ai";
+import { clsx, ClassValue } from "clsx";
 import { trackGoal } from "fathom-client";
 import ICAL from "ical.js";
 import TurndownService from "turndown";
@@ -372,3 +373,7 @@ export const getLastMessages = (messages: Message[]) => {
 
   return { lastUserMessage, lastAssistantMessage };
 };
+
+export function cn(...inputs: ClassValue[]) {
+  return clsx(inputs);
+}

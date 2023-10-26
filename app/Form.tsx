@@ -15,8 +15,8 @@ export function Form({
   onSubmit: (e: any) => void;
 }) {
   return (
-    <form className="max-w-xl w-full" onSubmit={onSubmit}>
-      <div className="flex mt-10 items-center space-x-3">
+    <form className="w-full max-w-xl" onSubmit={onSubmit}>
+      <div className="mt-10 flex items-center space-x-3">
         <p className="text-left font-medium">
           Paste event info{" "}
           <span className="text-slate-500">(or describe your event)</span>.
@@ -27,7 +27,7 @@ export function Form({
         value={input}
         onChange={handleInputChange}
         rows={6}
-        className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-5"
+        className="my-5 w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
         placeholder={
           "Paste a description from a website, a text message from a friend, or anything else. Or you can describe your event."
         }
@@ -35,12 +35,12 @@ export function Form({
       {!isLoading && (
         <>
           <button
-            className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full"
+            className="mt-8 w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-10"
             type="submit"
           >
             Generate your event &rarr;
           </button>
-          <p className="text-center mt-4">
+          <p className="mt-4 text-center">
             <span className="text-slate-500">
               Or look at a sample{" "}
               <a
@@ -64,7 +64,7 @@ export function Form({
       {isLoading && (
         <>
           <button
-            className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full"
+            className="mt-8 w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-10"
             disabled
           >
             <span className="loading">

@@ -76,9 +76,9 @@ export default function Page() {
   const isDev = process.env.NODE_ENV === "development";
 
   return (
-    <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center py-2">
       <Header />
-      <main className="flex flex-1 w-full flex-col items-center justify-center px-4 mt-12 sm:mt-20">
+      <main className="mt-12 flex w-full flex-1 flex-col items-center justify-center px-4 sm:mt-20">
         <Output
           events={eventsToUse}
           finished={finished || !!saveIntent || chatFinished}
