@@ -78,6 +78,7 @@ export default async function Page({
   });
 
   // Convert the response into a friendly text-stream
+  // @ts-ignore missing types
   const stream = OpenAIStream(response);
 
   const reader = stream.getReader();

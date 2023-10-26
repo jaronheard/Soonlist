@@ -18,12 +18,6 @@ export default async function Page({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  // Get current date in Month, Day, Year format
-  const today = new Date();
-  const month = today.toLocaleString("default", { month: "long" });
-  const day = today.getDate();
-  const year = today.getFullYear();
-
   const rawText = searchParams?.rawText?.toString();
 
   const response =
@@ -40,7 +34,6 @@ export default async function Page({
             - ONLY RETURN A VALID ICAL FILE
             - DO NOT RETURN ADDITIONAL INFORMATION
             # Time
-            - For calculating relative dates/times, it is currently ${month} ${day}, ${year}
             - Include timezone (use America/Los Angeles if not specified)
             - Do not include timezone for full day events
             - If event end time is not specified, guess based on event type
@@ -82,7 +75,7 @@ export default async function Page({
     }));
 
   // Convert the response into a friendly text-stream using the SDK's wrappers
-  // @ts-expect-error missing types
+  // @ts-ignore missing types
   const stream = OpenAIStream(response);
 
   return <Tokens stream={stream} />;
