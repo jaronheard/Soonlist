@@ -1,10 +1,10 @@
 import { clerkClient } from "@clerk/nextjs";
 import Link from "next/link";
-import EventCard from "../../../../components/EventCard";
-import Footer from "../../../../components/Footer";
-import Header from "../../../../components/Header";
-import { UserInfo } from "../../../../components/UserInfo";
-import { db } from "../../../../lib/db";
+import EventCard from "@/components/EventCard";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import { UserInfo } from "@/components/UserInfo";
+import { db } from "@/lib/db";
 import { AddToCalendarButtonProps } from "@/types";
 
 export default async function Page({

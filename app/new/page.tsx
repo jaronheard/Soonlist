@@ -4,15 +4,15 @@ import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import { Output } from "../Output";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import {
   Status,
   generatedIcsArrayToEvents,
   getLastMessages,
   reportIssue,
-} from "../../utils/utils";
-import { Output } from "../Output";
+} from "@/utils/utils";
 
 export default function Page() {
   // State variables

@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import * as z from "zod";
 import { Temporal } from "@js-temporal/polyfill";
-import { db } from "../../../lib/db";
+import { db } from "@/lib/db";
 import { AddToCalendarButtonProps } from "@/types";
 
 const eventCreateSchema = z.object({

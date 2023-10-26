@@ -1,15 +1,15 @@
 import { clerkClient } from "@clerk/nextjs";
-import EventCard from "../../../components/EventCard";
-import Header from "../../../components/Header";
-import { db } from "../../../lib/db";
-import Footer from "../../../components/Footer";
-import { UserInfo } from "../../../components/UserInfo";
+import EventCard from "@/components/EventCard";
+import Header from "@/components/Header";
+import { db } from "@/lib/db";
+import Footer from "@/components/Footer";
+import { UserInfo } from "@/components/UserInfo";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "../../../components/Accordian";
+} from "@/components/Accordian";
 import { AddToCalendarButtonProps } from "@/types";
 
 export default async function Page({ params }: { params: { userId: string } }) {

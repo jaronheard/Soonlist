@@ -2,8 +2,8 @@
 
 import { AddToCalendarButton } from "add-to-calendar-button-react";
 import Link from "next/link";
-import { translateToHtml, getDateInfoUTC, cn } from "../utils/utils";
 import { DeleteButton } from "./DeleteButton";
+import { translateToHtml, getDateInfoUTC, cn } from "@/utils/utils";
 import { AddToCalendarButtonProps } from "@/types";
 
 type EventCardProps = {

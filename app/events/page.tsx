@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import { db } from "../../lib/db";
-import EventCard from "../../components/EventCard";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import { db } from "@/lib/db";
+import EventCard from "@/components/EventCard";
 import { AddToCalendarButtonProps } from "@/types";
 
 export default async function Page() {
