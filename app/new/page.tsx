@@ -148,7 +148,6 @@ function Output({
 }
 
 export default function Page() {
-  const [chatStarted, setChatStarted] = useState(false);
   const [chatFinished, setChatFinished] = useState(false);
   const [issueStatus, setIssueStatus] = useState<Status>("idle");
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);
@@ -158,7 +157,6 @@ export default function Page() {
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
     useState(false);
   const searchParams = useSearchParams();
-  const refSubmitButtom = useRef<HTMLButtonElement>(null);
 
   const finished = searchParams.has("message");
   const message = searchParams.get("message") || "";
@@ -167,7 +165,7 @@ export default function Page() {
   const saveIntentEventJson = JSON.parse(saveIntentEvent || "{}");
   const rawText = searchParams.get("rawText") || "";
 
-  const { append, messages, isLoading } = useChat({
+  const { append, messages } = useChat({
     onFinish(message) {
       setChatFinished(true);
     },
