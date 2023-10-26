@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
@@ -13,6 +13,7 @@ import {
   generatedIcsArrayToEvents,
 } from "../../utils/utils";
 import { useSearchParams } from "next/navigation";
+import { useChat } from "ai/react";
 
 type Status = "idle" | "submitting" | "submitted" | "error";
 
@@ -147,23 +148,73 @@ function Output({
 }
 
 export default function Page() {
+  const [chatFinished, setChatFinished] = useState(false);
   const [issueStatus, setIssueStatus] = useState<Status>("idle");
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
     useState(false);
   const searchParams = useSearchParams();
+  const refSubmitButtom = useRef<HTMLButtonElement>(null);
 
   const finished = searchParams.has("message");
-  const lastAssistantMessage = searchParams.get("message") || "";
+  const message = searchParams.get("message") || "";
   const saveIntent = searchParams.get("saveIntent") || "";
   const saveIntentEvent = localStorage.getItem("addToCalendarButtonProps");
   const saveIntentEventJson = JSON.parse(saveIntentEvent || "{}");
-  const eventsToUse = saveIntent ? [saveIntentEventJson] : events;
+  const rawText = searchParams.get("rawText") || "";
+
+  const {
+    input,
+    setInput,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    messages,
+  } = useChat({
+    onFinish(message) {
+      setChatFinished(true);
+    },
+  });
+
+  const triggerSubmit = () => {
+    console.log("triggerSubmit");
+    refSubmitButtom?.current?.click();
+  };
+
+  // set input based on rawText query param
+  useEffect(() => {
+    if (rawText) {
+      setInput(rawText);
+    }
+    if (rawText && refSubmitButtom.current) {
+      triggerSubmit();
+    }
+  }, [rawText, setInput]);
+
+  const userMessages = messages.filter((message) => message.role === "user");
+  const assistantMessages = messages.filter(
+    (message) => message.role === "assistant"
+  );
+
+  const lastUserMessage =
+    userMessages?.[userMessages.length - 1]?.content || "";
+  // const lastAssistantMessage =
+  //   assistantMessages?.[userMessages.length - 1]?.content || null;
+  const lastAssistantMessage =
+    assistantMessages?.[userMessages.length - 1]?.content || "";
+
+  const chatEvents = chatFinished ? generatedIcsArrayToEvents(message) : [];
+
+  const eventsToUse = saveIntent
+    ? [saveIntentEventJson]
+    : chatFinished
+    ? chatEvents
+    : events;
 
   // set events when changing from not finished to finished
   useEffect(() => {
     if (finished) {
-      const events = generatedIcsArrayToEvents(lastAssistantMessage);
+      const events = generatedIcsArrayToEvents(message);
       setEvents(events);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -197,13 +248,27 @@ export default function Page() {
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
       <Header />
       <main className="flex flex-1 w-full flex-col items-center justify-center px-4 mt-12 sm:mt-20">
+        <form onSubmit={handleSubmit} className="w-full max-w-3xl">
+          <input
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Type a message..."
+            className="w-full border border-gray-300 rounded-xl px-4 py-2"
+          />
+          <button ref={refSubmitButtom} type={"submit"}>
+            submit
+          </button>
+        </form>
         <Output
           events={eventsToUse}
-          finished={finished || !!saveIntent}
+          finished={finished || !!saveIntent || chatFinished}
           isDev={isDev}
           issueStatus={issueStatus}
-          lastAssistantMessage={lastAssistantMessage}
-          lastUserMessage={"Generated from text message"}
+          lastAssistantMessage={chatFinished ? lastAssistantMessage : message}
+          lastUserMessage={
+            chatFinished ? lastUserMessage : "Generated from message"
+          }
           reportIssue={reportIssue}
           setEvents={setEvents}
           setTrackedAddToCalendarGoal={setTrackedAddToCalendarGoal}
