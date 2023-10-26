@@ -7,8 +7,6 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/new",
-    "/shortcut",
-    "/shortcut-example",
     "/api",
     "/api/bug",
     "/api/chat",

@@ -14,7 +14,6 @@ import {
 } from "../../utils/utils";
 import { useSearchParams } from "next/navigation";
 import { useChat } from "ai/react";
-import { raw } from "@prisma/client/runtime/library";
 
 type Status = "idle" | "submitting" | "submitted" | "error";
 
