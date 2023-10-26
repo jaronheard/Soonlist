@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
@@ -14,6 +14,7 @@ import {
 } from "../../utils/utils";
 import { useSearchParams } from "next/navigation";
 import { useChat } from "ai/react";
+import { raw } from "@prisma/client/runtime/library";
 
 type Status = "idle" | "submitting" | "submitted" | "error";
 
@@ -148,9 +149,13 @@ function Output({
 }
 
 export default function Page() {
+  const [chatStarted, setChatStarted] = useState(false);
   const [chatFinished, setChatFinished] = useState(false);
   const [issueStatus, setIssueStatus] = useState<Status>("idle");
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);
+  const [chatEvents, setChatEvents] = useState<
+    AddToCalendarButtonType[] | null
+  >(null);
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
     useState(false);
   const searchParams = useSearchParams();
@@ -163,33 +168,18 @@ export default function Page() {
   const saveIntentEventJson = JSON.parse(saveIntentEvent || "{}");
   const rawText = searchParams.get("rawText") || "";
 
-  const {
-    input,
-    setInput,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    messages,
-  } = useChat({
+  const { append, messages, isLoading } = useChat({
     onFinish(message) {
       setChatFinished(true);
     },
   });
 
-  const triggerSubmit = () => {
-    console.log("triggerSubmit");
-    refSubmitButtom?.current?.click();
-  };
-
-  // set input based on rawText query param
   useEffect(() => {
     if (rawText) {
-      setInput(rawText);
+      append({ role: "user", content: rawText });
     }
-    if (rawText && refSubmitButtom.current) {
-      triggerSubmit();
-    }
-  }, [rawText, setInput]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const userMessages = messages.filter((message) => message.role === "user");
   const assistantMessages = messages.filter(
@@ -202,8 +192,6 @@ export default function Page() {
   //   assistantMessages?.[userMessages.length - 1]?.content || null;
   const lastAssistantMessage =
     assistantMessages?.[userMessages.length - 1]?.content || "";
-
-  const chatEvents = chatFinished ? generatedIcsArrayToEvents(message) : [];
 
   const eventsToUse = saveIntent
     ? [saveIntentEventJson]
@@ -219,6 +207,15 @@ export default function Page() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
+
+  // set events when changing from not finished to finished
+  useEffect(() => {
+    if (chatFinished) {
+      const events = generatedIcsArrayToEvents(lastAssistantMessage);
+      setChatEvents(events);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatFinished]);
 
   const reportIssue = async (title: string, description: string) => {
     setIssueStatus("submitting");
@@ -248,18 +245,6 @@ export default function Page() {
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
       <Header />
       <main className="flex flex-1 w-full flex-col items-center justify-center px-4 mt-12 sm:mt-20">
-        <form onSubmit={handleSubmit} className="w-full max-w-3xl">
-          <input
-            type="text"
-            value={input}
-            onChange={handleInputChange}
-            placeholder="Type a message..."
-            className="w-full border border-gray-300 rounded-xl px-4 py-2"
-          />
-          <button ref={refSubmitButtom} type={"submit"}>
-            submit
-          </button>
-        </form>
         <Output
           events={eventsToUse}
           finished={finished || !!saveIntent || chatFinished}
