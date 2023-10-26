@@ -1,27 +1,22 @@
 "use client";
 
-// External imports
+import { AddToCalendarButtonType } from "add-to-calendar-button-react";
+import { useChat } from "ai/react";
+import { trackGoal } from "fathom-client";
 import { useEffect, useRef, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { trackGoal } from "fathom-client";
-
-// Local component imports
-import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 import Leaderboard from "../components/Leaderboard";
+import {
+  Status,
+  formatDataOnPaste,
+  generatedIcsArrayToEvents,
+  getLastMessages,
+  reportIssue,
+} from "../utils/utils";
 import { Form } from "./Form";
 import { Output } from "./Output";
-
-// Utility imports
-import { useChat } from "ai/react";
-import { AddToCalendarButtonType } from "add-to-calendar-button-react";
-import {
-  generatedIcsArrayToEvents,
-  formatDataOnPaste,
-  reportIssue,
-  getLastMessages,
-  Status,
-} from "../utils/utils";
 
 export default function Page() {
   // State variables

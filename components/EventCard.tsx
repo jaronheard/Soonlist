@@ -2,10 +2,10 @@
 
 import { AddToCalendarButton } from "add-to-calendar-button-react";
 import { AddToCalendarButtonProps } from "add-to-calendar-button-react/dist/AddToCalendarButton";
-import { translateToHtml, getDateInfoUTC } from "../utils/utils";
-import { DeleteButton } from "./DeleteButton";
 import Link from "next/link";
 import clsx from "clsx";
+import { translateToHtml, getDateInfoUTC } from "../utils/utils";
+import { DeleteButton } from "./DeleteButton";
 
 type EventCardProps = {
   userId: string;

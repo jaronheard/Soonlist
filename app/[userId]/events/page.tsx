@@ -1,9 +1,9 @@
 import { AddToCalendarButtonProps } from "add-to-calendar-button-react/dist/AddToCalendarButton";
+import { clerkClient } from "@clerk/nextjs";
 import EventCard from "../../../components/EventCard";
 import Header from "../../../components/Header";
 import { db } from "../../../lib/db";
 import Footer from "../../../components/Footer";
-import { clerkClient } from "@clerk/nextjs";
 import { UserInfo } from "../../../components/UserInfo";
 import {
   Accordion,

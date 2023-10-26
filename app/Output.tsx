@@ -3,11 +3,11 @@ import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { trackGoal } from "fathom-client";
 import { AddToCalendarCard } from "../components/AddToCalendarCard";
 import {
+  Status,
   convertIcsToJson,
-  generateIssueTitle,
   generateIssueDescription,
+  generateIssueTitle,
 } from "../utils/utils";
-import { Status } from "../utils/utils";
 
 export function Output({
   events,

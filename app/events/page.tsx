@@ -1,9 +1,9 @@
 import { auth } from "@clerk/nextjs";
+import { AddToCalendarButtonProps } from "add-to-calendar-button-react/dist/AddToCalendarButton";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { db } from "../../lib/db";
 import EventCard from "../../components/EventCard";
-import { AddToCalendarButtonProps } from "add-to-calendar-button-react/dist/AddToCalendarButton";
 
 export default async function Page() {
   const { userId } = auth();

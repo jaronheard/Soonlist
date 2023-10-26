@@ -1,11 +1,11 @@
 import { AddToCalendarButtonProps } from "add-to-calendar-button-react/dist/AddToCalendarButton";
+import { clerkClient } from "@clerk/nextjs";
+import Link from "next/link";
 import EventCard from "../../../../components/EventCard";
 import Header from "../../../../components/Header";
 import { db } from "../../../../lib/db";
 import Footer from "../../../../components/Footer";
-import { clerkClient } from "@clerk/nextjs";
 import { UserInfo } from "../../../../components/UserInfo";
-import Link from "next/link";
 
 export default async function Page({
   params,
