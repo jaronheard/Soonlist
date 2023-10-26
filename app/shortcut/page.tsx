@@ -82,7 +82,8 @@ export default async function Page({
     }));
 
   // Convert the response into a friendly text-stream using the SDK's wrappers
-  const stream = response ? OpenAIStream(response) : "";
+  // @ts-expect-error missing types
+  const stream = OpenAIStream(response);
 
-  return stream && <Tokens stream={stream} />;
+  return <Tokens stream={stream} />;
 }
