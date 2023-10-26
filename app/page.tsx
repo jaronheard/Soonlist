@@ -86,7 +86,7 @@ export default function Page() {
       <h2 className="max-w-[708px] text-center text-xl font-bold text-slate-900 opacity-70 sm:text-3xl">
         Soon: 📣🫂🎉
       </h2>
-      <div className="p text-sm opacity-70">
+      <div className="text-sm opacity-70">
         Create, collect, curate & share events
       </div>
       <Form
@@ -111,13 +111,14 @@ export default function Page() {
         setTrackedAddToCalendarGoal={setTrackedAddToCalendarGoal}
         trackedAddToCalendarGoal={trackedAddToCalendarGoal}
       />
-      <h3 className="text-center text-lg font-medium leading-6 text-gray-900">
+      <h3 className="text-center text-lg font-bold leading-6 text-gray-900">
         Top users
       </h3>
-      <Suspense fallback={<LeaderboardSkeleton />}>
-        <Leaderboard />
-      </Suspense>
-      <div className="p-2"></div>
+      {!isLoading && (
+        <Suspense fallback={<LeaderboardSkeleton />}>
+          <Leaderboard />
+        </Suspense>
+      )}
     </>
   );
 }

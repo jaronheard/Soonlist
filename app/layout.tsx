@@ -45,7 +45,7 @@ export default function RootLayout({
               toastOptions={{ duration: 2000 }}
             />
             <Header />
-            <main className="mt-12 flex w-full flex-1 flex-col items-center justify-center px-4 sm:mt-20">
+            <main className="my-12 flex w-full flex-1 flex-col items-center justify-center px-4 sm:my-20">
               {children}
             </main>
             <Footer />
