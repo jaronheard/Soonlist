@@ -8,6 +8,7 @@ export default authMiddleware({
     "/",
     "/new",
     "/shortcut",
+    "/shortcut-example",
     "/api",
     "/api/bug",
     "/api/chat",
