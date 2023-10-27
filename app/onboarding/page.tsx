@@ -107,7 +107,7 @@ export default function Page() {
           </li>
         </ul>
         <h2 className="mt-16 text-2xl font-bold tracking-tight text-gray-900">
-          Customize, calendar, and share
+          Customize, Calendar, and Share
         </h2>
         <ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600">
           <li className="flex gap-x-3">
@@ -131,7 +131,7 @@ export default function Page() {
             />
             <span>
               <strong className="font-semibold text-gray-900">
-                Add to calendar:
+                Add to Calendar:
               </strong>{" "}
               Click the add to calendar button to add it to your calendar.
             </span>
@@ -143,7 +143,7 @@ export default function Page() {
             />
             <span>
               <strong className="font-semibold text-gray-900">
-                Share link:
+                Share Links:
               </strong>{" "}
               From your saved event page or your events list, use the share icon
               or copy the url to share with friends.
