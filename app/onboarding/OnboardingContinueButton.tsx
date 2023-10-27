@@ -3,25 +3,25 @@
 import React from "react";
 import { SignUpButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-type OnboardingContinueButtonProps = {
-  signedOutUrl?: string;
-  afterSignInUrl?: string;
-  afterSignUpUrl?: string;
-};
-
-export default function OnboardingContinueButton({
-  signedOutUrl = "/",
-  afterSignInUrl = process.env.URL!,
-  afterSignUpUrl = process.env.URL!,
-}) {
+export default function OnboardingContinueButton() {
   const { user } = useUser();
+  const searchParams = useSearchParams();
+  const saveIntent = searchParams.get("saveIntent") || "";
+  const signedInPath = saveIntent
+    ? `/new?saveIntent=true`
+    : `/${user?.id}/events`;
+  const signedOutUrl = saveIntent
+    ? `${process.env.NEXT_PUBLIC_URL}/new?saveIntent=true`
+    : process.env.NEXT_PUBLIC_URL;
+
   return (
     <>
       <SignedOut>
         <SignUpButton
-          afterSignInUrl={afterSignInUrl}
-          afterSignUpUrl={afterSignUpUrl}
+          afterSignInUrl={signedOutUrl}
+          afterSignUpUrl={signedOutUrl}
         >
           <button className="mt-12 block w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-16">
             Sign up &rarr;
@@ -30,8 +30,8 @@ export default function OnboardingContinueButton({
       </SignedOut>
       <SignedIn>
         <Link
-          href={signedOutUrl}
-          className="mt-12 w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-16"
+          href={signedInPath}
+          className="mt-12 block w-full rounded-xl bg-black px-4 py-2 text-center font-medium text-white hover:bg-black/80 sm:mt-16"
           as="button"
         >
           Continue &rarr;
