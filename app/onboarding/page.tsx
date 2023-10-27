@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import OnboardingContinueButton from "./OnboardingContinueButton";
 import RainbowText from "@/components/RainbowText";
 import {
   Accordion,
@@ -150,6 +151,7 @@ export default function Page() {
             </span>
           </li>
         </ul>
+        <OnboardingContinueButton />
       </div>
     </div>
   );
