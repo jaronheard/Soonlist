@@ -1,8 +1,8 @@
 import { clerkClient } from "@clerk/nextjs";
 import Link from "next/link";
-import EventCard from "@/components/EventCard";
 import { UserInfo } from "@/components/UserInfo";
 import { db } from "@/lib/db";
+import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { AddToCalendarButtonProps } from "@/types";
 
 export default async function Page({
@@ -26,17 +26,15 @@ export default async function Page({
 
   return (
     <>
-      {!event ? (
-        <p className="text-lg text-gray-500">No event found.</p>
-      ) : (
-        <EventCard
-          userId={params.userId}
+      {event && event.event ? (
+        <AddToCalendarCard
+          {...(event.event as AddToCalendarButtonProps)}
           key={event.id}
-          id={event.id}
-          event={event.event as AddToCalendarButtonProps}
-          createdAt={event.createdAt}
-          singleEvent
+          update
+          updateId={params.eventId}
         />
+      ) : (
+        <p className="text-lg text-gray-500">No event found.</p>
       )}
       <div className="p-4"></div>
       <Link
