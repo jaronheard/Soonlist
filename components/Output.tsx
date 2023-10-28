@@ -61,7 +61,7 @@ export function Output({
           )[]
         | undefined,
       buttonStyle: "text" as const,
-      name: "New event" as const,
+      name: "Manual entry" as const,
       description: "" as const,
       location: "" as const,
       startDate: "today" as const,

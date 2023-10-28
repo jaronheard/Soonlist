@@ -4,6 +4,7 @@ import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
 import { trackGoal } from "fathom-client";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 import { Form } from "../components/Form";
 import { Output } from "../components/Output";
 import {
@@ -57,6 +58,11 @@ export default function AddEvent() {
     if (finished) {
       const events = generatedIcsArrayToEvents(lastAssistantMessage);
       setEvents(events);
+      if (events.length === 0) {
+        toast.error(
+          "Something went wrong. Add you event manually or try again."
+        );
+      }
       scrollToEvents();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
