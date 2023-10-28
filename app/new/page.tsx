@@ -5,7 +5,7 @@ import { useChat } from "ai/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Output } from "../Output";
+import { Output } from "../../components/Output";
 import {
   Status,
   generatedIcsArrayToEvents,
