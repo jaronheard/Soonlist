@@ -36,7 +36,7 @@ export function SaveButton(props: AddToCalendarButtonType) {
     // This forces a cache invalidation.
     router.refresh();
 
-    router.push(`/${user?.id}/events`);
+    router.push(`/${user?.id}/events/${event.id}`);
   }
 
   return (
