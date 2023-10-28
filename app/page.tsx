@@ -21,6 +21,7 @@ export default function Page() {
         Create, collect, curate & share events
       </div>
       <AddEvent />
+      <div className="p-6"></div>
       <h3 className="text-center text-lg font-bold leading-6 text-gray-900">
         Top users
       </h3>

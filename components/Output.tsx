@@ -38,7 +38,7 @@ export function Output({
   setTrackedAddToCalendarGoal: (trackedAddToCalendarGoal: boolean) => void;
   trackedAddToCalendarGoal: boolean;
 }) {
-  const eventsAreValid = events && events.length > 0;
+  const eventsAreValid = finished && events && events.length > 0;
   const blankEvents = [
     {
       options: [

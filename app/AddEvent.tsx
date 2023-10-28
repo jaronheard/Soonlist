@@ -81,7 +81,7 @@ export default function AddEvent() {
         onSubmit={onSubmit}
       />
       <div ref={eventRef}></div>
-      <div className="p-6"></div>
+      {finished && <div className="p-6"></div>}
       <Output
         events={events}
         finished={finished}
