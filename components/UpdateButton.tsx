@@ -21,15 +21,17 @@ export function UpdateButton(props: UpdateButtonProps) {
     setIsLoading(true);
 
     const response = await fetch("/api/events", {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: id,
+        id: Number(id),
         event: props,
       }),
     });
+
+    console.log(response);
 
     setIsLoading(false);
 

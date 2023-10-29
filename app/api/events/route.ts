@@ -9,6 +9,7 @@ const eventCreateSchema = z.object({
 });
 
 const eventUpdateSchema = z.object({
+  id: z.number(),
   event: z.any(), //TODO: add validation
 });
 
@@ -84,7 +85,7 @@ export async function POST(req: Request) {
   }
 }
 
-export async function UPDATE(req: Request) {
+export async function PATCH(req: Request) {
   try {
     const { userId } = auth();
 
@@ -93,8 +94,8 @@ export async function UPDATE(req: Request) {
     }
 
     const json = await req.json();
-    const body = eventCreateSchema.parse(json);
-    const id = body.event.id;
+    const body = eventUpdateSchema.parse(json);
+    const id = body.id;
     const event = body.event as AddToCalendarButtonProps;
 
     const start = Temporal.ZonedDateTime.from(
@@ -116,13 +117,11 @@ export async function UPDATE(req: Request) {
         startDateTime: startUtc,
         endDateTime: endUtc,
       },
-      select: {
-        id: true,
-      },
     });
 
     return new Response(JSON.stringify(post));
   } catch (error) {
+    console.log(error);
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
