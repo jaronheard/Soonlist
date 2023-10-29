@@ -5,6 +5,8 @@ import { UserInfo } from "@/components/UserInfo";
 import { db } from "@/lib/db";
 import { AddToCalendarButtonProps } from "@/types";
 
+// TODO: Remove this page after 2024-01-03
+
 export default async function Page({
   params,
 }: {
