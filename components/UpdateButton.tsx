@@ -13,7 +13,6 @@ type UpdateButtonProps = AddToCalendarButtonType & {
 };
 
 export function UpdateButton(props: UpdateButtonProps) {
-  const { user } = useUser();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
