@@ -1,9 +1,13 @@
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
+import Link from "next/link";
 
 export default function ListCardAdd() {
   return (
-    <button className="group col-span-1 flex rounded-md shadow-sm">
+    <Link
+      href={`/list/new`}
+      className="group col-span-1 flex rounded-md shadow-sm"
+    >
       <div
         className={clsx(
           "bg-gray-900 group-hover:bg-gray-600",
@@ -15,10 +19,10 @@ export default function ListCardAdd() {
       <div className="flex h-full flex-1 items-center truncate rounded-r-md border-y border-r border-dashed border-gray-200 bg-white">
         <div className="flex-initial truncate px-4 py-2 text-xl">
           <p className="font-medium text-gray-900 group-hover:text-gray-600">
-            New list
+            New List
           </p>
         </div>
       </div>
-    </button>
+    </Link>
   );
 }
