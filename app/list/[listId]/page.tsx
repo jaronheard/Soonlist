@@ -11,6 +11,7 @@ import {
 } from "@/components/Accordian";
 import { AddToCalendarButtonProps } from "@/types";
 import { ListEditButton } from "@/components/ListEditButton";
+import { ListDeleteButton } from "@/components/ListDeleteButton";
 
 export default async function Page({ params }: { params: { listId: string } }) {
   const list = await db.list.findUnique({
@@ -53,6 +54,7 @@ export default async function Page({ params }: { params: { listId: string } }) {
         </div>
         <UserInfo userId={list.userId} />
         <ListEditButton listId={params.listId} listUserId={list.userId} />
+        <ListDeleteButton listId={params.listId} listUserId={list.userId} />
       </div>
       <div className="p-2"></div>
       <Accordion type="multiple" className="w-full" defaultValue={["item-2"]}>
