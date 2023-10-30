@@ -34,8 +34,9 @@ export default async function ListCardsForUser({
 
   const user = await currentUser();
   const showAdd = user && user.id === userId;
+  const hideAll = !showAdd && lists.length === 0;
 
-  if (!lists) {
+  if (!lists || hideAll) {
     return <> </>;
   }
 
