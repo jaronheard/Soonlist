@@ -10,6 +10,7 @@ import {
   AccordionContent,
 } from "@/components/Accordian";
 import { AddToCalendarButtonProps } from "@/types";
+import { ListEditButton } from "@/components/ListEditButton";
 
 export default async function Page({ params }: { params: { listId: string } }) {
   const list = await db.list.findUnique({
@@ -35,8 +36,6 @@ export default async function Page({ params }: { params: { listId: string } }) {
   }
   const events = list.events;
 
-  const user = await clerkClient.users.getUser(list.userId!);
-
   const pastEvents = events.filter((item) => item.startDateTime < new Date());
 
   const futureEvents = events.filter(
@@ -52,9 +51,8 @@ export default async function Page({ params }: { params: { listId: string } }) {
             {list.description}
           </p>
         </div>
-        <Suspense>
-          <UserInfo user={user} />
-        </Suspense>
+        <UserInfo userId={list.userId} />
+        <ListEditButton listId={params.listId} listUserId={list.userId} />
       </div>
       <div className="p-2"></div>
       <Accordion type="multiple" className="w-full" defaultValue={["item-2"]}>

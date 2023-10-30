@@ -10,6 +10,7 @@ import {
   AccordionContent,
 } from "@/components/Accordian";
 import { AddToCalendarButtonProps } from "@/types";
+import ListCardsForUser from "@/components/ListCardsForUser";
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const events = await db.event.findMany({
@@ -27,8 +28,6 @@ export default async function Page({ params }: { params: { userId: string } }) {
     },
   });
 
-  const user = await clerkClient.users.getUser(params.userId);
-
   const pastEvents = events.filter((item) => item.startDateTime < new Date());
 
   const futureEvents = events.filter(
@@ -38,11 +37,13 @@ export default async function Page({ params }: { params: { userId: string } }) {
   return (
     <>
       <div className="flex place-items-center gap-2">
-        <div className="font-medium">List by</div>
+        <div className="font-medium">Events saved by</div>
         <Suspense>
-          <UserInfo user={user} />
+          <UserInfo userId={params.userId} />
         </Suspense>
-      </div>{" "}
+      </div>
+      <div className="p-2"></div>
+      <ListCardsForUser userId={params.userId} limit={10} />
       <div className="p-2"></div>
       <Accordion type="multiple" className="w-full" defaultValue={["item-2"]}>
         <AccordionItem value="item-1" className="px-6 opacity-80">

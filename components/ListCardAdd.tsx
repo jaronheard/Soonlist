@@ -17,10 +17,11 @@ export default function ListCardAdd() {
         <PlusCircleIcon className="h-6 w-6" />
       </div>
       <div className="flex h-full flex-1 items-center truncate rounded-r-md border-y border-r border-dashed border-gray-200 bg-white">
-        <div className="flex-initial truncate px-4 py-2 text-xl">
+        <div className="flex-initial truncate px-4 py-2 text-sm">
           <p className="font-medium text-gray-900 group-hover:text-gray-600">
             New List
           </p>
+          <p className="text-gray-500">Organize events</p>
         </div>
       </div>
     </Link>

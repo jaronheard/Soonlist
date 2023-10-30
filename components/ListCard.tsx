@@ -1,5 +1,5 @@
-import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
+import Link from "next/link";
 
 const colors = [
   "bg-red-500",
@@ -27,35 +27,28 @@ export default function ListCard(props: {
   count: number;
 }) {
   return (
-    <li className="col-span-1 flex rounded-md shadow-sm">
-      <div
-        className={clsx(
-          getRainbowColorFromString(props.name),
-          "flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
-        )}
+    <li>
+      <Link
+        href={`/list/${props.id}`}
+        className="col-span-1 flex rounded-md shadow-sm"
       >
-        {getInitialsFromString(props.name)}
-      </div>
-      <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-y border-r border-gray-200 bg-white">
-        <div className="flex-1 truncate px-4 py-2 text-sm">
-          <a
-            href={props.id}
-            className="font-medium text-gray-900 hover:text-gray-600"
-          >
-            {props.name}
-          </a>
-          <p className="text-gray-500">{props.count} events</p>
+        <div
+          className={clsx(
+            getRainbowColorFromString(props.name),
+            "flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
+          )}
+        >
+          {getInitialsFromString(props.name)}
         </div>
-        <div className="shrink-0 pr-2">
-          <button
-            type="button"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            <span className="sr-only">Open options</span>
-            <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-          </button>
+        <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-y border-r border-gray-200 bg-white">
+          <div className="flex-1 truncate px-4 py-2 text-sm">
+            <p className="font-medium text-gray-900 hover:text-gray-600">
+              {props.name}
+            </p>
+            <p className="text-gray-500">{props.count} events</p>
+          </div>
         </div>
-      </div>
+      </Link>
     </li>
   );
 }
