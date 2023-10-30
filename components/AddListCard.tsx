@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import ListSaveButton from "./ListSaveButton";
+import ListUpdateButton from "./ListUpdateButton";
 
 type AddListCardProps = {
   name: string;
@@ -69,8 +70,7 @@ export default function AddListCard({ ...initialProps }: AddListCardProps) {
           />
         )}
         {initialProps.update && (
-          <></>
-          // <UpdateButton id={initialProps.updateId!} {...updatedProps} />
+          <ListUpdateButton id={initialProps.updateId!} {...updatedProps} />
         )}
       </div>
     </div>
