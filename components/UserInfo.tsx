@@ -9,6 +9,10 @@ type UserInfoProps = {
 export async function UserInfo(props: UserInfoProps) {
   const user = await clerkClient.users.getUser(props.userId);
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <Link href={`/${user.id}/events`} className="group block shrink-0">
       <div className="flex items-center">
