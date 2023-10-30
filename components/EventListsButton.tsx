@@ -3,7 +3,7 @@
 import * as React from "react";
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { List } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import {
@@ -30,6 +30,7 @@ export default function EventListsButton({
   eventLists,
 }: EventListsButtonProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const listsCheckedInitialState = userLists.map((list) => {
     return eventLists.includes(list);
@@ -44,6 +45,7 @@ export default function EventListsButton({
   };
 
   const numberOfSelectedLists = selectedLists.filter(Boolean).length;
+  const afterSuccessEncoded = encodeURIComponent(pathname);
 
   async function onChangeUpdateAtIndex(index: number) {
     setIsLoading(true);
@@ -75,7 +77,6 @@ export default function EventListsButton({
     }
 
     const event = await response.json();
-    console.log(event);
 
     // This forces a cache invalidation.
     router.refresh();
@@ -116,7 +117,9 @@ export default function EventListsButton({
           </DropdownMenuCheckboxItem>
         ))}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/list/new")}>
+        <DropdownMenuItem
+          onClick={() => router.push(`/list/new?afterSuccess=${pathname}`)}
+        >
           New list...
         </DropdownMenuItem>
       </DropdownMenuContent>

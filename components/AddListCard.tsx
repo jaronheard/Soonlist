@@ -8,6 +8,7 @@ type AddListCardProps = {
   description: string;
   update?: boolean;
   updateId?: string;
+  afterSuccess?: string;
 };
 
 export default function AddListCard({ ...initialProps }: AddListCardProps) {
@@ -61,7 +62,12 @@ export default function AddListCard({ ...initialProps }: AddListCardProps) {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        {!initialProps.update && <ListSaveButton {...updatedProps} />}
+        {!initialProps.update && (
+          <ListSaveButton
+            afterSuccess={initialProps.afterSuccess}
+            {...updatedProps}
+          />
+        )}
         {initialProps.update && (
           <></>
           // <UpdateButton id={initialProps.updateId!} {...updatedProps} />

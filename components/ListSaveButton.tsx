@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 type ListSaveButtonProps = {
   name: string;
   description: string;
+  afterSuccess?: string;
 };
 
 export default function ListSaveButton(props: ListSaveButtonProps) {
@@ -41,7 +42,7 @@ export default function ListSaveButton(props: ListSaveButtonProps) {
     // This forces a cache invalidation.
     router.refresh();
 
-    router.push(`/list/${list.id}`);
+    router.push(props.afterSuccess ? props.afterSuccess : `/list/${list.id}`);
   }
 
   return (
