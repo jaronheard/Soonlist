@@ -12,14 +12,15 @@ datasource db {
 }
 
 model Event {
-  id            String   @id @default(cuid()) @map("cuid")
+  id            String          @id @default(cuid()) @map("cuid")
   event         Json
   userId        String
-  startDateTime DateTime @default(now())
-  endDateTime   DateTime @default(now())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  startDateTime DateTime        @default(now())
+  endDateTime   DateTime        @default(now())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   eventList     List[]
+  EventCreation EventCreation[]
 }
 
 model List {
@@ -30,4 +31,24 @@ model List {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   events      Event[]
+}
+
+model EventCreation {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id])
+  imageStatus Status   @default(none)
+  imageUrl    String?
+  gptStatus   Status   @default(none)
+  gptPrompt   String?
+  gptResponse Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Status {
+  none
+  pending
+  success
+  failed
 }
