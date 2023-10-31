@@ -5,6 +5,8 @@ import { useChat } from "ai/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import Cropper from "react-easy-crop";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import { Output } from "@/components/Output";
 import {
   Status,
@@ -12,6 +14,7 @@ import {
   getLastMessages,
   reportIssue,
 } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const LOADING_TEXTS = [
   "Conjuring your event onto the calendar",
@@ -44,6 +47,8 @@ export default function Page() {
   >(null);
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
     useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
 
   // Hooks and utility functions
   const searchParams = useSearchParams();
@@ -52,12 +57,12 @@ export default function Page() {
       setChatFinished(true);
     },
   });
-
   const { lastUserMessage, lastAssistantMessage } = getLastMessages(messages);
 
   // Query params and local storage
   const finished = searchParams.has("message");
   const message = searchParams.get("message") || "";
+  const [imageUrl, setImageUrl] = useState(searchParams.get("imageUrl") || "");
   const saveIntent = searchParams.get("saveIntent") || "";
   let saveIntentEvent = null;
   if (typeof window !== "undefined") {
@@ -137,6 +142,27 @@ export default function Page() {
 
   return (
     <>
+      {imageUrl && (
+        <>
+          <p className="block text-sm font-medium leading-6 text-gray-900">
+            Image <span className="text-gray-500">(optional)</span>
+          </p>
+          <div className="relative h-64 w-64">
+            <Cropper
+              image={imageUrl}
+              crop={crop}
+              zoom={zoom}
+              aspect={9 / 16}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+            />
+          </div>
+          <Button variant="destructive">
+            <TrashIcon className="mr-2 h-4 w-4" />
+            Delete
+          </Button>
+        </>
+      )}
       {isLoading ? (
         <div className="flex flex-col items-center gap-8">
           <p className="text-xl font-semibold text-gray-500 sm:text-2xl">
