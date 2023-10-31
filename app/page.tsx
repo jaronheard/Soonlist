@@ -30,7 +30,8 @@ export default function Page() {
         </p>
       </div>
       <div className="p-6"></div>
-      <Card>
+      <AddEvent />
+      {/* <Card>
         <CardHeader>
           <CardTitle>Paste event info</CardTitle>
           <CardDescription>
@@ -40,7 +41,7 @@ export default function Page() {
         <CardContent>
           <AddEvent />
         </CardContent>
-      </Card>
+      </Card> */}
       <div className="p-6"></div>
       <Card>
         <CardHeader>
