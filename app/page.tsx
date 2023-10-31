@@ -13,23 +13,35 @@ import {
 export default function Page() {
   return (
     <>
-      <h1 className="max-w-[708px] text-center text-4xl font-bold text-slate-900 sm:text-6xl">
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
         Now: ⌨️✨📅
       </h1>
-      <div className="p">
+      <p className="leading-7 [&:not(:first-child)]:mt-6">
         Paste event info <span className="font-semibold">&rarr;</span> clean,
         calendarable event
-      </div>
+      </p>
       <div className="p-2"></div>
-      <h2 className="max-w-[708px] text-center text-xl font-bold text-slate-900 opacity-70 sm:text-4xl">
-        Soon: 📣🫂🎉
-      </h2>
-      <div className="text-sm opacity-70">
-        Create, collect, curate & share events
+      <div className="scale-90 opacity-70">
+        <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+          Soon: 📣🫂🎉
+        </h2>
+        <p className="leading-7 [&:not(:first-child)]:mt-6">
+          Create, collect, curate & share events
+        </p>
       </div>
-      <div className="p-12"></div>
-      <AddEvent />
-      <div className="p-12"></div>
+      <div className="p-6"></div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Paste event info</CardTitle>
+          <CardDescription>
+            Get a clean, calendarable, shareable event
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AddEvent />
+        </CardContent>
+      </Card>
+      <div className="p-6"></div>
       <Card>
         <CardHeader>
           <CardTitle>Top Users</CardTitle>
