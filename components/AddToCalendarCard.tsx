@@ -5,6 +5,7 @@ import {
   AddToCalendarButton,
   AddToCalendarButtonType,
 } from "add-to-calendar-button-react";
+import { Area } from "react-easy-crop";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
 
@@ -13,6 +14,8 @@ type AddToCalendarCardProps = AddToCalendarButtonType & {
   updateId?: string;
   onClick?: any;
   children?: React.ReactNode;
+  filePath?: string;
+  cropArea?: Area;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
 };
 
