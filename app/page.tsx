@@ -2,6 +2,13 @@ import { Suspense } from "react";
 import AddEvent from "./AddEvent";
 import Leaderboard from "@/components/Leaderboard";
 import LeaderboardSkeleton from "@/components/LeaderboardSkeleton";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function Page() {
   return (
@@ -14,20 +21,26 @@ export default function Page() {
         calendarable event
       </div>
       <div className="p-2"></div>
-      <h2 className="max-w-[708px] text-center text-xl font-bold text-slate-900 opacity-70 sm:text-3xl">
+      <h2 className="max-w-[708px] text-center text-xl font-bold text-slate-900 opacity-70 sm:text-4xl">
         Soon: 📣🫂🎉
       </h2>
       <div className="text-sm opacity-70">
         Create, collect, curate & share events
       </div>
+      <div className="p-12"></div>
       <AddEvent />
-      <div className="p-6"></div>
-      <h3 className="text-center text-lg font-bold leading-6 text-gray-900">
-        Top users
-      </h3>
-      <Suspense fallback={<LeaderboardSkeleton />}>
-        <Leaderboard />
-      </Suspense>
+      <div className="p-12"></div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Top Users</CardTitle>
+          <CardDescription>Most Upcoming Events</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Suspense fallback={<LeaderboardSkeleton />}>
+            <Leaderboard />
+          </Suspense>
+        </CardContent>
+      </Card>
     </>
   );
 }
