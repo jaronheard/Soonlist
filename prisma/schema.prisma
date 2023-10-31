@@ -36,7 +36,7 @@ model List {
 model EventCreation {
   id          String   @id @default(cuid())
   eventId     String
-  event       Event    @relation(fields: [eventId], references: [id])
+  event       Event?   @relation(fields: [eventId], references: [id])
   imageStatus Status   @default(none)
   imageUrl    String?
   gptStatus   Status   @default(none)
