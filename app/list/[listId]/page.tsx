@@ -62,7 +62,7 @@ export async function generateMetadata(
       locale: "en_US",
       url: `${process.env.NEXT_PUBLIC_URL}/list/${params.listId}`,
       type: "article",
-      images: [],
+      images: [...previousImages],
     },
   };
 }

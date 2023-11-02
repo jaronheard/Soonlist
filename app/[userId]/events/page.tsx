@@ -52,7 +52,7 @@ export async function generateMetadata(
       locale: "en_US",
       url: `${process.env.NEXT_PUBLIC_URL}/${params.userId}/events`,
       type: "article",
-      images: [],
+      images: [...previousImages],
     },
   };
 }
