@@ -41,7 +41,7 @@ model RequestResponse {
   parsedOutput        Json? // Store the parsed output
   modelCompletionTime Int? // Store the time taken to complete the model
   modelStatus         String   @default("idle")
-  source              String   @default("web")
+  source              String   @default("unknown")
 }
 
 enum Status {

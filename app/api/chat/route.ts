@@ -14,11 +14,8 @@ const config = new Configuration({
 });
 const openai = new OpenAIApi(config);
 
-// Set the runtime to edge for best performance
-export const runtime = "edge";
-
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, source } = await req.json();
   const key = JSON.stringify(messages); // come up with a key based on the request
   const requestStart = new Date();
   const cached = await kv.get(key);
@@ -42,6 +39,7 @@ export async function POST(req: Request) {
         message: lastUserMessage,
       },
       modelStatus: "pending",
+      source: source,
     },
     select: {
       id: true,
