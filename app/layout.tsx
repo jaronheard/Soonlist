@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
 const title = "timetime.cc";
-const description = "Paste anything, get calendar events.";
+const description = "Create, collect, curate & share events";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
