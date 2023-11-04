@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { Metadata, ResolvingMetadata } from "next/types";
-import { clerkClient } from "@clerk/nextjs";
 import { db } from "@/lib/db";
 import { UserInfo } from "@/components/UserInfo";
 import ListCardsForUser from "@/components/ListCardsForUser";
@@ -14,8 +13,27 @@ const getEventsForUser = async (userId: string) => {
     orderBy: {
       startDateTime: "asc",
     },
+    include: {
+      User: {
+        select: {
+          username: true,
+        },
+      },
+    },
   });
   return events;
+};
+
+const getUsername = async (userId: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      username: true,
+    },
+  });
+  return user;
 };
 
 type Props = { params: { userId: string } };
@@ -25,7 +43,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const events = await getEventsForUser(params.userId);
-  const user = await clerkClient.users.getUser(params.userId);
+  const user = await getUsername(params.userId);
 
   if (!events || !user) {
     return {
