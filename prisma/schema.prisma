@@ -55,7 +55,7 @@ model User {
   username    String   @unique
   email       String   @unique
   displayName String
-  userImage   String
+  imageUrl    String   @map("userImage")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   lists       List[]
