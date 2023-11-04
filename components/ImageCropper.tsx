@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+/* eslint-disable @next/next/no-img-element */
+import React, { useState, useRef } from "react";
 import { ReactCrop, Crop, centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
@@ -12,9 +13,10 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
     {}
   );
   const imageRef = useRef<HTMLImageElement>(null);
-  console.log(crop);
 
-  function onImageLoad(e) {
+  function onImageLoad(e: {
+    currentTarget: { naturalWidth: any; naturalHeight: any };
+  }) {
     const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
 
     const crop = centerCrop(
@@ -71,53 +73,61 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
     crop: Crop,
     targetAspect: number
   ): Promise<string> => {
-    const canvas = document.createElement("canvas");
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    const ctx = canvas.getContext("2d");
-
-    // Calculate the new width and height based on the target aspect ratio
-    let newWidth = crop.width * scaleX;
-    let newHeight = newWidth / targetAspect;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    // Adjust if the new height is larger than the cropped area
-    if (newHeight > crop.height * scaleY) {
-      newHeight = crop.height * scaleY;
-      newWidth = newHeight * targetAspect;
-      // Center the crop area
-      offsetX = (crop.width * scaleX - newWidth) / 2;
-      offsetY = (crop.height * scaleY - newHeight) / 2;
-    }
-
-    canvas.width = newWidth;
-    canvas.height = newHeight;
-
-    if (ctx) {
-      // Draw the image slice on the canvas
-      ctx.drawImage(
-        image,
-        crop.x * scaleX + offsetX,
-        crop.y * scaleY + offsetY,
-        newWidth,
-        newHeight,
-        0,
-        0,
-        newWidth,
-        newHeight
-      );
-    }
-
     return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          console.error("Canvas is empty");
-          return;
-        }
-        const fileUrl = window.URL.createObjectURL(blob);
-        resolve(fileUrl);
-      }, "image/jpeg");
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // Convert crop percentages to pixels
+      const pxCrop = {
+        x: image.naturalWidth * (crop.x / 100),
+        y: image.naturalHeight * (crop.y / 100),
+        width: image.naturalWidth * (crop.width / 100),
+        height: image.naturalHeight * (crop.height / 100),
+      };
+
+      // Calculate the new width and height based on the target aspect ratio
+      let newWidth = pxCrop.width;
+      let newHeight = newWidth / targetAspect;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      // Adjust if the new height is larger than the cropped area
+      if (newHeight > pxCrop.height) {
+        newHeight = pxCrop.height;
+        newWidth = newHeight * targetAspect;
+        // Center the crop area
+        offsetX = (pxCrop.width - newWidth) / 2;
+        offsetY = (pxCrop.height - newHeight) / 2;
+      }
+
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+
+      if (ctx) {
+        // Draw the image slice on the canvas
+        ctx.drawImage(
+          image,
+          pxCrop.x + offsetX,
+          pxCrop.y + offsetY,
+          newWidth,
+          newHeight,
+          0,
+          0,
+          newWidth,
+          newHeight
+        );
+        // Resolve or reject the Promise based on the canvas operation success
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const imageURL = URL.createObjectURL(blob);
+            resolve(imageURL);
+          } else {
+            reject(new Error("Canvas toBlob failed"));
+          }
+        }, "image/jpeg");
+      } else {
+        reject(new Error("2D context not available."));
+      }
     });
   };
 
