@@ -20,18 +20,18 @@ export default async function Page({
       event: true,
       createdAt: true,
       eventList: true,
+      User: {
+        select: {
+          username: true,
+          lists: true,
+        },
+      },
     },
   });
 
   if (!event) {
     return <p className="text-lg text-gray-500">No event found.</p>;
   }
-
-  const lists = await db.list.findMany({
-    where: {
-      userId: event.userId,
-    },
-  });
 
   return (
     <>
@@ -44,7 +44,7 @@ export default async function Page({
             updateId={params.eventId}
           >
             <EventListsButton
-              userLists={lists}
+              userLists={event.User.lists}
               eventId={params.eventId}
               eventLists={event.eventList}
             />

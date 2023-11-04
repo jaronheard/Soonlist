@@ -78,11 +78,11 @@ export default async function Page({ params }: Props) {
       <div className="flex place-items-center gap-2">
         <div className="font-medium">Events saved by</div>
         <Suspense>
-          <UserInfo userId={params.userName} />
+          <UserInfo userName={params.userName} />
         </Suspense>
       </div>
       <div className="p-4"></div>
-      <ListCardsForUser userId={params.userName} limit={10} />
+      <ListCardsForUser userName={params.userName} limit={10} />
       <h2 className="text-sm font-medium text-gray-500">All Events</h2>
       <EventList pastEvents={pastEvents} futureEvents={futureEvents} />
       <div className="p-5"></div>

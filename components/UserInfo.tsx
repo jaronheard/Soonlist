@@ -3,10 +3,11 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 
 type UserInfoProps = {
-  userId: string;
+  userId?: string;
+  userName?: string;
 };
 
-async function getUserInfo(userId: string) {
+async function getUserInfoById(userId: string) {
   const user = await db.user.findUnique({
     where: {
       id: userId,
@@ -16,15 +17,34 @@ async function getUserInfo(userId: string) {
   return user;
 }
 
+async function getUserInfoByUserName(userName: string) {
+  const user = await db.user.findUnique({
+    where: {
+      username: userName,
+    },
+  });
+
+  return user;
+}
+
 export async function UserInfo(props: UserInfoProps) {
-  const user = await getUserInfo(props.userId);
+  if (!props.userId && !props.userName) {
+    return null;
+  }
+
+  let user;
+  if (props.userId) {
+    user = await getUserInfoById(props.userId);
+  } else if (props.userName) {
+    user = await getUserInfoByUserName(props.userName);
+  }
 
   if (!user) {
     return null;
   }
 
   return (
-    <Link href={`/${user.id}/events`} className="group block shrink-0">
+    <Link href={`/@${user.username}/events`} className="group block shrink-0">
       <div className="flex items-center">
         <div>
           <Image
