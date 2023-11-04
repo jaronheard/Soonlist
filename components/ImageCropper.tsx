@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { ReactCrop, Crop } from "react-image-crop";
+import React, { useState, useRef, useEffect } from "react";
+import { ReactCrop, Crop, centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
 type ImageCropperProps = {
@@ -7,83 +7,111 @@ type ImageCropperProps = {
 };
 
 const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
-  const [crop, setCrop] = useState<Crop>({});
+  const [crop, setCrop] = useState<Crop>();
   const [croppedImages, setCroppedImages] = useState<{ [key: string]: string }>(
     {}
   );
   const imageRef = useRef<HTMLImageElement>(null);
+  console.log(crop);
 
-  const onCropComplete = (crop: Crop) => {
-    makeClientCrop(crop);
+  function onImageLoad(e) {
+    const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
+
+    const crop = centerCrop(
+      makeAspectCrop(
+        {
+          unit: "%",
+          width: 100,
+          height: 100,
+        },
+        width / height,
+        width,
+        height
+      ),
+      width,
+      height
+    );
+
+    setCrop(crop);
+  }
+
+  const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
+    makeClientCrop(percentageCrop);
   };
 
-  const onCropChange = (newCrop: Crop) => {
-    setCrop(newCrop);
+  const onCropChange = (newCrop: Crop, newPercentageCrop: Crop) => {
+    setCrop(newPercentageCrop);
   };
 
   const makeClientCrop = async (crop: Crop) => {
     if (imageRef.current && crop.width && crop.height) {
-      let croppedImages = {} as { [key: string]: string };
-      const croppedImageUrl = await getCroppedImg(
-        imageRef.current!,
-        crop,
-        "original"
-      );
-      croppedImages["original"] = croppedImageUrl;
+      const aspectRatios = {
+        square: 1,
+        fourThree: 4 / 3,
+        sixteenNine: 16 / 9,
+      };
 
-      // For other aspect ratios
-      const aspectRatios = [1, 4 / 3, 16 / 9];
-      for (const aspect of aspectRatios) {
-        const aspectCroppedImageUrl = await getCroppedImg(
+      let newCroppedImages = {} as { [key: string]: string };
+
+      for (const [key, aspect] of Object.entries(aspectRatios)) {
+        const croppedImageUrl = await getCroppedImg(
           imageRef.current,
           crop,
-          aspect.toString()
+          aspect
         );
-        croppedImages[aspect.toString()] = aspectCroppedImageUrl;
+        newCroppedImages[key] = croppedImageUrl;
       }
 
-      setCroppedImages(croppedImages);
+      setCroppedImages(newCroppedImages);
     }
   };
 
   const getCroppedImg = (
     image: HTMLImageElement,
     crop: Crop,
-    aspectKey: string
+    targetAspect: number
   ): Promise<string> => {
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
     const ctx = canvas.getContext("2d");
 
-    const aspect =
-      aspectKey === "original"
-        ? crop.width / crop.height
-        : parseFloat(aspectKey);
-    const width = crop.width * scaleX;
-    const height = width / aspect;
+    // Calculate the new width and height based on the target aspect ratio
+    let newWidth = crop.width * scaleX;
+    let newHeight = newWidth / targetAspect;
+    let offsetX = 0;
+    let offsetY = 0;
 
-    canvas.width = width;
-    canvas.height = height;
+    // Adjust if the new height is larger than the cropped area
+    if (newHeight > crop.height * scaleY) {
+      newHeight = crop.height * scaleY;
+      newWidth = newHeight * targetAspect;
+      // Center the crop area
+      offsetX = (crop.width * scaleX - newWidth) / 2;
+      offsetY = (crop.height * scaleY - newHeight) / 2;
+    }
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
 
     if (ctx) {
+      // Draw the image slice on the canvas
       ctx.drawImage(
         image,
-        crop.x * scaleX,
-        crop.y * scaleY,
-        crop.width * scaleX,
-        crop.height * scaleY,
+        crop.x * scaleX + offsetX,
+        crop.y * scaleY + offsetY,
+        newWidth,
+        newHeight,
         0,
         0,
-        width,
-        height
+        newWidth,
+        newHeight
       );
     }
 
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (!blob) {
-          // reject new Error('Canvas is empty');
           console.error("Canvas is empty");
           return;
         }
@@ -95,30 +123,33 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
 
   return (
     <div>
-      <ReactCrop
-        crop={crop}
-        ruleOfThirds
-        onComplete={onCropComplete}
-        onChange={onCropChange}
-      >
-        <img
-          src={`/api/image-proxy?url=${encodeURIComponent(imageUrl)}`}
-          ref={imageRef}
-          alt="Crop preview"
-        />
-      </ReactCrop>
-      <div className="mt-4 flex flex-wrap justify-around">
-        {Object.keys(croppedImages)
-          .filter((aspect) => aspect !== "original")
-          .map((aspect) => (
-            <div key={aspect} className="mt-2 h-24 w-24">
-              <img
-                alt={`Crop preview ${aspect}`}
-                src={croppedImages[aspect]}
-                crossOrigin="anonymous" // add this line
-              />
-            </div>
-          ))}
+      <div className="mx-auto h-64 w-full md:h-96 lg:h-auto lg:w-1/2">
+        <ReactCrop
+          crop={crop}
+          onComplete={onCropComplete}
+          onChange={onCropChange}
+        >
+          <img
+            src={`/api/image-proxy?url=${encodeURIComponent(imageUrl)}`}
+            ref={imageRef}
+            alt="Crop preview"
+            onLoad={onImageLoad}
+          />
+        </ReactCrop>
+      </div>
+      <p className="mx-auto text-center text-sm font-medium leading-6 text-gray-500">
+        Crop previews for site, will be expandable to full size
+      </p>
+      <div className="mx-auto flex max-w-sm flex-wrap justify-around">
+        {Object.entries(croppedImages).map(([aspect, src]) => (
+          <div key={aspect} className="mt-2 h-24 w-24">
+            <img
+              alt={`Crop preview ${aspect}`}
+              src={src}
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
