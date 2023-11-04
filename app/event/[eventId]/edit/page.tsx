@@ -1,4 +1,3 @@
-import { clerkClient } from "@clerk/nextjs";
 import Link from "next/link";
 import { UserInfo } from "@/components/UserInfo";
 import { db } from "@/lib/db";
