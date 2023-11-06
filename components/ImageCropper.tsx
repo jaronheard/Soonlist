@@ -1,13 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
+import * as Bytescale from "@bytescale/sdk";
 import React, { useState, useRef } from "react";
 import { ReactCrop, Crop, centerCrop, makeAspectCrop } from "react-image-crop";
+import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import "react-image-crop/dist/ReactCrop.css";
 
 type ImageCropperProps = {
   imageUrl: string;
+  filePath: string;
 };
 
-const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
+const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl, filePath }) => {
+  const { setCroppedImagesUrls } = useCroppedImageContext();
+
   const [crop, setCrop] = useState<Crop>();
   const [croppedImages, setCroppedImages] = useState<{ [key: string]: string }>(
     {}
@@ -35,17 +40,18 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
     );
 
     setCrop(crop);
+    makeClientCropAndUrls(crop);
   }
 
   const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
-    makeClientCrop(percentageCrop);
+    makeClientCropAndUrls(percentageCrop);
   };
 
   const onCropChange = (newCrop: Crop, newPercentageCrop: Crop) => {
     setCrop(newPercentageCrop);
   };
 
-  const makeClientCrop = async (crop: Crop) => {
+  const makeClientCropAndUrls = async (crop: Crop) => {
     if (imageRef.current && crop.width && crop.height) {
       const aspectRatios = {
         square: 1,
@@ -53,8 +59,16 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
         sixteenNine: 16 / 9,
       };
 
-      let newCroppedImages = {} as { [key: string]: string };
+      const aspectRatiosAndOriginal = {
+        ...aspectRatios,
+        original:
+          imageRef.current.naturalWidth / imageRef.current.naturalHeight,
+      };
 
+      let newCroppedImages = {} as { [key: string]: string };
+      let newCroppedImagesUrls = {} as { [key: string]: string };
+
+      // Get the cropped image for preview of each aspect ratio
       for (const [key, aspect] of Object.entries(aspectRatios)) {
         const croppedImageUrl = await getCroppedImg(
           imageRef.current,
@@ -65,6 +79,20 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
       }
 
       setCroppedImages(newCroppedImages);
+
+      // Get the cropped image URL for the API
+      for (const [key, aspect] of Object.entries(aspectRatiosAndOriginal)) {
+        const croppedImageUrl = await getCroppedImgUrl(
+          imageRef.current,
+          crop,
+          aspect
+        );
+        newCroppedImagesUrls[key] = croppedImageUrl;
+      }
+
+      newCroppedImagesUrls.filePath = filePath;
+
+      setCroppedImagesUrls(newCroppedImagesUrls);
     }
   };
 
@@ -129,6 +157,59 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl }) => {
         reject(new Error("2D context not available."));
       }
     });
+  };
+
+  const getCroppedImgUrl = (
+    image: HTMLImageElement,
+    crop: Crop,
+    targetAspect: number
+  ): string => {
+    // Convert crop percentages to pixels
+    let pxCrop = {
+      x: Math.round(image.naturalWidth * (crop.x / 100)),
+      y: Math.round(image.naturalHeight * (crop.y / 100)),
+      width: Math.round(image.naturalWidth * (crop.width / 100)),
+      height: Math.round(image.naturalHeight * (crop.height / 100)),
+    };
+
+    // Calculate current aspect ratio
+    const currentAspect = pxCrop.width / pxCrop.height;
+
+    // Adjust dimensions to match the target aspect ratio
+    if (currentAspect < targetAspect) {
+      // If the crop is too tall for the width, adjust height down
+      const newHeight = pxCrop.width / targetAspect;
+      pxCrop.y += (pxCrop.height - newHeight) / 2; // Keep it centered vertically
+      pxCrop.height = newHeight;
+    } else if (currentAspect > targetAspect) {
+      // If the crop is too wide for the height, adjust width down
+      const newWidth = pxCrop.height * targetAspect;
+      pxCrop.x += (pxCrop.width - newWidth) / 2; // Keep it centered horizontally
+      pxCrop.width = newWidth;
+    }
+
+    // Make sure to round the values after adjustments
+    pxCrop.x = Math.round(pxCrop.x);
+    pxCrop.y = Math.round(pxCrop.y);
+    pxCrop.width = Math.round(pxCrop.width);
+    pxCrop.height = Math.round(pxCrop.height);
+
+    // Construct the URL for the Image Cropping API
+    const croppedImageUrl = Bytescale.UrlBuilder.url({
+      accountId: "12a1yek",
+      filePath: filePath, // Ensure filePath is defined and contains the path to the image
+      options: {
+        transformation: "image",
+        transformationParams: {
+          "crop-x": pxCrop.x,
+          "crop-y": pxCrop.y,
+          "crop-w": pxCrop.width,
+          "crop-h": pxCrop.height,
+        },
+      },
+    });
+
+    return croppedImageUrl;
   };
 
   return (

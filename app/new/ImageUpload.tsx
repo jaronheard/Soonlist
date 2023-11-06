@@ -17,10 +17,7 @@ export default function ImageUpload() {
     ? Bytescale.UrlBuilder.url({
         accountId: "12a1yek",
         filePath: filePath,
-        options: {
-          transformation: "preset",
-          transformationPreset: "jpg;w=640",
-        },
+        options: {},
       })
     : "";
   return (
@@ -28,7 +25,7 @@ export default function ImageUpload() {
       <p className="block text-sm font-medium leading-6 text-gray-900">
         Image <span className="text-gray-500">(optional)</span>
       </p>
-      {imageUrl && <ImageCropper imageUrl={imageUrl} />}
+      {imageUrl && <ImageCropper imageUrl={imageUrl} filePath={filePath} />}
       <div className="p-2"></div>
       <div className="mx-auto flex gap-4">
         <UploadButton
