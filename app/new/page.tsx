@@ -60,7 +60,7 @@ export default function Page() {
 
   // Hooks and utility functions
   const searchParams = useSearchParams();
-  const { append, isLoading, messages } = useChat({
+  const { append, isLoading, messages, stop } = useChat({
     body: {
       source: "shortcut",
     },
@@ -125,6 +125,7 @@ export default function Page() {
     if (rawText) {
       append({ role: "user", content: rawText });
     }
+    return () => stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
