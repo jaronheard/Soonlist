@@ -34,7 +34,11 @@ const blankEvent = {
   timeZone: "" as const,
 } as AddToCalendarButtonProps;
 
-export default async function Events({ rawText }: { rawText: string }) {
+export default async function EventsFromRawText({
+  rawText,
+}: {
+  rawText: string;
+}) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/event/new`, {
     method: "POST",
     headers: {
