@@ -1,6 +1,5 @@
 import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { kv } from "@vercel/kv";
 import { RequestResponse } from "@prisma/client";
 import { getPrompt } from "@/lib/prompts";
 
@@ -15,12 +14,7 @@ const openai = new OpenAIApi(config);
 
 export async function POST(req: Request) {
   const { messages, source } = await req.json();
-  const key = JSON.stringify(messages); // come up with a key based on the request
   const requestStart = new Date();
-  const cached = await kv.get(key);
-  if (cached) {
-    return new Response(cached as any);
-  }
   const prompt = getPrompt();
 
   const userMessages = messages.filter(
@@ -41,6 +35,7 @@ export async function POST(req: Request) {
   // Ask OpenAI for a streaming completion given the prompt
   const response = await openai.createChatCompletion({
     model: "gpt-4",
+    stream: true,
 
     messages: [
       {
@@ -58,10 +53,6 @@ export async function POST(req: Request) {
   const stream = OpenAIStream(response, {
     async onCompletion(completion) {
       let errors = [];
-
-      // Cache the response. Note that this will also cache function calls.
-      kv.set(key, completion).catch((error) => errors.push(error));
-      kv.expire(key, 60 * 60).catch((error) => errors.push(error));
 
       // calculate time from initial request to completion
       const time = new Date().getTime() - requestStart.getTime();
