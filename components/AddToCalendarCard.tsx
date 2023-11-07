@@ -192,6 +192,7 @@ export function AddToCalendarCard({
             defaultValue={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+          <div className="p-0.5"></div>
           <InputDescription>
             Uses html psuedocode for formatting. [br] = line break,
             [url]link|link.com[/url] = link.{" "}
