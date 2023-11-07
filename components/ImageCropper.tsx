@@ -20,13 +20,13 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl, filePath }) => {
   const [croppedImages, setCroppedImages] = useState<{ [key: string]: string }>(
     {}
   );
-  const imageRef = useRef<HTMLImageElement>(null);
+  const fullImageRef = useRef<HTMLImageElement>(null);
+  const previewImageRef = useRef<HTMLImageElement>(null);
 
   function onImageLoad(e: {
     currentTarget: { naturalWidth: any; naturalHeight: any };
   }) {
     const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
-
     const crop = centerCrop(
       makeAspectCrop(
         {
@@ -55,26 +55,30 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl, filePath }) => {
   };
 
   const makeClientCropAndUrls = async (crop: Crop) => {
-    if (imageRef.current && crop.width && crop.height) {
+    if (fullImageRef.current && crop.width && crop.height) {
       const aspectRatios = {
         square: 1,
         fourThree: 4 / 3,
         sixteenNine: 16 / 9,
       };
 
-      const aspectRatiosAndOriginal = {
+      const aspectRatioWithOriginalAndCropped = {
         ...aspectRatios,
+        cropped: crop.width / crop.height,
         original:
-          imageRef.current.naturalWidth / imageRef.current.naturalHeight,
+          fullImageRef.current.naturalWidth /
+          fullImageRef.current.naturalHeight,
       };
 
       let newCroppedImages = {} as { [key: string]: string };
       let newCroppedImagesUrls = {} as { [key: string]: string };
 
       // Get the cropped image for preview of each aspect ratio
-      for (const [key, aspect] of Object.entries(aspectRatios)) {
+      for (const [key, aspect] of Object.entries(
+        aspectRatioWithOriginalAndCropped
+      )) {
         const croppedImageUrl = await getCroppedImg(
-          imageRef.current,
+          fullImageRef.current,
           crop,
           aspect
         );
@@ -84,9 +88,11 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl, filePath }) => {
       setCroppedImages(newCroppedImages);
 
       // Get the cropped image URL for the API
-      for (const [key, aspect] of Object.entries(aspectRatiosAndOriginal)) {
+      for (const [key, aspect] of Object.entries(
+        aspectRatioWithOriginalAndCropped
+      )) {
         const croppedImageUrl = await getCroppedImgUrl(
-          imageRef.current,
+          fullImageRef.current,
           crop,
           aspect
         );
@@ -217,26 +223,23 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl, filePath }) => {
 
   return (
     <>
-      <div className="relative">
-        <img
-          src={imageUrl}
-          alt="Preview"
-          className="block max-w-xs" // Adjust width as necessary
-        />
-
-        <Button
-          onClick={() => setIsModalOpen(true)}
-          className="absolute right-2 top-2"
-        >
-          <Scissors className="mr-2 h-4 w-4" />
-          Crop Image
-        </Button>
-      </div>
+      <div className="p-1"></div>
+      <img
+        ref={croppedImages?.original ? previewImageRef : fullImageRef}
+        src={
+          croppedImages?.cropped ||
+          `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`
+        }
+        alt="Preview"
+        className="block w-24"
+        onLoad={croppedImages?.cropped ? () => null : onImageLoad}
+      />
+      <div className="p-1"></div>
 
       <Dialog
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        className="fixed inset-0 z-10 mx-auto max-w-[90vw] overflow-y-auto"
+        className="fixed inset-0 z-10 mx-auto max-h-[90vh] max-w-[90vw] overflow-y-auto"
       >
         <div className="flex min-h-screen items-center justify-center">
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
@@ -253,9 +256,8 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl, filePath }) => {
             >
               <img
                 src={`/api/image-proxy?url=${encodeURIComponent(imageUrl)}`}
-                ref={imageRef}
+                ref={fullImageRef}
                 alt="Crop preview"
-                onLoad={onImageLoad}
               />
             </ReactCrop>
             <Button
@@ -268,21 +270,23 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ imageUrl, filePath }) => {
           </div>
         </div>
       </Dialog>
-
-      <div className="p-2"></div>
       <p className="mx-auto text-center text-sm font-medium leading-6 text-gray-500">
-        Crop previews for site, will be expandable
+        Site previews (not to scale):
       </p>
-      <div className="mx-auto flex h-24 max-w-sm flex-wrap justify-around gap-2 ">
-        {Object.entries(croppedImages).map(([aspect, src]) => (
-          <div key={aspect} className="mt-2 h-auto w-24">
-            <img
-              alt={`Crop preview ${aspect}`}
-              src={src}
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-        ))}
+      <div className="mx-auto flex h-16 max-w-sm flex-wrap justify-around gap-2 ">
+        {Object.entries(croppedImages)
+          .filter(
+            ([aspect, src]) => !(aspect === "original" || aspect === "cropped")
+          )
+          .map(([aspect, src]) => (
+            <div key={aspect} className="mt-2 h-auto w-16">
+              <img
+                alt={`Crop preview ${aspect}`}
+                src={src}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          ))}
       </div>
       <div className="p-2"></div>
     </>
