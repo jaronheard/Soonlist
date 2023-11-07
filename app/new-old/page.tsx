@@ -172,7 +172,7 @@ export default function Page() {
         <p className="block text-sm font-medium leading-6 text-gray-900">
           Image <span className="text-gray-500">(optional)</span>
         </p>
-        {imageUrl && <ImageCropper imageUrl={imageUrl} />}
+        {imageUrl && <ImageCropper imageUrl={imageUrl} filePath={filePath} />}
         <div className="p-2"></div>
         <div className="flex gap-4">
           <UploadButton
