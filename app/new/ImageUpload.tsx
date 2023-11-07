@@ -315,8 +315,8 @@ export default function ImageUpload() {
           )}
         </>
         <div className="p-4"></div>
-        <div className="mx-auto flex gap-4">
-          <Button onClick={() => setIsModalOpen(true)}>
+        <div className="mx-auto flex flex-wrap justify-center gap-4">
+          <Button onClick={() => setIsModalOpen(true)} size="sm">
             <Scissors className="mr-2 h-4 w-4" />
             Crop
           </Button>
@@ -337,7 +337,7 @@ export default function ImageUpload() {
             }}
           >
             {({ onClick }) => (
-              <Button onClick={onClick} variant="secondary">
+              <Button onClick={onClick} variant="secondary" size="sm">
                 {imageUrl ? (
                   <SwitchCamera className="mr-2 h-4 w-4" />
                 ) : (
@@ -348,7 +348,11 @@ export default function ImageUpload() {
             )}
           </UploadButton>
           {imageUrl && (
-            <Button variant="destructive" onClick={() => setFilePath("")}>
+            <Button
+              variant="destructive"
+              onClick={() => setFilePath("")}
+              size="sm"
+            >
               <Trash className="mr-2 h-4 w-4" />
               Delete
             </Button>
