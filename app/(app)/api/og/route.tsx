@@ -9,10 +9,10 @@ export const runtime = "edge";
 export async function GET() {
   // Make sure the font exists in the specified path:
   const fontDataBold = await fetch(
-    new URL("../../../assets/Geist-Black.otf", import.meta.url)
+    new URL("../../../../assets/Geist-Black.otf", import.meta.url)
   ).then((res) => res.arrayBuffer());
   const fontDataNormal = await fetch(
-    new URL("../../../assets/Geist-Regular.otf", import.meta.url)
+    new URL("../../../../assets/Geist-Regular.otf", import.meta.url)
   ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
