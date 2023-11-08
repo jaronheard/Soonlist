@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import "@/styles/globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 import Fathom from "@/components/Fathom";
 import { CroppedImageProvider } from "@/context/CroppedImageContext";
 
@@ -33,12 +34,14 @@ export default function RootLayout({
 }) {
   return (
     <CroppedImageProvider>
-      <html lang="en">
-        <body>
-          <Fathom />
-          {children}
-        </body>
-      </html>
+      <ClerkProvider>
+        <html lang="en">
+          <body>
+            <Fathom />
+            {children}
+          </body>
+        </html>
+      </ClerkProvider>
     </CroppedImageProvider>
   );
 }
