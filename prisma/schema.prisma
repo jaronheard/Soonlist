@@ -76,7 +76,6 @@ enum Status {
 }
 
 model FollowEvent {
-  id        String   @id @default(cuid())
   userId    String
   eventId   String
   createdAt DateTime @default(now())
@@ -85,26 +84,26 @@ model FollowEvent {
   User  User  @relation(fields: [userId], references: [id])
   Event Event @relation(fields: [eventId], references: [id])
 
+  @@id([userId, eventId])
   @@index([userId])
   @@index([eventId])
 }
 
 model FollowUser {
-  id          String   @id @default(cuid())
-  followerId  String   @map("followingUserId")
-  followingId String   @map("followedUserId")
+  followerId  String
+  followingId String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   Follower  User @relation(name: "Follower", fields: [followerId], references: [id])
   Following User @relation(name: "Following", fields: [followingId], references: [id])
 
+  @@id([followerId, followingId])
   @@index([followerId])
   @@index([followingId])
 }
 
 model FollowList {
-  id        String   @id @default(cuid())
   userId    String
   listId    String
   createdAt DateTime @default(now())
@@ -113,6 +112,7 @@ model FollowList {
   User User @relation(fields: [userId], references: [id])
   List List @relation(fields: [listId], references: [id])
 
+  @@id([userId, listId])
   @@index([userId])
   @@index([listId])
 }
