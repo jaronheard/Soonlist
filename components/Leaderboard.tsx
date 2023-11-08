@@ -1,5 +1,5 @@
 import { Badge } from "./ui/badge";
-import { LeaderboardUsers } from "@/app/api/leaderboard/route";
+import { LeaderboardUsers } from "@/app/(app)/api/leaderboard/route";
 
 async function getLeaderboardUsers() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboard`, {
