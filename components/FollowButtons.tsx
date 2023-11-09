@@ -21,7 +21,7 @@ export function FollowEventButton({
   async function followUnfollowEvent() {
     setIsLoading(true);
 
-    const response = await fetch("/api/event/follow", {
+    const response = await fetch("/api/events/follow", {
       method: following ? "DELETE" : "POST",
       headers: {
         "Content-Type": "application/json",
