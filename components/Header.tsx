@@ -10,12 +10,71 @@ import {
   useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import * as React from "react";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
+  NavigationMenuContent,
+  NavigationMenuList,
+  NavigationMenuTrigger,
 } from "./ui/navigation-menu";
+import { cn } from "@/lib/utils";
+
+const userEvents: { title: string; href: string; description: string }[] = [
+  {
+    title: "My Events",
+    href: "/",
+    description: "All events you have created",
+  },
+  {
+    title: "Saved",
+    href: "/saved",
+    description: "All events you have saved.",
+  },
+  {
+    title: "Following",
+    href: "/following",
+    description: "All events from users or lists you are following.",
+  },
+];
+
+const allEvents: { title: string; href: string; description: string }[] = [
+  {
+    title: "All Events",
+    href: "/events",
+    description: "All events from all users.",
+  },
+];
+const allLists: { title: string; href: string; description: string }[] = [
+  {
+    title: "All Lists",
+    href: "/lists",
+    description: "All lists you have created.",
+  },
+];
+const userLists: { title: string; href: string; description: string }[] = [
+  {
+    title: "My Lists",
+    href: "/lists",
+    description: "All lists you have created.",
+  },
+];
+const userFollowing: { title: string; href: string; description: string }[] = [
+  {
+    title: "Users",
+    href: "/following/users",
+    description: "Users you are following.",
+  },
+];
+const allUsers: { title: string; href: string; description: string }[] = [
+  {
+    title: "All Users",
+    href: "/users",
+    description: "All users.",
+  },
+];
 
 export default function Header() {
   const { user } = useUser();
@@ -52,7 +111,7 @@ export default function Header() {
         </ClerkLoading>
         <ClerkLoaded>
           <SignedIn>
-            <NavigationMenu>
+            {/* <NavigationMenu>
               <NavigationMenuItem className="list-none">
                 <Link
                   href={`/${user?.username}/events`}
@@ -82,7 +141,8 @@ export default function Header() {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-            </NavigationMenu>
+            </NavigationMenu> */}
+            <NavigationMenuDemo />
             <div className="h-8 w-8">
               <UserButton afterSignOutUrl="/" />
             </div>
@@ -104,3 +164,99 @@ export default function Header() {
     </header>
   );
 }
+
+export function NavigationMenuDemo() {
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Events</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4">
+              <SignedIn>
+                {userEvents.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
+                  >
+                    {component.description}
+                  </ListItem>
+                ))}
+              </SignedIn>
+              {allEvents.map((component) => (
+                <ListItem
+                  key={component.title}
+                  title={component.title}
+                  href={component.href}
+                >
+                  {component.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Users</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4">
+              <SignedIn>
+                {userFollowing.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
+                  >
+                    {component.description}
+                  </ListItem>
+                ))}
+              </SignedIn>
+              {allUsers.map((component) => (
+                <ListItem
+                  key={component.title}
+                  title={component.title}
+                  href={component.href}
+                >
+                  {component.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/docs" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Documentation
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
