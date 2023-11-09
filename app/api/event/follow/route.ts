@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
-
+    console.log(error);
     return new Response(null, { status: 500 });
   }
 }
@@ -63,7 +63,7 @@ export async function DELETE(req: Request) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
-
+    console.log(error);
     return new Response(null, { status: 500 });
   }
 }

@@ -4,8 +4,8 @@ import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const userFollowSchema = z.object({
-  followingId: z.string(),
+const listFollowSchema = z.object({
+  listId: z.string(),
 });
 
 export async function POST(req: Request) {
@@ -17,13 +17,13 @@ export async function POST(req: Request) {
     }
 
     const json = await req.json();
-    const body = userFollowSchema.parse(json);
-    const followingId = body.followingId;
+    const body = listFollowSchema.parse(json);
+    const listId = body.listId;
 
-    const FollowList = await db.followUser.create({
+    const FollowList = await db.followList.create({
       data: {
-        followerId: userId,
-        followingId: followingId,
+        userId: userId,
+        listId: listId,
       },
     });
 
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
-
+    console.log(error);
     return new Response(null, { status: 500 });
   }
 }
@@ -46,14 +46,14 @@ export async function DELETE(req: Request) {
     }
 
     const json = await req.json();
-    const body = userFollowSchema.parse(json);
-    const followingId = body.followingId;
+    const body = listFollowSchema.parse(json);
+    const listId = body.listId;
 
-    const FollowList = await db.followUser.delete({
+    const FollowList = await db.followList.delete({
       where: {
-        followerId_followingId: {
-          followerId: userId,
-          followingId: followingId,
+        userId_listId: {
+          userId: userId,
+          listId: listId,
         },
       },
     });
@@ -63,7 +63,7 @@ export async function DELETE(req: Request) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
-
+    console.log(error);
     return new Response(null, { status: 500 });
   }
 }
