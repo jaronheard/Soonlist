@@ -59,6 +59,8 @@ export async function UserInfo(props: UserInfoProps) {
     return null;
   }
 
+  const self = activeUser?.id === user.id;
+
   const following =
     activeUser?.id && (await getFollowing(activeUser?.id, user.id));
 
@@ -81,9 +83,11 @@ export async function UserInfo(props: UserInfoProps) {
           @{user.username}
         </p>
       </Link>
-      <div>
-        <FollowUserButton userId={user.id} following={!!following} />
-      </div>
+      {!self && (
+        <div>
+          <FollowUserButton userId={user.id} following={!!following} />
+        </div>
+      )}
     </div>
   );
 }
