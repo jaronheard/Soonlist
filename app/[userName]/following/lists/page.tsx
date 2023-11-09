@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Metadata, ResolvingMetadata } from "next/types";
 import { db } from "@/lib/db";
 import { UserInfo } from "@/components/UserInfo";
