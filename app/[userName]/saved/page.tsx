@@ -6,7 +6,7 @@ import EventList from "@/components/EventList";
 
 type Props = { params: { userName: string } };
 
-const getFollowingEvents = async (userName: string) => {
+const getSavedEvents = async (userName: string) => {
   const user = await db.user.findUnique({
     where: {
       username: userName,
@@ -17,34 +17,13 @@ const getFollowingEvents = async (userName: string) => {
   });
   const events = await db.event.findMany({
     where: {
-      OR: [
-        {
+      FollowEvent: {
+        some: {
           User: {
-            followedByUsers: {
-              some: {
-                Follower: {
-                  username: userName,
-                },
-              },
-            },
+            username: userName,
           },
         },
-        {
-          eventList: {
-            some: {
-              User: {
-                followedByUsers: {
-                  some: {
-                    Follower: {
-                      username: userName,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      ],
+      },
     },
     orderBy: {
       startDateTime: "asc",
@@ -64,7 +43,7 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const events = await getFollowingEvents(params.userName);
+  const events = await getSavedEvents(params.userName);
 
   if (!events) {
     return {
@@ -84,12 +63,12 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: `@${params.userName} is following (${futureEventsCount} upcoming events) | timetime.cc`,
+    title: `@${params.userName}'s saved (${futureEventsCount} upcoming events) | timetime.cc`,
     openGraph: {
-      title: `@${params.userName} is following (${futureEventsCount} upcoming events) | timetime.cc`,
-      description: `See the events @${params.userName} is following on  timetime.cc`,
+      title: `@${params.userName}'s saved (${futureEventsCount} upcoming events) | timetime.cc`,
+      description: `See the events that @${params.userName} has saved on  timetime.cc`,
       locale: "en_US",
-      url: `${process.env.NEXT_PUBLIC_URL}/${params.userName}/following`,
+      url: `${process.env.NEXT_PUBLIC_URL}/${params.userName}/saved`,
       type: "article",
       images: [...previousImages],
     },
@@ -97,7 +76,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: Props) {
-  const events = await getFollowingEvents(params.userName);
+  const events = await getSavedEvents(params.userName);
 
   const pastEvents = events.filter((item) => item.startDateTime < new Date());
 
@@ -108,9 +87,7 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <div className="flex place-items-center gap-2">
-        <div className="font-medium">
-          Events from users and lists followed by
-        </div>
+        <div className="font-medium">Events saved by</div>
         <Suspense>
           <UserInfo userName={params.userName} />
         </Suspense>
