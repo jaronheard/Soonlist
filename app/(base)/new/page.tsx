@@ -3,6 +3,7 @@ import AddEvent from "../AddEvent";
 import EventsFromRawText from "./EventsFromRawText";
 import ImageUpload from "./ImageUpload";
 import EventsFromSaved from "./EventsFromSaved";
+import { YourDetails } from "./YourDetails";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 
 export const maxDuration = 60;
@@ -16,6 +17,8 @@ export default function Page({ params, searchParams }: Props) {
   if (searchParams.saveIntent) {
     return (
       <>
+        <YourDetails />
+        <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromSaved />
         </Suspense>
@@ -36,6 +39,8 @@ export default function Page({ params, searchParams }: Props) {
       )}
       {searchParams.rawText && (
         <>
+          <YourDetails />
+          <div className="p-4"></div>
           <Suspense fallback={<AddToCalendarCardSkeleton />}>
             <EventsFromRawText rawText={searchParams.rawText} />
           </Suspense>
