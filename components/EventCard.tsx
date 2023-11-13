@@ -10,7 +10,6 @@ import { EditButton } from "./EditButton";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./DropdownMenu";
@@ -66,7 +65,6 @@ export default function EventCard(props: EventCardProps) {
   const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
   const showNightIcon =
     endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
-  const imageUrl = event?.images?.[0];
   const fullImageUrl = event?.images?.[3];
 
   const Container = singleEvent ? DivContainer : LiContainer;
