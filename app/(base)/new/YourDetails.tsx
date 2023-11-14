@@ -25,11 +25,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useFormContext } from "@/context/FormContext";
+import { MultiSelect } from "@/components/ui/multiselect";
 
 export const formSchema = z.object({
   notes: z.string().optional(),
   visibility: z.enum(["public", "private"]),
-  lists: z.array(z.string()).optional(),
+  lists: z.array(z.record(z.string().trim())),
 });
 
 export function YourDetails({ lists }: { lists?: List[] }) {
@@ -44,7 +45,7 @@ export function YourDetails({ lists }: { lists?: List[] }) {
     defaultValues: {
       notes: "",
       visibility: "public",
-      lists: [""],
+      lists: [],
     },
   });
 
@@ -116,23 +117,14 @@ export function YourDetails({ lists }: { lists?: List[] }) {
                 <FormField
                   control={form.control}
                   name="lists"
-                  render={({ field }) => (
+                  render={({ field: { ...field } }) => (
                     <FormItem>
                       <FormLabel>Lists</FormLabel>
-                      <Select onValueChange={field.onChange}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select list(s)" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {listOptions?.map((option) => (
-                            <SelectItem value={option.value} key={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <MultiSelect
+                        selected={field.value}
+                        options={listOptions}
+                        {...field}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}

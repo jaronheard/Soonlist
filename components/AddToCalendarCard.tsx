@@ -38,7 +38,7 @@ export function AddToCalendarCard({
 
   // TODO: only use croppedImagesUrls if query param is set and same image
   const hasFilePath = croppedImagesUrls.filePath;
-  const matchesFilePath = croppedImagesUrls.filePath === filePath;
+  const matchesFilePath = true;
   const hasAllAspectRatios =
     croppedImagesUrls.original &&
     croppedImagesUrls.square &&
@@ -46,6 +46,8 @@ export function AddToCalendarCard({
     croppedImagesUrls.sixteenNine;
   const validImages = hasFilePath && matchesFilePath && hasAllAspectRatios;
 
+  console.log("croppedImagesUrls", croppedImagesUrls);
+  console.log("validImages", validImages);
   const images = useMemo(() => {
     return validImages
       ? [
@@ -100,6 +102,8 @@ export function AddToCalendarCard({
       images,
     ]
   );
+
+  console.log("updatedProps.images", updatedProps.images);
 
   const eventForCalendar = { ...updatedProps };
   eventForCalendar.description = `${updatedProps.description}[br][br]Collected with [url]${process.env.NEXT_PUBLIC_URL}|timetime.cc[/url]`;

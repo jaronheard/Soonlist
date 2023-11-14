@@ -253,7 +253,6 @@ export default function ImageUpload({
             <>
               <div className="p-1"></div>
               <img
-                key={filePath}
                 ref={croppedImages?.original ? previewImageRef : fullImageRef}
                 src={
                   croppedImages?.cropped ||
@@ -345,9 +344,6 @@ export default function ImageUpload({
                 const filePath = files[0].filePath;
                 setFilePath(filePath);
                 setCroppedImages({});
-                router.push(
-                  pathname + "?" + new URLSearchParams({ filePath }).toString()
-                );
               }
             }}
           >

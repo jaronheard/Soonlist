@@ -12,7 +12,7 @@ interface FormContextState {
 
 // Create a context with an empty object and a dummy function
 const FormContext = createContext<FormContextState>({
-  formData: { notes: "", visibility: "public", lists: [""] },
+  formData: { notes: "", visibility: "public", lists: [] },
   setFormData: () => {},
 });
 
@@ -22,7 +22,7 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
   const [formData, setFormData] = useState<FormContextState["formData"]>({
     notes: "",
     visibility: "public",
-    lists: [""],
+    lists: [],
   });
 
   return (

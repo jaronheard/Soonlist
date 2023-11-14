@@ -12,7 +12,7 @@ type SaveButtonProps = {
   event: AddToCalendarButtonType;
   notes?: string;
   visibility: "public" | "private";
-  lists?: string[];
+  lists: Record<string, string>[];
 };
 
 export function SaveButton(props: SaveButtonProps) {
@@ -30,7 +30,10 @@ export function SaveButton(props: SaveButtonProps) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        event: props,
+        event: props.event,
+        comment: props.notes,
+        visibility: props.visibility,
+        lists: props.lists,
       }),
     });
 

@@ -14,7 +14,7 @@ type UpdateButtonProps = {
   update?: boolean;
   notes?: string;
   visibility: "public" | "private";
-  lists?: string[];
+  lists: Record<string, string>[];
 };
 
 export function UpdateButton(props: UpdateButtonProps) {
