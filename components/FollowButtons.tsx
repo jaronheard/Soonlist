@@ -6,6 +6,70 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Check, Loader2, Plus } from "lucide-react";
 import { Button } from "./ui/button";
+import { DropdownMenuItem } from "./DropdownMenu";
+
+export function FollowEventDropdownButton({
+  eventId,
+  following,
+}: {
+  eventId: string;
+  following?: boolean;
+}) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  async function followUnfollowEvent() {
+    setIsLoading(true);
+
+    const response = await fetch("/api/events/follow", {
+      method: following ? "DELETE" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        eventId: eventId,
+      }),
+    });
+
+    setIsLoading(false);
+
+    if (!response?.ok) {
+      return toast.error("Your event was not saved. Please try again.");
+    }
+
+    const event = await response.json();
+
+    // This forces a cache invalidation.
+    router.refresh();
+  }
+
+  return (
+    <>
+      <SignedIn>
+        <DropdownMenuItem onSelect={followUnfollowEvent} disabled={isLoading}>
+          {isLoading && (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </>
+          )}
+          {!isLoading && following && (
+            <>
+              <Check className="mr-2 h-4 w-4" />
+              Event Saved
+            </>
+          )}
+          {!isLoading && !following && (
+            <>
+              <Plus className="mr-2 h-4 w-4" />
+              Save Event
+            </>
+          )}
+        </DropdownMenuItem>
+      </SignedIn>
+    </>
+  );
+}
 
 export function FollowEventButton({
   eventId,
