@@ -8,7 +8,14 @@ import { toast } from "react-hot-toast";
 import { Loader2, UploadCloud } from "lucide-react";
 import { Button } from "./ui/button";
 
-export function SaveButton(props: AddToCalendarButtonType) {
+type SaveButtonProps = {
+  event: AddToCalendarButtonType;
+  notes?: string;
+  visibility: "public" | "private";
+  lists?: string[];
+};
+
+export function SaveButton(props: SaveButtonProps) {
   const router = useRouter();
   const params = useSearchParams();
   const filePath = params.get("filePath") || "";

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { atcb_action } from "add-to-calendar-button";
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useSearchParams } from "next/navigation";
@@ -13,6 +13,7 @@ import { Textarea } from "./ui/textarea";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
+import { useFormContext } from "@/context/FormContext";
 
 type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
@@ -30,8 +31,10 @@ export function AddToCalendarCard({
 }: AddToCalendarCardProps) {
   // get croppedImagesUrls from context
   const { croppedImagesUrls, setCroppedImagesUrls } = useCroppedImageContext();
+  const { formData, setFormData } = useFormContext();
   const searchParams = useSearchParams();
   const filePath = searchParams.get("filePath");
+  const { notes, visibility, lists } = formData;
 
   // TODO: only use croppedImagesUrls if query param is set and same image
   const hasFilePath = croppedImagesUrls.filePath;
@@ -211,9 +214,22 @@ export function AddToCalendarCard({
           />
         </div>
         <div className="flex gap-3">
-          {!initialProps.update && <SaveButton {...updatedProps} />}
+          {!initialProps.update && (
+            <SaveButton
+              notes={notes}
+              visibility={visibility}
+              lists={lists}
+              event={updatedProps}
+            />
+          )}
           {initialProps.update && (
-            <UpdateButton id={initialProps.updateId!} {...updatedProps} />
+            <UpdateButton
+              id={initialProps.updateId!}
+              notes={notes}
+              visibility={visibility}
+              lists={lists}
+              event={updatedProps}
+            />
           )}
           <Button
             variant="secondary"
