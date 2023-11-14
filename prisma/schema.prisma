@@ -13,6 +13,7 @@ datasource db {
 
 model Event {
   id            String        @id @default(cuid()) @map("cuid")
+  visibility    Visibility    @default(public)
   event         Json
   userId        String
   startDateTime DateTime      @default(now())
@@ -132,4 +133,9 @@ model Comment {
 
   @@index([eventId])
   @@index([userId])
+}
+
+enum Visibility {
+  public
+  private
 }
