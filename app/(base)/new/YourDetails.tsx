@@ -33,7 +33,6 @@ export const formSchema = z.object({
 });
 
 export function YourDetails({ lists }: { lists?: List[] }) {
-  console.log("lists", lists);
   const listOptions = lists?.map((list) => ({
     label: list.name,
     value: list.id,
