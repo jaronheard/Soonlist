@@ -48,22 +48,14 @@ export function AddToCalendarCard({
 
   console.log("croppedImagesUrls", croppedImagesUrls);
   console.log("validImages", validImages);
-  const images = useMemo(() => {
-    return validImages
-      ? [
-          croppedImagesUrls.square!,
-          croppedImagesUrls.fourThree!,
-          croppedImagesUrls.sixteenNine!,
-          croppedImagesUrls.original!,
-        ]
-      : undefined;
-  }, [
-    validImages,
-    croppedImagesUrls.square,
-    croppedImagesUrls.fourThree,
-    croppedImagesUrls.sixteenNine,
-    croppedImagesUrls.original,
-  ]);
+  const images = validImages
+    ? [
+        croppedImagesUrls.square!,
+        croppedImagesUrls.fourThree!,
+        croppedImagesUrls.sixteenNine!,
+        croppedImagesUrls.original!,
+      ]
+    : undefined;
 
   // state
   const [name, setName] = useState(initialProps.name);
@@ -75,34 +67,19 @@ export function AddToCalendarCard({
   const [endTime, setEndTime] = useState(initialProps.endTime);
   const [link, setLink] = useState("");
 
-  const updatedProps = useMemo(
-    () => ({
-      ...initialProps,
-      name,
-      location,
-      description: link
-        ? description + "\n\n" + `[url]${link}|More Info[/url]`
-        : description,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-      images,
-    }),
-    [
-      initialProps,
-      name,
-      location,
-      link,
-      description,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-      images,
-    ]
-  );
-
+  const updatedProps = {
+    ...initialProps,
+    name,
+    location,
+    description: link
+      ? description + "\n\n" + `[url]${link}|More Info[/url]`
+      : description,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    images,
+  };
   console.log("updatedProps.images", updatedProps.images);
 
   const eventForCalendar = { ...updatedProps };
