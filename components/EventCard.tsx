@@ -33,6 +33,7 @@ type EventCardProps = {
   id: string;
   createdAt: Date;
   event: AddToCalendarButtonProps;
+  visibility: "public" | "private";
   singleEvent?: boolean;
   hideCurator?: boolean;
 };
@@ -237,13 +238,21 @@ function CuratorComment({ comment }: { comment?: Comment }) {
 
 export function EventCard(props: EventCardProps) {
   const { user } = useUser();
-  const { User, FollowEvent, id, event, singleEvent } = props;
+  const { User, FollowEvent, id, event, singleEvent, visibility } = props;
   const isOwner = user?.id === User.id;
   const isFollowing = !!FollowEvent.find((item) => item.userId === user?.id);
   const comment = props.Comment.findLast((item) => item.userId === user?.id);
 
   return (
     <li className="relative grid px-4 py-5 sm:px-6">
+      {visibility === "private" && (
+        <>
+          <Badge className="max-w-fit" variant="destructive">
+            Unlisted Event
+          </Badge>
+          <div className="p-1"></div>
+        </>
+      )}
       <div className="flex items-center gap-4 pr-8">
         <EventDateDisplay
           startDate={event.startDate!}

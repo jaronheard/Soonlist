@@ -19,6 +19,7 @@ const getEvent = async (eventId: string) => {
       User: true,
       FollowEvent: true,
       Comment: true,
+      visibility: true,
     },
   });
   return event;
@@ -88,6 +89,7 @@ export default async function Page({ params }: Props) {
         id={event.id}
         event={event.event as AddToCalendarButtonProps}
         createdAt={event.createdAt}
+        visibility={event.visibility}
         singleEvent
         hideCurator
       />
