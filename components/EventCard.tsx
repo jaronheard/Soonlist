@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/nextjs";
-import { FollowEvent, User } from "@prisma/client";
+import { FollowEvent, User, Comment } from "@prisma/client";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import {
@@ -16,6 +16,7 @@ import { CalendarButton } from "./CalendarButton";
 import { ShareButton } from "./ShareButton";
 import { ConditionalWrapper } from "./ConditionalWrapper";
 import { FollowEventDropdownButton } from "./FollowButtons";
+import { Badge } from "./ui/badge";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -28,6 +29,7 @@ import { AddToCalendarButtonProps } from "@/types";
 type EventCardProps = {
   User: User;
   FollowEvent: FollowEvent[];
+  Comment: Comment[];
   id: string;
   createdAt: Date;
   event: AddToCalendarButtonProps;
@@ -196,16 +198,39 @@ function EventActionButton({
   );
 }
 
-function EventCuratedBy({ username }: { username: string }) {
+function EventCuratedBy({
+  username,
+  comment,
+}: {
+  username: string;
+  comment?: Comment;
+}) {
   return (
     <div className="flex items-center gap-2">
-      <p className="text-xs font-medium text-gray-500">
+      <p className="whitespace-nowrap text-xs font-medium text-gray-500">
         Collected by{" "}
         <Link
           href={`/${username}/events`}
           className="font-bold text-gray-900"
         >{`@${username}`}</Link>
       </p>
+      {comment && (
+        <Badge className="inline-flex" variant="outline">
+          <span className="line-clamp-1">&ldquo;{comment.content}&rdquo;</span>
+        </Badge>
+      )}
+    </div>
+  );
+}
+
+function CuratorComment({ comment }: { comment?: Comment }) {
+  return (
+    <div className="flex items-center gap-2">
+      {comment && (
+        <Badge className="inline-flex" variant="outline">
+          <span>&ldquo;{comment.content}&rdquo;</span>
+        </Badge>
+      )}
     </div>
   );
 }
@@ -215,6 +240,7 @@ export function EventCard(props: EventCardProps) {
   const { User, FollowEvent, id, event, singleEvent } = props;
   const isOwner = user?.id === User.id;
   const isFollowing = !!FollowEvent.find((item) => item.userId === user?.id);
+  const comment = props.Comment.findLast((item) => item.userId === user?.id);
 
   return (
     <li className="relative grid px-4 py-5 sm:px-6">
@@ -246,10 +272,16 @@ export function EventCard(props: EventCardProps) {
           isFollowing={isFollowing}
         />
       </div>
+      {singleEvent && (
+        <>
+          <div className="p-1"></div>
+          <CuratorComment comment={comment} />
+        </>
+      )}
       {!props.hideCurator && (
         <>
           <div className="p-1"></div>
-          <EventCuratedBy username={User.username} />
+          <EventCuratedBy username={User.username} comment={comment} />
         </>
       )}
     </li>

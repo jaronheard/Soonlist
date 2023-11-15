@@ -1,4 +1,4 @@
-import { Event, FollowEvent, User } from "@prisma/client";
+import { Comment, Event, FollowEvent, User } from "@prisma/client";
 import { clsx } from "clsx";
 import RainbowText from "./RainbowText";
 import { EventCard } from "@/components/EventCard";
@@ -13,6 +13,7 @@ import { AddToCalendarButtonProps } from "@/types";
 type EventWithUser = Event & {
   User: User;
   FollowEvent: FollowEvent[];
+  Comment: Comment[];
 };
 
 export default function EventList({
@@ -62,6 +63,7 @@ export default function EventList({
                     key={item.id}
                     User={item.User}
                     FollowEvent={item.FollowEvent}
+                    Comment={item.Comment}
                     id={item.id}
                     event={item.event as AddToCalendarButtonProps}
                     createdAt={item.createdAt}
@@ -97,8 +99,9 @@ export default function EventList({
                 {currentEvents.map((item) => (
                   <EventCard
                     key={item.id}
-                    FollowEvent={item.FollowEvent}
                     User={item.User}
+                    FollowEvent={item.FollowEvent}
+                    Comment={item.Comment}
                     id={item.id}
                     event={item.event as AddToCalendarButtonProps}
                     createdAt={item.createdAt}
@@ -137,6 +140,7 @@ export default function EventList({
                   key={item.id}
                   User={item.User}
                   FollowEvent={item.FollowEvent}
+                  Comment={item.Comment}
                   id={item.id}
                   event={item.event as AddToCalendarButtonProps}
                   createdAt={item.createdAt}

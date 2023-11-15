@@ -20,6 +20,7 @@ const getEventsForUser = async (userName: string) => {
     include: {
       User: true,
       FollowEvent: true,
+      Comment: true,
     },
   });
   return events;

@@ -3,7 +3,6 @@ import { UserInfo } from "@/components/UserInfo";
 import { db } from "@/lib/db";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { AddToCalendarButtonProps } from "@/types";
-import EventListsButton from "@/components/EventListsButton";
 import { extractFilePath } from "@/lib/utils";
 import ImageUpload from "@/app/(base)/new/ImageUpload";
 import { YourDetails } from "@/app/(base)/new/YourDetails";

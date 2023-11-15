@@ -122,7 +122,7 @@ model FollowList {
 
 model Comment {
   id        String   @id @default(cuid())
-  content   String
+  content   String   @db.MediumText
   eventId   String
   userId    String
   createdAt DateTime @default(now())

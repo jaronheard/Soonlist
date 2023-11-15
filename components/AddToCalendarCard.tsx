@@ -89,11 +89,6 @@ export function AddToCalendarCard({
         <CardTitle className="col-span-full flex items-center justify-between">
           <div>Event Details</div>
         </CardTitle>
-        {initialProps.children && (
-          <div className="col-span-full" onClick={initialProps?.onClick}>
-            {initialProps.children}
-          </div>
-        )}
         <div className="col-span-full">
           <Label htmlFor="name">Event</Label>
           <Input
