@@ -204,11 +204,21 @@ export async function PATCH(req: Request) {
             ],
           },
         }),
+        ...(!hasComment && {
+          Comment: {
+            deleteMany: {},
+          },
+        }),
         ...(hasLists && {
           eventList: {
             connect: lists.map((list) => ({
               id: list.value,
             })),
+          },
+        }),
+        ...(!hasLists && {
+          eventList: {
+            set: [],
           },
         }),
       },

@@ -18,9 +18,6 @@ export function DeleteButton(props: DeleteButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  console.log("DeleteButton.tsx: user: ", user);
-  console.log("DeleteButton.tsx: props: ", props);
-
   async function onClick() {
     setIsLoading(true);
 

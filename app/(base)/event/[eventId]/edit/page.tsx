@@ -50,6 +50,7 @@ export default async function Page({
         <>
           <YourDetails
             lists={event.User.lists || undefined}
+            eventLists={event.eventList}
             comment={mostRecentComment}
             visibility={event.visibility}
           />

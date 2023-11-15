@@ -7,6 +7,8 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Loader2, UploadCloud } from "lucide-react";
 import { Button } from "./ui/button";
+import { useCroppedImageContext } from "@/context/CroppedImageContext";
+import { useFormContext } from "@/context/FormContext";
 
 type SaveButtonProps = {
   event: AddToCalendarButtonType;
@@ -20,6 +22,8 @@ export function SaveButton(props: SaveButtonProps) {
   const params = useSearchParams();
   const filePath = params.get("filePath") || "";
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setCroppedImagesUrls } = useCroppedImageContext();
+  const { setFormData } = useFormContext();
 
   async function onClick() {
     setIsLoading(true);
@@ -46,6 +50,14 @@ export function SaveButton(props: SaveButtonProps) {
     const event = await response.json();
 
     toast.success("Event saved.");
+
+    // Clear context state
+    setCroppedImagesUrls({});
+    setFormData({
+      notes: "",
+      visibility: "public",
+      lists: [],
+    });
 
     // This forces a cache invalidation.
     router.refresh();

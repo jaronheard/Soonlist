@@ -7,6 +7,8 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Loader2, Save } from "lucide-react";
 import { Button } from "./ui/button";
+import { useCroppedImageContext } from "@/context/CroppedImageContext";
+import { useFormContext } from "@/context/FormContext";
 
 type UpdateButtonProps = {
   event: AddToCalendarButtonType;
@@ -20,6 +22,8 @@ type UpdateButtonProps = {
 export function UpdateButton(props: UpdateButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setCroppedImagesUrls } = useCroppedImageContext();
+  const { setFormData } = useFormContext();
 
   async function onClickUpdate(id: string) {
     setIsLoading(true);
@@ -49,6 +53,14 @@ export function UpdateButton(props: UpdateButtonProps) {
     const event = await response.json();
 
     toast.success("Event updated.");
+
+    // Clear context state
+    setCroppedImagesUrls({});
+    setFormData({
+      notes: "",
+      visibility: "public",
+      lists: [],
+    });
 
     // This forces a cache invalidation.
     router.refresh();

@@ -37,12 +37,18 @@ export function YourDetails({
   lists,
   comment,
   visibility,
+  eventLists,
 }: {
   lists?: List[];
   comment?: string;
   visibility?: "public" | "private";
+  eventLists?: List[];
 }) {
   const listOptions = lists?.map((list) => ({
+    label: list.name,
+    value: list.id,
+  }));
+  const eventListOptions = eventLists?.map((list) => ({
     label: list.name,
     value: list.id,
   }));
@@ -53,11 +59,16 @@ export function YourDetails({
     defaultValues: {
       notes: comment || "",
       visibility: visibility || "public",
-      lists: [],
+      lists: eventListOptions || [],
     },
   });
 
   const { setFormData } = useFormContext(); // Use the context
+
+  // set initial form state in context
+  React.useEffect(() => {
+    setFormData(form.getValues());
+  }, [form, setFormData]);
 
   // Watch for changes in the form
   React.useEffect(() => {
@@ -105,6 +116,7 @@ export function YourDetails({
                   <FormLabel>Visibility</FormLabel>
                   <Select
                     onValueChange={field.onChange}
+                    value={field.value}
                     defaultValue={field.value}
                   >
                     <FormControl>

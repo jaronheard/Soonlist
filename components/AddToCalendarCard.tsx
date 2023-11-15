@@ -78,7 +78,6 @@ export function AddToCalendarCard({
     endTime,
     images,
   };
-  console.log("updatedProps.images", updatedProps.images);
 
   const eventForCalendar = { ...updatedProps };
   eventForCalendar.description = `${updatedProps.description}[br][br]Collected with [url]${process.env.NEXT_PUBLIC_URL}|timetime.cc[/url]`;
