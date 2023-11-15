@@ -33,7 +33,13 @@ export const formSchema = z.object({
   lists: z.array(z.record(z.string().trim())),
 });
 
-export function YourDetails({ lists }: { lists?: List[] }) {
+export function YourDetails({
+  lists,
+  comment,
+}: {
+  lists?: List[];
+  comment?: string;
+}) {
   const listOptions = lists?.map((list) => ({
     label: list.name,
     value: list.id,
@@ -43,7 +49,7 @@ export function YourDetails({ lists }: { lists?: List[] }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      notes: "",
+      notes: comment || "",
       visibility: "public",
       lists: [],
     },
@@ -78,7 +84,8 @@ export function YourDetails({ lists }: { lists?: List[] }) {
                   <FormControl>
                     <Textarea
                       placeholder="e.g. My friend Jaron has been working on timetime.cc for months and this is his launch party celebration..."
-                      {...field}
+                      defaultValue={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormDescription>

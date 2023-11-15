@@ -28,6 +28,7 @@ export default async function Page({
           lists: true,
         },
       },
+      Comment: true,
     },
   });
 
@@ -39,12 +40,17 @@ export default async function Page({
   const savedFilePath = eventData?.images?.[0]
     ? extractFilePath(eventData?.images?.[0])
     : undefined;
-
+  const mostRecentComment = event.Comment.findLast(
+    (comment) => comment.content
+  )?.content;
   return (
     <>
       {event && event.event ? (
         <>
-          <YourDetails lists={event.User.lists || undefined} />
+          <YourDetails
+            lists={event.User.lists || undefined}
+            comment={mostRecentComment}
+          />
           <div className="p-4"></div>
           <AddToCalendarCard
             {...(event.event as AddToCalendarButtonProps)}
