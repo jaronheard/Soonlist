@@ -31,7 +31,10 @@ export function UpdateButton(props: UpdateButtonProps) {
       },
       body: JSON.stringify({
         id: id,
-        event: props,
+        event: props.event,
+        comment: props.notes,
+        visibility: props.visibility,
+        lists: props.lists,
       }),
     });
 

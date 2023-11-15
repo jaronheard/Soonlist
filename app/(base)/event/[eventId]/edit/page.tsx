@@ -6,6 +6,7 @@ import { AddToCalendarButtonProps } from "@/types";
 import EventListsButton from "@/components/EventListsButton";
 import { extractFilePath } from "@/lib/utils";
 import ImageUpload from "@/app/(base)/new/ImageUpload";
+import { YourDetails } from "@/app/(base)/new/YourDetails";
 
 export default async function Page({
   params,
@@ -44,18 +45,14 @@ export default async function Page({
     <>
       {event && event.event ? (
         <>
+          <YourDetails lists={event.User.lists || undefined} />
+          <div className="p-4"></div>
           <AddToCalendarCard
             {...(event.event as AddToCalendarButtonProps)}
             key={event.id}
             update
             updateId={params.eventId}
-          >
-            <EventListsButton
-              userLists={event.User.lists}
-              eventId={params.eventId}
-              eventLists={event.eventList}
-            />
-          </AddToCalendarCard>
+          />
           <div className="p-4"></div>
           <ImageUpload savedFilePath={savedFilePath} />
         </>
