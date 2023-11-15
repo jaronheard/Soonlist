@@ -29,6 +29,7 @@ export default async function Page({
         },
       },
       Comment: true,
+      visibility: true,
     },
   });
 
@@ -50,6 +51,7 @@ export default async function Page({
           <YourDetails
             lists={event.User.lists || undefined}
             comment={mostRecentComment}
+            visibility={event.visibility}
           />
           <div className="p-4"></div>
           <AddToCalendarCard

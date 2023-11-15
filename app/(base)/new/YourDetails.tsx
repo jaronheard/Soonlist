@@ -36,9 +36,11 @@ export const formSchema = z.object({
 export function YourDetails({
   lists,
   comment,
+  visibility,
 }: {
   lists?: List[];
   comment?: string;
+  visibility?: "public" | "private";
 }) {
   const listOptions = lists?.map((list) => ({
     label: list.name,
@@ -50,7 +52,7 @@ export function YourDetails({
     resolver: zodResolver(formSchema),
     defaultValues: {
       notes: comment || "",
-      visibility: "public",
+      visibility: visibility || "public",
       lists: [],
     },
   });
