@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import * as Bytescale from "@bytescale/sdk";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import { SwitchCamera, Trash, Upload, Scissors } from "lucide-react";
@@ -18,9 +19,6 @@ export default function ImageUpload({
 }: {
   savedFilePath?: string;
 }) {
-  // ImageUpload
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [filePath, setFilePath] = useState(
     searchParams.get("filePath") || savedFilePath || ""
@@ -35,39 +33,11 @@ export default function ImageUpload({
       : "";
   });
 
-  // ImageCropper
-  const { setCroppedImagesUrls } = useCroppedImageContext();
+  const { croppedImagesUrls, setCroppedImagesUrls } = useCroppedImageContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [crop, setCrop] = useState<Crop>();
-  const [croppedImages, setCroppedImages] = useState<{ [key: string]: string }>(
-    {}
-  );
-  const [imageLoadTime, setImageLoadTime] = useState(0);
   const fullImageRef = useRef<HTMLImageElement>(null);
   const previewImageRef = useRef<HTMLImageElement>(null);
-
-  // function onImageLoad(e: {
-  //   currentTarget: { naturalWidth: any; naturalHeight: any };
-  // }) {
-  //   const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
-  //   const crop = centerCrop(
-  //     makeAspectCrop(
-  //       {
-  //         unit: "%",
-  //         width: 100,
-  //         height: 100,
-  //       },
-  //       width / height,
-  //       width,
-  //       height
-  //     ),
-  //     width,
-  //     height
-  //   );
-
-  //   setCrop(crop);
-  //   makeClientCropAndUrls(crop);
-  // }
 
   const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
     if (
@@ -75,7 +45,7 @@ export default function ImageUpload({
       fullImageRef.current &&
       fullImageRef.current.naturalWidth > 0
     ) {
-      makeClientCropAndUrls(percentageCrop);
+      makeCropUrls(percentageCrop);
     }
   };
 
@@ -83,72 +53,14 @@ export default function ImageUpload({
     setCrop(newPercentageCrop);
   };
 
-  const makeClientCropAndUrls = useCallback(
-    async (crop: Crop) => {
-      const getCroppedImg = (
-        image: HTMLImageElement,
-        crop: Crop,
-        targetAspect: number
-      ): Promise<string> => {
-        return new Promise((resolve, reject) => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
+  const croppedImagesMatchFilePath = Object.values(croppedImagesUrls).some(
+    (url) => url.includes(filePath)
+  );
+  const showCroppedImage =
+    croppedImagesMatchFilePath && croppedImagesUrls?.cropped;
 
-          // Convert crop percentages to pixels
-          const pxCrop = {
-            x: image.naturalWidth * (crop.x / 100),
-            y: image.naturalHeight * (crop.y / 100),
-            width: image.naturalWidth * (crop.width / 100),
-            height: image.naturalHeight * (crop.height / 100),
-          };
-
-          // Calculate the new width and height based on the target aspect ratio
-          let newWidth = pxCrop.width;
-          let newHeight = newWidth / targetAspect;
-          let offsetX = 0;
-          let offsetY = 0;
-
-          // Adjust if the new height is larger than the cropped area
-          if (newHeight > pxCrop.height) {
-            newHeight = pxCrop.height;
-            newWidth = newHeight * targetAspect;
-            // Center the crop area
-            offsetX = (pxCrop.width - newWidth) / 2;
-            offsetY = (pxCrop.height - newHeight) / 2;
-          }
-
-          canvas.width = newWidth;
-          canvas.height = newHeight;
-
-          if (ctx && image.naturalWidth > 0 && image.naturalHeight > 0) {
-            // Draw the image slice on the canvas
-            ctx.drawImage(
-              image,
-              pxCrop.x + offsetX,
-              pxCrop.y + offsetY,
-              newWidth,
-              newHeight,
-              0,
-              0,
-              newWidth,
-              newHeight
-            );
-            // Resolve or reject the Promise based on the canvas operation success
-            canvas.toBlob((blob) => {
-              if (blob) {
-                const imageURL = URL.createObjectURL(blob);
-                resolve(imageURL);
-              } else {
-                reject(new Error("Canvas toBlob failed"));
-              }
-            }, "image/jpeg");
-          } else {
-            console.error("Canvas context or image dimensions are 0");
-            resolve("");
-          }
-        });
-      };
-
+  const makeCropUrls = useCallback(
+    (crop: Crop) => {
       const getCroppedImgUrl = (
         image: HTMLImageElement,
         crop: Crop,
@@ -225,25 +137,11 @@ export default function ImageUpload({
         let newCroppedImages = {} as { [key: string]: string };
         let newCroppedImagesUrls = {} as { [key: string]: string };
 
-        // Get the cropped image for preview of each aspect ratio
-        for (const [key, aspect] of Object.entries(
-          aspectRatioWithOriginalAndCropped
-        )) {
-          const croppedImageUrl = await getCroppedImg(
-            fullImageRef.current,
-            crop,
-            aspect
-          );
-          newCroppedImages[key] = croppedImageUrl;
-        }
-
-        setCroppedImages(newCroppedImages);
-
         // Get the cropped image URL for the API
         for (const [key, aspect] of Object.entries(
           aspectRatioWithOriginalAndCropped
         )) {
-          const croppedImageUrl = await getCroppedImgUrl(
+          const croppedImageUrl = getCroppedImgUrl(
             fullImageRef.current,
             crop,
             aspect
@@ -284,9 +182,9 @@ export default function ImageUpload({
       );
 
       setCrop(crop);
-      makeClientCropAndUrls(crop);
+      makeCropUrls(crop);
     }
-  }, [imageUrl, makeClientCropAndUrls, imageLoadTime]);
+  }, [imageUrl, makeCropUrls]);
 
   // Update imageUrl when filePath changes
   useEffect(() => {
@@ -316,20 +214,26 @@ export default function ImageUpload({
                 ref={fullImageRef}
                 src={`/api/image-proxy?url=${encodeURIComponent(imageUrl)}`}
                 alt="Full Image Preview"
-                className={cn("mx-auto block w-36", {
-                  hidden: croppedImages?.cropped,
-                })}
-                onLoad={() => {
-                  setImageLoadTime(Date.now());
-                }}
+                className={cn(
+                  "mx-auto block h-36 overflow-hidden object-cover",
+                  {
+                    hidden: showCroppedImage,
+                  }
+                )}
+                // onLoad={() => {
+                //   setImageLoadTime(Date.now());
+                // }}
               />
               <img
                 ref={previewImageRef}
-                src={croppedImages?.cropped}
+                src={croppedImagesUrls?.cropped}
                 alt="Cropped Preview"
-                className={cn("mx-auto block w-36", {
-                  hidden: !croppedImages?.cropped,
-                })}
+                className={cn(
+                  "mx-auto block h-36 overflow-hidden object-cover",
+                  {
+                    hidden: !showCroppedImage || isModalOpen,
+                  }
+                )}
               />
               <div className="p-1"></div>
 
@@ -368,25 +272,6 @@ export default function ImageUpload({
                   </div>
                 </div>
               </Dialog>
-              <p className="mx-auto text-center text-sm font-medium leading-6 text-gray-500">
-                Site previews
-              </p>
-              <div className="mx-auto flex h-16 max-w-sm flex-wrap justify-around gap-2 ">
-                {Object.entries(croppedImages)
-                  .filter(
-                    ([aspect, src]) =>
-                      !(aspect === "original" || aspect === "cropped")
-                  )
-                  .map(([aspect, src]) => (
-                    <div key={aspect} className="mt-2 h-auto w-16">
-                      <img
-                        alt={`Crop preview ${aspect}`}
-                        src={src}
-                        style={{ objectFit: "cover" }}
-                      />
-                    </div>
-                  ))}
-              </div>
             </>
           )}
         </>
@@ -411,7 +296,7 @@ export default function ImageUpload({
                 // push the file path to the search params
                 const filePath = files[0].filePath;
                 setFilePath(filePath);
-                setCroppedImages({});
+                setCroppedImagesUrls({});
               }
             }}
           >
