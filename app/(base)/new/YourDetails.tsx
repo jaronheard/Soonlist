@@ -83,31 +83,11 @@ export function YourDetails({
   return (
     <Card className="max-w-screen w-full sm:max-w-xl">
       <CardHeader>
-        <CardTitle>Publishing Details</CardTitle>
+        <CardTitle>My Details</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form className="space-y-4">
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Caption</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="e.g. My friend Jaron has been working on timetime.cc for months and this is his launch party celebration..."
-                      defaultValue={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Add your context about this event.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="visibility"
@@ -152,6 +132,26 @@ export function YourDetails({
                 />
               )}
             </SignedIn>
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Your Note</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Example: My friend Sarah hosts this dance party every year and its so fun!"
+                      defaultValue={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Add a personal note about this event for others to see.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </form>
         </Form>
       </CardContent>

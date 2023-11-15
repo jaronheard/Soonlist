@@ -202,11 +202,10 @@ export default function ImageUpload({
     <Card className="max-w-screen w-full sm:max-w-xl">
       <CardContent className="grid grid-cols-1 place-items-center gap-0 py-4 shadow-md">
         <CardTitle>Event Image</CardTitle>
-        <div className="p-2"></div>
+        <p className="mx-auto block text-sm font-medium leading-6 text-gray-900">
+          <span className="text-gray-500">(Optional)</span>
+        </p>
         <>
-          <p className="mx-auto block text-sm font-medium leading-6 text-gray-900">
-            <span className="text-gray-500">Full image</span>
-          </p>
           {imageUrl && (
             <>
               <div className="p-1"></div>
@@ -272,15 +271,22 @@ export default function ImageUpload({
                   </div>
                 </div>
               </Dialog>
+              <div className="p-2"></div>
             </>
           )}
         </>
-        <div className="p-4"></div>
+        <div className="p-2"></div>
         <div className="mx-auto flex flex-wrap justify-center gap-4">
-          <Button onClick={() => setIsModalOpen(true)} size="sm">
-            <Scissors className="mr-2 h-4 w-4" />
-            Crop
-          </Button>
+          {imageUrl && (
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              size="sm"
+              variant="outline"
+            >
+              <Scissors className="mr-2 h-4 w-4" />
+              Crop
+            </Button>
+          )}
           <UploadButton
             options={{
               apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",

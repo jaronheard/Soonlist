@@ -61,7 +61,7 @@ export default async function Page({ params, searchParams }: Props) {
       {!searchParams.rawText && (
         <>
           <Suspense>
-            <AddEvent />
+            <AddEvent lists={lists || undefined} />
           </Suspense>
         </>
       )}
@@ -69,11 +69,11 @@ export default async function Page({ params, searchParams }: Props) {
         <>
           <YourDetails lists={lists || undefined} />
           <div className="p-4"></div>
+          <ImageUpload />
+          <div className="p-4"></div>
           <Suspense fallback={<AddToCalendarCardSkeleton />}>
             <EventsFromRawText rawText={searchParams.rawText} />
           </Suspense>
-          <div className="p-4"></div>
-          <ImageUpload />
         </>
       )}
     </>

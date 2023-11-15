@@ -55,14 +55,14 @@ export default async function Page({
             visibility={event.visibility}
           />
           <div className="p-4"></div>
+          <ImageUpload savedFilePath={savedFilePath} />
+          <div className="p-4"></div>
           <AddToCalendarCard
             {...(event.event as AddToCalendarButtonProps)}
             key={event.id}
             update
             updateId={params.eventId}
           />
-          <div className="p-4"></div>
-          <ImageUpload savedFilePath={savedFilePath} />
         </>
       ) : (
         <p className="text-lg text-gray-500">No event found.</p>
