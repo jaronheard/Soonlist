@@ -46,8 +46,6 @@ export function AddToCalendarCard({
     croppedImagesUrls.sixteenNine;
   const validImages = hasFilePath && matchesFilePath && hasAllAspectRatios;
 
-  console.log("croppedImagesUrls", croppedImagesUrls);
-  console.log("validImages", validImages);
   const images = validImages
     ? [
         croppedImagesUrls.square!,
