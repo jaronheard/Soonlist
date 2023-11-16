@@ -5,6 +5,8 @@ import { EventCard } from "@/components/EventCard";
 import { UserInfo } from "@/components/UserInfo";
 import { db } from "@/lib/db";
 import { AddToCalendarButtonProps } from "@/types";
+import { collapseSimilarEvents } from "@/lib/similarEvents";
+import { EventWithUser } from "@/components/EventList";
 
 const getPossibleDuplicateEvents = async (
   startDateTime: Date,
@@ -22,12 +24,10 @@ const getPossibleDuplicateEvents = async (
         gte: startDateTimeLowerBound,
         lte: startDateTimeUpperBound,
       },
-      id: {
-        not: eventId,
-      },
     },
     select: {
       startDateTime: true,
+      endDateTime: true,
       id: true,
       event: true,
       createdAt: true,
@@ -48,6 +48,7 @@ const getEvent = async (eventId: string) => {
     },
     select: {
       startDateTime: true,
+      endDateTime: true,
       id: true,
       event: true,
       createdAt: true,
@@ -116,10 +117,17 @@ export default async function Page({ params }: Props) {
     return <p className="text-lg text-gray-500">No event found.</p>;
   }
 
-  const possibleDuplicateEvents = await getPossibleDuplicateEvents(
+  const possibleDuplicateEvents = (await getPossibleDuplicateEvents(
     event.startDateTime,
     params.eventId
-  );
+  )) as EventWithUser[];
+
+  // find the event that matches the current event
+  const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
+    (similarEvent) => similarEvent.event.id === event.id
+  )?.similarEvents;
+
+  console.log(similarEvents);
 
   return (
     <>
@@ -132,6 +140,7 @@ export default async function Page({ params }: Props) {
         event={event.event as AddToCalendarButtonProps}
         createdAt={event.createdAt}
         visibility={event.visibility}
+        similarEvents={similarEvents}
         singleEvent
         hideCurator
       />
@@ -145,29 +154,6 @@ export default async function Page({ params }: Props) {
             width={640}
             height={480}
           />
-        </>
-      )}
-      <div className="p-4"></div>
-      {/* Possible Duplicate Events */}
-      {possibleDuplicateEvents.length > 0 && (
-        <>
-          <div className="text-lg font-medium">Possible Duplicate Events</div>
-          <div className="p-2"></div>
-          <div className="flex flex-col gap-4">
-            {possibleDuplicateEvents.map((event) => (
-              <EventCard
-                User={event.User}
-                FollowEvent={event.FollowEvent}
-                Comment={event.Comment}
-                key={event.id}
-                id={event.id}
-                event={event.event as AddToCalendarButtonProps}
-                createdAt={event.createdAt}
-                visibility={event.visibility}
-                hideCurator
-              />
-            ))}
-          </div>
         </>
       )}
       <div className="p-4"></div>

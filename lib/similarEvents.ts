@@ -1,6 +1,7 @@
 import { Event } from "@prisma/client";
 import { differenceInMinutes } from "date-fns";
 import { AddToCalendarButtonProps } from "@/types";
+import { EventWithUser } from "@/components/EventList";
 
 // Cosine Similarity Functions
 function textToVector(text: string): Map<string, number> {
@@ -98,4 +99,92 @@ function isEventSimilar(
   };
 }
 
-export { isEventSimilar };
+const timeThreshold = 60; // 60 minutes
+const textThreshold = 0; // 0% similarity
+
+export type SimilarityDetails = ReturnType<typeof isEventSimilar>;
+
+export type SimilarEvents = {
+  event: EventWithUser;
+  similarityDetails: SimilarityDetails;
+}[];
+// Structure to store similarity info
+export type EventWithSimilarity = {
+  event: EventWithUser;
+  similarEvents: SimilarEvents;
+};
+
+function collapseSimilarEvents(events: EventWithUser[]) {
+  // Define thresholds
+  const startTimeThreshold = 60; // 60 minutes for start time
+  const endTimeThreshold = 60; // 60 minutes for end time
+  const nameThreshold = 0.1; // 70% similarity for name
+  const descriptionThreshold = 0.1; // 70% similarity for description
+  const locationThreshold = 0.1; // 70% similarity for location
+
+  const eventsWithSimilarity: EventWithSimilarity[] = [];
+
+  events.forEach((event, index) => {
+    const similarityData: EventWithSimilarity["similarEvents"] = [];
+
+    events.forEach((otherEvent, otherIndex) => {
+      if (index !== otherIndex) {
+        // Avoid comparing an event with itself
+        const similarityDetails = isEventSimilar(
+          event,
+          otherEvent,
+          startTimeThreshold,
+          endTimeThreshold,
+          nameThreshold,
+          descriptionThreshold,
+          locationThreshold
+        );
+        if (similarityDetails.isSimilar) {
+          similarityData.push({ event: otherEvent, similarityDetails });
+        }
+      }
+    });
+
+    eventsWithSimilarity.push({
+      event,
+      similarEvents: similarityData,
+    });
+  });
+
+  // console.log("eventsWithSimilarity", eventsWithSimilarity);
+
+  const uniqueEventsWithSimilarity: EventWithSimilarity[] = [];
+
+  // Create a Set to track events that have already been considered
+  const seenEvents = new Set();
+
+  eventsWithSimilarity.forEach((item) => {
+    const { event: currentEvent, similarEvents } = item;
+    if (seenEvents.has(currentEvent.id)) {
+      // Skip this event if it has already been seen
+      return;
+    }
+
+    let earliestEvent = currentEvent;
+    let earliestCreationDate = new Date(currentEvent.createdAt);
+
+    similarEvents.forEach(({ event: similarEvent }) => {
+      const similarEventCreationDate = new Date(similarEvent.createdAt);
+
+      if (similarEventCreationDate < earliestCreationDate) {
+        earliestEvent = similarEvent;
+        earliestCreationDate = similarEventCreationDate;
+      }
+
+      // Mark this similar event as seen
+      seenEvents.add(similarEvent.id);
+    });
+
+    // Add the earliest event to the filtered list
+    uniqueEventsWithSimilarity.push({ event: earliestEvent, similarEvents });
+  });
+
+  return uniqueEventsWithSimilarity;
+}
+
+export { isEventSimilar, collapseSimilarEvents };
