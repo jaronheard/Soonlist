@@ -12,7 +12,7 @@ const getPossibleDuplicateEvents = async (
   startDateTime: Date,
   eventId: string
 ) => {
-  // start date time should be within 1.5 hours of the start date time of the event
+  // start date time should be within 1 hour of the start date time of the event
   const startDateTimeLowerBound = new Date(startDateTime);
   startDateTimeLowerBound.setHours(startDateTime.getHours() - 1);
   const startDateTimeUpperBound = new Date(startDateTime);
@@ -126,8 +126,6 @@ export default async function Page({ params }: Props) {
   const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
     (similarEvent) => similarEvent.event.id === event.id
   )?.similarEvents;
-
-  console.log(similarEvents);
 
   return (
     <>
