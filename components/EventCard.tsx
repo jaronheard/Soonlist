@@ -365,7 +365,7 @@ export function EventCard(props: EventCardProps) {
           User={User}
           event={event}
           id={id}
-          isOwner={isOwner}
+          isOwner={!!isOwner}
           isFollowing={isFollowing}
         />
       </div>
