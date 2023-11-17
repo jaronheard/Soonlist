@@ -171,20 +171,9 @@ export default function ImageUpload({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [crop, setCrop] = useState<Crop>();
   const fullImageRef = useRef<HTMLImageElement>(null);
-  const cropperImageRef = useRef<HTMLImageElement>(null);
   const { naturalHeight, naturalWidth } = fullImageRef.current || {};
   const hasNaturalDimensions =
     naturalHeight && naturalWidth && naturalHeight > 0 && naturalWidth > 0;
-  const {
-    naturalHeight: naturalHeightCropper,
-    naturalWidth: naturalWidthCropper,
-  } = cropperImageRef.current || {};
-  const hasNaturalDimensionsCropper =
-    naturalHeightCropper &&
-    naturalWidthCropper &&
-    naturalHeightCropper > 0 &&
-    naturalWidthCropper > 0;
-
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
@@ -215,14 +204,8 @@ export default function ImageUpload({
   }, [imageUrl]);
 
   useEffect(() => {
-    if (imageLoaded && fullImageRef.current) {
+    if (imageLoaded && hasNaturalDimensions) {
       if (imageUrl === initialImageUrl) {
-        return;
-      }
-      if (!hasNaturalDimensions) {
-        console.error(
-          "Cropper image loaded before natural dimensions were set."
-        );
         return;
       }
       const crop = defaultCrop({
@@ -236,8 +219,6 @@ export default function ImageUpload({
         crop: crop as Crop,
       });
       setCroppedImagesUrls(cropUrls);
-
-      // You can also call any function or handle state updates here
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageLoaded]);
@@ -324,11 +305,7 @@ export default function ImageUpload({
                       onComplete={onCropComplete}
                       onChange={onCropChange}
                     >
-                      <img
-                        src={imageUrl}
-                        alt="Cropper img"
-                        ref={cropperImageRef}
-                      />
+                      <img src={imageUrl} alt="Cropper img" />
                     </ReactCrop>
                     <Button
                       onClick={() => {
