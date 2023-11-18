@@ -11,9 +11,26 @@ type Props = { params: { userName: string } };
 const getEventsForUser = async (userName: string) => {
   const events = await db.event.findMany({
     where: {
-      User: {
-        username: userName,
-      },
+      OR: [
+        {
+          User: {
+            username: {
+              equals: userName,
+            },
+          },
+        },
+        {
+          FollowEvent: {
+            some: {
+              User: {
+                username: {
+                  equals: userName,
+                },
+              },
+            },
+          },
+        },
+      ],
     },
     orderBy: {
       startDateTime: "asc",
@@ -97,6 +114,7 @@ export default async function Page({ params }: Props) {
         pastEvents={pastEvents}
         futureEvents={futureEvents}
         hideCurator
+        showOtherCurators={self}
         showPrivateEvents={self}
       />
       <div className="p-5"></div>
