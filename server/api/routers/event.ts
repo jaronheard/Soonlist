@@ -164,4 +164,16 @@ export const eventRouter = createTRPCRouter({
         },
       });
     }),
+  getAll: publicProcedure.query(({ ctx }) => {
+    return ctx.db.event.findMany({
+      orderBy: {
+        startDateTime: "asc",
+      },
+      include: {
+        User: true,
+        FollowEvent: true,
+        Comment: true,
+      },
+    });
+  }),
 });
