@@ -3,6 +3,42 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
+  getEventsForUser: publicProcedure
+    .input(z.object({ userName: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.event.findMany({
+        where: {
+          OR: [
+            {
+              User: {
+                username: {
+                  equals: input.userName,
+                },
+              },
+            },
+            {
+              FollowEvent: {
+                some: {
+                  User: {
+                    username: {
+                      equals: input.userName,
+                    },
+                  },
+                },
+              },
+            },
+          ],
+        },
+        orderBy: {
+          startDateTime: "asc",
+        },
+        include: {
+          User: true,
+          FollowEvent: true,
+          Comment: true,
+        },
+      });
+    }),
   getLatest: publicProcedure.query(({ ctx }) => {
     return ctx.db.event.findFirst({
       orderBy: { createdAt: "desc" },
