@@ -59,6 +59,7 @@
     "react-hot-toast": "^2.4.1",
     "react-image-crop": "^10.1.8",
     "react-use-measure": "^2.1.1",
+    "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "svix": "^1.13.0",
     "tailwind-merge": "^2.0.0",
