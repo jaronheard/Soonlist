@@ -1,33 +1,17 @@
 import { Suspense } from "react";
 import { Metadata, ResolvingMetadata } from "next/types";
-import { db } from "@/lib/db";
 import { UserInfo } from "@/components/UserInfo";
+import { api } from "@/trpc/server";
 
 type Props = { params: { userName: string } };
-
-const getFollowingUsers = async (userName: string) => {
-  const users = await db.followUser.findMany({
-    where: {
-      Follower: {
-        username: userName,
-      },
-    },
-    select: {
-      Following: {
-        select: {
-          username: true,
-        },
-      },
-    },
-  });
-  return users;
-};
 
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const users = await getFollowingUsers(params.userName);
+  const users = await api.user.getFollowing.query({
+    userName: params.userName,
+  });
   const userCount = users.length;
   const previousImages = (await parent).openGraph?.images || [];
 
@@ -45,7 +29,9 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: Props) {
-  const users = await getFollowingUsers(params.userName);
+  const users = await api.user.getFollowing.query({
+    userName: params.userName,
+  });
 
   return (
     <>
