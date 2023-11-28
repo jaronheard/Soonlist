@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { Check, Loader2, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { DropdownMenuItem } from "./DropdownMenu";
+import { api } from "@/trpc/react";
 
 export function FollowEventDropdownButton({
   eventId,
@@ -16,45 +17,37 @@ export function FollowEventDropdownButton({
   following?: boolean;
 }) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  async function followUnfollowEvent() {
-    setIsLoading(true);
-
-    const response = await fetch("/api/events/follow", {
-      method: following ? "DELETE" : "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        eventId: eventId,
-      }),
-    });
-
-    setIsLoading(false);
-
-    if (!response?.ok) {
-      return toast.error("Your event was not saved. Please try again.");
-    }
-
-    const event = await response.json();
-
-    if (following) {
-      toast.success("Event unsaved.");
-    }
-
-    if (!following) {
+  const follow = api.event.follow.useMutation({
+    onError: () => {
+      toast.error("Event not saved. Please try again.");
+    },
+    onSuccess: () => {
       toast.success("Event saved.");
-    }
-
-    // This forces a cache invalidation.
-    router.refresh();
-  }
+      router.refresh();
+    },
+  });
+  const unfollow = api.event.unfollow.useMutation({
+    onError: () => {
+      toast.error("Event not unsaved. Please try again.");
+    },
+    onSuccess: () => {
+      toast.success("Event unsaved.");
+      router.refresh();
+    },
+  });
+  const isLoading = follow.isLoading || unfollow.isLoading;
 
   return (
     <>
       <SignedIn>
-        <DropdownMenuItem onSelect={followUnfollowEvent} disabled={isLoading}>
+        <DropdownMenuItem
+          onSelect={() =>
+            following
+              ? unfollow.mutate({ id: eventId })
+              : follow.mutate({ id: eventId })
+          }
+          disabled={isLoading}
+        >
           {isLoading && (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
