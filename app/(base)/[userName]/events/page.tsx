@@ -12,7 +12,7 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const events = await api.event.getEventsForUser.query({
+  const events = await api.event.getForUser.query({
     userName: params.userName,
   });
 
@@ -53,7 +53,7 @@ export async function generateMetadata(
 export default async function Page({ params }: Props) {
   const activeUser = await currentUser();
   const self = activeUser?.username === params.userName;
-  const events = await api.event.getEventsForUser.query({
+  const events = await api.event.getForUser.query({
     userName: params.userName,
   });
 

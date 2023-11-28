@@ -10,7 +10,7 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const events = await api.event.getFollowingEventsForUser.query({
+  const events = await api.event.getFollowingForUser.query({
     userName: params.userName,
   });
 
@@ -48,7 +48,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: Props) {
-  const events = await api.event.getFollowingEventsForUser.query({
+  const events = await api.event.getFollowingForUser.query({
     userName: params.userName,
   });
   const pastEvents = events.filter((item) => item.endDateTime < new Date());

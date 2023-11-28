@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
-  getEventsForUser: publicProcedure
+  getForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
       return ctx.db.event.findMany({
@@ -39,7 +39,7 @@ export const eventRouter = createTRPCRouter({
         },
       });
     }),
-  getFollowingEventsForUser: publicProcedure
+  getFollowingForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
       return ctx.db.event.findMany({
@@ -83,7 +83,7 @@ export const eventRouter = createTRPCRouter({
         },
       });
     }),
-  getSavedEventsForUser: publicProcedure
+  getSavedForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
       return ctx.db.event.findMany({
