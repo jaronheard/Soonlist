@@ -83,6 +83,29 @@ export const eventRouter = createTRPCRouter({
         },
       });
     }),
+  getSavedEventsForUser: publicProcedure
+    .input(z.object({ userName: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.event.findMany({
+        where: {
+          FollowEvent: {
+            some: {
+              User: {
+                username: input.userName,
+              },
+            },
+          },
+        },
+        orderBy: {
+          startDateTime: "asc",
+        },
+        include: {
+          User: true,
+          FollowEvent: true,
+          Comment: true,
+        },
+      });
+    }),
   getLatest: publicProcedure.query(({ ctx }) => {
     return ctx.db.event.findFirst({
       orderBy: { createdAt: "desc" },
