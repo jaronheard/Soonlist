@@ -1,6 +1,29 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
+
+const eventCreateSchema = z.object({
+  event: z.any(), //TODO: add validation
+  comment: z.string().optional(),
+  lists: z.array(z.record(z.string().trim())),
+  visibility: z.enum(["public", "private"]).optional(),
+});
+
+const eventUpdateSchema = z.object({
+  id: z.string(),
+  event: z.any(),
+  comment: z.string().optional(),
+  lists: z.array(z.record(z.string().trim())),
+  visibility: z.enum(["public", "private"]).optional(),
+});
+
+const eventDeleteSchema = z.object({
+  id: z.string(),
+});
 
 export const eventRouter = createTRPCRouter({
   getForUser: publicProcedure
@@ -202,6 +225,15 @@ export const eventRouter = createTRPCRouter({
           },
         },
         take: input?.limit,
+      });
+    }),
+  delete: protectedProcedure
+    .input(eventDeleteSchema)
+    .mutation(({ ctx, input }) => {
+      return ctx.db.event.delete({
+        where: {
+          id: input.id,
+        },
       });
     }),
 });
