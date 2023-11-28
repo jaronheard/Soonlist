@@ -1,10 +1,14 @@
 import { z } from "zod";
 
+import { Temporal } from "@js-temporal/polyfill";
+import { TRPCError } from "@trpc/server";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
+import { AddToCalendarButtonProps } from "@/types";
+import { devLog } from "@/lib/utils";
 
 const eventCreateSchema = z.object({
   event: z.any(), //TODO: add validation
@@ -235,5 +239,115 @@ export const eventRouter = createTRPCRouter({
           id: input.id,
         },
       });
+    }),
+  update: protectedProcedure
+    .input(eventUpdateSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { userId, sessionClaims } = ctx.auth;
+
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+
+      const roles = (sessionClaims?.roles || []) as string[];
+      const isAdmin = roles?.includes("admin");
+
+      const id = input.id;
+      const event = input.event as AddToCalendarButtonProps;
+      devLog("processed event: ", event);
+      const comment = input.comment;
+      const lists = input.lists;
+      const visibility = input.visibility;
+      const hasComment = comment && comment.length > 0;
+      const hasLists = lists && lists.length > 0;
+      const hasVisibility = visibility && visibility.length > 0;
+      devLog("hasComment: ", hasComment, comment);
+      devLog("hasLists: ", hasLists, lists);
+      devLog("hasVisibility: ", hasVisibility, visibility);
+
+      const start = Temporal.ZonedDateTime.from(
+        `${event.startDate}T${event.startTime}[${event.timeZone}]`
+      );
+      const end = Temporal.ZonedDateTime.from(
+        `${event.endDate}T${event.endTime}[${event.timeZone}]`
+      );
+      const startUtc = start.toInstant().toString();
+      const endUtc = end.toInstant().toString();
+
+      // check if user is event owner
+      const eventOwner = await ctx.db.event.findFirst({
+        where: {
+          id: id,
+          userId: userId || "",
+        },
+      });
+
+      if (!eventOwner && !isAdmin) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Unauthorized",
+        });
+      }
+
+      if (eventOwner) {
+        return ctx.db.event.update({
+          where: {
+            id: id,
+          },
+          data: {
+            userId: userId,
+            event: event,
+            startDateTime: startUtc,
+            endDateTime: endUtc,
+            ...(hasVisibility && {
+              visibility: visibility,
+            }),
+            ...(hasComment && {
+              Comment: {
+                create: [
+                  {
+                    content: comment,
+                    userId: userId,
+                  },
+                ],
+              },
+            }),
+            ...(!hasComment && {
+              Comment: {
+                deleteMany: {},
+              },
+            }),
+            ...(hasLists && {
+              eventList: {
+                connect: lists.map((list) => ({
+                  id: list.value,
+                })),
+              },
+            }),
+            ...(!hasLists && {
+              eventList: {
+                set: [],
+              },
+            }),
+          },
+        });
+      } else {
+        return ctx.db.event.update({
+          where: {
+            id: id,
+          },
+          data: {
+            event: event,
+            startDateTime: startUtc,
+            endDateTime: endUtc,
+            ...(hasVisibility && {
+              visibility: visibility,
+            }),
+          },
+        });
+      }
     }),
 });
