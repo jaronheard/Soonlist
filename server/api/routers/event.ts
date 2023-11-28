@@ -176,4 +176,32 @@ export const eventRouter = createTRPCRouter({
       },
     });
   }),
+  getNext: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().optional(),
+        excludeCurrent: z.boolean().optional(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.db.event.findMany({
+        include: {
+          User: true,
+          FollowEvent: true,
+          Comment: true,
+        },
+        orderBy: {
+          startDateTime: "asc",
+        },
+        where: {
+          startDateTime: {
+            gte: input?.excludeCurrent ? undefined : new Date(),
+          },
+          endDateTime: {
+            gte: input?.excludeCurrent ? new Date() : undefined,
+          },
+        },
+        take: input?.limit,
+      });
+    }),
 });
