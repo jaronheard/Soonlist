@@ -3,6 +3,31 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 export const listRouter = createTRPCRouter({
+  getAllForUser: publicProcedure
+    .input(z.object({ userName: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.list.findMany({
+        where: {
+          User: {
+            username: input.userName,
+          },
+        },
+        select: {
+          userId: true,
+          id: true,
+          name: true,
+          description: true,
+          _count: {
+            select: { events: true },
+          },
+          createdAt: true,
+          updatedAt: true,
+        },
+        orderBy: {
+          updatedAt: "asc",
+        },
+      });
+    }),
   getFollowing: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
@@ -44,6 +69,7 @@ export const listRouter = createTRPCRouter({
           id: input.listId,
         },
         select: {
+          id: true,
           userId: true,
           name: true,
           description: true,
