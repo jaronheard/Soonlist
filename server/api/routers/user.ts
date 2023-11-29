@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { TRPCError } from "@trpc/server";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
   getById: publicProcedure
@@ -53,6 +58,42 @@ export const userRouter = createTRPCRouter({
         where: {
           followerId_followingId: {
             followerId: input.followerId,
+            followingId: input.followingId,
+          },
+        },
+      });
+    }),
+  follow: protectedProcedure
+    .input(z.object({ followingId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db.followUser.create({
+        data: {
+          followerId: userId,
+          followingId: input.followingId,
+        },
+      });
+    }),
+  unfollow: protectedProcedure
+    .input(z.object({ followingId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db.followUser.delete({
+        where: {
+          followerId_followingId: {
+            followerId: userId,
             followingId: input.followingId,
           },
         },
