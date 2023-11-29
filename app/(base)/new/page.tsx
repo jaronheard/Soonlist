@@ -38,28 +38,27 @@ export default async function Page({ params, searchParams }: Props) {
     );
   }
 
-  return (
-    <>
-      {!searchParams.rawText && (
-        <>
-          <Suspense>
-            <AddEvent lists={lists || undefined} />
-          </Suspense>
-        </>
-      )}
-      {searchParams.rawText && (
-        <>
-          <YourDetails lists={lists || undefined} />
-          <div className="p-4"></div>
-          <ImageUpload filePath={searchParams.filePath} />
-          <div className="p-4"></div>
-        </>
-      )}
-      {searchParams.rawText && (
+  if (!searchParams.rawText) {
+    return (
+      <>
+        <Suspense>
+          <AddEvent lists={lists || undefined} />
+        </Suspense>
+      </>
+    );
+  }
+
+  if (searchParams.rawText) {
+    return (
+      <>
+        <YourDetails lists={lists || undefined} />
+        <div className="p-4"></div>
+        <ImageUpload filePath={searchParams.filePath} />
+        <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromRawText rawText={searchParams.rawText} />
         </Suspense>
-      )}
-    </>
-  );
+      </>
+    );
+  }
 }
