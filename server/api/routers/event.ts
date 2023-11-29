@@ -343,85 +343,87 @@ export const eventRouter = createTRPCRouter({
         });
       }
     }),
-  create: protectedProcedure.input(eventIdSchema).mutation(({ ctx, input }) => {
-    const { userId } = ctx.auth;
-    if (!userId) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "No user id found in session",
+  create: protectedProcedure
+    .input(eventCreateSchema)
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+
+      const { event, comment, lists, visibility } = input;
+
+      const hasComment = comment && comment.length > 0;
+      const hasLists = lists && lists.length > 0;
+      const hasVisibility = visibility && visibility.length > 0;
+      devLog("hasComment: ", hasComment, comment);
+      devLog("hasLists: ", hasLists, lists);
+      devLog("hasVisibility: ", hasVisibility, visibility);
+
+      let startTime = event.startTime;
+      let endTime = event.endTime;
+      let timeZone = event.timeZone;
+
+      // time zone is America/Los_Angeles if not specified
+      if (!timeZone) {
+        timeZone = "America/Los_Angeles";
+      }
+
+      // start time is 00:00 if not specified
+      if (!startTime) {
+        startTime = "00:00";
+      }
+      // end time is 23:59 if not specified
+      if (!endTime) {
+        endTime = "23:59";
+      }
+
+      const start = Temporal.ZonedDateTime.from(
+        `${event.startDate}T${startTime}[${timeZone}]`
+      );
+      const end = Temporal.ZonedDateTime.from(
+        `${event.endDate}T${endTime}[${timeZone}]`
+      );
+      devLog("calculated start and end: ", start, end);
+      const startUtc = start.toInstant().toString();
+      const endUtc = end.toInstant().toString();
+      devLog("calculated start and end UTC: ", startUtc, endUtc);
+
+      return ctx.db.event.create({
+        data: {
+          event: event,
+          userId: userId,
+          startDateTime: startUtc,
+          endDateTime: endUtc,
+          ...(hasVisibility && {
+            visibility: visibility,
+          }),
+          ...(hasComment && {
+            Comment: {
+              create: [
+                {
+                  content: comment,
+                  userId: userId,
+                },
+              ],
+            },
+          }),
+          ...(hasLists && {
+            eventList: {
+              connect: lists.map((list) => ({
+                id: list.value,
+              })),
+            },
+          }),
+        },
+        select: {
+          id: true,
+        },
       });
-    }
-
-    const { event, comment, lists, visibility } = input;
-
-    const hasComment = comment && comment.length > 0;
-    const hasLists = lists && lists.length > 0;
-    const hasVisibility = visibility && visibility.length > 0;
-    devLog("hasComment: ", hasComment, comment);
-    devLog("hasLists: ", hasLists, lists);
-    devLog("hasVisibility: ", hasVisibility, visibility);
-
-    let startTime = event.startTime;
-    let endTime = event.endTime;
-    let timeZone = event.timeZone;
-
-    // time zone is America/Los_Angeles if not specified
-    if (!timeZone) {
-      timeZone = "America/Los_Angeles";
-    }
-
-    // start time is 00:00 if not specified
-    if (!startTime) {
-      startTime = "00:00";
-    }
-    // end time is 23:59 if not specified
-    if (!endTime) {
-      endTime = "23:59";
-    }
-
-    const start = Temporal.ZonedDateTime.from(
-      `${event.startDate}T${startTime}[${timeZone}]`
-    );
-    const end = Temporal.ZonedDateTime.from(
-      `${event.endDate}T${endTime}[${timeZone}]`
-    );
-    devLog("calculated start and end: ", start, end);
-    const startUtc = start.toInstant().toString();
-    const endUtc = end.toInstant().toString();
-    devLog("calculated start and end UTC: ", startUtc, endUtc);
-
-    return ctx.db.event.create({
-      data: {
-        event: event,
-        userId: userId,
-        startDateTime: startUtc,
-        endDateTime: endUtc,
-        ...(hasVisibility && {
-          visibility: visibility,
-        }),
-        ...(hasComment && {
-          Comment: {
-            create: [
-              {
-                content: comment,
-                userId: userId,
-              },
-            ],
-          },
-        }),
-        ...(hasLists && {
-          eventList: {
-            connect: lists.map((list) => ({
-              id: list.value,
-            })),
-          },
-        }),
-      },
-      select: {
-        id: true,
-      },
-    });
-  }),
+    }),
   follow: protectedProcedure.input(eventIdSchema).mutation(({ ctx, input }) => {
     const { userId } = ctx.auth;
     if (!userId) {
@@ -452,6 +454,52 @@ export const eventRouter = createTRPCRouter({
           userId_eventId: {
             userId: userId,
             eventId: input.id,
+          },
+        },
+      });
+    }),
+  addToList: protectedProcedure
+    .input(z.object({ eventId: z.string(), listId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db.event.update({
+        where: {
+          id: input.eventId,
+        },
+        data: {
+          eventList: {
+            connect: {
+              id: input.listId,
+            },
+          },
+        },
+      });
+    }),
+  removeFromList: protectedProcedure
+    .input(z.object({ eventId: z.string(), listId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db.event.update({
+        where: {
+          id: input.eventId,
+        },
+        data: {
+          eventList: {
+            disconnect: {
+              id: input.listId,
+            },
           },
         },
       });
