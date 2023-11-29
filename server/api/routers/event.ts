@@ -7,7 +7,6 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { AddToCalendarButtonProps } from "@/types";
 import { devLog } from "@/lib/utils";
 
 const eventCreateSchema = z.object({
