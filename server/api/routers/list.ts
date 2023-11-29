@@ -131,4 +131,69 @@ export const listRouter = createTRPCRouter({
         },
       });
     }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db.list.create({
+        data: {
+          userId: userId,
+          name: input.name,
+          description: input.description,
+        },
+      });
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        listId: z.string(),
+        name: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db.list.update({
+        where: {
+          id: input.listId,
+        },
+        data: {
+          name: input.name,
+          description: input.description,
+        },
+      });
+    }),
+  delete: protectedProcedure
+    .input(z.object({ listId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db.list.delete({
+        where: {
+          id: input.listId,
+        },
+      });
+    }),
 });
