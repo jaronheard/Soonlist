@@ -225,8 +225,8 @@ function EventCuratedBy({
   }[];
 }) {
   return (
-    <div className="flex items-center gap-2">
-      <p className="whitespace-nowrap text-xs font-medium text-gray-500">
+    <div className="flex flex-col items-start gap-2">
+      <p className="text-xs font-medium text-gray-500">
         Collected by{" "}
         <Link
           href={`/${username}/events`}
@@ -240,10 +240,8 @@ function EventCuratedBy({
         )}
       </p>
       {comment && (
-        <Badge className="inline-flex" variant="outline">
-          <span className="line-clamp-1 w-max">
-            &ldquo;{comment.content}&rdquo;
-          </span>
+        <Badge className="inline" variant="outline">
+          &ldquo;{comment.content}&rdquo;
         </Badge>
       )}
     </div>
