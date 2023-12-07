@@ -31,7 +31,9 @@ export async function generateMetadata(
   const eventData = event.event as AddToCalendarButtonProps;
   // optionally access and extend (rather than replace) parent metadata
   const hasAllImages = eventData.images && eventData.images.length === 4;
-  const allImages = hasAllImages ? eventData.images?.slice(0, 3) : undefined;
+  const previewImages = hasAllImages
+    ? eventData.images?.slice(0, 1)
+    : undefined;
 
   return {
     title: `${eventData.name} | Soonlist`,
@@ -41,7 +43,7 @@ export async function generateMetadata(
       locale: "en_US",
       url: `${process.env.NEXT_PUBLIC_URL}/event/${event.id}`,
       type: "article",
-      images: allImages || (await parent).openGraph?.images || [],
+      images: previewImages || (await parent).openGraph?.images || [],
     },
   };
 }
