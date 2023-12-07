@@ -37,7 +37,8 @@ export async function generateMetadata(
   return {
     title: `@${params.userName}'s saved (${futureEventsCount} upcoming events) | Soonlist`,
     openGraph: {
-      title: `@${params.userName}'s saved (${futureEventsCount} upcoming events) | Soonlist`,
+      siteName: "Soonlist",
+      title: `@${params.userName}'s saved (${futureEventsCount} upcoming events)`,
       description: `See the events that @${params.userName} has saved on  Soonlist`,
       locale: "en_US",
       url: `${process.env.NEXT_PUBLIC_URL}/${params.userName}/saved`,

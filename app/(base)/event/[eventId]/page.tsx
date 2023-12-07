@@ -37,7 +37,8 @@ export async function generateMetadata(
   return {
     title: `${eventData.name} | Soonlist`,
     openGraph: {
-      title: `${eventData.name} | Soonlist`,
+      siteName: "Soonlist",
+      title: `${eventData.name}`,
       description: `(${eventData.startDate} ${eventData.startTime}-${eventData.endTime}) ${eventData.description}`,
       locale: "en_US",
       url: `${process.env.NEXT_PUBLIC_URL}/event/${event.id}`,
