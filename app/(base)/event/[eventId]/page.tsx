@@ -30,8 +30,9 @@ export async function generateMetadata(
 
   const eventData = event.event as AddToCalendarButtonProps;
   // optionally access and extend (rather than replace) parent metadata
+  // images are in the order of square, 4:3, 16:9, cropped
   const hasAllImages = eventData.images && eventData.images.length === 4;
-  const previewImage = hasAllImages ? eventData.images?.slice(3) : undefined;
+  const previewImage = hasAllImages ? eventData.images?.slice(2, 3) : undefined;
 
   return {
     title: `${eventData.name} | Soonlist`,
