@@ -288,6 +288,13 @@ export function endsNextDayBeforeMorning(
   return isNextDay && isBeforeMorning;
 }
 
+export function eventTimesAreDefined(
+  startTime: string | undefined,
+  endTime: string | undefined
+) {
+  return startTime !== undefined && endTime !== undefined;
+}
+
 export function spansMultipleDays(
   startDateInfo: DateInfo | null,
   endDateInfo: DateInfo | null
