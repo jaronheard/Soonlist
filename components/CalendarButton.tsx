@@ -19,14 +19,9 @@ export function CalendarButton(props: CalendarButtonProps) {
 
   if (props.type === "dropdown") {
     return (
-      <DropdownMenuItem>
-        <button
-          className="flex items-center"
-          onClick={() => atcb_action(eventForCalendar)}
-        >
-          <CalendarPlus className="mr-2 h-4 w-4" />
-          Add to Calendar
-        </button>
+      <DropdownMenuItem onSelect={() => atcb_action(eventForCalendar)}>
+        <CalendarPlus className="mr-2 h-4 w-4" />
+        Add to Calendar
       </DropdownMenuItem>
     );
   }

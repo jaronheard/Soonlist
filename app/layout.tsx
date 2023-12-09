@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { PHProvider, PostHogPageview } from "./providers";
 import Fathom from "@/components/Fathom";
 import { CroppedImageProvider } from "@/context/CroppedImageContext";
 import { FormProvider } from "@/context/FormContext";
@@ -47,14 +48,19 @@ export default function RootLayout({
         <CroppedImageProvider>
           <ClerkProvider>
             <html lang="en">
+              <Suspense>
+                <PostHogPageview />
+              </Suspense>
               <Fathom />
-              <body>
-                {children}
-                <SpeedInsights />
-                <Suspense>
-                  <VercelToolbar />
-                </Suspense>
-              </body>
+              <PHProvider>
+                <body>
+                  {children}
+                  <SpeedInsights />
+                  <Suspense>
+                    <VercelToolbar />
+                  </Suspense>
+                </body>
+              </PHProvider>
             </html>
           </ClerkProvider>
         </CroppedImageProvider>
