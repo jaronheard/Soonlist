@@ -340,7 +340,7 @@ export function timeFormat(time?: string) {
     return "";
   }
   let [hours, minutes] = time.split(":").map(Number);
-  if (!hours || !minutes) {
+  if (hours === undefined || minutes === undefined) {
     return "";
   }
   const ampm = hours >= 12 ? "PM" : "AM";
