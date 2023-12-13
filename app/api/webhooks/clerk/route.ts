@@ -64,7 +64,7 @@ export async function POST(req: Request) {
             username: evt.data.username || "",
             displayName: `${evt.data.first_name} ${evt.data.last_name}`,
             imageUrl: evt.data.image_url,
-            email: evt.data.email_addresses[0].email_address,
+            email: evt.data.email_addresses[0]?.email_address || "",
           },
         });
       }
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
             username: evt.data.username || "",
             displayName: `${evt.data.first_name} ${evt.data.last_name}`,
             imageUrl: evt.data.image_url,
-            email: evt.data.email_addresses[0].email_address,
+            email: evt.data.email_addresses[0]?.email_address || "",
           },
         });
       }
