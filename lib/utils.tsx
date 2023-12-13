@@ -196,7 +196,7 @@ export function getDateInfo(dateString: string): DateInfo | null {
     "Friday",
     "Saturday",
   ];
-  const dayOfWeek = daysOfWeek[date.getDay()];
+  const dayOfWeek = daysOfWeek[date.getDay()]!;
 
   const monthNames = [
     "January",
@@ -213,7 +213,7 @@ export function getDateInfo(dateString: string): DateInfo | null {
     "December",
   ];
 
-  const monthName = monthNames[date.getMonth()];
+  const monthName = monthNames[date.getMonth()]!;
 
   return { month, monthName, day, year, dayOfWeek, hour, minute };
 }
@@ -251,7 +251,7 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
     "Friday",
     "Saturday",
   ];
-  const dayOfWeek = daysOfWeek[date.getUTCDay()];
+  const dayOfWeek = daysOfWeek[date.getUTCDay()]!;
 
   const monthNames = [
     "January",
@@ -268,7 +268,7 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
     "December",
   ];
 
-  const monthName = monthNames[date.getUTCMonth()];
+  const monthName = monthNames[date.getUTCMonth()]!;
 
   return { month, monthName, day, year, dayOfWeek, hour, minute };
 }
@@ -324,6 +324,9 @@ export function timeFormat(time?: string) {
     return "";
   }
   let [hours, minutes] = time.split(":").map(Number);
+  if (!hours || !minutes) {
+    return "";
+  }
   const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours === 0 ? 12 : hours; // Convert 0 to 12 for 12 AM

@@ -348,8 +348,8 @@ export default function ImageUpload({
             onComplete={(files) => {
               if (files.length > 0) {
                 // push the file path to the search params
-                const filePath = files[0].filePath;
-                const fileUrl = files[0].fileUrl;
+                const filePath = files[0]!.filePath;
+                const fileUrl = files[0]!.fileUrl;
                 setFilePath(filePath);
                 setImageUrl(fileUrl);
               }
