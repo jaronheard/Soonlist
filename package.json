@@ -41,7 +41,7 @@
     "@trpc/server": "^10.43.6",
     "@vercel/speed-insights": "^1.0.0",
     "@vercel/toolbar": "^0.1.5",
-    "add-to-calendar-button-react": "^2.4.3",
+    "add-to-calendar-button-react": "^2.5.0",
     "ai": "^2.2.20",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
