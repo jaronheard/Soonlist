@@ -68,7 +68,11 @@ export default function EventListsButton({
   async function onChangeUpdateAtIndex(index: number) {
     const updatedSelectedLists = updateCheckedListAtIndex(selectedLists, index);
     const toAdd = updatedSelectedLists[index];
-    const listId = userLists[index].id;
+    const listId = userLists[index]?.id;
+    if (!listId) {
+      console.error("No listId");
+      return;
+    }
     setSelectedLists(updatedSelectedLists);
 
     const mutation = toAdd ? addEventToList : removeEventFromList;

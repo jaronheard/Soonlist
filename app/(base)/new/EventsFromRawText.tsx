@@ -65,11 +65,15 @@ export default async function EventsFromRawText({
     ],
   });
 
-  const response = res.choices[0].message.content;
-
-  if (response === null) {
+  const choice = res.choices[0];
+  if (!choice) {
     return <EventsError rawText={rawText} />;
   }
+  const response = choice.message.content;
+  if (!response) {
+    return <EventsError rawText={rawText} />;
+  }
+
   let events = [] as AddToCalendarButtonProps[];
 
   try {

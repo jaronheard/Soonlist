@@ -197,6 +197,10 @@ export function getDateInfo(dateString: string): DateInfo | null {
     "Saturday",
   ];
   const dayOfWeek = daysOfWeek[date.getDay()];
+  if (!dayOfWeek) {
+    console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
+    return null;
+  }
 
   const monthNames = [
     "January",
@@ -214,6 +218,10 @@ export function getDateInfo(dateString: string): DateInfo | null {
   ];
 
   const monthName = monthNames[date.getMonth()];
+  if (!monthName) {
+    console.error("Invalid monthName / date format. Use YYYY-MM-DD.");
+    return null;
+  }
 
   return { month, monthName, day, year, dayOfWeek, hour, minute };
 }
@@ -252,6 +260,10 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
     "Saturday",
   ];
   const dayOfWeek = daysOfWeek[date.getUTCDay()];
+  if (!dayOfWeek) {
+    console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
+    return null;
+  }
 
   const monthNames = [
     "January",
@@ -269,6 +281,10 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
   ];
 
   const monthName = monthNames[date.getUTCMonth()];
+  if (!monthName) {
+    console.error("Invalid monthName / date format. Use YYYY-MM-DD.");
+    return null;
+  }
 
   return { month, monthName, day, year, dayOfWeek, hour, minute };
 }
@@ -324,6 +340,9 @@ export function timeFormat(time?: string) {
     return "";
   }
   let [hours, minutes] = time.split(":").map(Number);
+  if (!hours || !minutes) {
+    return "";
+  }
   const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours === 0 ? 12 : hours; // Convert 0 to 12 for 12 AM

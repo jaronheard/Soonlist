@@ -43,7 +43,7 @@ export const UserAnalytics = () => {
       return;
     }
     posthog.identify(user.id, {
-      email: user.emailAddresses[0].emailAddress,
+      email: user.emailAddresses[0]?.emailAddress,
     });
   }, [isLoaded, isSignedIn, posthog, user]);
 
