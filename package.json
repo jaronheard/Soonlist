@@ -82,7 +82,6 @@
     "eslint-config-next": "14.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-path": "^1.2.2",
-    "eslint-plugin-react-refresh": "^0.4.3",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "postcss": "^8.4.31",
     "prisma": "^5.5.2",

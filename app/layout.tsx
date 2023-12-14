@@ -16,7 +16,6 @@ const tagline = "Create, collect, curate & share events";
 const description =
   "Join a network of passionate curators and participants building community around events that matter.";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.soonlist.com/"),
   title,
