@@ -70,8 +70,14 @@ export function AddToCalendarCard({
   const [endTime, setEndTime] = useState(initialProps.endTime);
   const [link, setLink] = useState("");
 
+  const { listStyle, ...filteredProps } = initialProps;
+  const acceptableListStyle = ["overlay", "modal"].includes(listStyle || "")
+    ? listStyle
+    : undefined;
+
   const updatedProps = {
-    ...initialProps,
+    ...filteredProps,
+    acceptableListStyle,
     name,
     location,
     description: link

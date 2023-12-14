@@ -53,12 +53,7 @@ export type AddToCalendarButtonProps = {
     | "Yahoo"
   )[];
   iCalFileName?: string;
-  listStyle?:
-    | "dropdown"
-    | "dropdown-static"
-    | "dropup-static"
-    | "overlay"
-    | "modal";
+  listStyle?: "overlay" | "modal";
   buttonStyle?:
     | "default"
     | "3d"
