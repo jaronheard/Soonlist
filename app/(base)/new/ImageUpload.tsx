@@ -295,7 +295,7 @@ export default function ImageUpload({
                 <div className="flex min-h-screen items-center justify-center">
                   <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
 
-                  <div className="relative mx-auto max-w-[90vw] rounded bg-white p-4 sm:max-w-sm">
+                  <div className="relative mx-auto max-h-[90vh] max-w-[90vw] rounded bg-white p-4 sm:max-w-sm">
                     <Dialog.Title className="text-lg font-medium leading-6 text-gray-900">
                       Crop Image
                     </Dialog.Title>
@@ -304,9 +304,11 @@ export default function ImageUpload({
                       crop={crop}
                       onComplete={onCropComplete}
                       onChange={onCropChange}
+                      className="max-h-[75vh] max-w-[90vw]"
                     >
                       <img src={imageUrl} alt="Cropper img" />
                     </ReactCrop>
+                    <div className="p-2"></div>
                     <Button
                       onClick={() => {
                         setIsModalOpen(false);
