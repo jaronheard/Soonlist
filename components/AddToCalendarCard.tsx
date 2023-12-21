@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { atcb_action } from "add-to-calendar-button";
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useSearchParams } from "next/navigation";
-import { CalendarPlus } from "lucide-react";
+import { CalendarPlus, Text } from "lucide-react";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
 import { Label } from "./ui/label";
@@ -97,7 +97,10 @@ export function AddToCalendarCard({
     <Card className="max-w-screen sm:max-w-xl">
       <CardContent className="grid grid-cols-1 gap-6 py-6 shadow-md sm:grid-cols-6">
         <CardTitle className="col-span-full flex items-center justify-between">
-          <div>Event Details</div>
+          <div className="flex items-center">
+            <Text className="mr-2 h-6 w-6" />
+            Event Details
+          </div>
         </CardTitle>
         <div className="col-span-full">
           <Label htmlFor="name">Event</Label>
