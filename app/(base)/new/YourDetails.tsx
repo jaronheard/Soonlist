@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SignedIn } from "@clerk/nextjs";
 import { List } from "@prisma/client";
+import { PenSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FormLabel,
@@ -83,7 +84,10 @@ export function YourDetails({
   return (
     <Card className="max-w-screen w-full sm:max-w-xl">
       <CardHeader>
-        <CardTitle>My Details</CardTitle>
+        <CardTitle className="flex items-center">
+          <PenSquare className="mr-2 h-6 w-6" />
+          My Details
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
