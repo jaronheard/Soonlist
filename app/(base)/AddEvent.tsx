@@ -18,7 +18,6 @@ import {
   getLastMessages,
   reportIssue,
 } from "@/lib/utils";
-import { formatDataOnPaste } from "@/lib/turndown";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -78,8 +77,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   const { lastUserMessage, lastAssistantMessage } = getLastMessages(messages);
 
   // Event handlers
-  const handlePaste = async (e: any) => formatDataOnPaste(e, setInput);
-
   const onSubmit = (e: any) => {
     trackGoal("WBJDUXPZ", 1);
     setFinished(false);
@@ -130,7 +127,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
             <CardContent>
               <Form
                 handleInputChange={handleInputChange}
-                handlePaste={handlePaste}
                 input={input}
                 isLoading={isLoading}
                 onSubmit={onSubmit}
