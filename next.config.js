@@ -21,6 +21,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    ppr: true,
+  },
   async rewrites() {
     return {
       beforeFiles: [

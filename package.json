@@ -51,7 +51,7 @@
     "ical.js": "^1.5.0",
     "ical2json": "^3.1.2",
     "lucide-react": "^0.289.0",
-    "next": "^14.0.0",
+    "next": "^14.0.5-canary.26",
     "openai": "^4.14.0",
     "openai-edge": "^1.2.2",
     "posthog-js": "^1.93.6",
