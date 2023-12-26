@@ -1,5 +1,5 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type NextRequest } from "next/server";
+import * as Sentry from "@sentry/node";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -68,5 +68,13 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   });
 });
 
-export const publicProcedure = t.procedure;
-export const protectedProcedure = t.procedure.use(isAuthed);
+const sentryMiddleware = t.middleware(
+  Sentry.Handlers.trpcMiddleware({
+    attachRpcInput: true,
+  })
+);
+
+const sentryIsAuthedMiddleware = sentryMiddleware.unstable_pipe(isAuthed);
+
+export const publicProcedure = t.procedure.use(sentryMiddleware);
+export const protectedProcedure = t.procedure.use(sentryIsAuthedMiddleware);
