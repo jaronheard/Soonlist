@@ -32,8 +32,7 @@ export default authMiddleware({
     "/.well-known/vercel-user-meta",
     "/ingest",
     "/ingest/(.*)",
-    "/monitoring",
-    "/monitoring/(.*)",
+    "/monitoring(.*)",
     "/_vercel/speed-insights/vitals",
   ],
 });
