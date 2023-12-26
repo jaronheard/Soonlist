@@ -8,7 +8,7 @@ import { PHProvider, PostHogPageview, UserAnalytics } from "./providers";
 import Fathom from "@/components/Fathom";
 import { CroppedImageProvider } from "@/context/CroppedImageContext";
 import { FormProvider } from "@/context/FormContext";
-import { VercelToolbar } from "@/components/VercelToolbar";
+// import { VercelToolbar } from "@/components/VercelToolbar";
 import { TRPCReactProvider } from "@/trpc/react";
 
 const title = "Soonlist";
@@ -58,9 +58,9 @@ export default function RootLayout({
                   <Suspense>
                     <UserAnalytics />
                   </Suspense>
-                  <Suspense>
+                  {/* <Suspense>
                     <VercelToolbar />
-                  </Suspense>
+                  </Suspense> */}
                 </body>
               </PHProvider>
             </html>
