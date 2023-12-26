@@ -8,13 +8,11 @@ import { Button } from "./ui/button";
 
 export function Form({
   handleInputChange,
-  handlePaste,
   input,
   isLoading,
   onSubmit,
 }: {
   handleInputChange: (e: any) => void;
-  handlePaste: (e: any) => Promise<void>;
   input: string;
   isLoading: boolean;
   onSubmit: (e: any) => void;
@@ -33,7 +31,6 @@ export function Form({
       </Label>
       <Textarea
         id="input"
-        onPaste={handlePaste}
         onKeyDown={handleKeyDown}
         value={input}
         onChange={handleInputChange}
