@@ -1,6 +1,5 @@
 "use client";
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
-import { trackGoal } from "fathom-client";
 import { Bug, Check, Loader2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Button } from "./ui/button";
@@ -15,7 +14,6 @@ import {
 export function Output({
   events,
   finished,
-  isDev,
   issueStatus,
   setIssueStatus,
   lastAssistantMessage,
@@ -23,12 +21,9 @@ export function Output({
   hideErrorReporter,
   reportIssue,
   setEvents,
-  setTrackedAddToCalendarGoal,
-  trackedAddToCalendarGoal,
 }: {
   events: AddToCalendarButtonType[] | null;
   finished: boolean;
-  isDev: boolean;
   issueStatus: Status;
   setIssueStatus: (status: Status) => void;
   lastAssistantMessage: string;
@@ -40,8 +35,6 @@ export function Output({
     setIssueStatus: any
   ) => Promise<void>;
   setEvents: (events: AddToCalendarButtonType[] | null) => void;
-  setTrackedAddToCalendarGoal: (trackedAddToCalendarGoal: boolean) => void;
-  trackedAddToCalendarGoal: boolean;
 }) {
   const firstInputRef = useRef<null | HTMLInputElement>(null);
 
@@ -97,10 +90,6 @@ export function Output({
                   {...props}
                   key={props.name}
                   firstInputRef={index === 0 ? firstInputRef : undefined}
-                  onClick={() => {
-                    !trackedAddToCalendarGoal && trackGoal("BQ3VFDBF", 1);
-                    setTrackedAddToCalendarGoal(true);
-                  }}
                   setAddToCalendarButtonProps={(props) => {
                     const newArray = [...events];
                     newArray[index] = props;
@@ -118,10 +107,6 @@ export function Output({
                   {...props}
                   key={props.name}
                   firstInputRef={index === 0 ? firstInputRef : undefined}
-                  onClick={() => {
-                    !trackedAddToCalendarGoal && trackGoal("BQ3VFDBF", 1);
-                    setTrackedAddToCalendarGoal(true);
-                  }}
                   setAddToCalendarButtonProps={(props) => {
                     const newArray = [...blankEvents];
                     newArray[index] = props;

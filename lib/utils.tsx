@@ -1,5 +1,4 @@
 import { Message } from "ai";
-import { trackGoal } from "fathom-client";
 import ICAL from "ical.js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -424,7 +423,6 @@ export const reportIssue = async (
   const data = await response.json();
 
   if (data.issue.success) {
-    trackGoal("B2ZT84YS", 0);
     console.log("Successfully created issue:", data.issue);
     setStatus("success");
   } else {

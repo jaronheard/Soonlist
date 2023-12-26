@@ -2,7 +2,6 @@
 
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
-import { trackGoal } from "fathom-client";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Download, Share, Sparkles } from "lucide-react";
@@ -78,7 +77,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
 
   // Event handlers
   const onSubmit = (e: any) => {
-    trackGoal("WBJDUXPZ", 1);
     setFinished(false);
     setTrackedAddToCalendarGoal(false);
     setIssueStatus("idle");
@@ -200,7 +198,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
               <Output
                 events={[]}
                 finished={true}
-                isDev={isDev}
                 issueStatus={issueStatus}
                 setIssueStatus={setIssueStatus}
                 lastAssistantMessage={"Manual entry"}
@@ -208,8 +205,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
                 hideErrorReporter={true}
                 reportIssue={reportIssue}
                 setEvents={setEvents}
-                setTrackedAddToCalendarGoal={setTrackedAddToCalendarGoal}
-                trackedAddToCalendarGoal={trackedAddToCalendarGoal}
               />
             </CardContent>
           </Card>
@@ -224,15 +219,12 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
       <Output
         events={events}
         finished={finished}
-        isDev={isDev}
         issueStatus={issueStatus}
         setIssueStatus={setIssueStatus}
         lastAssistantMessage={lastAssistantMessage}
         lastUserMessage={lastUserMessage}
         reportIssue={reportIssue}
         setEvents={setEvents}
-        setTrackedAddToCalendarGoal={setTrackedAddToCalendarGoal}
-        trackedAddToCalendarGoal={trackedAddToCalendarGoal}
       />
     </div>
   );

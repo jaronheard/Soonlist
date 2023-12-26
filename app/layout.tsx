@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PHProvider, PostHogPageview, UserAnalytics } from "./providers";
-import Fathom from "@/components/Fathom";
 import { CroppedImageProvider } from "@/context/CroppedImageContext";
 import { FormProvider } from "@/context/FormContext";
 // import { VercelToolbar } from "@/components/VercelToolbar";
@@ -50,7 +49,6 @@ export default function RootLayout({
               <Suspense>
                 <PostHogPageview />
               </Suspense>
-              <Fathom />
               <PHProvider>
                 <body>
                   {children}
