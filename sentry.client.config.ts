@@ -11,4 +11,5 @@ Sentry.init({
   integrations: [
     new posthog.SentryIntegration(posthog, "soonlist", 4506458761396224),
   ],
+  enabled: process.env.NODE_ENV === "production",
 });
