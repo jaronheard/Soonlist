@@ -4,7 +4,7 @@ import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Download, Share, Sparkles } from "lucide-react";
+import { Download, FileImage, Share, Sparkles } from "lucide-react";
 import { List } from "@prisma/client";
 import { YourDetails } from "./new/YourDetails";
 import ImageUpload from "./new/ImageUpload";
@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
+import { UploadAndOcrButton, performOCR } from "@/components/UploadAndOcr";
 
 function Code({
   children,
@@ -102,7 +103,11 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   return (
     <div className="min-h-[60vh] ">
       <Tabs defaultValue="text" className="max-w-screen sm:max-w-xl">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="image">
+            <FileImage className="mr-2 h-4 w-4" />
+            Image
+          </TabsTrigger>
           <TabsTrigger value="text">
             <Sparkles className="mr-2 h-4 w-4" />
             Text
@@ -113,6 +118,25 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
           </TabsTrigger>
           <TabsTrigger value="manual">Manual</TabsTrigger>
         </TabsList>
+        <TabsContent value="image">
+          <Card>
+            <CardHeader>
+              <CardTitle>Image</CardTitle>
+              <CardDescription>
+                Upload an image of an event. We&apos;ll use a little AI to
+                figure out the details.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form
+                handleInputChange={handleInputChange}
+                input={input}
+                isLoading={isLoading}
+                onSubmit={onSubmit}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
         <TabsContent value="text">
           <Card>
             <CardHeader>
@@ -123,12 +147,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Form
-                handleInputChange={handleInputChange}
-                input={input}
-                isLoading={isLoading}
-                onSubmit={onSubmit}
-              />
+              <UploadAndOcrButton />
             </CardContent>
           </Card>
         </TabsContent>
@@ -213,7 +232,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
       <div className="p-4"></div>
       <YourDetails lists={lists || undefined} />
       <div className="p-4"></div>
-      <ImageUpload />
+      <ImageUpload additionalOnComplete={performOCR} />
       <div className="p-4"></div>
       {isLoading && <AddToCalendarCardSkeleton />}
       <Output

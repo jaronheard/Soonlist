@@ -153,9 +153,11 @@ const defaultCrop = (opts: { naturalWidth: number; naturalHeight: number }) => {
 export default function ImageUpload({
   images,
   filePath: filePathFromSearchParam,
+  additionalOnComplete,
 }: {
   images?: string[];
   filePath?: string;
+  additionalOnComplete?: (files: any) => void;
 }) {
   const croppedImageUrlFromProps = images?.[3];
   const filePathFromImages = croppedImageUrlFromProps
@@ -354,6 +356,7 @@ export default function ImageUpload({
                 const fileUrl = files[0]!.fileUrl;
                 setFilePath(filePath);
                 setImageUrl(fileUrl);
+                additionalOnComplete && additionalOnComplete(fileUrl);
               }
             }}
           >
