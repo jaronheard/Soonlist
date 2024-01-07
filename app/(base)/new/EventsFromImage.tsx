@@ -1,3 +1,4 @@
+import * as Bytescale from "@bytescale/sdk";
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
@@ -42,12 +43,21 @@ const config = {
 };
 const openai = new OpenAI(config);
 
+function buildDefaultUrl(filePath: string) {
+  return Bytescale.UrlBuilder.url({
+    accountId: "12a1yek",
+    filePath: filePath,
+    options: {},
+  });
+}
+
 export default async function EventsFromImage({
-  imageUrl,
+  filePath,
 }: {
-  imageUrl: string;
+  filePath: string;
 }) {
   const prompt = getPrompt();
+  const imageUrl = buildDefaultUrl(filePath);
 
   // Ask OpenAI for a streaming completion given the prompt
   const res = await openai.chat.completions.create({
@@ -61,7 +71,6 @@ export default async function EventsFromImage({
       {
         role: "user",
         content: [
-          { type: "text", text: "Use the text in this image" },
           {
             type: "image_url",
             image_url: {
@@ -72,6 +81,8 @@ export default async function EventsFromImage({
       },
     ],
   });
+
+  console.log(res, "res");
 
   const choice = res.choices[0];
   if (!choice) {

@@ -18,7 +18,6 @@ type Props = {
     rawText?: string;
     saveIntent?: boolean;
     filePath?: string;
-    imageUrl?: string;
   };
 };
 
@@ -46,7 +45,7 @@ export default async function Page({ params, searchParams }: Props) {
     );
   }
 
-  if (searchParams.imageUrl) {
+  if (searchParams.filePath && !searchParams.rawText) {
     return (
       <>
         <YourDetails lists={lists || undefined} />
@@ -54,7 +53,7 @@ export default async function Page({ params, searchParams }: Props) {
         <ImageUpload filePath={searchParams.filePath} />
         <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
-          <EventsFromImage imageUrl={searchParams.imageUrl} />
+          <EventsFromImage filePath={searchParams.filePath} />
         </Suspense>
       </>
     );
