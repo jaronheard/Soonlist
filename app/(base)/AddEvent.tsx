@@ -116,10 +116,10 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
         <TabsContent value="text">
           <Card>
             <CardHeader>
-              <CardTitle>Text</CardTitle>
+              <CardTitle>Text or Image</CardTitle>
               <CardDescription>
-                Add an event by typing or pasting text in any format. We&apos;ll
-                use a little AI to figure out the details.
+                Add an event from text or an image. We&apos;ll use a little AI
+                to figure out the details.
               </CardDescription>
             </CardHeader>
             <CardContent>
