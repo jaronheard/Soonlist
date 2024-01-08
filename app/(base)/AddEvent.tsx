@@ -11,13 +11,7 @@ import ImageUpload from "./new/ImageUpload";
 import { UploadButton } from "./new/UploadButton";
 import { Form } from "@/components/Form";
 import { Output } from "@/components/Output";
-import {
-  Status,
-  cn,
-  generatedIcsArrayToEvents,
-  getLastMessages,
-  reportIssue,
-} from "@/lib/utils";
+import { cn, generatedIcsArrayToEvents, getLastMessages } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -51,7 +45,6 @@ function Code({
 
 export default function AddEvent({ lists }: { lists?: List[] }) {
   // State variables
-  const [issueStatus, setIssueStatus] = useState<Status>("idle");
   const [finished, setFinished] = useState(false);
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
@@ -80,7 +73,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   const onSubmit = (e: any) => {
     setFinished(false);
     setTrackedAddToCalendarGoal(false);
-    setIssueStatus("idle");
     handleSubmit(e);
   };
 
@@ -198,17 +190,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Output
-                events={[]}
-                finished={true}
-                issueStatus={issueStatus}
-                setIssueStatus={setIssueStatus}
-                lastAssistantMessage={"Manual entry"}
-                lastUserMessage={"Manual entry"}
-                hideErrorReporter={true}
-                reportIssue={reportIssue}
-                setEvents={setEvents}
-              />
+              <Output events={[]} finished={true} setEvents={setEvents} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -219,16 +201,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
       <ImageUpload />
       <div className="p-4"></div>
       {isLoading && <AddToCalendarCardSkeleton />}
-      <Output
-        events={events}
-        finished={finished}
-        issueStatus={issueStatus}
-        setIssueStatus={setIssueStatus}
-        lastAssistantMessage={lastAssistantMessage}
-        lastUserMessage={lastUserMessage}
-        reportIssue={reportIssue}
-        setEvents={setEvents}
-      />
+      <Output events={events} finished={finished} setEvents={setEvents} />
     </div>
   );
 }
