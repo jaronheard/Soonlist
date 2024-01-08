@@ -56,7 +56,7 @@ export default async function Page({ params }: Props) {
     userName: params.userName,
   });
 
-  const pastEvents = events.filter((item) => item.startDateTime < new Date());
+  const pastEvents = events.filter((item) => item.endDateTime < new Date());
 
   const currentEvents = events.filter(
     (item) => item.startDateTime < new Date() && item.endDateTime > new Date()
