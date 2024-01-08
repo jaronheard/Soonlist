@@ -5,6 +5,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "sync-users": "node scripts/sync-users.mjs",
     "db": "pscale connect timetime dev --port 3309",
     "db-prod": "pscale connect timetime main --port 3309",
     "postinstall": "prisma generate",

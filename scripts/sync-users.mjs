@@ -11,33 +11,37 @@ const clerk = Clerk({ apiKey: process.env.CLERK_SECRET_KEY });
 async function fetchClerkUsersAndSyncRelations() {
   // Fetch users from Clerk
   const users = await clerk.users.getUserList({ limit: 500 });
+  console.log(`Fetched ${users.length} users from Clerk.`);
 
   for (const user of users) {
     // Upsert user to handle both new and existing records
     await prisma.user.upsert({
       where: {
-        id: user.id,
+        email: user?.emailAddresses[0]?.emailAddress,
       },
       create: {
         id: user.id,
-        username: user.username || "",
-        email: user.emailAddresses[0].emailAddress || "",
+        username: user?.username || "",
+        email: user?.emailAddresses[0]?.emailAddress || "",
         displayName:
-          user.firstName || user.lastName
-            ? `${user.firstName} ${user.lastName}`.trim()
+          user?.firstName || user?.lastName
+            ? `${user?.firstName || ""} ${user?.lastName || ""}`.trim()
             : "",
-        userImage: user.imageUrl || "",
+        imageUrl: user?.imageUrl || "",
       },
       update: {
-        username: user.username || "",
+        id: user.id,
+        username: user?.username || "",
+        email: user?.emailAddresses[0]?.emailAddress || "",
         displayName:
-          user.firstName || user.lastName
-            ? `${user.firstName} ${user.lastName}`.trim()
+          user?.firstName || user?.lastName
+            ? `${user?.firstName || ""} ${user?.lastName || ""}`.trim()
             : "",
-        userImage: user.imageUrl || "",
+        imageUrl: user?.imageUrl || "",
         updatedAt: new Date(),
       },
     });
+    console.log(`User ${user.id} ${user.username} synchronized successfully.`);
   }
 
   await prisma.$disconnect();
