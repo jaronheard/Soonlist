@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import RainbowText from "@/components/RainbowText";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
 import { CTAButton } from "@/components/CallToActions";
+import NextEventsLoading from "@/components/NextEventsLoading";
 
 const features = [
   {
@@ -247,7 +248,7 @@ export default function Page() {
             <div className="sm:px-6 lg:px-0">
               <div className="relative isolate overflow-hidden bg-gradient-to-br from-green-500/10 via-blue-500/10 to-indigo-500/10 px-6 pt-8 sm:mx-auto sm:max-w-2xl sm:rounded-3xl sm:pl-16 sm:pr-0 sm:pt-16 lg:mx-0 lg:max-w-none">
                 <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
-                  <Suspense>
+                  <Suspense fallback={<NextEventsLoading limit={3} />}>
                     <NextEvents limit={3} />
                   </Suspense>
                   <div className="p-4"></div>
