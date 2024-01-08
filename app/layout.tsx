@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import "@/styles/globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -44,25 +43,23 @@ export default function RootLayout({
     <TRPCReactProvider cookies={cookies().toString()}>
       <FormProvider>
         <CroppedImageProvider>
-          <ClerkProvider>
-            <html lang="en">
-              <Suspense>
-                <PostHogPageview />
-              </Suspense>
-              <PHProvider>
-                <body>
-                  {children}
-                  <SpeedInsights />
-                  <Suspense>
-                    <UserAnalytics />
-                  </Suspense>
-                  <Suspense>
-                    <VercelToolbar />
-                  </Suspense>
-                </body>
-              </PHProvider>
-            </html>
-          </ClerkProvider>
+          <html lang="en">
+            <Suspense>
+              <PostHogPageview />
+            </Suspense>
+            <PHProvider>
+              <body>
+                {children}
+                <SpeedInsights />
+                {/* <Suspense>
+                  <UserAnalytics />
+                </Suspense> */}
+                {/* <Suspense>
+                  <VercelToolbar />
+                </Suspense> */}
+              </body>
+            </PHProvider>
+          </html>
         </CroppedImageProvider>
       </FormProvider>
     </TRPCReactProvider>

@@ -334,13 +334,13 @@ function CuratorComment({ comment }: { comment?: Comment }) {
 }
 
 export function EventCard(props: EventCardProps) {
-  const { user } = useUser();
+  // const { user } = useUser();
   const { User, FollowEvent, id, event, singleEvent, visibility } = props;
-  const roles = user?.unsafeMetadata.roles as string[] | undefined;
-  const isSelf = user?.id === User.id;
-  const isOwner = isSelf || roles?.includes("admin");
-  const isFollowing = !!FollowEvent.find((item) => item.userId === user?.id);
-  const comment = props.Comment.findLast((item) => item.userId === user?.id);
+  const roles = undefined;
+  const isSelf = false;
+  const isOwner = false;
+  const isFollowing = undefined;
+  const comment = undefined;
   // always show curator if !isSelf
   const showOtherCurators = !isSelf && props.showOtherCurators;
   const showCurator = showOtherCurators || !props.hideCurator;

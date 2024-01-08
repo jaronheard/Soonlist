@@ -3,7 +3,7 @@ import { posthog } from "posthog-js";
 import { PostHogProvider, usePostHog } from "posthog-js/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { ClerkProvider, useUser } from "@clerk/nextjs";
 
 if (typeof window !== "undefined") {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || "", {
@@ -49,3 +49,7 @@ export const UserAnalytics = () => {
 
   return <></>;
 };
+
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  return <ClerkProvider>{children}</ClerkProvider>;
+}
