@@ -2,7 +2,7 @@
 
 import { SignedIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { Check, Loader2, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { DropdownMenuItem } from "./DropdownMenu";
