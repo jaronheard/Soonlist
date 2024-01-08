@@ -8,6 +8,7 @@ import { Download, Share, Sparkles } from "lucide-react";
 import { List } from "@prisma/client";
 import { YourDetails } from "./new/YourDetails";
 import ImageUpload from "./new/ImageUpload";
+import { UploadButton } from "./new/UploadButton";
 import { Form } from "@/components/Form";
 import { Output } from "@/components/Output";
 import {
@@ -105,7 +106,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="text">
             <Sparkles className="mr-2 h-4 w-4" />
-            Text
+            Image/Text
           </TabsTrigger>
           <TabsTrigger value="shortcut">
             <Sparkles className="mr-2 h-4 w-4" />
@@ -116,13 +117,15 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
         <TabsContent value="text">
           <Card>
             <CardHeader>
-              <CardTitle>Text or Image</CardTitle>
+              <CardTitle>Image/Text</CardTitle>
               <CardDescription>
-                Add an event from text or an image. We&apos;ll use a little AI
+                Add an event from image or an text. We&apos;ll use a little AI
                 to figure out the details.
               </CardDescription>
             </CardHeader>
             <CardContent>
+              <UploadButton />
+              <div className="p-4"></div>
               <Form
                 handleInputChange={handleInputChange}
                 input={input}
