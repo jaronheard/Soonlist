@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { Loader2, Sparkles } from "lucide-react";
 import { Textarea } from "./ui/textarea";
-import { FormLabel } from "./ui/form";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 
@@ -25,9 +24,8 @@ export function Form({
 
   return (
     <form className="grid w-full max-w-xl gap-1.5" onSubmit={onSubmit}>
-      <Label htmlFor="input">
-        Paste event info{" "}
-        <span className="text-slate-500">(or describe your event)</span>.
+      <Label className="hidden" htmlFor="input">
+        Enter text with event info
       </Label>
       <Textarea
         id="input"
@@ -36,14 +34,15 @@ export function Form({
         onChange={handleInputChange}
         rows={6}
         placeholder={
-          "A description from a website, a text message, your words..."
+          "Or use text (e.g. a description from a website, a text message, your words...)"
         }
       />
       {!isLoading && (
         <>
-          <Button type="submit">
+          <div className="p-2"></div>
+          <Button type="submit" disabled={!input}>
             <Sparkles className="mr-2 h-4 w-4" />
-            Generate your event
+            Generate from text
           </Button>
           <p className="mt-4 text-center">
             <span className="text-slate-500">

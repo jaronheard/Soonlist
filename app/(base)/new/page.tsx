@@ -4,6 +4,7 @@ import AddEvent from "../AddEvent";
 import ImageUpload from "./ImageUpload";
 import EventsFromSaved from "./EventsFromSaved";
 import { YourDetails } from "./YourDetails";
+import EventsFromImage from "./EventsFromImage";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
 
@@ -13,7 +14,11 @@ export const maxDuration = 60;
 
 type Props = {
   params: {};
-  searchParams: { rawText?: string; saveIntent?: boolean; filePath?: string };
+  searchParams: {
+    rawText?: string;
+    saveIntent?: boolean;
+    filePath?: string;
+  };
 };
 
 export default async function Page({ params, searchParams }: Props) {
@@ -26,8 +31,6 @@ export default async function Page({ params, searchParams }: Props) {
       userName: username,
     }));
 
-  console.log(lists, "lists");
-
   if (searchParams.saveIntent) {
     return (
       <>
@@ -37,6 +40,20 @@ export default async function Page({ params, searchParams }: Props) {
         <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromSaved />
+        </Suspense>
+      </>
+    );
+  }
+
+  if (searchParams.filePath && !searchParams.rawText) {
+    return (
+      <>
+        <YourDetails lists={lists || undefined} />
+        <div className="p-4"></div>
+        <ImageUpload filePath={searchParams.filePath} />
+        <div className="p-4"></div>
+        <Suspense fallback={<AddToCalendarCardSkeleton />}>
+          <EventsFromImage filePath={searchParams.filePath} />
         </Suspense>
       </>
     );

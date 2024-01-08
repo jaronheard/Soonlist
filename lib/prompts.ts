@@ -1,6 +1,6 @@
 export const getText = (
   date: string
-) => `You parse calendar events from the provided text into iCal format and return the iCal file. Use the following rules:
+) => `You parse calendar events from the provided text or image into iCal format and return the iCal file. Use the following rules:
 # General
 - ONLY RETURN A VALID ICAL FILE
 - DO NOT RETURN ADDITIONAL INFORMATION
@@ -61,6 +61,6 @@ export const getPrompt = () => {
 
   return {
     text: getText(date),
-    version: "v2023.11.09.1",
+    version: "v2024.01.07.1",
   };
 };
