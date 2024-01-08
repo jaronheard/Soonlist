@@ -3,7 +3,7 @@
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
 import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { Download, Share, Sparkles } from "lucide-react";
 import { List } from "@prisma/client";
 import { YourDetails } from "./new/YourDetails";

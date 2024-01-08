@@ -1,7 +1,7 @@
 "use client";
 
 import { Share } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { DropdownMenuItem } from "./DropdownMenu";
 import { Button } from "./ui/button";
 import { AddToCalendarButtonProps } from "@/types";

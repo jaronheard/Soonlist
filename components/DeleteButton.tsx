@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { DropdownMenuItem } from "./DropdownMenu";

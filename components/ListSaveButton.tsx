@@ -2,7 +2,7 @@
 
 import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { Loader2, Save } from "lucide-react";
 import { Button } from "./ui/button";
 import { CardDescription } from "./ui/card";

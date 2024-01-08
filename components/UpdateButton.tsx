@@ -3,7 +3,7 @@
 import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { Loader2, Save } from "lucide-react";
 import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
