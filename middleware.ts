@@ -30,14 +30,13 @@ export default authMiddleware({
     "/list/(.*)",
     "/.well-known/acme-challenge/(.*)",
     "/.well-known/vercel-user-meta",
+    "/ingest",
+    "/ingest/(.*)",
+    "/monitoring(.*)",
     "/_vercel/speed-insights/vitals",
   ],
 });
 
 export const config = {
-  matcher: [
-    "/((?!.+\\.[\\w]+$|_next|ingest|monitoring).*)",
-    "/",
-    "/(api|trpc)(.*)",
-  ],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
