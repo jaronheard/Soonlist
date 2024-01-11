@@ -31,7 +31,7 @@ export default authMiddleware({
     "/.well-known/acme-challenge/(.*)",
     "/.well-known/vercel-user-meta",
     "/ingest",
-    "/ingest/(.*)",
+    "/ingest(.*)",
     "/monitoring(.*)",
     "/_vercel/speed-insights/vitals",
   ],
