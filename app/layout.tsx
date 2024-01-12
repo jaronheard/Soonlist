@@ -9,6 +9,7 @@ import { CroppedImageProvider } from "@/context/CroppedImageContext";
 import { FormProvider } from "@/context/FormContext";
 import { VercelToolbar } from "@/components/VercelToolbar";
 import { TRPCReactProvider } from "@/trpc/react";
+import { TimezoneProvider } from "@/context/TimezoneContext";
 
 const title = "Soonlist";
 const tagline = "Create, collect, curate & share events";
@@ -42,29 +43,31 @@ export default function RootLayout({
 }) {
   return (
     <TRPCReactProvider cookies={cookies().toString()}>
-      <FormProvider>
-        <CroppedImageProvider>
-          <ClerkProvider>
-            <html lang="en">
-              <Suspense>
-                <PostHogPageview />
-              </Suspense>
-              <PHProvider>
-                <body>
-                  {children}
-                  <SpeedInsights />
-                  <Suspense>
-                    <UserAnalytics />
-                  </Suspense>
-                  <Suspense>
-                    <VercelToolbar />
-                  </Suspense>
-                </body>
-              </PHProvider>
-            </html>
-          </ClerkProvider>
-        </CroppedImageProvider>
-      </FormProvider>
+      <TimezoneProvider>
+        <FormProvider>
+          <CroppedImageProvider>
+            <ClerkProvider>
+              <html lang="en">
+                <Suspense>
+                  <PostHogPageview />
+                </Suspense>
+                <PHProvider>
+                  <body>
+                    {children}
+                    <SpeedInsights />
+                    <Suspense>
+                      <UserAnalytics />
+                    </Suspense>
+                    <Suspense>
+                      <VercelToolbar />
+                    </Suspense>
+                  </body>
+                </PHProvider>
+              </html>
+            </ClerkProvider>
+          </CroppedImageProvider>
+        </FormProvider>
+      </TimezoneProvider>
     </TRPCReactProvider>
   );
 }
