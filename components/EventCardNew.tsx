@@ -98,11 +98,13 @@ function EventDateDisplaySimple({
   endDate,
   startTime,
   endTime,
+  timezone,
 }: {
   startDate?: string;
   endDate?: string;
   startTime?: string;
   endTime?: string;
+  timezone?: string;
 }) {
   if (!startDate || !endDate) {
     console.error("startDate or endDate is missing");
@@ -132,7 +134,7 @@ function EventDateDisplaySimple({
     : "";
   return (
     <span>
-      {formattedStartDate} {formattedTimes}
+      {formattedStartDate} {formattedTimes} {timezone}
       {showTimeRange && showNightIcon && "🌛"}
     </span>
   );
@@ -406,6 +408,7 @@ export function EventCard(props: EventCardProps) {
             <EventDateDisplaySimple
               startDate={event.startDate}
               startTime={event.startTime}
+              timezone={event.timeZone}
               endTime={event.endTime}
               endDate={event.endDate}
             />
