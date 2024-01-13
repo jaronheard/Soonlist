@@ -14,7 +14,7 @@
   "dependencies": {
     "@bytescale/sdk": "^3.21.3",
     "@bytescale/upload-widget-react": "^4.14.0",
-    "@clerk/nextjs": "^4.29.1",
+    "@clerk/nextjs": "^4.29.3",
     "@headlessui/react": "^1.7.17",
     "@headlessui/tailwindcss": "^0.2.0",
     "@heroicons/react": "^2.1.1",
