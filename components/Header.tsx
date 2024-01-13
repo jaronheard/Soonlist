@@ -5,11 +5,14 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  useClerk,
   useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from "next/image";
 import * as React from "react";
 import { Calendar } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -21,6 +24,15 @@ import {
 } from "./ui/navigation-menu";
 import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./DropdownMenu";
+import { TimezoneSelect } from "./TimezoneSelect";
 import { cn } from "@/lib/utils";
 
 const newEvent: { title: string; href: string; description: string }[] = [
@@ -102,7 +114,7 @@ export default function Header() {
         <Nav />
         <NavigationMenu>
           <SignedIn>
-            <UserButton afterSignOutUrl="/" />
+            <UserMenu />
           </SignedIn>
           <SignedOut>
             <SignInButton afterSignUpUrl="/onboarding">
@@ -239,3 +251,44 @@ const ListItem = React.forwardRef<
   );
 });
 ListItem.displayName = "ListItem";
+
+const UserMenu = () => {
+  // Grab the `isLoaded` and `user` from useUser()
+  const { isLoaded, user } = useUser();
+  // Grab the signOut and openUserProfile methods
+  const { signOut, openUserProfile } = useClerk();
+  // Get access to Next's router
+  const router = useRouter();
+
+  // Make sure that the useUser() hook has loaded
+  if (!isLoaded) return null;
+  // Make sure there is valid user data
+  if (!user?.id) return null;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Image
+          alt={user?.primaryEmailAddress?.emailAddress!}
+          src={user?.imageUrl}
+          width={30}
+          height={30}
+          className="mr-2 rounded-full border border-gray-200 drop-shadow-sm"
+        />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => openUserProfile()}>
+          Profile
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Timezone</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <TimezoneSelect />
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => signOut()}>Sign Out</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};

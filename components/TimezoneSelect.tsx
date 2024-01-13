@@ -32,8 +32,7 @@ export function TimezoneSelect() {
     labelStyle,
     timezones,
   });
-
-  const currentTimezone = options?.find((tz) => tz.value === timezone)?.label;
+  const currentTimezone = options.find((tz) => tz.value === timezone)?.label;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -55,10 +54,13 @@ export function TimezoneSelect() {
           <CommandGroup className="max-h-48 overflow-y-scroll">
             {options.map((tz) => (
               <CommandItem
-                key={tz.value}
-                value={tz.value}
+                key={tz.label}
+                value={tz.label}
                 onSelect={(currentValue) => {
-                  setTimezone(parseTimezone(currentValue));
+                  const tzValue = options.find(
+                    (tz) => tz.label.toLocaleLowerCase() === currentValue
+                  )?.value!;
+                  setTimezone(tzValue);
                   setOpen(false);
                 }}
               >

@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { TimezoneSelect } from "@/components/TimezoneSelect";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -12,9 +11,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Footer cta />
-      <div className="absolute bottom-2 right-24">
-        <TimezoneSelect />
-      </div>
     </div>
   );
 }
