@@ -5,13 +5,13 @@ import { twMerge } from "tailwind-merge";
 import { Temporal } from "@js-temporal/polyfill";
 
 const daysOfWeek = [
-  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
+  "Sunday",
 ];
 
 const monthNames = [
