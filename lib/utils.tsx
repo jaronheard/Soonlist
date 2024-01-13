@@ -5,6 +5,16 @@ import { twMerge } from "tailwind-merge";
 import { Temporal } from "@js-temporal/polyfill";
 
 const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+const daysOfWeekTemporal = [
   "Monday",
   "Tuesday",
   "Wednesday",
@@ -174,7 +184,7 @@ export function getDateTimeInfo(
     userTimezone || timezone
   );
 
-  const dayOfWeek = daysOfWeek[userZonedDateTime.dayOfWeek - 1];
+  const dayOfWeek = daysOfWeekTemporal[userZonedDateTime.dayOfWeek - 1];
   if (!dayOfWeek) {
     console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
     return null;
@@ -260,35 +270,11 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
   const minute = date.getUTCMinutes();
 
   // Get day of the week
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
   const dayOfWeek = daysOfWeek[date.getUTCDay()];
   if (!dayOfWeek) {
     console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
     return null;
   }
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "Jul",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   const monthName = monthNames[date.getUTCMonth()];
   if (!monthName) {
