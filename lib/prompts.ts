@@ -1,14 +1,18 @@
+import { Temporal } from "@js-temporal/polyfill";
+import soft from "timezone-soft";
+
 export const getText = (
-  date: string
+  date: string,
+  timezone: string
 ) => `You parse calendar events from the provided text or image into iCal format and return the iCal file. Use the following rules:
 # General
-- ONLY RETURN A VALID ICAL FILE
+- ONLY RETURN A COMPLETE AND VALID ICAL FILE
 - DO NOT RETURN ADDITIONAL INFORMATION
 - MAKE ALL ASSUMPTIONS NECESSARY TO MAKE A VALID ICAL FILE
 - DO NOT INCLUDE ANY NOTES OR COMMENTS
 # Time
 - For calculating relative dates/times, it is currently ${date}
-- Include timezone (use America/Los Angeles if not specified)
+- Include timezone in IANA format (use ${timezone} if not specified)
 - Do not include timezone for full day events
 - If event end time is not specified, guess based on event type
 # File Format
@@ -18,8 +22,10 @@ export const getText = (
 - FOR EACH EVENT, THE FOLLOWING FIELDS ARE REQUIRED:
   - DTSTART
     - Include TZID if not a full day event
+    - Always include seconds
   - DTEND
     - Include TZID if not a full day event
+    - Always include seconds
   - SUMMARY
 - FOR EACH EVENT, INCLUDE THE FOLLOWING FIELDS IF AVAILABLE:
   - DESCRIPTION
@@ -51,16 +57,20 @@ export const getText = (
       - MUST use | as a separator between the URL and title.
 `;
 
-export const getPrompt = () => {
-  // Get current date in Month, Day, Year format
-  const today = new Date();
-  const month = today.toLocaleString("default", { month: "long" });
-  const day = today.getDate();
-  const year = today.getFullYear();
-  const date = `${month} ${day}, ${year}`;
+const formatOffsetAsIANASoft = (offset: string) => {
+  const timezone = soft(offset)[0];
+  return timezone?.iana || "America/Los_Angeles";
+};
+
+export const getPrompt = (timezone = "America/Los_Angeles") => {
+  const timezoneIANA = formatOffsetAsIANASoft(timezone);
+  const now = Temporal.Now.instant().toZonedDateTimeISO(timezoneIANA);
+  const date = now.toString();
+
+  console.log(timezoneIANA);
 
   return {
-    text: getText(date),
+    text: getText(date, timezoneIANA),
     version: "v2024.01.07.1",
   };
 };

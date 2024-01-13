@@ -4,6 +4,7 @@ import Link from "next/link";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import { FollowEvent, User, Comment } from "@prisma/client";
+import { useContext } from "react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import {
@@ -27,9 +28,12 @@ import {
   endsNextDayBeforeMorning,
   eventTimesAreDefined,
   timeFormat,
+  getDateTimeInfo,
+  timeFormatDateInfo,
 } from "@/lib/utils";
 import { AddToCalendarButtonProps } from "@/types";
 import { SimilarityDetails } from "@/lib/similarEvents";
+import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventCardProps = {
   User: User;
@@ -98,19 +102,31 @@ function EventDateDisplaySimple({
   endDate,
   startTime,
   endTime,
+  timezone,
 }: {
   startDate?: string;
   endDate?: string;
   startTime?: string;
   endTime?: string;
+  timezone?: string;
 }) {
+  const { timezone: userTimezone } = useContext(TimezoneContext);
   if (!startDate || !endDate) {
     console.error("startDate or endDate is missing");
     return null;
   }
 
-  const startDateInfo = getDateInfoUTC(startDate);
-  const endDateInfo = getDateInfoUTC(endDate);
+  if (!timezone) {
+    console.error("timezone is missing");
+    return null;
+  }
+
+  const startDateInfo = startTime
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(startDate);
+  const endDateInfo = endTime
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(endDate);
   const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
   const showNightIcon =
     endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
@@ -121,14 +137,12 @@ function EventDateDisplaySimple({
     return null;
   }
 
-  // Assuming getDateInfoUTC provides hours and minutes as well
-  // Adjust the formatting based on the actual structure of startDateInfo and endDateInfo
   const formattedStartDate = `${startDateInfo.dayOfWeek.toUpperCase()}, ${startDateInfo.monthName
     .substring(0, 3)
     .toUpperCase()} ${startDateInfo.day}`;
 
   const formattedTimes = showTimeRange
-    ? `${timeFormat(startTime)}-${timeFormat(endTime)}`
+    ? `${timeFormatDateInfo(startDateInfo)}-${timeFormatDateInfo(endDateInfo)}`
     : "";
   return (
     <span>
@@ -389,7 +403,6 @@ export function EventCard(props: EventCardProps) {
   // always show curator if !isSelf
   const showOtherCurators = !isSelf && props.showOtherCurators;
   const showCurator = showOtherCurators || !props.hideCurator;
-  console.log("event", event);
 
   return (
     <div className="relative mx-6 py-6">
@@ -406,6 +419,7 @@ export function EventCard(props: EventCardProps) {
             <EventDateDisplaySimple
               startDate={event.startDate}
               startTime={event.startTime}
+              timezone={event.timeZone || "America/Los_Angeles"}
               endTime={event.endTime}
               endDate={event.endDate}
             />

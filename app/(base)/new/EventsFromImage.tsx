@@ -53,16 +53,18 @@ function buildDefaultUrl(filePath: string) {
 
 export default async function EventsFromImage({
   filePath,
+  timezone,
 }: {
   filePath: string;
+  timezone: string;
 }) {
-  const prompt = getPrompt();
+  const prompt = getPrompt(timezone);
   const imageUrl = buildDefaultUrl(filePath);
 
   // Ask OpenAI for a streaming completion given the prompt
   const res = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
-    max_tokens: 150,
+    max_tokens: 1000,
     messages: [
       {
         role: "system",
@@ -81,8 +83,6 @@ export default async function EventsFromImage({
       },
     ],
   });
-
-  console.log(res, "res");
 
   const choice = res.choices[0];
   if (!choice) {

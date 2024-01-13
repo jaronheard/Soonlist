@@ -13,9 +13,9 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 export async function POST(req: Request) {
-  const { messages, source } = await req.json();
+  const { messages, source, timezone } = await req.json();
   const requestStart = new Date();
-  const prompt = getPrompt();
+  const prompt = getPrompt(timezone);
 
   const userMessages = messages.filter(
     (message: { role: string }) => message.role === "user"

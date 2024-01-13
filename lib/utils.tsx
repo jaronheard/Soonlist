@@ -2,6 +2,32 @@ import { Message } from "ai";
 import ICAL from "ical.js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Temporal } from "@js-temporal/polyfill";
+
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "Jul",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export const SAMPLE_ICS = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -135,6 +161,42 @@ export type DateInfo = {
   minute: number;
 };
 
+export function getDateTimeInfo(
+  dateString: string,
+  timeString: string,
+  timezone: string,
+  userTimezone?: string
+): DateInfo | null {
+  const zonedDateTime = Temporal.ZonedDateTime.from(
+    `${dateString}T${timeString}[${timezone}]`
+  );
+  const userZonedDateTime = zonedDateTime.withTimeZone(
+    userTimezone || timezone
+  );
+
+  const dayOfWeek = daysOfWeek[userZonedDateTime.dayOfWeek - 1];
+  if (!dayOfWeek) {
+    console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
+    return null;
+  }
+  const monthName = monthNames[userZonedDateTime.month - 1];
+  if (!monthName) {
+    console.error("Invalid monthName / date format. Use YYYY-MM-DD.");
+    return null;
+  }
+  const dateInfo = {
+    month: userZonedDateTime.month,
+    monthName: monthName,
+    day: userZonedDateTime.day,
+    year: userZonedDateTime.year,
+    dayOfWeek: dayOfWeek,
+    hour: userZonedDateTime.hour,
+    minute: userZonedDateTime.minute,
+  } as DateInfo;
+
+  return dateInfo;
+}
+
 export function getDateInfo(dateString: string): DateInfo | null {
   // Validate input
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -159,36 +221,11 @@ export function getDateInfo(dateString: string): DateInfo | null {
   const hour = date.getHours();
   const minute = date.getMinutes();
 
-  // Get day of the week
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
   const dayOfWeek = daysOfWeek[date.getDay()];
   if (!dayOfWeek) {
     console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
     return null;
   }
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "Jul",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   const monthName = monthNames[date.getMonth()];
   if (!monthName) {
@@ -316,6 +353,15 @@ export function timeFormat(time?: string) {
   if (hours === undefined || minutes === undefined) {
     return "";
   }
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours === 0 ? 12 : hours; // Convert 0 to 12 for 12 AM
+  return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+}
+
+export function timeFormatDateInfo(dateInfo: DateInfo) {
+  let hours = dateInfo.hour;
+  let minutes = dateInfo.minute;
   const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours === 0 ? 12 : hours; // Convert 0 to 12 for 12 AM

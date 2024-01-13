@@ -2,7 +2,7 @@
 
 import { AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Download, Share, Sparkles } from "lucide-react";
 import { List } from "@prisma/client";
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
+import { TimezoneContext } from "@/context/TimezoneContext";
 
 function Code({
   children,
@@ -50,6 +51,9 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
     useState(false);
 
+  // Context variables
+  const { timezone } = useContext(TimezoneContext);
+
   // Custom hooks and utility functions
   const {
     input,
@@ -61,6 +65,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   } = useChat({
     body: {
       source: "text",
+      timezone,
     },
     onFinish(message) {
       setFinished(true);
@@ -139,7 +144,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
             <CardContent>
               <Button asChild>
                 <a
-                  href="https://www.icloud.com/shortcuts/d847a6b748e04a45a52f6185b746d573"
+                  href="https://www.icloud.com/shortcuts/a44e63d78fd44a08b22dcaaea2bfa7f6"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

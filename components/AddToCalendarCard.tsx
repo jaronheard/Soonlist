@@ -12,6 +12,7 @@ import { Input, InputDescription } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
+import { TimezoneSelect } from "./TimezoneSelect";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useFormContext } from "@/context/FormContext";
 
@@ -68,6 +69,7 @@ export function AddToCalendarCard({
   const [startTime, setStartTime] = useState(initialProps.startTime);
   const [endDate, setEndDate] = useState(initialProps.endDate);
   const [endTime, setEndTime] = useState(initialProps.endTime);
+  const [timeZone, setTimeZone] = useState(initialProps.timeZone);
   const [link, setLink] = useState("");
 
   const { listStyle, ...filteredProps } = initialProps;
@@ -87,6 +89,7 @@ export function AddToCalendarCard({
     startTime,
     endDate,
     endTime,
+    timeZone,
     images,
   };
 
@@ -149,6 +152,16 @@ export function AddToCalendarCard({
               id="endTime"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-span-full">
+          <Label htmlFor="startDate">Time Zone</Label>
+          <div>
+            <TimezoneSelect
+              timezone={timeZone}
+              setTimezone={setTimeZone}
+              fullWidth
             />
           </div>
         </div>

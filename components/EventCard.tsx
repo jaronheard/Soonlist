@@ -4,6 +4,7 @@ import Link from "next/link";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/nextjs";
 import { FollowEvent, User, Comment } from "@prisma/client";
+import { useContext } from "react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import {
@@ -26,9 +27,12 @@ import {
   endsNextDayBeforeMorning,
   timeFormat,
   eventTimesAreDefined,
+  getDateTimeInfo,
+  timeFormatDateInfo,
 } from "@/lib/utils";
 import { AddToCalendarButtonProps } from "@/types";
 import { SimilarityDetails } from "@/lib/similarEvents";
+import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventCardProps = {
   User: User;
@@ -49,13 +53,34 @@ type EventCardProps = {
 
 function EventDateDisplay({
   startDate,
+  startTime,
   endDate,
+  endTime,
+  timezone,
 }: {
   startDate: string;
+  startTime?: string;
   endDate: string;
+  endTime?: string;
+  timezone: string;
 }) {
-  const startDateInfo = getDateInfoUTC(startDate);
-  const endDateInfo = getDateInfoUTC(endDate);
+  const { timezone: userTimezone } = useContext(TimezoneContext);
+  if (!startDate || !endDate) {
+    console.error("startDate or endDate is missing");
+    return null;
+  }
+
+  if (!timezone) {
+    console.error("timezone is missing");
+    return null;
+  }
+
+  const startDateInfo = startTime
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(startDate);
+  const endDateInfo = endTime
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(endDate);
   const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
   const showNightIcon =
     endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
@@ -95,18 +120,47 @@ function EventDateDisplay({
 function EventDetails({
   id,
   name,
+  startDate,
   startTime,
+  endDate,
   endTime,
+  timezone,
   location,
   singleEvent,
 }: {
   id: string;
   name: string;
   startTime: string;
+  startDate: string;
   endTime: string;
+  endDate: string;
+  timezone: string;
   location?: string;
   singleEvent?: boolean;
 }) {
+  const { timezone: userTimezone } = useContext(TimezoneContext);
+  if (!startDate || !endDate) {
+    console.error("startDate or endDate is missing");
+    return null;
+  }
+
+  if (!timezone) {
+    console.error("timezone is missing");
+    return null;
+  }
+
+  const startDateInfo = startTime
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(startDate);
+  const endDateInfo = endTime
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(endDate);
+
+  if (!startDateInfo || !endDateInfo) {
+    console.error("startDateInfo or endDateInfo is missing");
+    return null;
+  }
+
   return (
     <div>
       <ConditionalWrapper
@@ -129,7 +183,8 @@ function EventDetails({
       <div className="flex gap-2">
         {eventTimesAreDefined(startTime, endTime) && (
           <div className="shrink-0 items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-            {timeFormat(startTime)}-{timeFormat(endTime)}{" "}
+            {timeFormatDateInfo(startDateInfo)}-
+            {timeFormatDateInfo(endDateInfo)}
           </div>
         )}
         {location && (
@@ -358,13 +413,19 @@ export function EventCard(props: EventCardProps) {
       <div className="flex items-center gap-4 pr-8">
         <EventDateDisplay
           startDate={event.startDate!}
+          startTime={event.startTime!}
           endDate={event.endDate!}
+          endTime={event.endTime!}
+          timezone={event.timeZone || "America/Los_Angeles"}
         />
         <EventDetails
           id={id}
           name={event.name!}
+          startDate={event.startDate!}
+          endDate={event.endDate!}
           startTime={event.startTime!}
           endTime={event.endTime!}
+          timezone={event.timeZone || "America/Los_Angeles"}
           location={event.location}
           singleEvent={singleEvent}
         />

@@ -1,3 +1,4 @@
+import { time } from "console";
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
@@ -44,10 +45,12 @@ const openai = new OpenAI(config);
 
 export default async function EventsFromRawText({
   rawText,
+  timezone,
 }: {
   rawText: string;
+  timezone: string;
 }) {
-  const prompt = getPrompt();
+  const prompt = getPrompt(timezone);
 
   // Ask OpenAI for a streaming completion given the prompt
   const res = await openai.chat.completions.create({

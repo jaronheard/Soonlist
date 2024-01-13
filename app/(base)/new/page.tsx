@@ -18,18 +18,19 @@ type Props = {
     rawText?: string;
     saveIntent?: boolean;
     filePath?: string;
+    timezone?: string;
   };
 };
 
 export default async function Page({ params, searchParams }: Props) {
   const user = await currentUser();
   const username = user?.username;
-  console.log(username, "username");
   const lists =
     username &&
     (await api.list.getAllForUser.query({
       userName: username,
     }));
+  const timezone = searchParams.timezone || "America/Los_Angeles";
 
   if (searchParams.saveIntent) {
     return (
@@ -53,7 +54,10 @@ export default async function Page({ params, searchParams }: Props) {
         <ImageUpload filePath={searchParams.filePath} />
         <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
-          <EventsFromImage filePath={searchParams.filePath} />
+          <EventsFromImage
+            timezone={timezone}
+            filePath={searchParams.filePath}
+          />
         </Suspense>
       </>
     );
@@ -77,7 +81,10 @@ export default async function Page({ params, searchParams }: Props) {
         <ImageUpload filePath={searchParams.filePath} />
         <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
-          <EventsFromRawText rawText={searchParams.rawText} />
+          <EventsFromRawText
+            timezone={timezone}
+            rawText={searchParams.rawText}
+          />
         </Suspense>
       </>
     );
