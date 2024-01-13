@@ -30,7 +30,7 @@ export default async function Page({ params, searchParams }: Props) {
     (await api.list.getAllForUser.query({
       userName: username,
     }));
-  const timezone = searchParams.timezone || "America/Los_Angeles"; // todo: get from user
+  const timezone = searchParams.timezone || "America/Los_Angeles";
 
   if (searchParams.saveIntent) {
     return (
