@@ -2,16 +2,16 @@
 
 import {
   SignInButton,
+  SignUpButton,
   SignedIn,
   SignedOut,
-  UserButton,
   useClerk,
   useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
 import * as React from "react";
-import { Calendar } from "lucide-react";
+import { Calendar, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
@@ -33,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from "./DropdownMenu";
 import { TimezoneSelect } from "./TimezoneSelect";
+import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 
 const newEvent: { title: string; href: string; description: string }[] = [
@@ -110,16 +111,14 @@ export default function Header() {
           </Link>
         </NavigationMenu>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         <Nav />
         <NavigationMenu>
           <SignedIn>
             <UserMenu />
           </SignedIn>
           <SignedOut>
-            <SignInButton afterSignUpUrl="/onboarding">
-              <button className={navigationMenuTriggerStyle()}>Sign In</button>
-            </SignInButton>
+            <SettingsMenu />
           </SignedOut>
         </NavigationMenu>
       </div>
@@ -260,10 +259,11 @@ const UserMenu = () => {
   // Get access to Next's router
   const router = useRouter();
 
-  // Make sure that the useUser() hook has loaded
-  if (!isLoaded) return null;
-  // Make sure there is valid user data
-  if (!user?.id) return null;
+  // if not loaded return a 32x32 grey circle pulsing
+  if (!isLoaded || !user?.id)
+    return (
+      <div className="h-8 w-8 animate-pulse rounded-full bg-gray-100 p-1"></div>
+    );
 
   return (
     <DropdownMenu>
@@ -271,9 +271,9 @@ const UserMenu = () => {
         <Image
           alt={user?.primaryEmailAddress?.emailAddress!}
           src={user?.imageUrl}
-          width={30}
-          height={30}
-          className="mr-2 rounded-full border border-gray-200 drop-shadow-sm"
+          width={32}
+          height={32}
+          className="rounded-full border border-gray-200 drop-shadow-sm"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -288,6 +288,34 @@ const UserMenu = () => {
         <TimezoneSelect />
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>Sign Out</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const SettingsMenu = () => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Settings className="h-8 w-8 rounded-full bg-black p-1 text-white" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Timezone</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <TimezoneSelect />
+        <DropdownMenuSeparator />
+        <SignInButton afterSignUpUrl="/onboarding">
+          <DropdownMenuItem>
+            <Button variant="secondary" className="w-full">
+              Log In
+            </Button>
+          </DropdownMenuItem>
+        </SignInButton>
+        <SignUpButton afterSignUpUrl="/onboarding">
+          <DropdownMenuItem>
+            <Button className="w-full">🌈 Sign Up</Button>
+          </DropdownMenuItem>
+        </SignUpButton>
       </DropdownMenuContent>
     </DropdownMenu>
   );

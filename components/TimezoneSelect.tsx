@@ -25,14 +25,26 @@ const timezones = {
   ...allTimezones,
 };
 
-export function TimezoneSelect() {
+export function TimezoneSelect({
+  timezone: timezoneFromProps,
+  setTimezone: setTimezoneFromProps,
+  fullWidth,
+}: {
+  timezone?: string;
+  setTimezone?: (timezone: string) => void;
+  fullWidth?: boolean;
+}) {
   const [open, setOpen] = useState(false);
-  const { timezone, setTimezone } = useContext(TimezoneContext);
+  const { timezone: timezoneFromContext, setTimezone: setTimezoneFromContext } =
+    useContext(TimezoneContext);
+  const timezone = timezoneFromProps || timezoneFromContext;
+  const setTimezone = setTimezoneFromProps || setTimezoneFromContext;
   const { options, parseTimezone } = useTimezoneSelect({
     labelStyle,
     timezones,
   });
   const currentTimezone = options.find((tz) => tz.value === timezone)?.label;
+  const widthClass = fullWidth ? "w-full" : "w-[200px]";
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,13 +53,13 @@ export function TimezoneSelect() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className={`${widthClass} justify-between`}
         >
           <span className="truncate">{currentTimezone}</span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className={`${widthClass} p-0`}>
         <Command>
           <CommandInput placeholder="Search timezone..." />
           <CommandEmpty>No timezone found.</CommandEmpty>
