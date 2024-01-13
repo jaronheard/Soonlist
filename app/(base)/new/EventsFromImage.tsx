@@ -53,10 +53,12 @@ function buildDefaultUrl(filePath: string) {
 
 export default async function EventsFromImage({
   filePath,
+  timezone,
 }: {
   filePath: string;
+  timezone: string;
 }) {
-  const prompt = getPrompt();
+  const prompt = getPrompt(timezone);
   const imageUrl = buildDefaultUrl(filePath);
 
   // Ask OpenAI for a streaming completion given the prompt

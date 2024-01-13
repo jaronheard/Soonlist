@@ -1,5 +1,6 @@
 export const getText = (
-  date: string
+  date: string,
+  timezone: string
 ) => `You parse calendar events from the provided text or image into iCal format and return the iCal file. Use the following rules:
 # General
 - ONLY RETURN A VALID ICAL FILE
@@ -8,7 +9,7 @@ export const getText = (
 - DO NOT INCLUDE ANY NOTES OR COMMENTS
 # Time
 - For calculating relative dates/times, it is currently ${date}
-- Include timezone (use America/Los Angeles if not specified)
+- Include timezone (use ${timezone} if not specified)
 - Do not include timezone for full day events
 - If event end time is not specified, guess based on event type
 # File Format
@@ -51,16 +52,21 @@ export const getText = (
       - MUST use | as a separator between the URL and title.
 `;
 
-export const getPrompt = () => {
-  // Get current date in Month, Day, Year format
-  const today = new Date();
-  const month = today.toLocaleString("default", { month: "long" });
+export const getPrompt = (timezone = "America/Los_Angeles") => {
+  // Get current date in Month, Day, Year format based on the optional timezone
+  const today = new Date(
+    new Date().toLocaleString("en-US", { timeZone: timezone })
+  );
+  const month = today.toLocaleString("default", {
+    month: "long",
+    timeZone: timezone,
+  });
   const day = today.getDate();
   const year = today.getFullYear();
   const date = `${month} ${day}, ${year}`;
 
   return {
-    text: getText(date),
+    text: getText(date, timezone),
     version: "v2024.01.07.1",
   };
 };
