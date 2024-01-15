@@ -17,15 +17,18 @@ export interface IntercomProviderProps {
 export const IntercomProvider = ({ children }: IntercomProviderProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
-  if (typeof window !== "undefined" && user) {
-    bootIntercom({
-      user_id: user.id,
-      email: user.primaryEmailAddress?.emailAddress || "",
-      name: user.fullName || user.firstName || user.lastName || "Anonymous",
-    });
+  if (typeof window !== "undefined") {
     loadIntercom();
+  }
+
+  if (typeof window !== "undefined" && isLoaded) {
+    bootIntercom({
+      user_id: user?.id,
+      email: user?.primaryEmailAddress?.emailAddress || "",
+      name: user?.fullName || user?.firstName || user?.lastName || "Anonymous",
+    });
   }
 
   const handleRouteChange = () => {
