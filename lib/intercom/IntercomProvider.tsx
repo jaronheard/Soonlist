@@ -24,11 +24,15 @@ export const IntercomProvider = ({ children }: IntercomProviderProps) => {
   }
 
   if (typeof window !== "undefined" && isLoaded) {
-    bootIntercom({
-      user_id: user?.id,
-      email: user?.primaryEmailAddress?.emailAddress || "",
-      name: user?.fullName || user?.firstName || user?.lastName || "",
-    });
+    const intercomOptions = user
+      ? {
+          user_id: user.id,
+          email: user.primaryEmailAddress?.emailAddress || "",
+          name: user.fullName || user.firstName || user.lastName || "",
+        }
+      : {};
+
+    bootIntercom(intercomOptions);
   }
 
   const handleRouteChange = () => {
