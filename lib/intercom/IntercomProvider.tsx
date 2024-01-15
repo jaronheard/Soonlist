@@ -27,7 +27,7 @@ export const IntercomProvider = ({ children }: IntercomProviderProps) => {
     bootIntercom({
       user_id: user?.id,
       email: user?.primaryEmailAddress?.emailAddress || "",
-      name: user?.fullName || user?.firstName || user?.lastName || "Anonymous",
+      name: user?.fullName || user?.firstName || user?.lastName || "",
     });
   }
 
