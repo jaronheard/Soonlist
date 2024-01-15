@@ -1,5 +1,3 @@
-import { Mail } from "lucide-react";
-
 type ContactUsProps = {
   children: React.ReactNode;
   email?: string;
@@ -8,7 +6,7 @@ type ContactUsProps = {
 
 export const ContactUs = ({
   children,
-  email = "jaronheard@gmail.com",
+  email = "jaron@soonlist.com",
   title = "Soonlist ideas",
 }: ContactUsProps) => {
   return (

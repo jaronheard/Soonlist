@@ -1,7 +1,7 @@
 "use client";
-import { UploadButton as BytescaleUploadButton } from "@bytescale/upload-widget-react";
+import { UploadButton } from "@bytescale/upload-widget-react";
 import { useRouter } from "next/navigation";
-import { Image as ImageIcon } from "lucide-react";
+import { Image as ImageIcon, Upload } from "lucide-react";
 import { useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { TimezoneContext } from "@/context/TimezoneContext";
@@ -23,11 +23,11 @@ const widgetOptions = {
   },
 };
 
-export const UploadButton = () => {
+export const UploadImageForProcessingButton = () => {
   const router = useRouter();
   const { timezone } = useContext(TimezoneContext);
   return (
-    <BytescaleUploadButton
+    <UploadButton
       options={widgetOptions}
       onComplete={(files) => {
         if (files.length > 0) {
@@ -43,6 +43,6 @@ export const UploadButton = () => {
           <ImageIcon className="mr-2 h-4 w-4" /> Upload Image
         </Button>
       )}
-    </BytescaleUploadButton>
+    </UploadButton>
   );
 };
