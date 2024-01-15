@@ -10,6 +10,7 @@ import { FormProvider } from "@/context/FormContext";
 import { VercelToolbar } from "@/components/VercelToolbar";
 import { TRPCReactProvider } from "@/trpc/react";
 import { TimezoneProvider } from "@/context/TimezoneContext";
+import { IntercomProvider } from "@/lib/intercom/IntercomProvider";
 
 const title = "Soonlist";
 const tagline = "Create, collect, curate & share events";
@@ -47,23 +48,25 @@ export default function RootLayout({
         <FormProvider>
           <CroppedImageProvider>
             <ClerkProvider>
-              <html lang="en">
-                <Suspense>
-                  <PostHogPageview />
-                </Suspense>
-                <PHProvider>
-                  <body>
-                    {children}
-                    <SpeedInsights />
-                    <Suspense>
-                      <UserAnalytics />
-                    </Suspense>
-                    <Suspense>
-                      <VercelToolbar />
-                    </Suspense>
-                  </body>
-                </PHProvider>
-              </html>
+              <IntercomProvider>
+                <html lang="en">
+                  <Suspense>
+                    <PostHogPageview />
+                  </Suspense>
+                  <PHProvider>
+                    <body>
+                      {children}
+                      <SpeedInsights />
+                      <Suspense>
+                        <UserAnalytics />
+                      </Suspense>
+                      <Suspense>
+                        <VercelToolbar />
+                      </Suspense>
+                    </body>
+                  </PHProvider>
+                </html>
+              </IntercomProvider>
             </ClerkProvider>
           </CroppedImageProvider>
         </FormProvider>
