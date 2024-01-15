@@ -52,7 +52,7 @@ module.exports = withVercelToolbar(
       // Suppresses source map uploading logs during build
       silent: true,
       org: "soonlist",
-      project: "timetimecc",
+      project: "soonlist",
     },
     {
       // For all available options, see:
