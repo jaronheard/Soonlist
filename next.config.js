@@ -19,6 +19,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "upcdn.io",
       },
+      {
+        protocol: "https",
+        hostname: "mirrors.creativecommons.org",
+      },
     ],
   },
   async rewrites() {

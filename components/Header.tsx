@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import * as React from "react";
-import { Calendar, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
@@ -34,6 +34,7 @@ import {
 } from "./DropdownMenu";
 import { TimezoneSelect } from "./TimezoneSelect";
 import { Button } from "./ui/button";
+import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 
 const newEvent: { title: string; href: string; description: string }[] = [
@@ -98,7 +99,7 @@ export default function Header() {
       <div className="flex items-center justify-between gap-2 sm:grow sm:gap-0">
         <NavigationMenu>
           <Link href="/" className="relative flex items-center space-x-3">
-            <Calendar className="h-8 w-8" />
+            <Logo className="h-8 w-8" />
             <h1 className="ml-2 hidden text-2xl font-bold tracking-tight sm:block sm:text-4xl">
               Soonlist
             </h1>

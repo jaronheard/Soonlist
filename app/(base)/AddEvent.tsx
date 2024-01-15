@@ -8,7 +8,7 @@ import { Download, Share, Sparkles } from "lucide-react";
 import { List } from "@prisma/client";
 import { YourDetails } from "./new/YourDetails";
 import ImageUpload from "./new/ImageUpload";
-import { UploadButton } from "./new/UploadButton";
+import { UploadImageForProcessingButton } from "./new/UploadImageForProcessingButton";
 import { Form } from "@/components/Form";
 import { Output } from "@/components/Output";
 import { cn, generatedIcsArrayToEvents, getLastMessages } from "@/lib/utils";
@@ -121,7 +121,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <UploadButton />
+              <UploadImageForProcessingButton />
               <div className="p-4"></div>
               <Form
                 handleInputChange={handleInputChange}

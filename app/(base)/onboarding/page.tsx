@@ -19,6 +19,8 @@ export const metadata = {
   },
 };
 
+// TODO: this page needs an overhaul. Also a lot of the content is duplicated on the about page
+
 export default function Page() {
   return (
     <div className="bg-white px-6 py-32 lg:px-8">
