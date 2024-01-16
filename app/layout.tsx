@@ -1,16 +1,13 @@
 import { Metadata } from "next";
 import "@/styles/globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import { Suspense } from "react";
 import { cookies } from "next/headers";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { PHProvider, PostHogPageview, UserAnalytics } from "./providers";
-import { CroppedImageProvider } from "@/context/CroppedImageContext";
-import { FormProvider } from "@/context/FormContext";
-import { VercelToolbar } from "@/components/VercelToolbar";
+import dynamic from "next/dynamic";
+import { PHProvider, Providers } from "./providers";
 import { TRPCReactProvider } from "@/trpc/react";
-import { TimezoneProvider } from "@/context/TimezoneContext";
-import { IntercomProvider } from "@/lib/intercom/IntercomProvider";
+
+const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
+  ssr: false,
+});
 
 const title = "Soonlist";
 const tagline = "Create, collect, curate & share events";
@@ -43,34 +40,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TRPCReactProvider cookies={cookies().toString()}>
-      <TimezoneProvider>
-        <FormProvider>
-          <CroppedImageProvider>
-            <ClerkProvider>
-              <IntercomProvider>
-                <html lang="en">
-                  <Suspense>
-                    <PostHogPageview />
-                  </Suspense>
-                  <PHProvider>
-                    <body>
-                      {children}
-                      <SpeedInsights />
-                      <Suspense>
-                        <UserAnalytics />
-                      </Suspense>
-                      <Suspense>
-                        <VercelToolbar />
-                      </Suspense>
-                    </body>
-                  </PHProvider>
-                </html>
-              </IntercomProvider>
-            </ClerkProvider>
-          </CroppedImageProvider>
-        </FormProvider>
-      </TimezoneProvider>
-    </TRPCReactProvider>
+    <html lang="en">
+      <PHProvider>
+        <body>
+          <PostHogPageView />
+          <TRPCReactProvider cookies={cookies().toString()}>
+            <Providers>{children}</Providers>
+          </TRPCReactProvider>
+        </body>
+      </PHProvider>
+    </html>
   );
 }
