@@ -8,6 +8,8 @@ import RainbowText from "@/components/RainbowText";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
 import { CTAButton } from "@/components/CallToActions";
 import NextEventsLoading from "@/components/NextEventsLoading";
+import SampleEvent from "@/components/SampleEvent";
+import SampleEventLoading from "@/components/SampleEventLoading";
 
 const features = [
   {
@@ -136,32 +138,54 @@ export default function Page() {
             }}
           />
         </div>
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-          {/* <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Clarifying our vision and intention.{" "}
-              <a href="#" className="font-semibold text-indigo-600">
-                <span className="absolute inset-0" aria-hidden="true" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a>
+
+        <div className="pt-24 sm:pt-32 lg:pt-40">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                Event lists for everybody
+              </h1>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                Capture and share events that matter to you and your
+                communities.
+              </p>
             </div>
-          </div> */}
-          <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Curate calendars, cultivate communities
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Join us in reimagining how we discover, remember, and share
-              events.
+          </div>
+        </div>
+        <div className="mt-10 flex items-center justify-center gap-x-6">
+          <CTAButton />
+          <Button variant="link" asChild>
+            <Link href="/explore">
+              Explore <span aria-hidden="true">→</span>
+            </Link>
+          </Button>
+        </div>
+
+        <div className="py-4"></div>
+        <Suspense fallback={<SampleEventLoading limit={3} />}>
+          <SampleEvent />
+        </Suspense>
+        <div className="py-12 sm:py-16"></div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <RainbowText className="text-base font-semibold leading-7 text-indigo-600">
+              Event lists made easy
+            </RainbowText>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Make and share lists of events
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <CTAButton />
-              <Button variant="link" asChild>
-                <Link href="/explore">
-                  Explore <span aria-hidden="true">→</span>
-                </Link>
-              </Button>
-            </div>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Add your events or others events to lists to share
+            </p>
+          </div>
+        </div>
+        <div className="py-4"></div>
+        <div className="mx-auto grid max-w-7xl place-items-center rounded-xl border-2 border-gray-100 bg-white p-4 text-left shadow-md">
+          <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
+            <Suspense fallback={<NextEventsLoading limit={3} />}>
+              <NextEvents limit={3} />
+            </Suspense>
+            <div className="p-4"></div>
           </div>
         </div>
         <div
