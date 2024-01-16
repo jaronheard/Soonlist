@@ -12,7 +12,6 @@ import Link from "next/link";
 import Image from "next/image";
 import * as React from "react";
 import { Settings } from "lucide-react";
-import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -257,14 +256,13 @@ const UserMenu = () => {
   const { isLoaded, user } = useUser();
   // Grab the signOut and openUserProfile methods
   const { signOut, openUserProfile } = useClerk();
-  // Get access to Next's router
-  const router = useRouter();
 
   // if not loaded return a 32x32 grey circle pulsing
-  if (!isLoaded || !user?.id)
+  if (!isLoaded || !user?.id) {
     return (
       <div className="h-8 w-8 animate-pulse rounded-full bg-gray-100 p-1"></div>
     );
+  }
 
   return (
     <DropdownMenu>
