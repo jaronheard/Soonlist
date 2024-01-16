@@ -1,9 +1,14 @@
 "use client";
+
 import { posthog } from "posthog-js";
 import { PostHogProvider, usePostHog } from "posthog-js/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { ClerkProvider, useUser } from "@clerk/nextjs";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { VercelToolbar } from "@/components/VercelToolbar";
+import { IntercomProvider } from "@/lib/intercom/IntercomProvider";
+import ContextProvider from "@/context/ContextProvider";
 
 if (typeof window !== "undefined") {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || "", {
@@ -35,7 +40,7 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
   return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 }
 
-export const UserAnalytics = () => {
+const UserAnalytics = () => {
   const { isLoaded, isSignedIn, user } = useUser();
   const posthog = usePostHog();
   useEffect(() => {
@@ -49,3 +54,17 @@ export const UserAnalytics = () => {
 
   return <></>;
 };
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ClerkProvider>
+      <IntercomProvider>
+        <ContextProvider>
+          {children}
+          <SpeedInsights />
+          <UserAnalytics />
+          <VercelToolbar />
+        </ContextProvider>
+      </IntercomProvider>
+    </ClerkProvider>
+  );
+}
