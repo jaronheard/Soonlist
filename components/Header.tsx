@@ -132,70 +132,74 @@ export function Nav() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Events</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[300px] gap-3 p-4 sm:w-[400px]">
-              {newEvent.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-              <Separator />
-              <SignedIn>
-                {userEvents.map((component) => (
+        <SignedIn>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Events</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[300px] gap-3 p-4 sm:w-[400px]">
+                {newEvent.map((component) => (
                   <ListItem
                     key={component.title}
                     title={component.title}
-                    href={`/${user?.username}${component.href}`}
+                    href={component.href}
                   >
                     {component.description}
                   </ListItem>
                 ))}
-              </SignedIn>
-              {allEvents.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Users</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[300px] gap-3 p-4 sm:w-[400px]">
-              <SignedIn>
-                {userFollowing.map((component) => (
+                <Separator />
+                <SignedIn>
+                  {userEvents.map((component) => (
+                    <ListItem
+                      key={component.title}
+                      title={component.title}
+                      href={`/${user?.username}${component.href}`}
+                    >
+                      {component.description}
+                    </ListItem>
+                  ))}
+                </SignedIn>
+                {allEvents.map((component) => (
                   <ListItem
                     key={component.title}
                     title={component.title}
-                    href={`/${user?.username}${component.href}`}
+                    href={component.href}
                   >
                     {component.description}
                   </ListItem>
                 ))}
-              </SignedIn>
-              {allUsers.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </SignedIn>
+        <SignedIn>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Users</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[300px] gap-3 p-4 sm:w-[400px]">
+                <SignedIn>
+                  {userFollowing.map((component) => (
+                    <ListItem
+                      key={component.title}
+                      title={component.title}
+                      href={`/${user?.username}${component.href}`}
+                    >
+                      {component.description}
+                    </ListItem>
+                  ))}
+                </SignedIn>
+                {allUsers.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
+                  >
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </SignedIn>
         <NavigationMenuItem>
           <Link href="/onboarding" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -310,11 +314,11 @@ const SettingsMenu = () => {
             </Button>
           </DropdownMenuItem>
         </SignInButton>
-        <SignUpButton afterSignUpUrl="/onboarding">
+        {/* <SignUpButton afterSignUpUrl="/onboarding">
           <DropdownMenuItem>
             <Button className="w-full">🌈 Sign Up</Button>
           </DropdownMenuItem>
-        </SignUpButton>
+        </SignUpButton> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

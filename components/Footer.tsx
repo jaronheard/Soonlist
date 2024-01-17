@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { CircleDollarSign } from "lucide-react";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
+import { WaitlistSignup } from "./WaitlistSignup";
 
 const navigation = {
   events: [
@@ -89,168 +91,184 @@ const navigation = {
 
 export default function Footer({ cta }: { cta?: boolean }) {
   return (
-    <footer className="w-full bg-white" aria-labelledby="footer-heading">
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
-      <div className="mx-auto px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <div className="space-y-8">
-            <Logo className="h-8 w-8" />
-            <Button size={"sm"} variant={"secondary"} asChild>
-              <a
-                href="https://buy.stripe.com/4gwaFB6sJ8Ah8ykcMM"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <CircleDollarSign className="mr-2 h-4 w-4"></CircleDollarSign>
-                Support Soonlist
-              </a>
-            </Button>
-            <div className="flex space-x-6">
-              {navigation.social.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                  Events
-                </h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.events.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                  Support
-                </h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.support.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                  Project
-                </h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.project.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                  Legal
-                </h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.legal.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+    <>
+      <SignedOut>
+        <div className="mx-6 w-full max-w-7xl rounded-xl border-2 border-gray-100 bg-yellow-50 px-6 py-4 shadow-md lg:mx-8">
+          <WaitlistSignup />
         </div>
-        <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
-          <p
-            className="text-xs leading-5 text-gray-500"
-            // xmlns:cc="http://creativecommons.org/ns#"
-            // xmlns:dct="http://purl.org/dc/terms/"
-          >
-            <a
-              property="dct:title"
-              rel="cc:attributionURL"
-              href="https://www.soonlist.com"
+      </SignedOut>
+      <footer className="w-full bg-white" aria-labelledby="footer-heading">
+        <h2 id="footer-heading" className="sr-only">
+          Footer
+        </h2>
+        <div className="mx-auto px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
+          <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+            <div className="space-y-8">
+              <Logo className="h-8 w-8" />
+              <Button size={"sm"} variant={"secondary"} asChild>
+                <a
+                  href="https://buy.stripe.com/4gwaFB6sJ8Ah8ykcMM"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <CircleDollarSign className="mr-2 h-4 w-4"></CircleDollarSign>
+                  Support Soonlist
+                </a>
+              </Button>
+              <div className="flex space-x-6">
+                {navigation.social.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-gray-400 hover:text-gray-500"
+                  >
+                    <span className="sr-only">{item.name}</span>
+                    <item.icon className="h-6 w-6" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+              <div className="md:grid md:grid-cols-2 md:gap-8">
+                <div>
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                    Events
+                  </h3>
+                  <SignedIn>
+                    <ul role="list" className="mt-6 space-y-4">
+                      {navigation.events.map((item) => (
+                        <li key={item.name}>
+                          <Link
+                            href={item.href}
+                            className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </SignedIn>
+                  <SignedOut>
+                    <ul role="list" className="mt-6 space-y-4">
+                      <li className="text-sm leading-6 text-gray-400">
+                        Coming soon
+                      </li>
+                    </ul>
+                  </SignedOut>
+                </div>
+                <div className="mt-10 md:mt-0">
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                    Support
+                  </h3>
+                  <ul role="list" className="mt-6 space-y-4">
+                    {navigation.support.map((item) => (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
+                          className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="md:grid md:grid-cols-2 md:gap-8">
+                <div>
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                    Project
+                  </h3>
+                  <ul role="list" className="mt-6 space-y-4">
+                    {navigation.project.map((item) => (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
+                          className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="mt-10 md:mt-0">
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                    Legal
+                  </h3>
+                  <ul role="list" className="mt-6 space-y-4">
+                    {navigation.legal.map((item) => (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
+                          className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
+            <p
+              className="text-xs leading-5 text-gray-500"
+              // xmlns:cc="http://creativecommons.org/ns#"
+              // xmlns:dct="http://purl.org/dc/terms/"
             >
-              Soonlist
-            </a>{" "}
-            <span className="hidden">
-              by{" "}
               <a
-                rel="cc:attributionURL dct:creator"
-                property="cc:attributionName"
+                property="dct:title"
+                rel="cc:attributionURL"
                 href="https://www.soonlist.com"
               >
-                Soonlist project
+                Soonlist
+              </a>{" "}
+              <span className="hidden">
+                by{" "}
+                <a
+                  rel="cc:attributionURL dct:creator"
+                  property="cc:attributionName"
+                  href="https://www.soonlist.com"
+                >
+                  Soonlist project
+                </a>
+              </span>{" "}
+              is licensed under{" "}
+              <a
+                href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+                target="_blank"
+                rel="license noopener noreferrer"
+                className="inline-block"
+              >
+                CC BY-NC 4.0
+                <img
+                  height={16}
+                  width={16}
+                  alt="Creative Commons License"
+                  className="ml-[4px] inline-block h-[16px] align-text-top"
+                  src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+                />
+                <img
+                  height={16}
+                  width={16}
+                  alt="Attribution"
+                  className="ml-[4px] inline-block h-[16px] align-text-top"
+                  src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+                />
+                <img
+                  height={16}
+                  width={16}
+                  alt="NonCommercial"
+                  className="ml-[4px] inline-block h-[16px] align-text-top"
+                  src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
+                />
               </a>
-            </span>{" "}
-            is licensed under{" "}
-            <a
-              href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
-              target="_blank"
-              rel="license noopener noreferrer"
-              className="inline-block"
-            >
-              CC BY-NC 4.0
-              <img
-                height={16}
-                width={16}
-                alt="Creative Commons License"
-                className="ml-[4px] inline-block h-[16px] align-text-top"
-                src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
-              />
-              <img
-                height={16}
-                width={16}
-                alt="Attribution"
-                className="ml-[4px] inline-block h-[16px] align-text-top"
-                src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
-              />
-              <img
-                height={16}
-                width={16}
-                alt="NonCommercial"
-                className="ml-[4px] inline-block h-[16px] align-text-top"
-                src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
-              />
-            </a>
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }
