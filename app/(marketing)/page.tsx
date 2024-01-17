@@ -152,7 +152,7 @@ export default function Page() {
                 Event lists for everybody
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Capture and share events that matter to you and your communities
+                Gather and share events that matter to you and your communities
               </p>
             </div>
           </div>
