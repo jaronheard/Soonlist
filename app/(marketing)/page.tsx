@@ -286,6 +286,7 @@ export default function Page() {
                   alt=""
                   height={1344}
                   width={1008}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1008px"
                 />
               </div>
             </div>
