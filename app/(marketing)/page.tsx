@@ -125,7 +125,7 @@ const testimonials = [
 const sampleEventId =
   process.env.NODE_ENV === "production"
     ? "clrh2zo6p0001asmk0axrq55h"
-    : "cloetmfc60001jr0ays7hsxum";
+    : "clrg63xn20001zyzg6gnwzktg";
 const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
 export default function Page() {
@@ -168,7 +168,7 @@ export default function Page() {
         </div> */}
 
         <div className="py-4"></div>
-        <Suspense fallback={<SampleEventLoading limit={3} />}>
+        <Suspense fallback={<div />}>
           <SampleEvent eventId={sampleEventId} />
         </Suspense>
         <div className="py-12 sm:py-16"></div>
@@ -195,7 +195,7 @@ export default function Page() {
           </div>
           <div className="mx-auto place-items-center rounded-xl border-2 border-gray-100 bg-white px-4 pt-4 text-left shadow-md">
             <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
-              <Suspense fallback={<NextEventsLoading limit={3} />}>
+              <Suspense fallback={<div />}>
                 <SampleList listId={sampleEventListId} />
               </Suspense>
             </div>

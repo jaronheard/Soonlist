@@ -10,7 +10,7 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
   });
 
   const eventData = event?.event as AddToCalendarButtonProps;
-  const fullImageUrl = eventData.images?.[3];
+  const fullImageUrl = eventData?.images?.[3];
 
   if (!event || !eventData) {
     return null;
