@@ -122,7 +122,10 @@ const testimonials = [
   ],
 ];
 
-const sampleEventId = "cloetmfc60001jr0ays7hsxum";
+const sampleEventId =
+  process.env.NODE_ENV === "production"
+    ? "clrh2zo6p0001asmk0axrq55h"
+    : "cloetmfc60001jr0ays7hsxum";
 const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
 export default function Page() {
