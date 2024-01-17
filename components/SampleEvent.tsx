@@ -27,7 +27,7 @@ export default async function SampleEvent({} = {}) {
   }
 
   return (
-    <div className="mx-auto flex min-h-0 max-w-7xl flex-col place-items-center sm:flex-row">
+    <div className="relative mx-auto flex min-h-0 max-w-7xl flex-col place-items-center sm:flex-row">
       {fullImageUrl && (
         <Image
           src={fullImageUrl}
@@ -53,6 +53,12 @@ export default async function SampleEvent({} = {}) {
           createdAt={event.createdAt}
           visibility={event.visibility}
         />
+      </div>
+      <div className="absolute inset-x-0 -bottom-12 z-50 mx-auto block w-max max-w-full rounded-lg bg-yellow-50 p-2 px-3 py-1 text-sm leading-6 text-gray-500 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+        <div>
+          ✨ All the details here were automatically captured from the image, no
+          typing required!
+        </div>
       </div>
     </div>
   );

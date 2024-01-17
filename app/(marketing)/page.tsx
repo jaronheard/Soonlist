@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { CalendarPlus, List, Megaphone, Share, Users, Zap } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NextEvents from "@/components/NextEvents";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,8 @@ import { CTAButton } from "@/components/CallToActions";
 import NextEventsLoading from "@/components/NextEventsLoading";
 import SampleEvent from "@/components/SampleEvent";
 import SampleEventLoading from "@/components/SampleEventLoading";
+import SampleList from "@/components/SampleList";
+import SampleListPhotos from "@/components/SampleListPhotos";
 
 const features = [
   {
@@ -152,14 +155,14 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <div className="mt-10 flex items-center justify-center gap-x-6">
+        {/* <div className="mt-10 flex items-center justify-center gap-x-6">
           <CTAButton />
           <Button variant="link" asChild>
             <Link href="/explore">
               Explore <span aria-hidden="true">→</span>
             </Link>
           </Button>
-        </div>
+        </div> */}
 
         <div className="py-4"></div>
         <Suspense fallback={<SampleEventLoading limit={3} />}>
@@ -180,12 +183,19 @@ export default function Page() {
           </div>
         </div>
         <div className="py-4"></div>
-        <div className="mx-auto grid max-w-7xl place-items-center rounded-xl border-2 border-gray-100 bg-white p-4 text-left shadow-md">
-          <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
-            <Suspense fallback={<NextEventsLoading limit={3} />}>
-              <NextEvents limit={3} />
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row">
+          <div className="shrink-0">
+            <div className="sm:p-12"></div>
+            <Suspense fallback={<div />}>
+              <SampleListPhotos listId={"cloetmfc60001jr0ays7hsxum"} />
             </Suspense>
-            <div className="p-4"></div>
+          </div>
+          <div className="mx-auto place-items-center rounded-xl border-2 border-gray-100 bg-white px-4 pt-4 text-left shadow-md">
+            <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
+              <Suspense fallback={<NextEventsLoading limit={3} />}>
+                <SampleList listId={"cloetmfc60001jr0ays7hsxum"} />
+              </Suspense>
+            </div>
           </div>
         </div>
         <div
@@ -270,16 +280,12 @@ export default function Page() {
               </div>
             </div>
             <div className="sm:px-6 lg:px-0">
-              <div className="relative isolate overflow-hidden bg-gradient-to-br from-green-500/10 via-blue-500/10 to-indigo-500/10 px-6 pt-8 sm:mx-auto sm:max-w-2xl sm:rounded-3xl sm:pl-16 sm:pr-0 sm:pt-16 lg:mx-0 lg:max-w-none">
-                <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
-                  <Suspense fallback={<NextEventsLoading limit={3} />}>
-                    <NextEvents limit={3} />
-                  </Suspense>
-                  <div className="p-4"></div>
-                </div>
-                <div
-                  className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/10 sm:rounded-3xl"
-                  aria-hidden="true"
+              <div className="relative isolate overflow-hidden bg-gradient-to-br from-green-500/10 via-blue-500/10 to-indigo-500/10 sm:mx-auto sm:max-w-2xl sm:rounded-3xl lg:max-w-none">
+                <Image
+                  src="https://upcdn.io/12a1yek/raw/uploads/2024/01/17/IMG_3960.png"
+                  alt=""
+                  height={1344}
+                  width={1008}
                 />
               </div>
             </div>
