@@ -93,7 +93,10 @@ export default function Footer({ cta }: { cta?: boolean }) {
   return (
     <>
       <SignedOut>
-        <div className="mx-6 w-full max-w-7xl rounded-xl border-2 border-gray-100 bg-yellow-50 px-6 py-4 shadow-md lg:mx-8">
+        <div
+          id="waitlist"
+          className="mx-6 max-w-7xl rounded-xl border-2 border-gray-100 bg-yellow-50 px-6 py-4 shadow-md lg:mx-8"
+        >
           <WaitlistSignup />
         </div>
       </SignedOut>

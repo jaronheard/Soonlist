@@ -71,7 +71,7 @@ export function WaitlistSignup() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-4 md:flex-row md:gap-4"
         >
-          <div className="flex w-96 shrink-0 flex-row gap-4">
+          <div className="flex w-56 shrink-0 flex-col gap-4 sm:w-96 sm:flex-row">
             <FormField
               control={form.control}
               name="email"
@@ -107,8 +107,8 @@ export function WaitlistSignup() {
             render={({ field }) => (
               <FormItem
                 className={cn("transition-all duration-150", {
-                  "w-full h-36 opacity-100": form.formState.isDirty,
-                  "w-0 h-0 opacity-0": !form.formState.isDirty,
+                  "w-full h-44 opacity-100": form.formState.isDirty,
+                  "w-0 h-0 md:h-44 opacity-0": !form.formState.isDirty,
                 })}
               >
                 <FormLabel>Why (optional)</FormLabel>
