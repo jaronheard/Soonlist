@@ -1,13 +1,17 @@
 import { Suspense } from "react";
 import { CalendarPlus, List, Megaphone, Share, Users, Zap } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import NextEvents from "@/components/NextEvents";
 import { cn } from "@/lib/utils";
 import RainbowText from "@/components/RainbowText";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
 import { CTAButton } from "@/components/CallToActions";
 import NextEventsLoading from "@/components/NextEventsLoading";
+import SampleEvent from "@/components/SampleEvent";
+import SampleEventLoading from "@/components/SampleEventLoading";
+import SampleList from "@/components/SampleList";
+import SampleListPhotos from "@/components/SampleListPhotos";
 
 const features = [
   {
@@ -118,9 +122,13 @@ const testimonials = [
   ],
 ];
 
-export default function Page() {
-  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const sampleEventId =
+  process.env.NODE_ENV === "production"
+    ? "clrh2zo6p0001asmk0axrq55h"
+    : "clrg63xn20001zyzg6gnwzktg";
+const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
+export default function Page() {
   return (
     <div className="bg-white">
       <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -136,31 +144,59 @@ export default function Page() {
             }}
           />
         </div>
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-          {/* <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Clarifying our vision and intention.{" "}
-              <a href="#" className="font-semibold text-indigo-600">
-                <span className="absolute inset-0" aria-hidden="true" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a>
+
+        <div className="pt-24 sm:pt-32 lg:pt-40">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                Event lists for everybody
+              </h1>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                Capture and share events that matter to you and your communities
+              </p>
             </div>
-          </div> */}
-          <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Curate calendars, cultivate communities
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Join us in reimagining how we discover, remember, and share
-              events.
+          </div>
+        </div>
+        {/* <div className="mt-10 flex items-center justify-center gap-x-6">
+          <CTAButton />
+          <Button variant="link" asChild>
+            <Link href="/explore">
+              Explore <span aria-hidden="true">→</span>
+            </Link>
+          </Button>
+        </div> */}
+
+        <div className="py-4"></div>
+        <Suspense fallback={<div />}>
+          <SampleEvent eventId={sampleEventId} />
+        </Suspense>
+        <div className="py-12 sm:py-16"></div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <RainbowText className="text-base font-semibold leading-7 text-indigo-600">
+              Event lists made easy
+            </RainbowText>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Make and share lists of events
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <CTAButton />
-              <Button variant="link" asChild>
-                <Link href="/explore">
-                  Explore <span aria-hidden="true">→</span>
-                </Link>
-              </Button>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Add your events or others events to lists to share
+            </p>
+          </div>
+        </div>
+        <div className="py-4"></div>
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row">
+          <div className="shrink-0">
+            <div className="sm:p-12"></div>
+            <Suspense fallback={<div />}>
+              <SampleListPhotos listId={sampleEventListId} />
+            </Suspense>
+          </div>
+          <div className="mx-auto place-items-center rounded-xl border-2 border-gray-100 bg-white px-4 pt-4 text-left shadow-md">
+            <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
+              <Suspense fallback={<div />}>
+                <SampleList listId={sampleEventListId} />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -246,16 +282,13 @@ export default function Page() {
               </div>
             </div>
             <div className="sm:px-6 lg:px-0">
-              <div className="relative isolate overflow-hidden bg-gradient-to-br from-green-500/10 via-blue-500/10 to-indigo-500/10 px-6 pt-8 sm:mx-auto sm:max-w-2xl sm:rounded-3xl sm:pl-16 sm:pr-0 sm:pt-16 lg:mx-0 lg:max-w-none">
-                <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
-                  <Suspense fallback={<NextEventsLoading limit={3} />}>
-                    <NextEvents limit={3} />
-                  </Suspense>
-                  <div className="p-4"></div>
-                </div>
-                <div
-                  className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/10 sm:rounded-3xl"
-                  aria-hidden="true"
+              <div className="relative isolate overflow-hidden bg-gradient-to-br from-green-500/10 via-blue-500/10 to-indigo-500/10 sm:mx-auto sm:max-w-2xl sm:rounded-3xl lg:max-w-none">
+                <Image
+                  src="https://upcdn.io/12a1yek/raw/uploads/2024/01/17/IMG_3960.png"
+                  alt=""
+                  height={1344}
+                  width={1008}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1008px"
                 />
               </div>
             </div>
@@ -384,40 +417,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* <footer>
-        <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
-          <nav
-            className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
-            aria-label="Footer"
-          >
-            {footerNavigation.main.map((item) => (
-              <div key={item.name} className="pb-6">
-                <a
-                  href={item.href}
-                  className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                >
-                  {item.name}
-                </a>
-              </div>
-            ))}
-          </nav>
-          <div className="mt-10 flex justify-center space-x-10">
-            {footerNavigation.social.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">{item.name}</span>
-                <item.icon className="h-6 w-6" aria-hidden="true" />
-              </a>
-            ))}
-          </div>
-          <p className="mt-10 text-center text-xs leading-5 text-gray-500">
-            &copy; 2023 Soonlist. All rights reserved.
-          </p>
-        </div>
-      </footer> */}
     </div>
   );
 }
