@@ -3,7 +3,6 @@ import { CalendarPlus, List, Megaphone, Share, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import NextEvents from "@/components/NextEvents";
 import { cn } from "@/lib/utils";
 import RainbowText from "@/components/RainbowText";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
@@ -123,9 +122,10 @@ const testimonials = [
   ],
 ];
 
-export default function Page() {
-  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const sampleEventId = "cloetmfc60001jr0ays7hsxum";
+const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
+export default function Page() {
   return (
     <div className="bg-white">
       <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -166,7 +166,7 @@ export default function Page() {
 
         <div className="py-4"></div>
         <Suspense fallback={<SampleEventLoading limit={3} />}>
-          <SampleEvent />
+          <SampleEvent eventId={sampleEventId} />
         </Suspense>
         <div className="py-12 sm:py-16"></div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -187,13 +187,13 @@ export default function Page() {
           <div className="shrink-0">
             <div className="sm:p-12"></div>
             <Suspense fallback={<div />}>
-              <SampleListPhotos listId={"cloetmfc60001jr0ays7hsxum"} />
+              <SampleListPhotos listId={sampleEventListId} />
             </Suspense>
           </div>
           <div className="mx-auto place-items-center rounded-xl border-2 border-gray-100 bg-white px-4 pt-4 text-left shadow-md">
             <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
               <Suspense fallback={<NextEventsLoading limit={3} />}>
-                <SampleList listId={"cloetmfc60001jr0ays7hsxum"} />
+                <SampleList listId={sampleEventListId} />
               </Suspense>
             </div>
           </div>
@@ -415,40 +415,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* <footer>
-        <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
-          <nav
-            className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
-            aria-label="Footer"
-          >
-            {footerNavigation.main.map((item) => (
-              <div key={item.name} className="pb-6">
-                <a
-                  href={item.href}
-                  className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                >
-                  {item.name}
-                </a>
-              </div>
-            ))}
-          </nav>
-          <div className="mt-10 flex justify-center space-x-10">
-            {footerNavigation.social.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">{item.name}</span>
-                <item.icon className="h-6 w-6" aria-hidden="true" />
-              </a>
-            ))}
-          </div>
-          <p className="mt-10 text-center text-xs leading-5 text-gray-500">
-            &copy; 2023 Soonlist. All rights reserved.
-          </p>
-        </div>
-      </footer> */}
     </div>
   );
 }
