@@ -135,6 +135,15 @@ model Comment {
   @@index([userId])
 }
 
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  zipcode   String
+  why       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Visibility {
   public
   private
