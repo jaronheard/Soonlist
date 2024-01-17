@@ -36,14 +36,6 @@ const formSchema = z.object({
 });
 
 export function WaitlistSignup() {
-  const waitlistSignup = api.waitlist.create.useMutation({
-    onError: () => {
-      toast.error("Your weren't added to the waitlist. Please try again.");
-    },
-    onSuccess: () => {
-      toast.success("You've been added to the waitlist.");
-    },
-  });
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,6 +46,15 @@ export function WaitlistSignup() {
     },
   });
 
+  const waitlistSignup = api.waitlist.create.useMutation({
+    onError: () => {
+      toast.error("Your weren't added to the waitlist. Please try again.");
+    },
+    onSuccess: () => {
+      form.reset();
+      toast.success("You've been added to the waitlist.");
+    },
+  });
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     waitlistSignup.mutate(values);
