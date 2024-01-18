@@ -12,24 +12,24 @@ import {
 } from "@/components/ui/card";
 import { api } from "@/trpc/server";
 
-export async function generateMetadata(
-  {},
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const users = await api.user.getAll.query();
-  const previousImages = (await parent).openGraph?.images || [];
+// export async function generateMetadata(
+//   {},
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const users = await api.user.getAll.query();
+//   const previousImages = (await parent).openGraph?.images || [];
 
-  return {
-    title: `All users | Soonlist`,
-    openGraph: {
-      title: `All users`,
-      description: `See all users on  Soonlist`,
-      url: `${process.env.NEXT_PUBLIC_URL}/users`,
-      type: "article",
-      images: [...previousImages],
-    },
-  };
-}
+//   return {
+//     title: `All users | Soonlist`,
+//     openGraph: {
+//       title: `All users`,
+//       description: `See all users on  Soonlist`,
+//       url: `${process.env.NEXT_PUBLIC_URL}/users`,
+//       type: "article",
+//       images: [...previousImages],
+//     },
+//   };
+// }
 
 export default async function Page() {
   const users = await api.user.getAll.query();

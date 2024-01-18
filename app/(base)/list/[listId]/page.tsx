@@ -9,36 +9,36 @@ import { api } from "@/trpc/server";
 
 type Props = { params: { listId: string } };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const list = await api.list.get.query({ listId: params.listId });
+// export async function generateMetadata(
+//   { params }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const list = await api.list.get.query({ listId: params.listId });
 
-  if (!list) {
-    return {
-      title: "No list found | Soonlist",
-    };
-  }
+//   if (!list) {
+//     return {
+//       title: "No list found | Soonlist",
+//     };
+//   }
 
-  const futureEvents = list.events.filter(
-    (item) => item.startDateTime >= new Date()
-  );
-  const futureEventsCount = futureEvents.length;
-  // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
+//   const futureEvents = list.events.filter(
+//     (item) => item.startDateTime >= new Date()
+//   );
+//   const futureEventsCount = futureEvents.length;
+//   // optionally access and extend (rather than replace) parent metadata
+//   const previousImages = (await parent).openGraph?.images || [];
 
-  return {
-    title: `${list.name} by @${list.User.username} | Soonlist`,
-    openGraph: {
-      title: `${list.name} by @${list.User.username} (${futureEventsCount} upcoming)`,
-      description: `${list.description}`,
-      url: `${process.env.NEXT_PUBLIC_URL}/list/${params.listId}`,
-      type: "article",
-      images: [...previousImages],
-    },
-  };
-}
+//   return {
+//     title: `${list.name} by @${list.User.username} | Soonlist`,
+//     openGraph: {
+//       title: `${list.name} by @${list.User.username} (${futureEventsCount} upcoming)`,
+//       description: `${list.description}`,
+//       url: `${process.env.NEXT_PUBLIC_URL}/list/${params.listId}`,
+//       type: "article",
+//       images: [...previousImages],
+//     },
+//   };
+// }
 
 export default async function Page({ params }: Props) {
   const user = await currentUser();

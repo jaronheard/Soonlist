@@ -6,27 +6,27 @@ import { api } from "@/trpc/server";
 
 type Props = { params: { userName: string } };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const lists = await api.list.getFollowing.query({
-    userName: params.userName,
-  });
-  const listCount = lists.length;
-  const previousImages = (await parent).openGraph?.images || [];
+// export async function generateMetadata(
+//   { params }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const lists = await api.list.getFollowing.query({
+//     userName: params.userName,
+//   });
+//   const listCount = lists.length;
+//   const previousImages = (await parent).openGraph?.images || [];
 
-  return {
-    title: `@${params.userName} is following (${listCount} lists) | Soonlist`,
-    openGraph: {
-      title: `@${params.userName} is following (${listCount} lists)`,
-      description: `See the lists @${params.userName} is following on  Soonlist`,
-      url: `${process.env.NEXT_PUBLIC_URL}/${params.userName}/following/users`,
-      type: "article",
-      images: [...previousImages],
-    },
-  };
-}
+//   return {
+//     title: `@${params.userName} is following (${listCount} lists) | Soonlist`,
+//     openGraph: {
+//       title: `@${params.userName} is following (${listCount} lists)`,
+//       description: `See the lists @${params.userName} is following on  Soonlist`,
+//       url: `${process.env.NEXT_PUBLIC_URL}/${params.userName}/following/users`,
+//       type: "article",
+//       images: [...previousImages],
+//     },
+//   };
+// }
 
 export default async function Page({ params }: Props) {
   const lists = await api.list.getFollowing.query({

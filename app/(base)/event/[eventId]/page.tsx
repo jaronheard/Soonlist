@@ -14,37 +14,37 @@ type Props = {
   };
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const event = await api.event.get.query({ eventId: params.eventId });
-  if (!event) {
-    return {
-      title: "No event found | Soonlist",
-      openGraph: {
-        images: [],
-      },
-    };
-  }
+// export async function generateMetadata(
+//   { params }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const event = await api.event.get.query({ eventId: params.eventId });
+//   if (!event) {
+//     return {
+//       title: "No event found | Soonlist",
+//       openGraph: {
+//         images: [],
+//       },
+//     };
+//   }
 
-  const eventData = event.event as AddToCalendarButtonProps;
-  // optionally access and extend (rather than replace) parent metadata
-  // images are in the order of square, 4:3, 16:9, cropped
-  const hasAllImages = eventData.images && eventData.images.length === 4;
-  const previewImage = hasAllImages ? eventData.images?.slice(2, 3) : undefined;
+//   const eventData = event.event as AddToCalendarButtonProps;
+//   // optionally access and extend (rather than replace) parent metadata
+//   // images are in the order of square, 4:3, 16:9, cropped
+//   const hasAllImages = eventData.images && eventData.images.length === 4;
+//   const previewImage = hasAllImages ? eventData.images?.slice(2, 3) : undefined;
 
-  return {
-    title: `${eventData.name} | Soonlist`,
-    openGraph: {
-      title: `${eventData.name}`,
-      description: `(${eventData.startDate} ${eventData.startTime}-${eventData.endTime}) ${eventData.description}`,
-      url: `${process.env.NEXT_PUBLIC_URL}/event/${event.id}`,
-      type: "article",
-      images: previewImage || (await parent).openGraph?.images || [],
-    },
-  };
-}
+//   return {
+//     title: `${eventData.name} | Soonlist`,
+//     openGraph: {
+//       title: `${eventData.name}`,
+//       description: `(${eventData.startDate} ${eventData.startTime}-${eventData.endTime}) ${eventData.description}`,
+//       url: `${process.env.NEXT_PUBLIC_URL}/event/${event.id}`,
+//       type: "article",
+//       images: previewImage || (await parent).openGraph?.images || [],
+//     },
+//   };
+// }
 
 export default async function Page({ params }: Props) {
   const event = await api.event.get.query({ eventId: params.eventId });
