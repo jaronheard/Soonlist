@@ -40,6 +40,7 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
           event={eventData}
           createdAt={event.createdAt}
           visibility={event.visibility}
+          startDateTime={event.startDateTime}
         />
       </div>
       <div className="absolute inset-x-0 -bottom-12 z-50 mx-auto block w-max max-w-full rounded-lg bg-yellow-50 p-2 px-3 py-1 text-sm leading-6 text-gray-500 ring-1 ring-gray-900/10 hover:ring-gray-900/20">

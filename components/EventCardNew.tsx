@@ -34,7 +34,7 @@ import {
 import { AddToCalendarButtonProps } from "@/types";
 import { SimilarityDetails, collapseSimilarEvents } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
-import { api } from "@/trpc/server";
+import { api } from "@/trpc/react";
 
 type EventCardProps = {
   User: User;
@@ -275,85 +275,6 @@ function EventActionButton({
   );
 }
 
-// function EventCuratedBy({
-//   username,
-//   comment,
-//   similarEvents,
-// }: {
-//   username: string;
-//   comment?: Comment;
-//   similarEvents?: {
-//     event: EventWithUser;
-//     similarityDetails: SimilarityDetails;
-//   }[];
-// }) {
-//   return (
-//     <div className="flex flex-col items-start gap-2">
-//       <p className="text-xs font-medium text-gray-500">
-//         Collected by{" "}
-//         <Link
-//           href={`/${username}/events`}
-//           className="font-bold text-gray-900"
-//         >{`@${username}`}</Link>
-//         {similarEvents && similarEvents.length > 0 && (
-//           <SimilarEventsSummary
-//             similarEvents={similarEvents}
-//             curatorUsername={username}
-//           />
-//         )}
-//       </p>
-//       {comment && (
-//         <Badge className="inline" variant="outline">
-//           &ldquo;{comment.content}&rdquo;
-//         </Badge>
-//       )}
-//     </div>
-//   );
-// }
-
-async function EventCuratedBy({
-  username,
-  comment,
-  id,
-  startDateTime,
-}: {
-  username: string;
-  comment?: Comment;
-  id: string;
-  startDateTime: Date;
-}) {
-  const possibleDuplicateEvents = (await api.event.getPossibleDuplicates.query({
-    startDateTime: startDateTime,
-  })) as EventWithUser[];
-
-  const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
-    (similarEvent) => similarEvent.event.id === id
-  )?.similarEvents;
-
-  return (
-    <div className="flex flex-col items-start gap-2">
-      <p className="text-xs font-medium text-gray-500">
-        Collected by{" "}
-        <Link
-          href={`/${username}/events`}
-          className="font-bold text-gray-900"
-        >{`@${username}`}</Link>
-        {similarEvents && similarEvents.length > 0 && (
-          <SimilarEventsSummary
-            similarEvents={similarEvents}
-            curatorUsername={username}
-          />
-        )}
-      </p>
-      {comment && (
-        <Badge className="inline" variant="outline">
-          &ldquo;{comment.content}&rdquo;
-        </Badge>
-      )}
-    </div>
-  );
-}
-
 function SimilarEventsForSingleEvent({
   similarEvents,
 }: {
@@ -370,7 +291,7 @@ function SimilarEventsForSingleEvent({
   );
 }
 
-function SimilarEventsSummary({
+export function SimilarEventsSummary({
   similarEvents,
   curatorUsername,
   singleEvent,
@@ -525,6 +446,81 @@ export function EventCard(props: EventCardProps) {
           </SignedIn>
         )}
       </div>
+    </div>
+  );
+}
+export function SimilarEvents({
+  username,
+  id,
+  startDateTime,
+}: {
+  username: string;
+  id: string;
+  startDateTime: Date;
+}) {
+  const possibleDuplicateEventsQuery = api.event.getPossibleDuplicates.useQuery(
+    {
+      startDateTime: startDateTime,
+    }
+  );
+
+  if (possibleDuplicateEventsQuery.status === "loading") {
+    return null;
+  }
+
+  const possibleDuplicateEvents = possibleDuplicateEventsQuery.data as
+    | EventWithUser[]
+    | undefined;
+
+  if (!possibleDuplicateEvents) {
+    return null;
+  }
+
+  const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
+    (similarEvent) => similarEvent.event.id === id
+  )?.similarEvents;
+
+  return (
+    <>
+      {similarEvents && similarEvents.length > 0 && (
+        <SimilarEventsSummary
+          similarEvents={similarEvents}
+          curatorUsername={username}
+        />
+      )}
+    </>
+  );
+}
+export function EventCuratedBy({
+  username,
+  comment,
+  id,
+  startDateTime,
+}: {
+  username: string;
+  comment?: Comment;
+  id: string;
+  startDateTime: Date;
+}) {
+  return (
+    <div className="flex flex-col items-start gap-2">
+      <p className="text-xs font-medium text-gray-500">
+        Collected by{" "}
+        <Link
+          href={`/${username}/events`}
+          className="font-bold text-gray-900"
+        >{`@${username}`}</Link>
+        <SimilarEvents
+          username={username}
+          id={id}
+          startDateTime={startDateTime}
+        />
+      </p>
+      {comment && (
+        <Badge className="inline" variant="outline">
+          &ldquo;{comment.content}&rdquo;
+        </Badge>
+      )}
     </div>
   );
 }
