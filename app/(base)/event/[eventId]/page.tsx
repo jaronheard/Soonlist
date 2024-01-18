@@ -1,12 +1,14 @@
 import { Metadata, ResolvingMetadata } from "next/types";
 import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
+import { Suspense } from "react";
 import { EventCard } from "@/components/EventCardNew";
 import { UserInfo } from "@/components/UserInfo";
 import { AddToCalendarButtonProps } from "@/types";
 import { collapseSimilarEvents } from "@/lib/similarEvents";
 import EventList, { EventWithUser } from "@/components/EventList";
 import { api } from "@/trpc/server";
+import NextEventsLoading from "@/components/NextEventsLoading";
 
 type Props = {
   params: {
@@ -46,31 +48,64 @@ export async function generateMetadata(
   };
 }
 
+async function MoreEventsFromUser({
+  eventId,
+  userId,
+  username,
+}: {
+  eventId: string;
+  userId: string;
+  username: string;
+}) {
+  const otherEvents = await api.event.getCreatedForUser.query({
+    userName: username,
+  });
+  const futureEvents = otherEvents
+    .filter((item) => item.startDateTime >= new Date())
+    .filter((item) => item.id !== eventId)
+    .slice(0, 3);
+
+  return (
+    <>
+      <div className="mr-auto flex place-items-center gap-2.5 px-6">
+        <div className="font-medium">More events from</div>
+        <UserInfo userId={userId} />
+      </div>
+      <div className="p-2"></div>
+      <EventList
+        currentEvents={[]}
+        pastEvents={[]}
+        futureEvents={futureEvents}
+        hideCurator
+        variant="future-minimal"
+        showOtherCurators={true}
+      ></EventList>
+    </>
+  );
+}
+
+function MoreEventsFromUserLoading({ userId }: { userId: string }) {
+  return (
+    <>
+      <div className="mr-auto flex place-items-center gap-2.5 px-6">
+        <div className="font-medium">More events from</div>
+        <UserInfo userId={userId} />
+      </div>
+      <div className="p-2"></div>
+      <NextEventsLoading />
+    </>
+  );
+}
+
 export default async function Page({ params }: Props) {
   const event = await api.event.get.query({ eventId: params.eventId });
+
   if (!event) {
     return <p className="text-lg text-gray-500">No event found.</p>;
   }
-  const otherEvents = await api.event.getCreatedForUser.query({
-    userName: event.User.username,
-  });
-
-  const futureEvents = otherEvents
-    .filter((item) => item.startDateTime >= new Date())
-    .filter((item) => item.id !== event.id)
-    .slice(0, 3);
 
   const eventData = event?.event as AddToCalendarButtonProps;
-  const fullImageUrl = eventData.images?.[3];
-
-  const possibleDuplicateEvents = (await api.event.getPossibleDuplicates.query({
-    startDateTime: event.startDateTime,
-  })) as EventWithUser[];
-
-  // find the event that matches the current event
-  const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
-    (similarEvent) => similarEvent.event.id === event.id
-  )?.similarEvents;
+  const fullImageUrl = eventData?.images?.[3];
 
   return (
     <>
@@ -83,7 +118,7 @@ export default async function Page({ params }: Props) {
         event={event.event as AddToCalendarButtonProps}
         createdAt={event.createdAt}
         visibility={event.visibility}
-        similarEvents={similarEvents}
+        startDateTime={event.startDateTime}
         singleEvent
         hideCurator
       />
@@ -99,19 +134,13 @@ export default async function Page({ params }: Props) {
         </>
       )}
       <div className="p-12 sm:p-16"></div>
-      <div className="mr-auto flex place-items-center gap-2.5 px-6">
-        <div className="font-medium">More events from</div>
-        <UserInfo userId={event.userId} />
-      </div>
-      <div className="p-2"></div>
-      <EventList
-        currentEvents={[]}
-        pastEvents={[]}
-        futureEvents={futureEvents}
-        hideCurator
-        variant="future-minimal"
-        showOtherCurators={true}
-      ></EventList>
+      <Suspense fallback={<MoreEventsFromUserLoading userId={event.User.id} />}>
+        <MoreEventsFromUser
+          eventId={event.id}
+          username={event.User.username}
+          userId={event.User.id}
+        />
+      </Suspense>
     </>
   );
 }

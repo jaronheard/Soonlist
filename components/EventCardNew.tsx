@@ -32,8 +32,9 @@ import {
   timeFormatDateInfo,
 } from "@/lib/utils";
 import { AddToCalendarButtonProps } from "@/types";
-import { SimilarityDetails } from "@/lib/similarEvents";
+import { SimilarityDetails, collapseSimilarEvents } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
+import { api } from "@/trpc/server";
 
 type EventCardProps = {
   User: User;
@@ -41,6 +42,7 @@ type EventCardProps = {
   Comment: Comment[];
   id: string;
   createdAt: Date;
+  startDateTime: Date;
   event: AddToCalendarButtonProps;
   visibility: "public" | "private";
   singleEvent?: boolean;
@@ -273,18 +275,61 @@ function EventActionButton({
   );
 }
 
-function EventCuratedBy({
+// function EventCuratedBy({
+//   username,
+//   comment,
+//   similarEvents,
+// }: {
+//   username: string;
+//   comment?: Comment;
+//   similarEvents?: {
+//     event: EventWithUser;
+//     similarityDetails: SimilarityDetails;
+//   }[];
+// }) {
+//   return (
+//     <div className="flex flex-col items-start gap-2">
+//       <p className="text-xs font-medium text-gray-500">
+//         Collected by{" "}
+//         <Link
+//           href={`/${username}/events`}
+//           className="font-bold text-gray-900"
+//         >{`@${username}`}</Link>
+//         {similarEvents && similarEvents.length > 0 && (
+//           <SimilarEventsSummary
+//             similarEvents={similarEvents}
+//             curatorUsername={username}
+//           />
+//         )}
+//       </p>
+//       {comment && (
+//         <Badge className="inline" variant="outline">
+//           &ldquo;{comment.content}&rdquo;
+//         </Badge>
+//       )}
+//     </div>
+//   );
+// }
+
+async function EventCuratedBy({
   username,
   comment,
-  similarEvents,
+  id,
+  startDateTime,
 }: {
   username: string;
   comment?: Comment;
-  similarEvents?: {
-    event: EventWithUser;
-    similarityDetails: SimilarityDetails;
-  }[];
+  id: string;
+  startDateTime: Date;
 }) {
+  const possibleDuplicateEvents = (await api.event.getPossibleDuplicates.query({
+    startDateTime: startDateTime,
+  })) as EventWithUser[];
+
+  const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
+    (similarEvent) => similarEvent.event.id === id
+  )?.similarEvents;
+
   return (
     <div className="flex flex-col items-start gap-2">
       <p className="text-xs font-medium text-gray-500">
@@ -394,7 +439,15 @@ function CuratorComment({ comment }: { comment?: Comment }) {
 
 export function EventCard(props: EventCardProps) {
   const { user } = useUser();
-  const { User, FollowEvent, id, event, singleEvent, visibility } = props;
+  const {
+    User,
+    FollowEvent,
+    id,
+    event,
+    singleEvent,
+    visibility,
+    startDateTime,
+  } = props;
   const roles = user?.unsafeMetadata.roles as string[] | undefined;
   const isSelf = user?.id === User.id;
   const isOwner = isSelf || roles?.includes("admin");
@@ -439,7 +492,8 @@ export function EventCard(props: EventCardProps) {
           <EventCuratedBy
             username={User.username}
             comment={comment}
-            similarEvents={props.similarEvents}
+            id={id}
+            startDateTime={startDateTime}
           />
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
