@@ -12,8 +12,8 @@ import {
 } from "drizzle-orm/mysql-core";
 import { relations, sql } from "drizzle-orm";
 
-export const comment = mysqlTable(
-  "Comment",
+export const comments = mysqlTable(
+  "Comments",
   {
     id: varchar("id", { length: 191 }).notNull(),
     content: mediumtext("content").notNull(),
@@ -26,20 +26,20 @@ export const comment = mysqlTable(
   },
   (table) => {
     return {
-      eventIdIdx: index("Comment_eventId_idx").on(table.eventId),
-      userIdIdx: index("Comment_userId_idx").on(table.userId),
-      commentId: primaryKey({ columns: [table.id], name: "Comment_id" }),
+      eventIdIdx: index("Comments_eventId_idx").on(table.eventId),
+      userIdIdx: index("Comments_userId_idx").on(table.userId),
+      commentId: primaryKey({ columns: [table.id], name: "Comments_id" }),
     };
   }
 );
 
-export const commentRelations = relations(comment, ({ one }) => ({
-  event: one(event, { fields: [comment.id], references: [event.cuid] }),
-  user: one(user, { fields: [comment.id], references: [user.id] }),
+export const commentsRelations = relations(comments, ({ one }) => ({
+  event: one(events, { fields: [comments.id], references: [events.cuid] }),
+  user: one(users, { fields: [comments.id], references: [users.id] }),
 }));
 
-export const event = mysqlTable(
-  "Event",
+export const events = mysqlTable(
+  "Events",
   {
     createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
@@ -60,21 +60,21 @@ export const event = mysqlTable(
   },
   (table) => {
     return {
-      userIdIdx: index("Event_userId_idx").on(table.userId),
-      eventCuid: primaryKey({ columns: [table.cuid], name: "Event_cuid" }),
+      userIdIdx: index("Events_userId_idx").on(table.userId),
+      eventCuid: primaryKey({ columns: [table.cuid], name: "Events_cuid" }),
     };
   }
 );
 
-export const eventRelations = relations(event, ({ one, many }) => ({
-  user: one(user, { fields: [event.userId], references: [user.id] }),
-  eventToList: many(eventToList),
-  comment: many(comment),
-  followEvent: many(followEvent),
+export const eventRelations = relations(events, ({ one, many }) => ({
+  users: one(users, { fields: [events.userId], references: [users.id] }),
+  eventsToLists: many(eventsToLists),
+  comment: many(comments),
+  followEvents: many(followEvents),
 }));
 
-export const eventToList = mysqlTable(
-  "EventToList",
+export const eventsToLists = mysqlTable(
+  "EventsToLists",
   {
     eventId: varchar("eventId", { length: 191 }).notNull(),
     listId: varchar("listId", { length: 191 }).notNull(),
@@ -86,16 +86,16 @@ export const eventToList = mysqlTable(
   }
 );
 
-export const eventToListRelations = relations(eventToList, ({ one }) => ({
-  event: one(event, {
-    fields: [eventToList.eventId],
-    references: [event.cuid],
+export const eventsToListsRelations = relations(eventsToLists, ({ one }) => ({
+  event: one(events, {
+    fields: [eventsToLists.eventId],
+    references: [events.cuid],
   }),
-  list: one(list, { fields: [eventToList.listId], references: [list.id] }),
+  list: one(lists, { fields: [eventsToLists.listId], references: [lists.id] }),
 }));
 
-export const followEvent = mysqlTable(
-  "FollowEvent",
+export const followEvents = mysqlTable(
+  "FollowEvents",
   {
     userId: varchar("userId", { length: 191 }).notNull(),
     eventId: varchar("eventId", { length: 191 }).notNull(),
@@ -106,26 +106,26 @@ export const followEvent = mysqlTable(
   },
   (table) => {
     return {
-      userIdIdx: index("FollowEvent_userId_idx").on(table.userId),
-      eventIdIdx: index("FollowEvent_eventId_idx").on(table.eventId),
+      userIdIdx: index("FollowEvents_userId_idx").on(table.userId),
+      eventIdIdx: index("FollowEvents_eventId_idx").on(table.eventId),
       followEventUserIdEventId: primaryKey({
         columns: [table.userId, table.eventId],
-        name: "FollowEvent_userId_eventId",
+        name: "FollowEvents_userId_eventId",
       }),
     };
   }
 );
 
-export const followEventRelations = relations(followEvent, ({ one }) => ({
-  user: one(user, { fields: [followEvent.userId], references: [user.id] }),
-  event: one(event, {
-    fields: [followEvent.eventId],
-    references: [event.cuid],
+export const followEventsRelations = relations(followEvents, ({ one }) => ({
+  user: one(users, { fields: [followEvents.userId], references: [users.id] }),
+  event: one(events, {
+    fields: [followEvents.eventId],
+    references: [events.cuid],
   }),
 }));
 
-export const followList = mysqlTable(
-  "FollowList",
+export const followLists = mysqlTable(
+  "FollowLists",
   {
     userId: varchar("userId", { length: 191 }).notNull(),
     listId: varchar("listId", { length: 191 }).notNull(),
@@ -136,23 +136,23 @@ export const followList = mysqlTable(
   },
   (table) => {
     return {
-      userIdIdx: index("FollowList_userId_idx").on(table.userId),
-      listIdIdx: index("FollowList_listId_idx").on(table.listId),
+      userIdIdx: index("FollowLists_userId_idx").on(table.userId),
+      listIdIdx: index("FollowLists_listId_idx").on(table.listId),
       followListUserIdListId: primaryKey({
         columns: [table.userId, table.listId],
-        name: "FollowList_userId_listId",
+        name: "FollowLists_userId_listId",
       }),
     };
   }
 );
 
-export const followListRelations = relations(followList, ({ one }) => ({
-  user: one(user, { fields: [followList.userId], references: [user.id] }),
-  list: one(list, { fields: [followList.listId], references: [list.id] }),
+export const followListsRelations = relations(followLists, ({ one }) => ({
+  user: one(users, { fields: [followLists.userId], references: [users.id] }),
+  list: one(lists, { fields: [followLists.listId], references: [lists.id] }),
 }));
 
-export const followUser = mysqlTable(
-  "FollowUser",
+export const followUsers = mysqlTable(
+  "FollowUsers",
   {
     createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
       .default(sql`CURRENT_TIMESTAMP(3)`)
@@ -163,31 +163,33 @@ export const followUser = mysqlTable(
   },
   (table) => {
     return {
-      followerIdIdx: index("FollowUser_followerId_idx").on(table.followerId),
-      followingIdIdx: index("FollowUser_followingId_idx").on(table.followingId),
+      followerIdIdx: index("FollowUsers_followerId_idx").on(table.followerId),
+      followingIdIdx: index("FollowUsers_followingId_idx").on(
+        table.followingId
+      ),
       followUserFollowerIdFollowingId: primaryKey({
         columns: [table.followerId, table.followingId],
-        name: "FollowUser_followerId_followingId",
+        name: "FollowUsers_followerId_followingId",
       }),
     };
   }
 );
 
-export const followUserRelations = relations(followUser, ({ one }) => ({
-  follower: one(user, {
-    fields: [followUser.followerId],
-    references: [user.id],
+export const followUsersRelations = relations(followUsers, ({ one }) => ({
+  follower: one(users, {
+    fields: [followUsers.followerId],
+    references: [users.id],
     relationName: "follower",
   }),
-  following: one(user, {
-    fields: [followUser.followingId],
-    references: [user.id],
+  following: one(users, {
+    fields: [followUsers.followingId],
+    references: [users.id],
     relationName: "following",
   }),
 }));
 
-export const list = mysqlTable(
-  "List",
+export const lists = mysqlTable(
+  "Lists",
   {
     name: varchar("name", { length: 191 }).notNull(),
     description: varchar("description", { length: 191 }).notNull(),
@@ -200,19 +202,19 @@ export const list = mysqlTable(
   },
   (table) => {
     return {
-      userIdIdx: index("List_userId_idx").on(table.userId),
-      listId: primaryKey({ columns: [table.id], name: "List_id" }),
+      userIdIdx: index("Lists_userId_idx").on(table.userId),
+      listId: primaryKey({ columns: [table.id], name: "Lists_id" }),
     };
   }
 );
 
-export const listRelations = relations(list, ({ one, many }) => ({
-  user: one(user, { fields: [list.userId], references: [user.id] }),
-  eventToList: many(eventToList),
+export const listsRelations = relations(lists, ({ one, many }) => ({
+  user: one(users, { fields: [lists.userId], references: [users.id] }),
+  eventToList: many(eventsToLists),
 }));
 
-export const requestResponse = mysqlTable(
-  "RequestResponse",
+export const requestResponses = mysqlTable(
+  "RequestResponses",
   {
     id: varchar("id", { length: 191 }).notNull(),
     createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
@@ -230,16 +232,16 @@ export const requestResponse = mysqlTable(
   },
   (table) => {
     return {
-      requestResponseId: primaryKey({
+      requestResponsesId: primaryKey({
         columns: [table.id],
-        name: "RequestResponse_id",
+        name: "RequestResponses_id",
       }),
     };
   }
 );
 
-export const user = mysqlTable(
-  "User",
+export const users = mysqlTable(
+  "Users",
   {
     id: varchar("id", { length: 191 }).notNull(),
     username: varchar("username", { length: 191 }).notNull(),
@@ -253,24 +255,24 @@ export const user = mysqlTable(
   },
   (table) => {
     return {
-      userId: primaryKey({ columns: [table.id], name: "User_id" }),
-      userUsernameKey: unique("User_username_key").on(table.username),
-      userEmailKey: unique("User_email_key").on(table.email),
+      userId: primaryKey({ columns: [table.id], name: "Users_id" }),
+      userUsernameKey: unique("Users_username_key").on(table.username),
+      userEmailKey: unique("Users_email_key").on(table.email),
     };
   }
 );
 
-export const userRelations = relations(user, ({ one, many }) => ({
-  event: many(event),
-  followEvent: many(followEvent),
-  followList: many(followList),
-  follower: many(followUser, { relationName: "follower" }),
-  following: many(followUser, { relationName: "following" }),
-  list: many(list),
+export const userRelations = relations(users, ({ one, many }) => ({
+  event: many(events),
+  followEvent: many(followEvents),
+  followList: many(followLists),
+  follower: many(followUsers, { relationName: "follower" }),
+  following: many(followUsers, { relationName: "following" }),
+  list: many(lists),
 }));
 
-export const waitlist = mysqlTable(
-  "Waitlist",
+export const waitlistSignups = mysqlTable(
+  "WaitlistSignups",
   {
     id: varchar("id", { length: 191 }).notNull(),
     email: varchar("email", { length: 191 }).notNull(),
@@ -283,8 +285,13 @@ export const waitlist = mysqlTable(
   },
   (table) => {
     return {
-      waitlistId: primaryKey({ columns: [table.id], name: "Waitlist_id" }),
-      waitlistEmailKey: unique("Waitlist_email_key").on(table.email),
+      waitlistSignupsId: primaryKey({
+        columns: [table.id],
+        name: "WaitlistSignups_id",
+      }),
+      waitlistSignupsEmailKey: unique("WaitlistSignups_email_key").on(
+        table.email
+      ),
     };
   }
 );
