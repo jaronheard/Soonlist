@@ -179,7 +179,7 @@ export const userFollowsRelations = relations(userFollows, ({ one }) => ({
 export const lists = mysqlTable(
   "Lists",
   {
-    id: varchar("id", { length: 191 }).notNull(),
+    id: varchar("id", { length: 191 }).notNull().primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
     description: varchar("description", { length: 191 }).notNull(),
