@@ -10,7 +10,7 @@ import {
   int,
   unique,
 } from "drizzle-orm/mysql-core";
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const comment = mysqlTable(
   "Comment",
@@ -32,6 +32,11 @@ export const comment = mysqlTable(
     };
   }
 );
+
+export const commentRelations = relations(comment, ({ one }) => ({
+  event: one(event, { fields: [comment.id], references: [event.cuid] }),
+  user: one(user, { fields: [comment.id], references: [user.id] }),
+}));
 
 export const event = mysqlTable(
   "Event",
@@ -61,6 +66,34 @@ export const event = mysqlTable(
   }
 );
 
+export const eventRelations = relations(event, ({ one, many }) => ({
+  user: one(user, { fields: [event.userId], references: [user.id] }),
+  eventToList: many(eventToList),
+  comment: many(comment),
+  followEvent: many(followEvent),
+}));
+
+export const eventToList = mysqlTable(
+  "EventToList",
+  {
+    eventId: varchar("eventId", { length: 191 }).notNull(),
+    listId: varchar("listId", { length: 191 }).notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.eventId, table.listId] }),
+    };
+  }
+);
+
+export const eventToListRelations = relations(eventToList, ({ one }) => ({
+  event: one(event, {
+    fields: [eventToList.eventId],
+    references: [event.cuid],
+  }),
+  list: one(list, { fields: [eventToList.listId], references: [list.id] }),
+}));
+
 export const followEvent = mysqlTable(
   "FollowEvent",
   {
@@ -82,6 +115,14 @@ export const followEvent = mysqlTable(
     };
   }
 );
+
+export const followEventRelations = relations(followEvent, ({ one }) => ({
+  user: one(user, { fields: [followEvent.userId], references: [user.id] }),
+  event: one(event, {
+    fields: [followEvent.eventId],
+    references: [event.cuid],
+  }),
+}));
 
 export const followList = mysqlTable(
   "FollowList",
@@ -105,6 +146,11 @@ export const followList = mysqlTable(
   }
 );
 
+export const followListRelations = relations(followList, ({ one }) => ({
+  user: one(user, { fields: [followList.userId], references: [user.id] }),
+  list: one(list, { fields: [followList.listId], references: [list.id] }),
+}));
+
 export const followUser = mysqlTable(
   "FollowUser",
   {
@@ -127,6 +173,19 @@ export const followUser = mysqlTable(
   }
 );
 
+export const followUserRelations = relations(followUser, ({ one }) => ({
+  follower: one(user, {
+    fields: [followUser.followerId],
+    references: [user.id],
+    relationName: "follower",
+  }),
+  following: one(user, {
+    fields: [followUser.followingId],
+    references: [user.id],
+    relationName: "following",
+  }),
+}));
+
 export const list = mysqlTable(
   "List",
   {
@@ -146,6 +205,11 @@ export const list = mysqlTable(
     };
   }
 );
+
+export const listRelations = relations(list, ({ one, many }) => ({
+  user: one(user, { fields: [list.userId], references: [user.id] }),
+  eventToList: many(eventToList),
+}));
 
 export const requestResponse = mysqlTable(
   "RequestResponse",
@@ -195,6 +259,15 @@ export const user = mysqlTable(
     };
   }
 );
+
+export const userRelations = relations(user, ({ one, many }) => ({
+  event: many(event),
+  followEvent: many(followEvent),
+  followList: many(followList),
+  follower: many(followUser, { relationName: "follower" }),
+  following: many(followUser, { relationName: "following" }),
+  list: many(list),
+}));
 
 export const waitlist = mysqlTable(
   "Waitlist",
