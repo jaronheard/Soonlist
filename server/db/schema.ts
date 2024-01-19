@@ -28,7 +28,7 @@ export const comments = mysqlTable(
     return {
       eventIdIdx: index("Comments_eventId_idx").on(table.eventId),
       userIdIdx: index("Comments_userId_idx").on(table.userId),
-      commentId: primaryKey({ columns: [table.id], name: "Comment_id" }),
+      commentId: primaryKey({ columns: [table.id], name: "Comments_id" }),
     };
   }
 );
@@ -61,7 +61,7 @@ export const events = mysqlTable(
   (table) => {
     return {
       userIdIdx: index("Events_userId_idx").on(table.userId),
-      eventCuid: primaryKey({ columns: [table.cuid], name: "Event_cuid" }),
+      eventCuid: primaryKey({ columns: [table.cuid], name: "Events_cuid" }),
     };
   }
 );
@@ -110,7 +110,7 @@ export const followEvents = mysqlTable(
       eventIdIdx: index("FollowEvents_eventId_idx").on(table.eventId),
       followEventUserIdEventId: primaryKey({
         columns: [table.userId, table.eventId],
-        name: "FollowEvent_userId_eventId",
+        name: "FollowEvents_userId_eventId",
       }),
     };
   }
@@ -140,7 +140,7 @@ export const followLists = mysqlTable(
       listIdIdx: index("FollowLists_listId_idx").on(table.listId),
       followListUserIdListId: primaryKey({
         columns: [table.userId, table.listId],
-        name: "FollowList_userId_listId",
+        name: "FollowLists_userId_listId",
       }),
     };
   }
@@ -169,7 +169,7 @@ export const followUsers = mysqlTable(
       ),
       followUserFollowerIdFollowingId: primaryKey({
         columns: [table.followerId, table.followingId],
-        name: "FollowUser_followerId_followingId",
+        name: "FollowUsers_followerId_followingId",
       }),
     };
   }
@@ -203,7 +203,7 @@ export const lists = mysqlTable(
   (table) => {
     return {
       userIdIdx: index("Lists_userId_idx").on(table.userId),
-      listId: primaryKey({ columns: [table.id], name: "List_id" }),
+      listId: primaryKey({ columns: [table.id], name: "Lists_id" }),
     };
   }
 );
@@ -234,7 +234,7 @@ export const requestResponses = mysqlTable(
     return {
       requestResponsesId: primaryKey({
         columns: [table.id],
-        name: "RequestResponse_id",
+        name: "RequestResponses_id",
       }),
     };
   }
@@ -255,7 +255,7 @@ export const users = mysqlTable(
   },
   (table) => {
     return {
-      userId: primaryKey({ columns: [table.id], name: "User_id" }),
+      userId: primaryKey({ columns: [table.id], name: "Users_id" }),
       userUsernameKey: unique("Users_username_key").on(table.username),
       userEmailKey: unique("Users_email_key").on(table.email),
     };
@@ -287,7 +287,7 @@ export const waitlistSignups = mysqlTable(
     return {
       waitlistSignupsId: primaryKey({
         columns: [table.id],
-        name: "Waitlist_id",
+        name: "WaitlistSignups_id",
       }),
       waitlistSignupsEmailKey: unique("WaitlistSignups_email_key").on(
         table.email
