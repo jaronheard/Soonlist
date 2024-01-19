@@ -21,7 +21,7 @@ export async function generateMetadata(
     };
   }
 
-  const futureEvents = list.events.filter(
+  const futureEvents = list.event.filter(
     (item) => item.startDateTime >= new Date()
   );
   const futureEventsCount = futureEvents.length;
@@ -29,9 +29,9 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: `${list.name} by @${list.User.username} | Soonlist`,
+    title: `${list.name} by @${list.user.username} | Soonlist`,
     openGraph: {
-      title: `${list.name} by @${list.User.username} (${futureEventsCount} upcoming)`,
+      title: `${list.name} by @${list.user.username} (${futureEventsCount} upcoming)`,
       description: `${list.description}`,
       url: `${process.env.NEXT_PUBLIC_URL}/list/${params.listId}`,
       type: "article",
@@ -47,7 +47,7 @@ export default async function Page({ params }: Props) {
   if (!list) {
     return <> </>;
   }
-  const events = list.events;
+  const events = list.event;
 
   const pastEvents = events.filter((item) => item.endDateTime < new Date());
 
@@ -58,9 +58,9 @@ export default async function Page({ params }: Props) {
     (item) => item.startDateTime >= new Date()
   );
 
-  const isOwner = user && user.id === list.userId;
+  const isOwner = user && user.id === list.user.id;
   const following =
-    user && list.FollowList.find((item) => item.userId === user.id);
+    user && list.followList.find((item) => item.userId === user.id);
 
   return (
     <>
@@ -72,11 +72,11 @@ export default async function Page({ params }: Props) {
               {list.description}
             </p>
           </div>
-          <UserInfo userId={list.userId} />
+          <UserInfo userId={list.user.id} />
         </div>
         <div className="flex place-items-center gap-4">
-          <ListEditButton listId={params.listId} listUserId={list.userId} />
-          <ListDeleteButton listId={params.listId} listUserId={list.userId} />
+          <ListEditButton listId={params.listId} listUserId={list.user.id} />
+          <ListDeleteButton listId={params.listId} listUserId={list.user.id} />
         </div>
       </div>
       {!isOwner && (

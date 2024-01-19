@@ -27,7 +27,7 @@ export const comment = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -58,7 +58,7 @@ export const event = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -67,10 +67,10 @@ export const event = mysqlTable(
     }),
     event: json("event").notNull(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    endDateTime: datetime("endDateTime", { mode: "string", fsp: 3 })
+    endDateTime: datetime("endDateTime", { mode: "date" })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
-    startDateTime: datetime("startDateTime", { mode: "string", fsp: 3 })
+    startDateTime: datetime("startDateTime", { mode: "date" })
       .default(sql`CURRENT_TIMESTAMP(3)`)
       .notNull(),
     cuid: varchar("cuid", { length: 191 }).notNull(),
@@ -125,7 +125,7 @@ export const followEvent = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -164,7 +164,7 @@ export const followList = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -198,7 +198,7 @@ export const followUser = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -244,7 +244,7 @@ export const list = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -267,6 +267,8 @@ export type List = InferSelectModel<typeof list>;
 export const listRelations = relations(list, ({ one, many }) => ({
   user: one(user, { fields: [list.userId], references: [user.id] }),
   eventToList: many(eventToList),
+  followList: many(followList),
+  event: many(event),
 }));
 
 export const requestResponse = mysqlTable(
@@ -277,7 +279,7 @@ export const requestResponse = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -317,7 +319,7 @@ export const user = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {
@@ -355,7 +357,7 @@ export const waitlist = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
       sql`CURRENT_TIMESTAMP(3)`
     ),
     updatedAtOld: datetime("updatedAtOld", {

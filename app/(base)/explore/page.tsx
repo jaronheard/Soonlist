@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import AddEvent from "../AddEvent";
-import Leaderboard from "@/components/Leaderboard";
+// import Leaderboard from "@/components/Leaderboard";
 import LeaderboardSkeleton from "@/components/LeaderboardSkeleton";
 import {
   Card,
@@ -20,7 +20,7 @@ export default function Page() {
         </Suspense>
       </div>
       <div className="p-6"></div>
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Top Users</CardTitle>
           <CardDescription>Most Upcoming Events</CardDescription>
@@ -30,7 +30,7 @@ export default function Page() {
             <Leaderboard />
           </Suspense>
         </CardContent>
-      </Card>
+      </Card> */}
     </>
   );
 }

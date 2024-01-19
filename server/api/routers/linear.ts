@@ -4,7 +4,6 @@ import { LinearClient } from "@linear/sdk";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 export const linearRouter = createTRPCRouter({
-  // This is a public procedure, meaning it can be called by anyone
   createIssue: publicProcedure
     .input(z.object({ title: z.string(), description: z.string() }))
     .query(({ ctx, input }) => {

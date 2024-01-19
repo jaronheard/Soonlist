@@ -1,5 +1,5 @@
-import { Event } from "@/server/db/schema";
 import { differenceInMinutes } from "date-fns";
+import { Event } from "@/server/db/schema";
 import { AddToCalendarButtonProps } from "@/types";
 import { EventWithUser } from "@/components/EventList";
 
@@ -160,7 +160,7 @@ function collapseSimilarEvents(events: EventWithUser[]) {
 
   eventsWithSimilarity.forEach((item) => {
     const { event: currentEvent, similarEvents } = item;
-    if (seenEvents.has(currentEvent.id)) {
+    if (seenEvents.has(currentEvent.cuid)) {
       // Skip this event if it has already been seen
       return;
     }
@@ -177,7 +177,7 @@ function collapseSimilarEvents(events: EventWithUser[]) {
       }
 
       // Mark this similar event as seen
-      seenEvents.add(similarEvent.id);
+      seenEvents.add(similarEvent.cuid);
     });
 
     // Add the earliest event to the filtered list

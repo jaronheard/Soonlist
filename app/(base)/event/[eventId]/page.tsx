@@ -1,5 +1,4 @@
 import { Metadata, ResolvingMetadata } from "next/types";
-import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { EventCard } from "@/components/EventCardNew";
 import { UserInfo } from "@/components/UserInfo";
@@ -39,7 +38,7 @@ export async function generateMetadata(
     openGraph: {
       title: `${eventData.name}`,
       description: `(${eventData.startDate} ${eventData.startTime}-${eventData.endTime}) ${eventData.description}`,
-      url: `${process.env.NEXT_PUBLIC_URL}/event/${event.id}`,
+      url: `${process.env.NEXT_PUBLIC_URL}/event/${event.cuid}`,
       type: "article",
       images: previewImage || (await parent).openGraph?.images || [],
     },
@@ -52,12 +51,12 @@ export default async function Page({ params }: Props) {
     return <p className="text-lg text-gray-500">No event found.</p>;
   }
   const otherEvents = await api.event.getCreatedForUser.query({
-    userName: event.User.username,
+    userName: event.user.username,
   });
 
   const futureEvents = otherEvents
     .filter((item) => item.startDateTime >= new Date())
-    .filter((item) => item.id !== event.id)
+    .filter((item) => item.cuid !== event.cuid)
     .slice(0, 3);
 
   const eventData = event?.event as AddToCalendarButtonProps;
@@ -69,17 +68,17 @@ export default async function Page({ params }: Props) {
 
   // find the event that matches the current event
   const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
-    (similarEvent) => similarEvent.event.id === event.id
+    (similarEvent) => similarEvent.event.cuid === event.cuid
   )?.similarEvents;
 
   return (
     <>
       <EventCard
-        User={event.User}
-        FollowEvent={event.FollowEvent}
-        Comment={event.Comment}
-        key={event.id}
-        id={event.id}
+        User={event.user}
+        FollowEvent={event.followEvent}
+        Comment={event.comment}
+        key={event.cuid}
+        id={event.cuid}
         event={event.event as AddToCalendarButtonProps}
         createdAt={event.createdAt}
         visibility={event.visibility}

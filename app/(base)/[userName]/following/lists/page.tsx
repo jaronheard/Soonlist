@@ -45,11 +45,11 @@ export default async function Page({ params }: Props) {
             <ListCard
               key={list.name}
               name={list.name}
-              count={list._count.events}
+              count={list.eventToList.length}
               id={list.id}
             />
             <FollowListButton listId={list.id} following={true} />
-            <UserInfo userName={list.User.username} />
+            <UserInfo userName={list.user.username} />
           </div>
         ))}
       </ul>

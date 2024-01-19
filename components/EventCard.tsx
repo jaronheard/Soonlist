@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/nextjs";
-import { FollowEvent, User, Comment } from "@/server/db/schema";
 import { useContext } from "react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
@@ -19,6 +18,7 @@ import { ConditionalWrapper } from "./ConditionalWrapper";
 import { FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
 import { EventWithUser } from "./EventList";
+import { FollowEvent, User, Comment } from "@/server/db/schema";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -339,9 +339,9 @@ function SimilarEventsSummary({
 
   // Iterate over similarEvents and populate the map
   similarEvents.forEach(({ event }) => {
-    const userEvents = eventsByUser.get(event.User.username) || [];
+    const userEvents = eventsByUser.get(event.user.username) || [];
     userEvents.push(event);
-    eventsByUser.set(event.User.username, userEvents);
+    eventsByUser.set(event.user.username, userEvents);
   });
 
   // Convert the map to an array of JSX elements
@@ -360,9 +360,9 @@ function SimilarEventsSummary({
           </>
         )}
         {events.map((event, eventIndex) => (
-          <sup key={event.id}>
+          <sup key={event.cuid}>
             <Link
-              href={`/event/${event.id}`}
+              href={`/event/${event.cuid}`}
               className="font-bold text-gray-900"
             >
               *
