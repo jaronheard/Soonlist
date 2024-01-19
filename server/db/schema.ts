@@ -12,6 +12,9 @@ import {
 } from "drizzle-orm/mysql-core";
 import { relations, sql } from "drizzle-orm";
 
+// note about the table names here -- they are all not pluralized because that's how i set them up AND
+// i'm running into a bug when i try to rename and push the changes to planetscale
+
 export const comment = mysqlTable(
   "Comment",
   {
