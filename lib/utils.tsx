@@ -3,6 +3,7 @@ import ICAL from "ical.js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Temporal } from "@js-temporal/polyfill";
+import { customAlphabet } from "nanoid";
 
 const daysOfWeek = [
   "Sunday",
@@ -444,3 +445,12 @@ export const devLog = (message: any, ...optionalParams: any[]) => {
   console.log(message, ...optionalParams);
   // }
 };
+
+const alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
+const length = 12;
+
+const nanoid = customAlphabet(alphabet, length);
+
+export function generatePublicId() {
+  return nanoid();
+}

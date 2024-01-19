@@ -9,6 +9,7 @@ import {
   mysqlEnum,
   int,
   unique,
+  timestamp,
 } from "drizzle-orm/mysql-core";
 import { InferSelectModel, relations, sql } from "drizzle-orm";
 
@@ -22,10 +23,17 @@ export const comment = mysqlTable(
     content: mediumtext("content").notNull(),
     eventId: varchar("eventId", { length: 191 }).notNull(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
   },
   (table) => {
     return {
@@ -46,10 +54,17 @@ export const commentRelations = relations(comment, ({ one }) => ({
 export const event = mysqlTable(
   "Event",
   {
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
     event: json("event").notNull(),
     userId: varchar("userId", { length: 191 }).notNull(),
     endDateTime: datetime("endDateTime", { mode: "string", fsp: 3 })
@@ -106,10 +121,17 @@ export const followEvent = mysqlTable(
   {
     userId: varchar("userId", { length: 191 }).notNull(),
     eventId: varchar("eventId", { length: 191 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
   },
   (table) => {
     return {
@@ -138,10 +160,17 @@ export const followList = mysqlTable(
   {
     userId: varchar("userId", { length: 191 }).notNull(),
     listId: varchar("listId", { length: 191 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
   },
   (table) => {
     return {
@@ -165,10 +194,17 @@ export const followListRelations = relations(followList, ({ one }) => ({
 export const followUser = mysqlTable(
   "FollowUser",
   {
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
     followerId: varchar("followerId", { length: 191 }).notNull(),
     followingId: varchar("followingId", { length: 191 }).notNull(),
   },
@@ -204,10 +240,17 @@ export const list = mysqlTable(
   {
     name: varchar("name", { length: 191 }).notNull(),
     description: varchar("description", { length: 191 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
     id: varchar("id", { length: 191 }).notNull(),
     userId: varchar("userId", { length: 191 }).notNull(),
   },
@@ -230,10 +273,17 @@ export const requestResponse = mysqlTable(
   "RequestResponse",
   {
     id: varchar("id", { length: 191 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
     modelOutput: json("modelOutput"),
     modelInput: json("modelInput").notNull(),
     modelStatus: varchar("modelStatus", { length: 191 })
@@ -263,10 +313,17 @@ export const user = mysqlTable(
     email: varchar("email", { length: 191 }).notNull(),
     displayName: varchar("displayName", { length: 191 }).notNull(),
     userImage: varchar("userImage", { length: 191 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
   },
   (table) => {
     return {
@@ -294,10 +351,17 @@ export const waitlist = mysqlTable(
     id: varchar("id", { length: 191 }).notNull(),
     email: varchar("email", { length: 191 }).notNull(),
     zipcode: varchar("zipcode", { length: 191 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
-      .default(sql`CURRENT_TIMESTAMP(3)`)
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string", fsp: 3 }).notNull(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    createdAtOld: datetime("createdAtOld", { mode: "string", fsp: 3 }).default(
+      sql`CURRENT_TIMESTAMP(3)`
+    ),
+    updatedAtOld: datetime("updatedAtOld", {
+      mode: "string",
+      fsp: 3,
+    }),
     why: varchar("why", { length: 191 }).notNull(),
   },
   (table) => {
@@ -307,5 +371,3 @@ export const waitlist = mysqlTable(
     };
   }
 );
-
-export type Waitlist = InferSelectModel<typeof waitlist>;
