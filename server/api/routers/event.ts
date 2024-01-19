@@ -10,11 +10,11 @@ import {
 } from "@/server/api/trpc";
 import { devLog, generatePublicId } from "@/lib/utils";
 import {
-  event,
-  followEvent,
-  user,
-  comment,
-  eventToList,
+  events,
+  eventFollows,
+  users,
+  comments,
+  eventsToLists,
 } from "@/server/db/schema";
 
 const eventCreateSchema = z.object({
@@ -39,54 +39,58 @@ const eventIdSchema = z.object({
 export const eventRouter = createTRPCRouter({
   getForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
-    .query(({ ctx, input }) => {
-      const users = ctx.db.query.user.findMany({
-        where: eq(user.username, input.userName),
-        with: {
-          event: {
-            orderBy: [asc(event.startDateTime)],
-            with: {
-              followEvent: true,
-              comment: true,
-              user: true,
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users
+        .findMany({
+          where: eq(users.username, input.userName),
+          with: {
+            events: {
+              orderBy: [asc(events.startDateTime)],
+              with: {
+                eventFollows: true,
+                comments: true,
+                user: true,
+              },
             },
           },
-        },
-      });
-      return users.then((users) => users[0]?.event || []);
+        })
+        .then((users) => users[0]?.events || []);
+      return user;
     }),
   getCreatedForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
-      const users = ctx.db.query.user.findMany({
-        where: eq(user.username, input.userName),
-        with: {
-          event: {
-            orderBy: [asc(event.startDateTime)],
-            with: {
-              followEvent: true,
-              comment: true,
-              user: true,
+      const user = ctx.db.query.users
+        .findMany({
+          where: eq(users.username, input.userName),
+          with: {
+            events: {
+              orderBy: [asc(events.startDateTime)],
+              with: {
+                eventFollows: true,
+                comments: true,
+                user: true,
+              },
             },
           },
-        },
-      });
-      return users.then((users) => users[0]?.event || []);
+        })
+        .then((users) => users[0]?.events || []);
+      return user;
     }),
   getFollowingForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(async ({ ctx, input }) => {
-      const following = await ctx.db.query.user.findMany({
-        where: eq(user.username, input.userName),
+      const following = await ctx.db.query.users.findMany({
+        where: eq(users.username, input.userName),
         columns: {
           username: true,
         },
         with: {
-          followList: {
+          listFollows: {
             with: {
               list: {
                 with: {
-                  eventToList: {
+                  eventToLists: {
                     with: {
                       event: true,
                     },
@@ -95,15 +99,15 @@ export const eventRouter = createTRPCRouter({
               },
             },
           },
-          followEvent: { with: { event: true } },
+          eventFollows: { with: { event: true } },
         },
       });
       const followedEvents = following.flatMap((user) =>
-        user.followEvent.map((followEvent) => followEvent.event)
+        user.eventFollows.map((eventFollow) => eventFollow.event)
       );
       const followedEventsFromLists = following.flatMap((user) =>
-        user.followList.flatMap((followList) =>
-          followList.list.eventToList.flatMap(
+        user.listFollows.flatMap((listFollow) =>
+          listFollow.list.eventToLists.flatMap(
             (eventToList) => eventToList.event
           )
         )
@@ -113,7 +117,7 @@ export const eventRouter = createTRPCRouter({
         ...followedEvents,
         ...followedEventsFromLists,
       ].reduce((acc, event) => {
-        if (!acc.find((e) => e.cuid === event.cuid)) {
+        if (!acc.find((e) => e.id === event.id)) {
           acc.push(event);
         }
         return acc;
@@ -126,32 +130,31 @@ export const eventRouter = createTRPCRouter({
     }),
   getSavedForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
-    .query(({ ctx, input }) => {
-      const users = ctx.db.query.user.findMany({
-        where: eq(user.username, input.userName),
+    .query(async ({ ctx, input }) => {
+      const userWithEventFollows = await ctx.db.query.users.findMany({
+        where: eq(users.username, input.userName),
         with: {
-          followEvent: {
+          eventFollows: {
             with: {
               event: {
                 with: {
                   user: true,
-                  followEvent: true,
-                  comment: true,
+                  eventFollows: true,
+                  comments: true,
                 },
               },
             },
           },
         },
       });
-      return users.then(
-        (users) =>
-          users[0]?.followEvent
-            .map((followEvent) => followEvent.event)
-            .sort(
-              (a, b) =>
-                new Date(a.startDateTime).getTime() -
-                new Date(b.startDateTime).getTime()
-            ) || []
+      return (
+        userWithEventFollows?.[0]?.eventFollows
+          .map((eventFollow) => eventFollow.event)
+          .sort(
+            (a, b) =>
+              new Date(a.startDateTime).getTime() -
+              new Date(b.startDateTime).getTime()
+          ) || []
       );
     }),
   getPossibleDuplicates: publicProcedure
@@ -163,15 +166,15 @@ export const eventRouter = createTRPCRouter({
       startDateTimeLowerBound.setHours(startDateTime.getHours() - 1);
       const startDateTimeUpperBound = new Date(startDateTime);
       startDateTimeUpperBound.setHours(startDateTime.getHours() + 1);
-      const possibleDuplicateEvents = ctx.db.query.event.findMany({
+      const possibleDuplicateEvents = ctx.db.query.events.findMany({
         where: and(
-          gte(event.startDateTime, startDateTimeLowerBound),
-          lte(event.startDateTime, startDateTimeUpperBound)
+          gte(events.startDateTime, startDateTimeLowerBound),
+          lte(events.startDateTime, startDateTimeUpperBound)
         ),
         with: {
           user: true,
-          followEvent: true,
-          comment: true,
+          eventFollows: true,
+          comments: true,
         },
       });
       return possibleDuplicateEvents;
@@ -179,18 +182,18 @@ export const eventRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ eventId: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.query.event
+      return ctx.db.query.events
         .findMany({
-          where: eq(event.cuid, input.eventId),
+          where: eq(events.id, input.eventId),
           with: {
             user: {
               with: {
-                list: true,
+                lists: true,
               },
             },
-            followEvent: true,
-            comment: true,
-            eventToList: {
+            eventFollows: true,
+            comments: true,
+            eventToLists: {
               with: {
                 list: true,
               },
@@ -200,12 +203,12 @@ export const eventRouter = createTRPCRouter({
         .then((events) => events[0] || null);
     }),
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.event.findMany({
-      orderBy: [asc(event.startDateTime)],
+    return ctx.db.query.events.findMany({
+      orderBy: [asc(events.startDateTime)],
       with: {
         user: true,
-        followEvent: true,
-        comment: true,
+        eventFollows: true,
+        comments: true,
       },
     });
   }),
@@ -217,14 +220,14 @@ export const eventRouter = createTRPCRouter({
       })
     )
     .query(({ ctx, input }) => {
-      return ctx.db.query.event.findMany({
+      return ctx.db.query.events.findMany({
         where: input?.excludeCurrent
-          ? gte(event.endDateTime, new Date())
-          : gte(event.startDateTime, new Date()),
+          ? gte(events.endDateTime, new Date())
+          : gte(events.startDateTime, new Date()),
         with: {
           user: true,
-          followEvent: true,
-          comment: true,
+          eventFollows: true,
+          comments: true,
         },
         limit: input?.limit,
       });
@@ -241,11 +244,11 @@ export const eventRouter = createTRPCRouter({
     const roles = (sessionClaims?.roles || []) as string[];
     const isAdmin = roles?.includes("admin");
 
-    return ctx.db.query.event
+    return ctx.db.query.events
       .findMany({
-        where: and(eq(event.cuid, input.id), eq(event.userId, userId)),
+        where: and(eq(events.id, input.id), eq(events.userId, userId)),
         columns: {
-          cuid: true,
+          id: true,
         },
       })
       .then((events) => events.length > 0)
@@ -256,7 +259,7 @@ export const eventRouter = createTRPCRouter({
             message: "Unauthorized",
           });
         }
-        return ctx.db.delete(event).where(eq(event.cuid, input.id));
+        return ctx.db.delete(events).where(eq(events.id, input.id));
       })
       .then(() => ({ id: input.id }));
   }),
@@ -290,11 +293,11 @@ export const eventRouter = createTRPCRouter({
       const endUtc = end.toInstant().toString();
 
       // check if user is event owner
-      const eventOwner = await ctx.db.query.event
+      const eventOwner = await ctx.db.query.events
         .findMany({
-          where: and(eq(event.cuid, input.id), eq(event.userId, userId)),
+          where: and(eq(event.id, input.id), eq(event.userId, userId)),
           columns: {
-            cuid: true,
+            id: true,
           },
         })
         .then((events) => events.length > 0);
@@ -320,12 +323,11 @@ export const eventRouter = createTRPCRouter({
                 visibility: input.visibility,
               }),
             })
-            .where(eq(event.cuid, input.id));
+            .where(eq(event.id, input.id));
           if (hasComment) {
             await ctx.db
-              .insert(comment)
+              .insert(comments)
               .values({
-                id: generatePublicId(),
                 content: input.comment || "",
                 userId: userId,
                 eventId: input.id,
@@ -334,13 +336,13 @@ export const eventRouter = createTRPCRouter({
                 set: { content: input.comment },
               });
           } else {
-            await ctx.db.delete(comment).where(eq(comment.eventId, input.id));
+            await ctx.db.delete(comments).where(eq(comments.eventId, input.id));
           }
           if (hasLists) {
             await ctx.db
-              .delete(eventToList)
-              .where(eq(eventToList.eventId, input.id));
-            await ctx.db.insert(eventToList).values(
+              .delete(eventsToLists)
+              .where(eq(eventsToLists.eventId, input.id));
+            await ctx.db.insert(eventsToLists).values(
               input.lists.map((list) => ({
                 eventId: input.id,
                 listId: list.value!,
@@ -348,8 +350,8 @@ export const eventRouter = createTRPCRouter({
             );
           } else {
             await ctx.db
-              .delete(eventToList)
-              .where(eq(eventToList.eventId, input.id));
+              .delete(eventsToLists)
+              .where(eq(eventsToLists.eventId, input.id));
           }
         })
         .then(() => ({ id: input.id }));
@@ -398,14 +400,14 @@ export const eventRouter = createTRPCRouter({
       const startUtc = start.toInstant().toString();
       const endUtc = end.toInstant().toString();
       devLog("calculated start and end UTC: ", startUtc, endUtc);
-      const eventCuid = generatePublicId();
-      const commentCuid = generatePublicId();
-      console.log("eventCuid: ", eventCuid);
+      const eventid = generatePublicId();
+      const commentid = generatePublicId();
+      console.log("eventid: ", eventid);
 
       return ctx.db
         .transaction(async (tx) => {
           await tx.insert(event).values({
-            cuid: eventCuid,
+            id: eventid,
             userId: userId,
             event: event,
             startDateTime: startUtc,
@@ -417,9 +419,8 @@ export const eventRouter = createTRPCRouter({
           console.log("1");
           if (hasComment) {
             console.log("2");
-            await tx.insert(comment).values({
-              id: commentCuid,
-              eventId: eventCuid,
+            await tx.insert(comments).values({
+              eventId: eventid,
               content: input.comment || "",
               userId: userId,
             });
@@ -429,12 +430,12 @@ export const eventRouter = createTRPCRouter({
           if (hasLists) {
             console.log("3");
             await tx
-              .delete(eventToList)
-              .where(eq(eventToList.eventId, eventCuid));
+              .delete(eventsToLists)
+              .where(eq(eventsToLists.eventId, eventid));
             console.log("4");
-            await tx.insert(eventToList).values(
+            await tx.insert(eventsToLists).values(
               input.lists.map((list) => ({
-                eventId: eventCuid,
+                eventId: eventid,
                 listId: list.value!,
               }))
             );
@@ -443,7 +444,7 @@ export const eventRouter = createTRPCRouter({
             // no need to insert event to list if there is no list
           }
         })
-        .then(() => ({ id: eventCuid }));
+        .then(() => ({ id: eventid }));
     }),
   follow: protectedProcedure.input(eventIdSchema).mutation(({ ctx, input }) => {
     const { userId } = ctx.auth;
@@ -453,7 +454,7 @@ export const eventRouter = createTRPCRouter({
         message: "No user id found in session",
       });
     }
-    return ctx.db.insert(followEvent).values({
+    return ctx.db.insert(eventFollows).values({
       userId: userId,
       eventId: input.id,
     });
@@ -468,7 +469,7 @@ export const eventRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.delete(followEvent).where(eq(followEvent.userId, userId));
+      return ctx.db.delete(eventFollows).where(eq(eventFollows.userId, userId));
     }),
   addToList: protectedProcedure
     .input(z.object({ eventId: z.string(), listId: z.string() }))
@@ -481,7 +482,7 @@ export const eventRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .insert(eventToList)
+        .insert(eventsToLists)
         .values({
           eventId: input.eventId,
           listId: input.listId,
@@ -501,11 +502,11 @@ export const eventRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .delete(eventToList)
+        .delete(eventsToLists)
         .where(
           and(
-            eq(eventToList.eventId, input.eventId),
-            eq(eventToList.listId, input.listId)
+            eq(eventsToLists.eventId, input.eventId),
+            eq(eventsToLists.listId, input.listId)
           )
         );
     }),

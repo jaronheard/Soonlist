@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { Comment, Event, FollowEvent, User } from "@/server/db/schema";
+import { Comment, Event, EventFollow, User } from "@/server/db/schema";
 import { EventCard } from "@/components/EventCard";
 import {
   Accordion,
@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils";
 
 export type EventWithUser = Event & {
   user: User;
-  followEvent: FollowEvent[];
-  comment: Comment[];
+  eventFollows: EventFollow[];
+  comments: Comment[];
 };
 
 export default function EventList({
@@ -79,11 +79,11 @@ export default function EventList({
               <ul role="list" className="max-w-full divide-y divide-gray-100">
                 {pastEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventCard
-                    key={item.cuid}
-                    User={item.user}
-                    FollowEvent={item.followEvent}
-                    Comment={item.comment}
-                    id={item.cuid}
+                    key={item.id}
+                    user={item.user}
+                    eventFollows={item.eventFollows}
+                    comments={item.comments}
+                    id={item.id}
                     event={item.event as AddToCalendarButtonProps}
                     visibility={item.visibility}
                     createdAt={item.createdAt}
@@ -120,11 +120,11 @@ export default function EventList({
               >
                 {currentEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventCard
-                    key={item.cuid}
-                    User={item.user}
-                    FollowEvent={item.followEvent}
-                    Comment={item.comment}
-                    id={item.cuid}
+                    key={item.id}
+                    user={item.user}
+                    eventFollows={item.eventFollows}
+                    comments={item.comments}
+                    id={item.id}
                     event={item.event as AddToCalendarButtonProps}
                     visibility={item.visibility}
                     createdAt={item.createdAt}
@@ -169,11 +169,11 @@ export default function EventList({
             >
               {futureEventsToUse.map(({ event: item, similarEvents }) => (
                 <EventCard
-                  key={item.cuid}
-                  User={item.user}
-                  FollowEvent={item.followEvent}
-                  Comment={item.comment}
-                  id={item.cuid}
+                  key={item.id}
+                  user={item.user}
+                  eventFollows={item.eventFollows}
+                  comments={item.comments}
+                  id={item.id}
                   event={item.event as AddToCalendarButtonProps}
                   visibility={item.visibility}
                   createdAt={item.createdAt}

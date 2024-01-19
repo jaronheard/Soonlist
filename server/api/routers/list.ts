@@ -7,17 +7,17 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { followList, list, user } from "@/server/db/schema";
+import { listFollows, lists, users } from "@/server/db/schema";
 import { generatePublicId } from "@/lib/utils";
 
 export const listRouter = createTRPCRouter({
   getAllForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
-      const users = ctx.db.query.user.findMany({
-        where: eq(user.username, input.userName),
+      const usersWithLists = ctx.db.query.users.findMany({
+        where: eq(users.username, input.userName),
         with: {
-          list: {
+          lists: {
             orderBy: (list, { asc }) => [asc(list.updatedAt)],
             with: {
               // userId replaced here
@@ -25,18 +25,18 @@ export const listRouter = createTRPCRouter({
                 columns: { id: true, username: true },
               },
               // event to list replaced count
-              eventToList: true,
+              eventToLists: true,
             },
           },
         },
       });
-      return users.then((users) => users[0]?.list || []);
+      return usersWithLists.then((users) => users[0]?.lists || []);
     }),
   getFollowing: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
-      const followLists = ctx.db.query.followList.findMany({
-        where: eq(user.username, input.userName),
+      const followLists = ctx.db.query.listFollows.findMany({
+        where: eq(users.username, input.userName),
         with: {
           list: {
             // not sure why this is needed or not working
@@ -47,7 +47,7 @@ export const listRouter = createTRPCRouter({
                 columns: { id: true, username: true },
               },
               // event to list replaced count
-              eventToList: true,
+              eventToLists: true,
             },
             columns: {
               id: true,
@@ -66,9 +66,9 @@ export const listRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ listId: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.query.list
+      return ctx.db.query.lists
         .findMany({
-          where: eq(list.id, input.listId),
+          where: eq(lists.id, input.listId),
           columns: {
             id: true,
             name: true,
@@ -77,15 +77,15 @@ export const listRouter = createTRPCRouter({
             updatedAt: true,
           },
           with: {
-            eventToList: {
+            eventToLists: {
               with: {
                 event: {
-                  with: { user: true, followEvent: true, comment: true },
+                  with: { user: true, eventFollows: true, comments: true },
                 },
               },
             },
             user: true,
-            followList: true,
+            listFollows: true,
           },
         })
         .then((lists) => lists[0] || null);
@@ -100,7 +100,7 @@ export const listRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.insert(followList).values({
+      return ctx.db.insert(listFollows).values({
         userId: userId,
         listId: input.listId,
       });
@@ -116,11 +116,11 @@ export const listRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .delete(followList)
+        .delete(listFollows)
         .where(
           and(
-            eq(followList.userId, userId),
-            eq(followList.listId, input.listId)
+            eq(listFollows.userId, userId),
+            eq(listFollows.listId, input.listId)
           )
         );
     }),
@@ -141,7 +141,7 @@ export const listRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .insert(list)
+        .insert(lists)
         .values({
           id: id,
           userId: userId,
@@ -169,12 +169,12 @@ export const listRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .update(list)
+        .update(lists)
         .set({
           name: input.name,
           description: input.description,
         })
-        .where(eq(list.id, input.listId))
+        .where(eq(lists.id, input.listId))
         .then(() => ({ id: input.listId }));
     }),
   delete: protectedProcedure
@@ -187,6 +187,6 @@ export const listRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.delete(list).where(eq(list.id, input.listId));
+      return ctx.db.delete(lists).where(eq(lists.id, input.listId));
     }),
 });

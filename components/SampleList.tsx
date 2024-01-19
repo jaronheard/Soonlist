@@ -9,7 +9,7 @@ export default async function SampleList({ listId }: { listId: string }) {
     return <> </>;
   }
   // limit to 3 events
-  const events = list.eventToList.slice(-3).map((item) => item.event);
+  const events = list.eventToLists.slice(-3).map((item) => item.event);
 
   return (
     <div>

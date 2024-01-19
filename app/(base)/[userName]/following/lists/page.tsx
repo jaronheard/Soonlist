@@ -45,7 +45,7 @@ export default async function Page({ params }: Props) {
             <ListCard
               key={list.name}
               name={list.name}
-              count={list.eventToList.length}
+              count={list.eventToLists.length}
               id={list.id}
             />
             <FollowListButton listId={list.id} following={true} />

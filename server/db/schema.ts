@@ -10,16 +10,17 @@ import {
   int,
   unique,
   timestamp,
+  serial,
 } from "drizzle-orm/mysql-core";
 import { InferSelectModel, relations, sql } from "drizzle-orm";
 
 // note about the table names here -- they are all not pluralized because that's how i set them up AND
 // i'm running into a bug when i try to rename and push the changes to planetscale
 
-export const comment = mysqlTable(
-  "Comment",
+export const comments = mysqlTable(
+  "Comments",
   {
-    id: varchar("id", { length: 191 }).notNull(),
+    id: serial("id").primaryKey(),
     content: mediumtext("content").notNull(),
     eventId: varchar("eventId", { length: 191 }).notNull(),
     userId: varchar("userId", { length: 191 }).notNull(),
@@ -27,75 +28,60 @@ export const comment = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
   },
   (table) => {
     return {
-      eventIdIdx: index("Comment_eventId_idx").on(table.eventId),
-      userIdIdx: index("Comment_userId_idx").on(table.userId),
-      commentId: primaryKey({ columns: [table.id], name: "Comment_id" }),
+      eventIdIdx: index("Comments_eventId_idx").on(table.eventId),
+      userIdIdx: index("Comments_userId_idx").on(table.userId),
     };
   }
 );
 
-export type Comment = InferSelectModel<typeof comment>;
+export type Comment = InferSelectModel<typeof comments>;
 
-export const commentRelations = relations(comment, ({ one }) => ({
-  event: one(event, { fields: [comment.id], references: [event.cuid] }),
-  user: one(user, { fields: [comment.id], references: [user.id] }),
+export const commentsRelations = relations(comments, ({ one }) => ({
+  event: one(events, { fields: [comments.eventId], references: [events.id] }),
+  user: one(users, { fields: [comments.userId], references: [users.id] }),
 }));
 
-export const event = mysqlTable(
-  "Event",
+export const events = mysqlTable(
+  "Events",
   {
+    id: varchar("id", { length: 12 }).unique().notNull(),
+    userId: varchar("userId", { length: 191 }).notNull(),
+    userName: varchar("userName", { length: 64 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
     event: json("event").notNull(),
-    userId: varchar("userId", { length: 191 }).notNull(),
     endDateTime: datetime("endDateTime", { mode: "date" })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     startDateTime: datetime("startDateTime", { mode: "date" })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    cuid: varchar("cuid", { length: 191 }).notNull(),
     visibility: mysqlEnum("visibility", ["public", "private"])
       .default("public")
       .notNull(),
   },
   (table) => {
     return {
-      userIdIdx: index("Event_userId_idx").on(table.userId),
-      eventCuid: primaryKey({ columns: [table.cuid], name: "Event_cuid" }),
+      userIdIdx: index("Events_userId_idx").on(table.userId),
     };
   }
 );
 
-export type Event = InferSelectModel<typeof event>;
+export type Event = InferSelectModel<typeof events>;
 
-export const eventRelations = relations(event, ({ one, many }) => ({
-  user: one(user, { fields: [event.userId], references: [user.id] }),
-  eventToList: many(eventToList),
-  comment: many(comment),
-  followEvent: many(followEvent),
+export const eventsRelations = relations(events, ({ one, many }) => ({
+  user: one(users, { fields: [events.userId], references: [users.id] }),
+  eventToLists: many(eventsToLists),
+  comments: many(comments),
+  eventFollows: many(eventFollows),
 }));
 
-export const eventToList = mysqlTable(
+export const eventsToLists = mysqlTable(
   "EventToList",
   {
     eventId: varchar("eventId", { length: 191 }).notNull(),
@@ -108,183 +94,123 @@ export const eventToList = mysqlTable(
   }
 );
 
-export const eventToListRelations = relations(eventToList, ({ one }) => ({
-  event: one(event, {
-    fields: [eventToList.eventId],
-    references: [event.cuid],
+export const eventsToListsRelations = relations(eventsToLists, ({ one }) => ({
+  event: one(events, {
+    fields: [eventsToLists.eventId],
+    references: [events.id],
   }),
-  list: one(list, { fields: [eventToList.listId], references: [list.id] }),
+  list: one(lists, { fields: [eventsToLists.listId], references: [lists.id] }),
 }));
 
-export const followEvent = mysqlTable(
-  "FollowEvent",
+export const eventFollows = mysqlTable(
+  "eventFollows",
   {
     userId: varchar("userId", { length: 191 }).notNull(),
     eventId: varchar("eventId", { length: 191 }).notNull(),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
   },
   (table) => {
     return {
-      userIdIdx: index("FollowEvent_userId_idx").on(table.userId),
-      eventIdIdx: index("FollowEvent_eventId_idx").on(table.eventId),
-      followEventUserIdEventId: primaryKey({
-        columns: [table.userId, table.eventId],
-        name: "FollowEvent_userId_eventId",
-      }),
+      pk: primaryKey({ columns: [table.userId, table.eventId] }),
     };
   }
 );
 
-export type FollowEvent = InferSelectModel<typeof followEvent>;
+export type EventFollow = InferSelectModel<typeof eventFollows>;
 
-export const followEventRelations = relations(followEvent, ({ one }) => ({
-  user: one(user, { fields: [followEvent.userId], references: [user.id] }),
-  event: one(event, {
-    fields: [followEvent.eventId],
-    references: [event.cuid],
+export const eventFollowsRelations = relations(eventFollows, ({ one }) => ({
+  user: one(users, {
+    fields: [eventFollows.userId],
+    references: [users.id],
+  }),
+  event: one(events, {
+    fields: [eventFollows.eventId],
+    references: [events.id],
   }),
 }));
 
-export const followList = mysqlTable(
-  "FollowList",
+export const listFollows = mysqlTable(
+  "ListFollows",
   {
     userId: varchar("userId", { length: 191 }).notNull(),
     listId: varchar("listId", { length: 191 }).notNull(),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
   },
   (table) => {
     return {
-      userIdIdx: index("FollowList_userId_idx").on(table.userId),
-      listIdIdx: index("FollowList_listId_idx").on(table.listId),
-      followListUserIdListId: primaryKey({
-        columns: [table.userId, table.listId],
-        name: "FollowList_userId_listId",
-      }),
+      pk: primaryKey({ columns: [table.userId, table.listId] }),
     };
   }
 );
 
-export type FollowList = InferSelectModel<typeof followList>;
+export type ListFollow = InferSelectModel<typeof listFollows>;
 
-export const followListRelations = relations(followList, ({ one }) => ({
-  user: one(user, { fields: [followList.userId], references: [user.id] }),
-  list: one(list, { fields: [followList.listId], references: [list.id] }),
+export const listFollowsRelations = relations(listFollows, ({ one }) => ({
+  user: one(users, { fields: [listFollows.userId], references: [users.id] }),
+  list: one(lists, { fields: [listFollows.listId], references: [lists.id] }),
 }));
 
-export const followUser = mysqlTable(
-  "FollowUser",
+export const userFollows = mysqlTable(
+  "UserFollows",
   {
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
     followerId: varchar("followerId", { length: 191 }).notNull(),
     followingId: varchar("followingId", { length: 191 }).notNull(),
   },
   (table) => {
     return {
-      followerIdIdx: index("FollowUser_followerId_idx").on(table.followerId),
-      followingIdIdx: index("FollowUser_followingId_idx").on(table.followingId),
-      followUserFollowerIdFollowingId: primaryKey({
-        columns: [table.followerId, table.followingId],
-        name: "FollowUser_followerId_followingId",
-      }),
+      pk: primaryKey({ columns: [table.followerId, table.followingId] }),
     };
   }
 );
 
-export type FollowUser = InferSelectModel<typeof followUser>;
+export type UserFollow = InferSelectModel<typeof userFollows>;
 
-export const followUserRelations = relations(followUser, ({ one }) => ({
-  follower: one(user, {
-    fields: [followUser.followerId],
-    references: [user.id],
+export const userFollowsRelations = relations(userFollows, ({ one }) => ({
+  follower: one(users, {
+    fields: [userFollows.followerId],
+    references: [users.id],
     relationName: "follower",
   }),
-  following: one(user, {
-    fields: [followUser.followingId],
-    references: [user.id],
+  following: one(users, {
+    fields: [userFollows.followingId],
+    references: [users.id],
     relationName: "following",
   }),
 }));
 
-export const list = mysqlTable(
-  "List",
+export const lists = mysqlTable(
+  "Lists",
   {
+    id: varchar("id", { length: 191 }).notNull(),
+    userId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
     description: varchar("description", { length: 191 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
-    id: varchar("id", { length: 191 }).notNull(),
-    userId: varchar("userId", { length: 191 }).notNull(),
   },
   (table) => {
     return {
       userIdIdx: index("List_userId_idx").on(table.userId),
-      listId: primaryKey({ columns: [table.id], name: "List_id" }),
     };
   }
 );
 
-export type List = InferSelectModel<typeof list>;
+export type List = InferSelectModel<typeof lists>;
 
-export const listRelations = relations(list, ({ one, many }) => ({
-  user: one(user, { fields: [list.userId], references: [user.id] }),
-  eventToList: many(eventToList),
-  followList: many(followList),
+export const listsRelations = relations(lists, ({ one, many }) => ({
+  user: one(users, { fields: [lists.userId], references: [users.id] }),
+  eventToLists: many(eventsToLists),
+  listFollows: many(listFollows),
 }));
 
-export const requestResponse = mysqlTable(
-  "RequestResponse",
+export const requestResponses = mysqlTable(
+  "RequestResponses",
   {
-    id: varchar("id", { length: 191 }).notNull(),
+    id: serial("id").primaryKey(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
     modelOutput: json("modelOutput"),
     modelInput: json("modelInput").notNull(),
     modelStatus: varchar("modelStatus", { length: 191 })
@@ -295,22 +221,17 @@ export const requestResponse = mysqlTable(
     parsedOutput: json("parsedOutput"),
   },
   (table) => {
-    return {
-      requestResponseId: primaryKey({
-        columns: [table.id],
-        name: "RequestResponse_id",
-      }),
-    };
+    return {};
   }
 );
 
-export type RequestResponse = InferSelectModel<typeof requestResponse>;
+export type RequestResponse = InferSelectModel<typeof requestResponses>;
 
-export const user = mysqlTable(
-  "User",
+export const users = mysqlTable(
+  "Users",
   {
-    id: varchar("id", { length: 191 }).notNull(),
-    username: varchar("username", { length: 191 }).notNull(),
+    id: varchar("id", { length: 191 }).notNull().primaryKey(),
+    username: varchar("username", { length: 64 }).notNull(),
     email: varchar("email", { length: 191 }).notNull(),
     displayName: varchar("displayName", { length: 191 }).notNull(),
     userImage: varchar("userImage", { length: 191 }).notNull(),
@@ -318,57 +239,39 @@ export const user = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
   },
   (table) => {
     return {
-      userId: primaryKey({ columns: [table.id], name: "User_id" }),
-      userUsernameKey: unique("User_username_key").on(table.username),
-      userEmailKey: unique("User_email_key").on(table.email),
+      userUsernameKey: unique("Users_username_key").on(table.username),
+      userEmailKey: unique("Users_email_key").on(table.email),
     };
   }
 );
 
-export type User = InferSelectModel<typeof user>;
+export type User = InferSelectModel<typeof users>;
 
-export const userRelations = relations(user, ({ one, many }) => ({
-  event: many(event),
-  followEvent: many(followEvent),
-  followList: many(followList),
-  follower: many(followUser, { relationName: "follower" }),
-  following: many(followUser, { relationName: "following" }),
-  list: many(list),
+export const usersRelations = relations(users, ({ one, many }) => ({
+  events: many(events),
+  eventFollows: many(eventFollows),
+  listFollows: many(listFollows),
+  followers: many(userFollows, { relationName: "follower" }),
+  following: many(userFollows, { relationName: "following" }),
+  lists: many(lists),
 }));
 
-export const waitlist = mysqlTable(
-  "Waitlist",
+export const waitlistSubmissions = mysqlTable(
+  "WaitlistSubmissions",
   {
-    id: varchar("id", { length: 191 }).notNull(),
-    email: varchar("email", { length: 191 }).notNull(),
+    id: serial("id").primaryKey(),
+    email: varchar("email", { length: 191 }).notNull().unique(),
     zipcode: varchar("zipcode", { length: 191 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    createdAtOld: datetime("createdAtOld", { mode: "date" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    updatedAtOld: datetime("updatedAtOld", {
-      mode: "string",
-      fsp: 3,
-    }),
     why: varchar("why", { length: 191 }).notNull(),
   },
   (table) => {
-    return {
-      waitlistId: primaryKey({ columns: [table.id], name: "Waitlist_id" }),
-      waitlistEmailKey: unique("Waitlist_email_key").on(table.email),
-    };
+    return {};
   }
 );

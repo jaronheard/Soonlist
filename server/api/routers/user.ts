@@ -7,38 +7,39 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { followUser, user } from "@/server/db/schema";
+import { userFollows, users } from "@/server/db/schema";
 
 export const userRouter = createTRPCRouter({
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
-    .query(({ ctx, input }) => {
-      const users = ctx.db.query.user.findMany({
-        where: eq(user.id, input.id),
-      });
-      return users.then((users) => users[0] || null);
-
-      // return ctx.db.select().from(user).where(eq(user.id, input.id));
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users
+        .findMany({
+          where: eq(users.id, input.id),
+        })
+        .then((users) => users[0] || null);
+      return user;
     }),
   getByUsername: publicProcedure
     .input(z.object({ userName: z.string() }))
-    .query(({ ctx, input }) => {
-      const users = ctx.db.query.user.findMany({
-        where: eq(user.username, input.userName),
-      });
-      return users.then((users) => users[0] || null);
+    .query(async ({ ctx, input }) => {
+      const user = ctx.db.query.users
+        .findMany({
+          where: eq(users.username, input.userName),
+        })
+        .then((users) => users[0] || null);
     }),
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.user.findMany({
-      orderBy: [asc(user.username)],
+    return ctx.db.query.users.findMany({
+      orderBy: [asc(users.username)],
     });
   }),
   getFollowing: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.query.followUser
+      return ctx.db.query.userFollows
         .findMany({
-          where: eq(followUser.followerId, input.userName),
+          where: eq(userFollows.followerId, input.userName),
           with: {
             following: true,
           },
@@ -50,7 +51,7 @@ export const userRouter = createTRPCRouter({
           followUsers.map((followUser) => followUser.followingId)
         )
         .then((userIds) =>
-          ctx.db.select().from(user).where(inArray(user.id, userIds))
+          ctx.db.select().from(users).where(inArray(users.id, userIds))
         );
     }),
   getIfFollowing: publicProcedure
@@ -58,11 +59,11 @@ export const userRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.db
         .select()
-        .from(followUser)
+        .from(userFollows)
         .where(
           and(
-            eq(followUser.followerId, input.followerId),
-            eq(followUser.followingId, input.followingId)
+            eq(userFollows.followerId, input.followerId),
+            eq(userFollows.followingId, input.followingId)
           )
         );
     }),
@@ -76,7 +77,7 @@ export const userRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.insert(followUser).values({
+      return ctx.db.insert(userFollows).values({
         followerId: userId,
         followingId: input.followingId,
       });
@@ -92,11 +93,11 @@ export const userRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .delete(followUser)
+        .delete(userFollows)
         .where(
           and(
-            eq(followUser.followerId, userId),
-            eq(followUser.followingId, input.followingId)
+            eq(userFollows.followerId, userId),
+            eq(userFollows.followingId, input.followingId)
           )
         );
     }),

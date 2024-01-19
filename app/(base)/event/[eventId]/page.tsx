@@ -38,7 +38,7 @@ export async function generateMetadata(
     openGraph: {
       title: `${eventData.name}`,
       description: `(${eventData.startDate} ${eventData.startTime}-${eventData.endTime}) ${eventData.description}`,
-      url: `${process.env.NEXT_PUBLIC_URL}/event/${event.cuid}`,
+      url: `${process.env.NEXT_PUBLIC_URL}/event/${event.id}`,
       type: "article",
       images: previewImage || (await parent).openGraph?.images || [],
     },
@@ -56,7 +56,7 @@ export default async function Page({ params }: Props) {
 
   const futureEvents = otherEvents
     .filter((item) => item.startDateTime >= new Date())
-    .filter((item) => item.cuid !== event.cuid)
+    .filter((item) => item.id !== event.id)
     .slice(0, 3);
 
   const eventData = event?.event as AddToCalendarButtonProps;
@@ -68,17 +68,17 @@ export default async function Page({ params }: Props) {
 
   // find the event that matches the current event
   const similarEvents = collapseSimilarEvents(possibleDuplicateEvents).find(
-    (similarEvent) => similarEvent.event.cuid === event.cuid
+    (similarEvent) => similarEvent.event.id === event.id
   )?.similarEvents;
 
   return (
     <>
       <EventCard
-        User={event.user}
-        FollowEvent={event.followEvent}
-        Comment={event.comment}
-        key={event.cuid}
-        id={event.cuid}
+        user={event.user}
+        eventFollows={event.eventFollows}
+        comments={event.comments}
+        key={event.id}
+        id={event.id}
         event={event.event as AddToCalendarButtonProps}
         createdAt={event.createdAt}
         visibility={event.visibility}

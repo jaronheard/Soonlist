@@ -160,7 +160,7 @@ function collapseSimilarEvents(events: EventWithUser[]) {
 
   eventsWithSimilarity.forEach((item) => {
     const { event: currentEvent, similarEvents } = item;
-    if (seenEvents.has(currentEvent.cuid)) {
+    if (seenEvents.has(currentEvent.id)) {
       // Skip this event if it has already been seen
       return;
     }
@@ -177,7 +177,7 @@ function collapseSimilarEvents(events: EventWithUser[]) {
       }
 
       // Mark this similar event as seen
-      seenEvents.add(similarEvent.cuid);
+      seenEvents.add(similarEvent.id);
     });
 
     // Add the earliest event to the filtered list

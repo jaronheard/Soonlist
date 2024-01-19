@@ -21,7 +21,7 @@ export async function generateMetadata(
     };
   }
 
-  const futureEvents = list.eventToList.filter(
+  const futureEvents = list.eventToLists.filter(
     (item) => item.event.startDateTime >= new Date()
   );
   const futureEventsCount = futureEvents.length;
@@ -47,7 +47,7 @@ export default async function Page({ params }: Props) {
   if (!list) {
     return <> </>;
   }
-  const events = list.eventToList.map((item) => item.event);
+  const events = list.eventToLists.map((item) => item.event);
 
   const pastEvents = events.filter((item) => item.endDateTime < new Date());
 
@@ -60,7 +60,7 @@ export default async function Page({ params }: Props) {
 
   const isOwner = user && user.id === list.user.id;
   const following =
-    user && list.followList.find((item) => item.userId === user.id);
+    user && list.listFollows.find((item) => item.userId === user.id);
 
   return (
     <>

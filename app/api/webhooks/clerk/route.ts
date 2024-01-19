@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
-import { user } from "@/server/db/schema";
+import { users } from "@/server/db/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -61,19 +61,19 @@ export async function POST(req: Request) {
       // 👉 If the type is "user.updated" the important values in the database will be updated in the users table
       if (evt.type === "user.updated") {
         await db
-          .update(user)
+          .update(users)
           .set({
             username: evt.data.username || "",
             displayName: `${evt.data.first_name} ${evt.data.last_name}`,
             userImage: evt.data.image_url,
             email: evt.data.email_addresses[0]?.email_address || "",
           })
-          .where(eq(user.id, evt.data.id));
+          .where(eq(users.id, evt.data.id));
       }
 
       // 👉 If the type is "user.created" create a record in the users table
       if (evt.type === "user.created") {
-        await db.insert(user).values({
+        await db.insert(users).values({
           id: evt.data.id,
           username: evt.data.username || "",
           displayName: `${evt.data.first_name} ${evt.data.last_name}`,
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
 
       // 👉 If the type is "user.deleted", delete the user record and associated blocks
       if (evt.type === "user.deleted") {
-        await db.delete(user).where(eq(user.id, evt.data.id || ""));
+        await db.delete(users).where(eq(users.id, evt.data.id || ""));
       }
 
       return new Response("", { status: 201 });

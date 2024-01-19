@@ -1,12 +1,12 @@
 import { db } from "@/server/db";
-import { requestResponse } from "@/server/db/schema";
+import { requestResponses } from "@/server/db/schema";
 
 export const dynamic = "force-dynamic";
 
 // todo: convert to trpc
 export async function POST(req: Request) {
   const { data } = await req.json();
-  const requestResponseRecord = await db.insert(requestResponse).values({
+  const requestResponseRecord = await db.insert(requestResponses).values({
     data,
   } as any);
   console.log("gpt-logs saved to database", requestResponseRecord);
