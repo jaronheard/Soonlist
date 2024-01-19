@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/nextjs";
-import { FollowEvent, User, Comment } from "@prisma/client";
+import { FollowEvent, User, Comment } from "@/server/db/schema";
 import { useContext } from "react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";

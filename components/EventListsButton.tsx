@@ -3,7 +3,7 @@
 import * as React from "react";
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import { usePathname, useRouter } from "next/navigation";
-import { List } from "@prisma/client";
+import { List } from "@/server/db/schema";
 import { toast } from "sonner";
 import {
   DropdownMenu,

@@ -9,8 +9,7 @@
     "db": "pscale connect timetime dev --port 3309",
     "db-prod": "pscale connect timetime main --port 3309",
     "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
-    "postinstall": "prisma generate",
-    "studio": "prisma studio"
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@bytescale/sdk": "^3.21.3",
@@ -23,7 +22,6 @@
     "@js-temporal/polyfill": "^0.4.4",
     "@linear/sdk": "^13.0.0",
     "@planetscale/database": "^1.14.0",
-    "@prisma/client": "^5.7.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -92,7 +90,6 @@
     "eslint-plugin-path": "^1.2.3",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "postcss": "^8.4.32",
-    "prisma": "^5.7.1",
     "tailwindcss": "^3.4.0",
     "typescript": "5.3.3"
   },

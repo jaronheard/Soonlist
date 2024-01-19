@@ -5,7 +5,6 @@ import { useChat } from "ai/react";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Download, Share, Sparkles } from "lucide-react";
-import { List } from "@prisma/client";
 import { YourDetails } from "./new/YourDetails";
 import ImageUpload from "./new/ImageUpload";
 import { UploadImageForProcessingButton } from "./new/UploadImageForProcessingButton";
@@ -24,6 +23,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
+import { List } from "@/server/db/schema";
 
 function Code({
   children,

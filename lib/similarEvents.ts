@@ -1,4 +1,4 @@
-import { Event } from "@prisma/client";
+import { Event } from "@/server/db/schema";
 import { differenceInMinutes } from "date-fns";
 import { AddToCalendarButtonProps } from "@/types";
 import { EventWithUser } from "@/components/EventList";

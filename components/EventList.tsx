@@ -1,4 +1,4 @@
-import { Comment, Event, FollowEvent, User } from "@prisma/client";
+import { Comment, Event, FollowEvent, User } from "@/server/db/schema";
 import { clsx } from "clsx";
 import { EventCard } from "@/components/EventCard";
 import {
