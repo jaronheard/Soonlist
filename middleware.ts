@@ -28,12 +28,15 @@ export default authMiddleware({
     "/(.*)/following/(.*)",
     "/event/(.*)",
     "/list/(.*)",
-    "/.well-known/acme-challenge/(.*)",
-    "/.well-known/vercel-user-meta",
+
     "/ingest",
     "/ingest/(.*)",
     "/monitoring(.*)",
+  ],
+  ignoredRoutes: [
     "/_vercel/speed-insights/vitals",
+    "/.well-known/acme-challenge/(.*)",
+    "/.well-known/vercel-user-meta",
   ],
 });
 
