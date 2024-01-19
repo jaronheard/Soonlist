@@ -86,7 +86,11 @@ export const eventRouter = createTRPCRouter({
             with: {
               list: {
                 with: {
-                  event: true,
+                  eventToList: {
+                    with: {
+                      event: true,
+                    },
+                  },
                 },
               },
             },
@@ -97,19 +101,23 @@ export const eventRouter = createTRPCRouter({
       const followedEvents = following.flatMap((user) =>
         user.followEvent.map((followEvent) => followEvent.event)
       );
-      const followedLists = following.flatMap((user) =>
-        user.followList.flatMap((followList) => followList.list.event)
+      const followedEventsFromLists = following.flatMap((user) =>
+        user.followList.flatMap((followList) =>
+          followList.list.eventToList.flatMap(
+            (eventToList) => eventToList.event
+          )
+        )
       );
       // filter out duplicate events
-      const allFollowedEvents = [...followedEvents, ...followedLists].reduce(
-        (acc, event) => {
-          if (!acc.find((e) => e.cuid === event.cuid)) {
-            acc.push(event);
-          }
-          return acc;
-        },
-        [] as any[]
-      );
+      const allFollowedEvents = [
+        ...followedEvents,
+        ...followedEventsFromLists,
+      ].reduce((acc, event) => {
+        if (!acc.find((e) => e.cuid === event.cuid)) {
+          acc.push(event);
+        }
+        return acc;
+      }, [] as any[]);
       return allFollowedEvents.sort(
         (a, b) =>
           new Date(a.startDateTime).getTime() -
@@ -390,12 +398,14 @@ export const eventRouter = createTRPCRouter({
       const startUtc = start.toInstant().toString();
       const endUtc = end.toInstant().toString();
       devLog("calculated start and end UTC: ", startUtc, endUtc);
-      const cuid = generatePublicId();
+      const eventCuid = generatePublicId();
+      const commentCuid = generatePublicId();
+      console.log("eventCuid: ", eventCuid);
 
       return ctx.db
         .transaction(async (tx) => {
-          await ctx.db.insert(event).values({
-            cuid: cuid,
+          await tx.insert(event).values({
+            cuid: eventCuid,
             userId: userId,
             event: event,
             startDateTime: startUtc,
@@ -404,10 +414,12 @@ export const eventRouter = createTRPCRouter({
               visibility: input.visibility,
             }),
           });
+          console.log("1");
           if (hasComment) {
-            await ctx.db.insert(comment).values({
-              id: generatePublicId(),
-              eventId: cuid,
+            console.log("2");
+            await tx.insert(comment).values({
+              id: commentCuid,
+              eventId: eventCuid,
               content: input.comment || "",
               userId: userId,
             });
@@ -415,20 +427,23 @@ export const eventRouter = createTRPCRouter({
             // no need to insert comment if there is no comment
           }
           if (hasLists) {
-            await ctx.db
+            console.log("3");
+            await tx
               .delete(eventToList)
-              .where(eq(eventToList.eventId, cuid));
-            await ctx.db.insert(eventToList).values(
+              .where(eq(eventToList.eventId, eventCuid));
+            console.log("4");
+            await tx.insert(eventToList).values(
               input.lists.map((list) => ({
-                eventId: cuid,
+                eventId: eventCuid,
                 listId: list.value!,
               }))
             );
+            console.log("5");
           } else {
             // no need to insert event to list if there is no list
           }
         })
-        .then(() => ({ id: cuid }));
+        .then(() => ({ id: eventCuid }));
     }),
   follow: protectedProcedure.input(eventIdSchema).mutation(({ ctx, input }) => {
     const { userId } = ctx.auth;

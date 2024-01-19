@@ -9,7 +9,7 @@ export default async function SampleList({ listId }: { listId: string }) {
     return <> </>;
   }
   // limit to 3 events
-  const events = list.events.slice(-3);
+  const events = list.eventToList.slice(-3).map((item) => item.event);
 
   return (
     <div>
@@ -21,7 +21,7 @@ export default async function SampleList({ listId }: { listId: string }) {
               {list.description}
             </p>
           </div>
-          <UserInfo userId={list.userId} />
+          <UserInfo userId={list.user.id} />
         </div>
       </div>
       <div className="p-2"></div>

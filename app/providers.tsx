@@ -37,6 +37,9 @@ export function PostHogPageview(): JSX.Element {
 }
 
 export function PHProvider({ children }: { children: React.ReactNode }) {
+  if ([process.env.NODE_ENV !== "production"]) {
+    return <>{children}</>;
+  }
   return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 }
 
@@ -60,8 +63,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <IntercomProvider>
         <ContextProvider>
           {children}
-          <SpeedInsights />
-          <UserAnalytics />
+          {process.env.NODE_ENV === "production" ? <SpeedInsights /> : <></>}
+          {process.env.NODE_ENV === "production" ? <UserAnalytics /> : <></>}
           <VercelToolbar />
         </ContextProvider>
       </IntercomProvider>

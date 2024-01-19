@@ -77,7 +77,13 @@ export const listRouter = createTRPCRouter({
             updatedAt: true,
           },
           with: {
-            event: { with: { user: true, followEvent: true, comment: true } },
+            eventToList: {
+              with: {
+                event: {
+                  with: { user: true, followEvent: true, comment: true },
+                },
+              },
+            },
             user: true,
             followList: true,
           },

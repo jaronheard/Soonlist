@@ -21,8 +21,8 @@ export async function generateMetadata(
     };
   }
 
-  const futureEvents = list.event.filter(
-    (item) => item.startDateTime >= new Date()
+  const futureEvents = list.eventToList.filter(
+    (item) => item.event.startDateTime >= new Date()
   );
   const futureEventsCount = futureEvents.length;
   // optionally access and extend (rather than replace) parent metadata
@@ -47,7 +47,7 @@ export default async function Page({ params }: Props) {
   if (!list) {
     return <> </>;
   }
-  const events = list.event;
+  const events = list.eventToList.map((item) => item.event);
 
   const pastEvents = events.filter((item) => item.endDateTime < new Date());
 
