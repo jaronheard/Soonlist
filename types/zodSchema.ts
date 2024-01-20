@@ -61,7 +61,9 @@ export const AddToCalendarButtonPropsSchema = z.object({
     )
     .optional(),
   iCalFileName: z.string().optional(),
-  listStyle: z.enum(["overlay", "modal"]).optional(),
+  listStyle: z
+    .enum(["overlay", "modal", "dropdown", "dropdown-static", "dropup-static"])
+    .optional(),
   buttonStyle: z
     .enum([
       "default",
