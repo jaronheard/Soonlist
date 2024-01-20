@@ -46,7 +46,7 @@ export const commentsRelations = relations(comments, ({ one }) => ({
 export const events = mysqlTable(
   "Events",
   {
-    id: varchar("id", { length: 25 }).unique().notNull(),
+    id: varchar("id", { length: 25 }).unique().notNull().primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
     userName: varchar("userName", { length: 64 }).notNull(),
     createdAt: timestamp("created_at")

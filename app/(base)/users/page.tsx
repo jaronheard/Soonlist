@@ -16,7 +16,6 @@ export async function generateMetadata(
   {},
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const users = await api.user.getAll.query();
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
@@ -33,6 +32,7 @@ export async function generateMetadata(
 
 export default async function Page() {
   const users = await api.user.getAll.query();
+  console.log(users);
 
   return (
     <>

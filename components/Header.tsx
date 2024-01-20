@@ -52,7 +52,7 @@ const userEvents: { title: string; href: string; description: string }[] = [
   {
     title: "Following",
     href: "/following",
-    description: "All events from users or lists you are following",
+    description: "All events from lists you are following",
   },
 ];
 

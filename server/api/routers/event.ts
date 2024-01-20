@@ -8,7 +8,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { devLog, generatePublicId } from "@/lib/utils";
+import { devLog, filterDuplicates, generatePublicId } from "@/lib/utils";
 import {
   events,
   eventFollows,
@@ -16,9 +16,17 @@ import {
   comments,
   eventToLists,
 } from "@/server/db/schema";
+import {
+  NewComment,
+  NewEvent,
+  NewEventToLists,
+  UpdateComment,
+  UpdateEvent,
+} from "@/server/db/types";
+import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
 
 const eventCreateSchema = z.object({
-  event: z.any(), //TODO: add validation
+  event: AddToCalendarButtonPropsSchema,
   comment: z.string().optional(),
   lists: z.array(z.record(z.string().trim())),
   visibility: z.enum(["public", "private"]).optional(),
@@ -26,7 +34,8 @@ const eventCreateSchema = z.object({
 
 const eventUpdateSchema = z.object({
   id: z.string(),
-  event: z.any(),
+  // event infers type of AddToCalendarButtonProps
+  event: AddToCalendarButtonPropsSchema,
   comment: z.string().optional(),
   lists: z.array(z.record(z.string().trim())),
   visibility: z.enum(["public", "private"]).optional(),
@@ -92,14 +101,45 @@ export const eventRouter = createTRPCRouter({
                 with: {
                   eventToLists: {
                     with: {
-                      event: true,
+                      event: {
+                        with: {
+                          user: true,
+                          eventFollows: true,
+                          comments: true,
+                        },
+                      },
                     },
                   },
                 },
               },
             },
           },
-          eventFollows: { with: { event: true } },
+          eventFollows: {
+            with: {
+              event: {
+                with: {
+                  user: true,
+                  eventFollows: true,
+                  comments: true,
+                },
+              },
+            },
+          },
+          following: {
+            with: {
+              following: {
+                with: {
+                  events: {
+                    with: {
+                      eventFollows: true,
+                      comments: true,
+                      user: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
       const followedEvents = following.flatMap((user) =>
@@ -112,21 +152,23 @@ export const eventRouter = createTRPCRouter({
           )
         )
       );
-      // filter out duplicate events
-      const allFollowedEvents = [
+      const followedEventsFromUsers = following.flatMap((user) =>
+        user.following.flatMap((userFollow) => userFollow.following.events)
+      );
+      const followedEventsFromEventsAndLists = [
         ...followedEvents,
         ...followedEventsFromLists,
-      ].reduce((acc, event) => {
-        if (!acc.find((e) => e.id === event.id)) {
-          acc.push(event);
-        }
-        return acc;
-      }, [] as any[]);
-      return allFollowedEvents.sort(
+        ...followedEventsFromUsers,
+      ];
+      const allFollowedEvents = filterDuplicates(
+        followedEventsFromEventsAndLists
+      );
+      const sortedFollowedEvents = allFollowedEvents.sort(
         (a, b) =>
           new Date(a.startDateTime).getTime() -
           new Date(b.startDateTime).getTime()
       );
+      return sortedFollowedEvents;
     }),
   getSavedForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
@@ -283,19 +325,37 @@ export const eventRouter = createTRPCRouter({
       const hasLists = input.lists && input.lists.length > 0;
       const hasVisibility = input.visibility && input.visibility.length > 0;
 
+      let startTime = event.startTime;
+      let endTime = event.endTime;
+      let timeZone = event.timeZone;
+
+      // time zone is America/Los_Angeles if not specified
+      if (!timeZone) {
+        timeZone = "America/Los_Angeles";
+      }
+
+      // start time is 00:00 if not specified
+      if (!startTime) {
+        startTime = "00:00";
+      }
+      // end time is 23:59 if not specified
+      if (!endTime) {
+        endTime = "23:59";
+      }
+
       const start = Temporal.ZonedDateTime.from(
-        `${event.startDate}T${event.startTime}[${event.timeZone}]`
+        `${event.startDate}T${startTime}[${timeZone}]`
       );
       const end = Temporal.ZonedDateTime.from(
-        `${event.endDate}T${event.endTime}[${event.timeZone}]`
+        `${event.endDate}T${endTime}[${timeZone}]`
       );
-      const startUtc = start.toInstant().toString();
-      const endUtc = end.toInstant().toString();
+      const startUtcDate = new Date(start.epochMilliseconds);
+      const endUtcDate = new Date(end.epochMilliseconds);
 
       // check if user is event owner
       const eventOwner = await ctx.db.query.events
         .findMany({
-          where: and(eq(event.id, input.id), eq(event.userId, userId)),
+          where: and(eq(events.id, input.id), eq(events.userId, userId)),
           columns: {
             id: true,
           },
@@ -309,32 +369,40 @@ export const eventRouter = createTRPCRouter({
         });
       }
 
-      // if user is event owner, update event
       return ctx.db
         .transaction(async (tx) => {
-          await ctx.db
-            .update(event)
-            .set({
-              userId: userId,
-              event: event,
-              startDateTime: startUtc,
-              endDateTime: endUtc,
-              ...(hasVisibility && {
-                visibility: input.visibility,
-              }),
-            })
-            .where(eq(event.id, input.id));
-          if (hasComment) {
-            await ctx.db
+          const updateEvent = async (event: UpdateEvent, id: string) => {
+            return tx.update(events).set(event).where(eq(events.id, id));
+          };
+          const insertComment = async (comment: NewComment) => {
+            return tx
               .insert(comments)
-              .values({
-                content: input.comment || "",
-                userId: userId,
-                eventId: input.id,
-              })
+              .values(comment)
               .onDuplicateKeyUpdate({
                 set: { content: input.comment },
               });
+          };
+          const insertEventToLists = async (eventToList: NewEventToLists[]) => {
+            return tx.insert(eventToLists).values(eventToList);
+          };
+          await updateEvent(
+            {
+              userId: userId,
+              event: event,
+              startDateTime: startUtcDate,
+              endDateTime: endUtcDate,
+              ...(hasVisibility && {
+                visibility: input.visibility,
+              }),
+            },
+            input.id
+          );
+          if (hasComment) {
+            await insertComment({
+              content: input.comment || "",
+              userId: userId,
+              eventId: input.id,
+            });
           } else {
             await ctx.db.delete(comments).where(eq(comments.eventId, input.id));
           }
@@ -342,7 +410,7 @@ export const eventRouter = createTRPCRouter({
             await ctx.db
               .delete(eventToLists)
               .where(eq(eventToLists.eventId, input.id));
-            await ctx.db.insert(eventToLists).values(
+            await insertEventToLists(
               input.lists.map((list) => ({
                 eventId: input.id,
                 listId: list.value!,
@@ -358,12 +426,20 @@ export const eventRouter = createTRPCRouter({
     }),
   create: protectedProcedure
     .input(eventCreateSchema)
-    .mutation(({ ctx, input }) => {
-      const { userId } = ctx.auth;
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.auth.userId;
+      const username = ctx.currentUser?.username;
       if (!userId) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "No user id found in session",
+        });
+      }
+
+      if (!username) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No username found in session",
         });
       }
 
@@ -396,30 +472,36 @@ export const eventRouter = createTRPCRouter({
       const end = Temporal.ZonedDateTime.from(
         `${event.endDate}T${endTime}[${timeZone}]`
       );
-      devLog("calculated start and end: ", start, end);
-      const startUtc = start.toInstant().toString();
-      const endUtc = end.toInstant().toString();
-      devLog("calculated start and end UTC: ", startUtc, endUtc);
+      const startUtcDate = new Date(start.epochMilliseconds);
+      const endUtcDate = new Date(end.epochMilliseconds);
       const eventid = generatePublicId();
-      const commentid = generatePublicId();
-      console.log("eventid: ", eventid);
 
+      const values = {
+        id: eventid,
+        userId: userId,
+        userName: ctx.auth.user?.username || "unknown",
+        event: event,
+        startDateTime: startUtcDate,
+        endDateTime: endUtcDate,
+        ...(hasVisibility && {
+          visibility: input.visibility,
+        }),
+      };
       return ctx.db
         .transaction(async (tx) => {
-          await tx.insert(event).values({
-            id: eventid,
-            userId: userId,
-            event: event,
-            startDateTime: startUtc,
-            endDateTime: endUtc,
-            ...(hasVisibility && {
-              visibility: input.visibility,
-            }),
-          });
-          console.log("1");
+          const insertEvent = async (event: NewEvent) => {
+            return tx.insert(events).values(event);
+          };
+          const insertComment = async (comment: NewComment) => {
+            return tx.insert(comments).values(comment);
+          };
+          const insertEventToLists = async (eventToList: NewEventToLists[]) => {
+            return tx.insert(eventToLists).values(eventToList);
+          };
+
+          await insertEvent(values);
           if (hasComment) {
-            console.log("2");
-            await tx.insert(comments).values({
+            await insertComment({
               eventId: eventid,
               content: input.comment || "",
               userId: userId,
@@ -428,18 +510,15 @@ export const eventRouter = createTRPCRouter({
             // no need to insert comment if there is no comment
           }
           if (hasLists) {
-            console.log("3");
             await tx
               .delete(eventToLists)
               .where(eq(eventToLists.eventId, eventid));
-            console.log("4");
-            await tx.insert(eventToLists).values(
+            await insertEventToLists(
               input.lists.map((list) => ({
                 eventId: eventid,
                 listId: list.value!,
               }))
             );
-            console.log("5");
           } else {
             // no need to insert event to list if there is no list
           }

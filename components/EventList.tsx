@@ -1,8 +1,5 @@
 import { clsx } from "clsx";
-import { User } from "@/server/db/types";
-import { EventFollow } from "@/server/db/types";
-import { Event } from "@/server/db/types";
-import { Comment } from "@/server/db/types";
+import { User, EventFollow, Event, Comment } from "@/server/db/types";
 import { EventCard } from "@/components/EventCard";
 import {
   Accordion,
