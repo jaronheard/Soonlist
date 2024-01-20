@@ -1,21 +1,21 @@
 "use client";
-
 import React, { useState } from "react";
-import { generatedIcsArrayToEvents } from "@/lib/utils";
-import { AddToCalendarButtonProps } from "@/types";
 import { Button } from "@/components/ui/button";
+
+import { generatedIcsArrayToEvents } from "@/lib/icalUtils";
+import { type AddToCalendarButtonProps } from "@/types";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function Page() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState([] as AddToCalendarButtonProps[]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value);
     // Clear output/error when input changes
     setOutput([]);
-    setError(null);
+    setError("");
   };
 
   const parseInput = () => {
@@ -23,10 +23,10 @@ export default function Page() {
       // Replace 'yourParsingFunction' with your actual parsing logic
       const result = generatedIcsArrayToEvents(input);
       setOutput(result);
-      setError(null);
-    } catch (err: any) {
+      setError("");
+    } catch (err) {
       setOutput([]);
-      setError(err?.message || "unknown error");
+      setError((err as Error)?.message || "unknown error");
     }
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { AddToCalendarButtonType } from "add-to-calendar-button-react";
+import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -10,7 +10,8 @@ import ImageUpload from "./new/ImageUpload";
 import { UploadImageForProcessingButton } from "./new/UploadImageForProcessingButton";
 import { Form } from "@/components/Form";
 import { Output } from "@/components/Output";
-import { cn, generatedIcsArrayToEvents, getLastMessages } from "@/lib/utils";
+import { cn, getLastMessages } from "@/lib/utils";
+import { generatedIcsArrayToEvents } from "@/lib/icalUtils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,7 +24,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
-import { List } from "@/server/db/types";
+import { type List } from "@/server/db/types";
 
 function Code({
   children,
@@ -48,6 +49,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   // State variables
   const [finished, setFinished] = useState(false);
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- used in useEffect
   const [trackedAddToCalendarGoal, setTrackedAddToCalendarGoal] =
     useState(false);
 
@@ -55,27 +57,21 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   const { timezone } = useContext(TimezoneContext);
 
   // Custom hooks and utility functions
-  const {
-    input,
-    setInput,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    messages,
-  } = useChat({
-    body: {
-      source: "text",
-      timezone,
-    },
-    onFinish(message) {
-      setFinished(true);
-    },
-  });
+  const { input, handleInputChange, handleSubmit, isLoading, messages } =
+    useChat({
+      body: {
+        source: "text",
+        timezone,
+      },
+      onFinish() {
+        setFinished(true);
+      },
+    });
 
-  const { lastUserMessage, lastAssistantMessage } = getLastMessages(messages);
+  const { lastAssistantMessage } = getLastMessages(messages);
 
   // Event handlers
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setFinished(false);
     setTrackedAddToCalendarGoal(false);
     handleSubmit(e);
@@ -94,8 +90,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
-
-  const isDev = process.env.NODE_ENV === "development";
 
   return (
     <div className="min-h-[60vh] ">

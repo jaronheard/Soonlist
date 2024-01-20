@@ -1,9 +1,8 @@
-import { time } from "console";
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
-import { generatedIcsArrayToEvents } from "@/lib/utils";
-import { AddToCalendarButtonProps } from "@/types";
+import { generatedIcsArrayToEvents } from "@/lib/icalUtils";
+import { type AddToCalendarButtonProps } from "@/types";
 import { getPrompt } from "@/lib/prompts";
 
 const blankEvent = {
@@ -81,7 +80,7 @@ export default async function EventsFromRawText({
 
   try {
     events = generatedIcsArrayToEvents(response);
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.log(e);
   }
 
@@ -100,7 +99,7 @@ export default async function EventsFromRawText({
       <>
         <div className="flex flex-wrap justify-center gap-8">
           {events.length > 0 &&
-            events?.map((props, index) => (
+            events?.map((props) => (
               <AddToCalendarCard {...props} key={props.name} />
             ))}
           {events.length === 0 && <></>}

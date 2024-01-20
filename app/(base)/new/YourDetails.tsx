@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SignedIn } from "@clerk/nextjs";
 import { PenSquare } from "lucide-react";
-import { List } from "@/server/db/types";
+import { type List } from "@/server/db/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FormLabel,
@@ -73,7 +73,7 @@ export function YourDetails({
 
   // Watch for changes in the form
   React.useEffect(() => {
-    const subscription = form.watch((value, { name, type }) => {
+    const subscription = form.watch((value, { name }) => {
       if (name) {
         setFormData(form.getValues());
       }

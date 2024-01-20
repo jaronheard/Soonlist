@@ -1,3 +1,12 @@
+// copied this script and it isn't typed, so we have to disable a bunch of rules
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-var */
+
 // @ts-nocheck
 
 export const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;

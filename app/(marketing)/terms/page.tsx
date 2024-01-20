@@ -1,6 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-import Head from "next/head";
-
 export const metadata = {
   title: "Terms and Conditions | Soonlist",
   openGraph: {

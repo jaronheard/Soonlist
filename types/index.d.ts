@@ -1,4 +1,4 @@
-export type AddToCalendarButtonProps = {
+export type AddToCalendarButtonPropsBase = {
   proKey?: string;
   name?: string;
   dates?: {
@@ -53,7 +53,6 @@ export type AddToCalendarButtonProps = {
     | "Yahoo"
   )[];
   iCalFileName?: string;
-  listStyle?: "overlay" | "modal";
   buttonStyle?:
     | "default"
     | "3d"
@@ -121,3 +120,17 @@ export type AddToCalendarButtonProps = {
   proxy?: boolean;
   forceOverlay?: boolean;
 };
+
+export type AddToCalendarButtonProps = AddToCalendarButtonPropsBase & {
+  listStyle?:
+    | "overlay"
+    | "modal"
+    | "dropdown"
+    | "dropdown-static"
+    | "dropup-static";
+};
+
+export type AddToCalendarButtonPropsRestricted =
+  AddToCalendarButtonPropsBase & {
+    listStyle?: "overlay" | "modal";
+  };

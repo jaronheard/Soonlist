@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Metadata, ResolvingMetadata } from "next/types";
+import { type Metadata, type ResolvingMetadata } from "next/types";
 import { currentUser } from "@clerk/nextjs";
 import { UserInfo } from "@/components/UserInfo";
 import ListCardsForUser from "@/components/ListCardsForUser";
@@ -25,9 +25,6 @@ export async function generateMetadata(
     };
   }
 
-  const currentEvents = events.filter(
-    (item) => item.startDateTime < new Date() && item.endDateTime > new Date()
-  );
   const futureEvents = events.filter(
     (item) => item.startDateTime >= new Date()
   );

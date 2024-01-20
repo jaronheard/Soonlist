@@ -1,5 +1,5 @@
 "use client";
-import { AddToCalendarButtonType } from "add-to-calendar-button-react";
+import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useEffect, useRef } from "react";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 

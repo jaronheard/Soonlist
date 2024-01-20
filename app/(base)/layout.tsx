@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <main className="my-12 flex w-full flex-1 flex-col items-center justify-center sm:my-20 sm:px-4">
         {children}
       </main>
-      <Footer cta />
+      <Footer />
     </div>
   );
 }

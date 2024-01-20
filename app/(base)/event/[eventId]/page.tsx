@@ -1,10 +1,13 @@
-import { Metadata, ResolvingMetadata } from "next/types";
+import { type Metadata, type ResolvingMetadata } from "next/types";
 import Image from "next/image";
 import { EventCard } from "@/components/EventCardNew";
 import { UserInfo } from "@/components/UserInfo";
-import { AddToCalendarButtonProps } from "@/types";
+import {
+  type AddToCalendarButtonPropsRestricted,
+  type AddToCalendarButtonProps,
+} from "@/types";
 import { collapseSimilarEvents } from "@/lib/similarEvents";
-import EventList, { EventWithUser } from "@/components/EventList";
+import EventList, { type EventWithUser } from "@/components/EventList";
 import { api } from "@/trpc/server";
 
 type Props = {
@@ -79,7 +82,7 @@ export default async function Page({ params }: Props) {
         comments={event.comments}
         key={event.id}
         id={event.id}
-        event={event.event as AddToCalendarButtonProps}
+        event={event.event as AddToCalendarButtonPropsRestricted}
         createdAt={event.createdAt}
         visibility={event.visibility}
         similarEvents={similarEvents}

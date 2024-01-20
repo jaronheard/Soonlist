@@ -1,7 +1,8 @@
 "use client";
 
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
+import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
 
 const blankEvent = {
   options: [
@@ -37,9 +38,12 @@ const blankEvent = {
 export default function EventsFromSaved() {
   let data = blankEvent;
   if (typeof window !== "undefined") {
-    const savedData = JSON.parse(localStorage.getItem("updatedProps") || "");
-    if (savedData) {
-      data = savedData.event;
+    const savedData = JSON.parse(localStorage.getItem("updatedProps") || "") as
+      | AddToCalendarButtonProps
+      | undefined;
+    const parsedData = AddToCalendarButtonPropsSchema.safeParse(savedData);
+    if (parsedData.success) {
+      data = parsedData.data;
     }
   }
 

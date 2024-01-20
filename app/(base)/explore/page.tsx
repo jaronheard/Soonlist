@@ -1,14 +1,14 @@
 import { Suspense } from "react";
-import AddEvent from "../AddEvent";
+// import AddEvent from "../AddEvent";
 // import Leaderboard from "@/components/Leaderboard";
 import LeaderboardSkeleton from "@/components/LeaderboardSkeleton";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from "@/components/ui/card";
 import NextEvents from "@/components/NextEvents";
 
 export default function Page() {

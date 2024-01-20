@@ -1,15 +1,15 @@
-import { Suspense } from "react";
-import { Metadata, ResolvingMetadata } from "next/types";
+// import { Suspense } from "react";
+import { type Metadata, type ResolvingMetadata } from "next/types";
 import { UserInfo } from "@/components/UserInfo";
 // import Leaderboard from "@/components/Leaderboard";
-import LeaderboardSkeleton from "@/components/LeaderboardSkeleton";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+// import LeaderboardSkeleton from "@/components/LeaderboardSkeleton";
+// import {
+//   Card,
+//   CardHeader,
+//   CardTitle,
+//   CardDescription,
+//   CardContent,
+// } from "@/components/ui/card";
 import { api } from "@/trpc/server";
 
 export async function generateMetadata(

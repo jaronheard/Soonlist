@@ -14,15 +14,10 @@ import {
 } from "./DropdownMenu";
 import { CalendarButton } from "./CalendarButton";
 import { ShareButton } from "./ShareButton";
-import { ConditionalWrapper } from "./ConditionalWrapper";
 import { FollowEventButton, FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
-import { EventWithUser } from "./EventList";
-import { Button } from "./ui/button";
-import { eventFollows } from "@/server/db/schema";
-import { User } from "@/server/db/types";
-import { EventFollow } from "@/server/db/types";
-import { Comment } from "@/server/db/types";
+import { type EventWithUser } from "./EventList";
+import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -30,12 +25,11 @@ import {
   showMultipleDays,
   endsNextDayBeforeMorning,
   eventTimesAreDefined,
-  timeFormat,
   getDateTimeInfo,
   timeFormatDateInfo,
 } from "@/lib/utils";
-import { AddToCalendarButtonProps } from "@/types";
-import { SimilarityDetails } from "@/lib/similarEvents";
+import { type AddToCalendarButtonPropsRestricted } from "@/types";
+import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventCardProps = {
@@ -44,7 +38,7 @@ type EventCardProps = {
   comments: Comment[];
   id: string;
   createdAt: Date;
-  event: AddToCalendarButtonProps;
+  event: AddToCalendarButtonPropsRestricted;
   visibility: "public" | "private";
   singleEvent?: boolean;
   hideCurator?: boolean;
@@ -127,7 +121,7 @@ function EventDescription({
         >
           <span
             dangerouslySetInnerHTML={{
-              __html: translateToHtml(description!),
+              __html: translateToHtml(description),
             }}
           ></span>
         </p>
@@ -144,7 +138,7 @@ function EventActionButton({
   isFollowing,
 }: {
   user: User;
-  event: AddToCalendarButtonProps;
+  event: AddToCalendarButtonPropsRestricted;
   id: string;
   isOwner: boolean;
   isFollowing?: boolean;
@@ -215,8 +209,6 @@ function EventCuratedBy({
 
 function SimilarEventsSummary({
   similarEvents,
-  curatorUsername,
-  singleEvent,
 }: {
   similarEvents: {
     event: EventWithUser;
@@ -236,10 +228,9 @@ function SimilarEventsSummary({
   });
 
   // Convert the map to an array of JSX elements
-  const userEventLinks = Array.from(eventsByUser).map(
-    ([username, events], index) => (
-      <span key={username}>
-        {/* {username !== curatorUsername && (
+  const userEventLinks = Array.from(eventsByUser).map(([username, events]) => (
+    <span key={username}>
+      {/* {username !== curatorUsername && (
           <>
             {!singleEvent && ", "}
             <Link
@@ -250,20 +241,16 @@ function SimilarEventsSummary({
             </Link>
           </>
         )} */}
-        {events.map((event, eventIndex) => (
-          <sup key={event.id}>
-            <Link
-              href={`/event/${event.id}`}
-              className="font-bold text-gray-900"
-            >
-              {eventIndex + 1}
-              {events.length > 1 && eventIndex !== events.length - 1 && ", "}
-            </Link>
-          </sup>
-        ))}
-      </span>
-    )
-  );
+      {events.map((event, eventIndex) => (
+        <sup key={event.id}>
+          <Link href={`/event/${event.id}`} className="font-bold text-gray-900">
+            {eventIndex + 1}
+            {events.length > 1 && eventIndex !== events.length - 1 && ", "}
+          </Link>
+        </sup>
+      ))}
+    </span>
+  ));
 
   return <> and others {userEventLinks}</>;
 }
@@ -280,9 +267,6 @@ export function EventCard(props: EventCardProps) {
   const comment = props.comments.findLast(
     (item) => item.userId === clerkUser?.id
   );
-  // always show curator if !isSelf
-  const showOtherCurators = !isSelf && props.showOtherCurators;
-  const showCurator = showOtherCurators || !props.hideCurator;
 
   return (
     <div className="relative mx-6 py-6">

@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { RequestResponse } from "@/server/db/types";
+import { z } from "zod";
+import { type RequestResponse } from "@/server/db/types";
 import { getPrompt } from "@/lib/prompts";
 
 export const dynamic = "force-dynamic";
@@ -12,8 +13,24 @@ const config = new Configuration({
 });
 const openai = new OpenAIApi(config);
 
+// Define the structure of each message if you know it, here's an example
+const messageSchema = z.object({
+  role: z.string(),
+  content: z.string(),
+  // include other properties of a message here
+});
+
+const requestDataSchema = z.object({
+  messages: z.array(messageSchema),
+  source: z.string(),
+  timezone: z.string(),
+  // include other properties if they exist
+});
+
 export async function POST(req: Request) {
-  const { messages, source, timezone } = await req.json();
+  // Validate the request body against the schema
+  const json = (await req.json()) as unknown;
+  const { messages, source, timezone } = requestDataSchema.parse(json);
   const requestStart = new Date();
   const prompt = getPrompt(timezone);
 
@@ -21,7 +38,7 @@ export async function POST(req: Request) {
     (message: { role: string }) => message.role === "user"
   );
   const lastUserMessage =
-    userMessages?.[userMessages.length - 1]?.content || null;
+    userMessages?.[userMessages.length - 1]?.content || undefined;
 
   const requestData = {
     modelInput: {
@@ -30,7 +47,7 @@ export async function POST(req: Request) {
     },
     modelStatus: "pending",
     source: source,
-  } as unknown as RequestResponse;
+  } as RequestResponse;
 
   // Ask OpenAI for a streaming completion given the prompt
   const response = await openai.createChatCompletion({
@@ -52,7 +69,7 @@ export async function POST(req: Request) {
   // Convert the response into a friendly text-stream
   const stream = OpenAIStream(response, {
     async onCompletion(completion) {
-      let errors = [];
+      const errors = [];
 
       // calculate time from initial request to completion
       const time = new Date().getTime() - requestStart.getTime();

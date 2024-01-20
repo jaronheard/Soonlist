@@ -2,13 +2,13 @@ import { z } from "zod";
 
 import { Temporal } from "@js-temporal/polyfill";
 import { TRPCError } from "@trpc/server";
-import { and, asc, eq, gte, lte, or } from "drizzle-orm";
+import { and, asc, eq, gte, lte } from "drizzle-orm";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { devLog, filterDuplicates, generatePublicId } from "@/lib/utils";
+import { filterDuplicates, generatePublicId } from "@/lib/utils";
 import {
   events,
   eventFollows,
@@ -17,11 +17,10 @@ import {
   eventToLists,
 } from "@/server/db/schema";
 import {
-  NewComment,
-  NewEvent,
-  NewEventToLists,
-  UpdateComment,
-  UpdateEvent,
+  type NewComment,
+  type NewEvent,
+  type NewEventToLists,
+  type UpdateEvent,
 } from "@/server/db/types";
 import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
 
@@ -538,18 +537,16 @@ export const eventRouter = createTRPCRouter({
       eventId: input.id,
     });
   }),
-  unfollow: protectedProcedure
-    .input(eventIdSchema)
-    .mutation(({ ctx, input }) => {
-      const { userId } = ctx.auth;
-      if (!userId) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "No user id found in session",
-        });
-      }
-      return ctx.db.delete(eventFollows).where(eq(eventFollows.userId, userId));
-    }),
+  unfollow: protectedProcedure.input(eventIdSchema).mutation(({ ctx }) => {
+    const { userId } = ctx.auth;
+    if (!userId) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "No user id found in session",
+      });
+    }
+    return ctx.db.delete(eventFollows).where(eq(eventFollows.userId, userId));
+  }),
   addToList: protectedProcedure
     .input(z.object({ eventId: z.string(), listId: z.string() }))
     .mutation(({ ctx, input }) => {

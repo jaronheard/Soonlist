@@ -11,12 +11,16 @@ export function Form({
   isLoading,
   onSubmit,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleInputChange: (e: any) => void;
   input: string;
   isLoading: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (e: any) => void;
 }) {
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleKeyDown = (event: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
       onSubmit(event);
     }

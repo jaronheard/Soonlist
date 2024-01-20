@@ -39,7 +39,7 @@ export function TimezoneSelect({
     useContext(TimezoneContext);
   const timezone = timezoneFromProps || timezoneFromContext;
   const setTimezone = setTimezoneFromProps || setTimezoneFromContext;
-  const { options, parseTimezone } = useTimezoneSelect({
+  const { options } = useTimezoneSelect({
     labelStyle,
     timezones,
   });
@@ -71,7 +71,8 @@ export function TimezoneSelect({
                 onSelect={(currentValue) => {
                   const tzValue = options.find(
                     (tz) => tz.label.toLocaleLowerCase() === currentValue
-                  )?.value!;
+                  )?.value;
+                  if (!tzValue) return;
                   setTimezone(tzValue);
                   setOpen(false);
                 }}

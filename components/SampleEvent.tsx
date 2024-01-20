@@ -1,15 +1,15 @@
 import Image from "next/image";
-import { ArrowBigRight, Sparkle, Wand } from "lucide-react";
+import { ArrowBigRight } from "lucide-react";
 import { EventCard } from "./EventCardNew";
 import { api } from "@/trpc/server";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonPropsRestricted } from "@/types";
 
 export default async function SampleEvent({ eventId }: { eventId: string }) {
   const event = await api.event.get.query({
     eventId,
   });
 
-  const eventData = event?.event as AddToCalendarButtonProps;
+  const eventData = event?.event as AddToCalendarButtonPropsRestricted;
   const fullImageUrl = eventData?.images?.[3];
 
   if (!event || !eventData) {

@@ -1,7 +1,7 @@
 import { differenceInMinutes } from "date-fns";
-import { Event } from "@/server/db/types";
-import { AddToCalendarButtonProps } from "@/types";
-import { EventWithUser } from "@/components/EventList";
+import { type Event } from "@/server/db/types";
+import { type AddToCalendarButtonProps } from "@/types";
+import { type EventWithUser } from "@/components/EventList";
 
 // Cosine Similarity Functions
 function textToVector(text: string): Map<string, number> {
@@ -98,9 +98,6 @@ function isEventSimilar(
     locationSimilarity,
   };
 }
-
-const timeThreshold = 60; // 60 minutes
-const textThreshold = 0; // 0% similarity
 
 export type SimilarityDetails = ReturnType<typeof isEventSimilar>;
 

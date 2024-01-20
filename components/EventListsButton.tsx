@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+import { type DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { List } from "@/server/db/types";
+import { type List } from "@/server/db/types";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,

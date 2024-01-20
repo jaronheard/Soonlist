@@ -7,7 +7,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { SwitchCamera, Trash, Upload, Scissors } from "lucide-react";
 import { UploadButton } from "@bytescale/upload-widget-react";
 import { Dialog } from "@headlessui/react";
-import { ReactCrop, Crop, centerCrop, makeAspectCrop } from "react-image-crop";
+import { ReactCrop, type Crop, centerCrop, makeAspectCrop } from "react-image-crop";
 import { Button } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -38,7 +38,7 @@ const buildCroppedUrl = (
     return "";
   }
   // Convert crop percentages to pixels
-  let pxCrop = {
+  const pxCrop = {
     x: Math.round(naturalWidth * (crop.x / 100)),
     y: Math.round(naturalHeight * (crop.y / 100)),
     width: Math.round(naturalWidth * (crop.width / 100)),
@@ -90,7 +90,7 @@ const buildAllCropUrls = (
   opts: { naturalWidth: number; naturalHeight: number; crop: Crop }
 ) => {
   const { naturalWidth, naturalHeight, crop } = opts;
-  let newCroppedImagesUrls = {} as { [key: string]: string };
+  const newCroppedImagesUrls = {} as Record<string, string>;
 
   const validOptions = naturalHeight > 0 && naturalWidth > 0;
   if (!validOptions) {

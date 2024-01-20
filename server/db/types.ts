@@ -1,14 +1,15 @@
-import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { createInsertSchema } from "drizzle-zod";
 import {
-  comments,
-  eventToLists,
-  events,
-  eventFollows,
-  listFollows,
-  userFollows,
-  lists,
+  type comments,
+  type eventToLists,
+  type events,
+  type eventFollows,
+  type listFollows,
+  type userFollows,
+  type lists,
   requestResponses,
-  users,
+  type users,
 } from "./schema";
 
 export type Comment = InferSelectModel<typeof comments>;
@@ -40,6 +41,7 @@ export type NewRequestResponse = InferInsertModel<typeof requestResponses>;
 export type UpdateRequestResponse = Partial<
   InferInsertModel<typeof requestResponses>
 >;
+export const insertRequestResponseSchema = createInsertSchema(requestResponses);
 
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
