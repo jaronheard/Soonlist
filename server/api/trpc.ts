@@ -5,8 +5,8 @@ import { ZodError } from "zod";
 
 import {
   type SignedInAuthObject,
-  SignedOutAuthObject,
-  User,
+  type SignedOutAuthObject,
+  type User,
 } from "@clerk/nextjs/server";
 import { auth, currentUser } from "@clerk/nextjs";
 import { db } from "@/server/db";

@@ -17,11 +17,11 @@ import {
   eventToLists,
 } from "@/server/db/schema";
 import {
-  NewComment,
-  NewEvent,
-  NewEventToLists,
+  type NewComment,
+  type NewEvent,
+  type NewEventToLists,
   UpdateComment,
-  UpdateEvent,
+  type UpdateEvent,
 } from "@/server/db/types";
 import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
 
