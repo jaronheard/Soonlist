@@ -12,7 +12,7 @@ import {
   timestamp,
   serial,
 } from "drizzle-orm/mysql-core";
-import { InferSelectModel, relations, sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 // note about the table names here -- they are all not pluralized because that's how i set them up AND
 // i'm running into a bug when i try to rename and push the changes to planetscale
@@ -36,8 +36,6 @@ export const comments = mysqlTable(
     };
   }
 );
-
-export type Comment = InferSelectModel<typeof comments>;
 
 export const commentsRelations = relations(comments, ({ one }) => ({
   event: one(events, { fields: [comments.eventId], references: [events.id] }),
@@ -71,8 +69,6 @@ export const events = mysqlTable(
     };
   }
 );
-
-export type Event = InferSelectModel<typeof events>;
 
 export const eventsRelations = relations(events, ({ one, many }) => ({
   user: one(users, { fields: [events.userId], references: [users.id] }),
@@ -115,8 +111,6 @@ export const eventFollows = mysqlTable(
   }
 );
 
-export type EventFollow = InferSelectModel<typeof eventFollows>;
-
 export const eventFollowsRelations = relations(eventFollows, ({ one }) => ({
   user: one(users, {
     fields: [eventFollows.userId],
@@ -141,8 +135,6 @@ export const listFollows = mysqlTable(
   }
 );
 
-export type ListFollow = InferSelectModel<typeof listFollows>;
-
 export const listFollowsRelations = relations(listFollows, ({ one }) => ({
   user: one(users, { fields: [listFollows.userId], references: [users.id] }),
   list: one(lists, { fields: [listFollows.listId], references: [lists.id] }),
@@ -160,8 +152,6 @@ export const userFollows = mysqlTable(
     };
   }
 );
-
-export type UserFollow = InferSelectModel<typeof userFollows>;
 
 export const userFollowsRelations = relations(userFollows, ({ one }) => ({
   follower: one(users, {
@@ -195,8 +185,6 @@ export const lists = mysqlTable(
   }
 );
 
-export type List = InferSelectModel<typeof lists>;
-
 export const listsRelations = relations(lists, ({ one, many }) => ({
   user: one(users, { fields: [lists.userId], references: [users.id] }),
   eventToLists: many(eventsToLists),
@@ -225,8 +213,6 @@ export const requestResponses = mysqlTable(
   }
 );
 
-export type RequestResponse = InferSelectModel<typeof requestResponses>;
-
 export const users = mysqlTable(
   "Users",
   {
@@ -247,8 +233,6 @@ export const users = mysqlTable(
     };
   }
 );
-
-export type User = InferSelectModel<typeof users>;
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   events: many(events),

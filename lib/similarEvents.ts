@@ -1,5 +1,5 @@
 import { differenceInMinutes } from "date-fns";
-import { Event } from "@/server/db/schema";
+import { Event } from "@/server/db/types";
 import { AddToCalendarButtonProps } from "@/types";
 import { EventWithUser } from "@/components/EventList";
 

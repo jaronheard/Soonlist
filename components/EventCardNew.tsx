@@ -19,7 +19,10 @@ import { FollowEventButton, FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
 import { EventWithUser } from "./EventList";
 import { Button } from "./ui/button";
-import { eventFollows, User, Comment, EventFollow } from "@/server/db/schema";
+import { eventFollows } from "@/server/db/schema";
+import { User } from "@/server/db/types";
+import { EventFollow } from "@/server/db/types";
+import { Comment } from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,

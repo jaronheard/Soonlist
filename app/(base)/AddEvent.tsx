@@ -23,7 +23,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
-import { List } from "@/server/db/schema";
+import { List } from "@/server/db/types";
 
 function Code({
   children,
