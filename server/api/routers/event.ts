@@ -16,6 +16,7 @@ import {
   comments,
   eventToLists,
 } from "@/server/db/schema";
+import { NewComment, NewEvent, NewEventToLists } from "@/server/db/types";
 
 const eventCreateSchema = z.object({
   event: z.any(), //TODO: add validation
@@ -358,12 +359,20 @@ export const eventRouter = createTRPCRouter({
     }),
   create: protectedProcedure
     .input(eventCreateSchema)
-    .mutation(({ ctx, input }) => {
-      const { userId } = ctx.auth;
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.auth.userId;
+      const username = ctx.currentUser?.username;
       if (!userId) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "No user id found in session",
+        });
+      }
+
+      if (!username) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No username found in session",
         });
       }
 
@@ -396,30 +405,36 @@ export const eventRouter = createTRPCRouter({
       const end = Temporal.ZonedDateTime.from(
         `${event.endDate}T${endTime}[${timeZone}]`
       );
-      devLog("calculated start and end: ", start, end);
-      const startUtc = start.toInstant().toString();
-      const endUtc = end.toInstant().toString();
-      devLog("calculated start and end UTC: ", startUtc, endUtc);
+      const startUtcDate = new Date(start.epochMilliseconds);
+      const endUtcDate = new Date(end.epochMilliseconds);
       const eventid = generatePublicId();
-      const commentid = generatePublicId();
-      console.log("eventid: ", eventid);
 
+      const values = {
+        id: eventid,
+        userId: userId,
+        userName: ctx.auth.user?.username || "unknown",
+        event: event,
+        startDateTime: startUtcDate,
+        endDateTime: endUtcDate,
+        ...(hasVisibility && {
+          visibility: input.visibility,
+        }),
+      };
       return ctx.db
         .transaction(async (tx) => {
-          await tx.insert(event).values({
-            id: eventid,
-            userId: userId,
-            event: event,
-            startDateTime: startUtc,
-            endDateTime: endUtc,
-            ...(hasVisibility && {
-              visibility: input.visibility,
-            }),
-          });
-          console.log("1");
+          const insertEvent = async (event: NewEvent) => {
+            return tx.insert(events).values(event);
+          };
+          const insertComment = async (comment: NewComment) => {
+            return tx.insert(comments).values(comment);
+          };
+          const insertEventToLists = async (eventToList: NewEventToLists[]) => {
+            return tx.insert(eventToLists).values(eventToList);
+          };
+
+          await insertEvent(values);
           if (hasComment) {
-            console.log("2");
-            await tx.insert(comments).values({
+            await insertComment({
               eventId: eventid,
               content: input.comment || "",
               userId: userId,
@@ -428,18 +443,15 @@ export const eventRouter = createTRPCRouter({
             // no need to insert comment if there is no comment
           }
           if (hasLists) {
-            console.log("3");
             await tx
               .delete(eventToLists)
               .where(eq(eventToLists.eventId, eventid));
-            console.log("4");
-            await tx.insert(eventToLists).values(
+            await insertEventToLists(
               input.lists.map((list) => ({
                 eventId: eventid,
                 listId: list.value!,
               }))
             );
-            console.log("5");
           } else {
             // no need to insert event to list if there is no list
           }

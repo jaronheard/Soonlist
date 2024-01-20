@@ -1,18 +1,50 @@
-import { InferSelectModel } from "drizzle-orm";
-import { comments } from "./schema";
-import { events } from "./schema";
-import { eventFollows } from "./schema";
-import { listFollows } from "./schema";
-import { userFollows } from "./schema";
-import { lists } from "./schema";
-import { requestResponses } from "./schema";
-import { users } from "./schema";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import {
+  comments,
+  eventToLists,
+  events,
+  eventFollows,
+  listFollows,
+  userFollows,
+  lists,
+  requestResponses,
+  users,
+} from "./schema";
 
 export type Comment = InferSelectModel<typeof comments>;
+export type NewComment = InferInsertModel<typeof comments>;
+export type UpdateComment = Partial<InferInsertModel<typeof comments>>;
+
 export type Event = InferSelectModel<typeof events>;
+export type NewEvent = InferInsertModel<typeof events>;
+export type UpdateEvent = Partial<InferInsertModel<typeof events>>;
+
 export type EventFollow = InferSelectModel<typeof eventFollows>;
+export type NewEventFollow = InferInsertModel<typeof eventFollows>;
+export type UpdateEventFollow = Partial<InferInsertModel<typeof eventFollows>>;
+
 export type ListFollow = InferSelectModel<typeof listFollows>;
+export type NewListFollow = InferInsertModel<typeof listFollows>;
+export type UpdateListFollow = Partial<InferInsertModel<typeof listFollows>>;
+
 export type UserFollow = InferSelectModel<typeof userFollows>;
+export type NewUserFollow = InferInsertModel<typeof userFollows>;
+export type UpdateUserFollow = Partial<InferInsertModel<typeof userFollows>>;
+
 export type List = InferSelectModel<typeof lists>;
+export type NewList = InferInsertModel<typeof lists>;
+export type UpdateList = Partial<InferInsertModel<typeof lists>>;
+
 export type RequestResponse = InferSelectModel<typeof requestResponses>;
+export type NewRequestResponse = InferInsertModel<typeof requestResponses>;
+export type UpdateRequestResponse = Partial<
+  InferInsertModel<typeof requestResponses>
+>;
+
 export type User = InferSelectModel<typeof users>;
+export type NewUser = InferInsertModel<typeof users>;
+export type UpdateUser = Partial<InferInsertModel<typeof users>>;
+
+export type EventToLists = InferSelectModel<typeof eventToLists>;
+export type NewEventToLists = InferInsertModel<typeof eventToLists>;
+export type UpdateEventToLists = Partial<InferInsertModel<typeof eventToLists>>;
