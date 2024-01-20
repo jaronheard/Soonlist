@@ -6,6 +6,7 @@ import { PHProvider, Providers } from "./providers";
 import { TRPCReactProvider } from "@/trpc/react";
 
 export const runtime = "edge";
+export const preferredRegion = "pdx1";
 
 const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
   ssr: false,
