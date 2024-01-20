@@ -14,7 +14,7 @@ import {
   eventFollows,
   users,
   comments,
-  eventsToLists,
+  eventToLists,
 } from "@/server/db/schema";
 
 const eventCreateSchema = z.object({
@@ -340,9 +340,9 @@ export const eventRouter = createTRPCRouter({
           }
           if (hasLists) {
             await ctx.db
-              .delete(eventsToLists)
-              .where(eq(eventsToLists.eventId, input.id));
-            await ctx.db.insert(eventsToLists).values(
+              .delete(eventToLists)
+              .where(eq(eventToLists.eventId, input.id));
+            await ctx.db.insert(eventToLists).values(
               input.lists.map((list) => ({
                 eventId: input.id,
                 listId: list.value!,
@@ -350,8 +350,8 @@ export const eventRouter = createTRPCRouter({
             );
           } else {
             await ctx.db
-              .delete(eventsToLists)
-              .where(eq(eventsToLists.eventId, input.id));
+              .delete(eventToLists)
+              .where(eq(eventToLists.eventId, input.id));
           }
         })
         .then(() => ({ id: input.id }));
@@ -430,10 +430,10 @@ export const eventRouter = createTRPCRouter({
           if (hasLists) {
             console.log("3");
             await tx
-              .delete(eventsToLists)
-              .where(eq(eventsToLists.eventId, eventid));
+              .delete(eventToLists)
+              .where(eq(eventToLists.eventId, eventid));
             console.log("4");
-            await tx.insert(eventsToLists).values(
+            await tx.insert(eventToLists).values(
               input.lists.map((list) => ({
                 eventId: eventid,
                 listId: list.value!,
@@ -482,7 +482,7 @@ export const eventRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .insert(eventsToLists)
+        .insert(eventToLists)
         .values({
           eventId: input.eventId,
           listId: input.listId,
@@ -502,11 +502,11 @@ export const eventRouter = createTRPCRouter({
         });
       }
       return ctx.db
-        .delete(eventsToLists)
+        .delete(eventToLists)
         .where(
           and(
-            eq(eventsToLists.eventId, input.eventId),
-            eq(eventsToLists.listId, input.listId)
+            eq(eventToLists.eventId, input.eventId),
+            eq(eventToLists.listId, input.listId)
           )
         );
     }),

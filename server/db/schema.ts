@@ -72,12 +72,12 @@ export const events = mysqlTable(
 
 export const eventsRelations = relations(events, ({ one, many }) => ({
   user: one(users, { fields: [events.userId], references: [users.id] }),
-  eventToLists: many(eventsToLists),
+  eventToLists: many(eventToLists),
   comments: many(comments),
   eventFollows: many(eventFollows),
 }));
 
-export const eventsToLists = mysqlTable(
+export const eventToLists = mysqlTable(
   "EventToLists",
   {
     eventId: varchar("eventId", { length: 191 }).notNull(),
@@ -90,12 +90,12 @@ export const eventsToLists = mysqlTable(
   }
 );
 
-export const eventsToListsRelations = relations(eventsToLists, ({ one }) => ({
+export const eventToListsRelations = relations(eventToLists, ({ one }) => ({
   event: one(events, {
-    fields: [eventsToLists.eventId],
+    fields: [eventToLists.eventId],
     references: [events.id],
   }),
-  list: one(lists, { fields: [eventsToLists.listId], references: [lists.id] }),
+  list: one(lists, { fields: [eventToLists.listId], references: [lists.id] }),
 }));
 
 export const eventFollows = mysqlTable(
@@ -187,7 +187,7 @@ export const lists = mysqlTable(
 
 export const listsRelations = relations(lists, ({ one, many }) => ({
   user: one(users, { fields: [lists.userId], references: [users.id] }),
-  eventToLists: many(eventsToLists),
+  eventToLists: many(eventToLists),
   listFollows: many(listFollows),
 }));
 
