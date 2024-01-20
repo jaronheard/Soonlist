@@ -17,10 +17,7 @@ export default async function Page({ params }: Props) {
       <div className="p-4"></div>
       <div className="grid grid-cols-1 gap-4">
         {users.map((user) => (
-          <UserInfo
-            key={user.Following.username}
-            userName={user.Following.username}
-          />
+          <UserInfo key={user.username} userName={user.username} />
         ))}
       </div>
       <div className="p-4"></div>

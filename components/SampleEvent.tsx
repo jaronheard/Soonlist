@@ -32,9 +32,9 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
       </div>
       <div className="grid place-items-center rounded-xl border-2 border-gray-100 bg-white text-left shadow-md">
         <EventCard
-          User={event.User}
-          FollowEvent={event.FollowEvent}
-          Comment={event.Comment}
+          user={event.user}
+          eventFollows={event.eventFollows}
+          comments={event.comments}
           key={event.id}
           id={event.id}
           event={eventData}

@@ -10,7 +10,7 @@ import { VercelToolbar } from "@/components/VercelToolbar";
 import { IntercomProvider } from "@/lib/intercom/IntercomProvider";
 import ContextProvider from "@/context/ContextProvider";
 
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || "", {
     api_host: `${process.env.NEXT_PUBLIC_URL}/ingest`,
     capture_pageview: false, // Disable automatic pageview capture, as we capture manually
@@ -37,6 +37,9 @@ export function PostHogPageview(): JSX.Element {
 }
 
 export function PHProvider({ children }: { children: React.ReactNode }) {
+  if ([process.env.NODE_ENV !== "production"]) {
+    return <>{children}</>;
+  }
   return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 }
 
@@ -60,8 +63,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <IntercomProvider>
         <ContextProvider>
           {children}
-          <SpeedInsights />
-          <UserAnalytics />
+          {process.env.NODE_ENV === "production" ? <SpeedInsights /> : <></>}
+          {process.env.NODE_ENV === "production" ? <UserAnalytics /> : <></>}
           <VercelToolbar />
         </ContextProvider>
       </IntercomProvider>

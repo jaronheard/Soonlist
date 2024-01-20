@@ -1,5 +1,8 @@
-import { Comment, Event, FollowEvent, User } from "@prisma/client";
 import { clsx } from "clsx";
+import { User } from "@/server/db/types";
+import { EventFollow } from "@/server/db/types";
+import { Event } from "@/server/db/types";
+import { Comment } from "@/server/db/types";
 import { EventCard } from "@/components/EventCard";
 import {
   Accordion,
@@ -12,9 +15,9 @@ import { collapseSimilarEvents } from "@/lib/similarEvents";
 import { cn } from "@/lib/utils";
 
 export type EventWithUser = Event & {
-  User: User;
-  FollowEvent: FollowEvent[];
-  Comment: Comment[];
+  user: User;
+  eventFollows: EventFollow[];
+  comments: Comment[];
 };
 
 export default function EventList({
@@ -80,9 +83,9 @@ export default function EventList({
                 {pastEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventCard
                     key={item.id}
-                    User={item.User}
-                    FollowEvent={item.FollowEvent}
-                    Comment={item.Comment}
+                    user={item.user}
+                    eventFollows={item.eventFollows}
+                    comments={item.comments}
                     id={item.id}
                     event={item.event as AddToCalendarButtonProps}
                     visibility={item.visibility}
@@ -121,9 +124,9 @@ export default function EventList({
                 {currentEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventCard
                     key={item.id}
-                    User={item.User}
-                    FollowEvent={item.FollowEvent}
-                    Comment={item.Comment}
+                    user={item.user}
+                    eventFollows={item.eventFollows}
+                    comments={item.comments}
                     id={item.id}
                     event={item.event as AddToCalendarButtonProps}
                     visibility={item.visibility}
@@ -170,9 +173,9 @@ export default function EventList({
               {futureEventsToUse.map(({ event: item, similarEvents }) => (
                 <EventCard
                   key={item.id}
-                  User={item.User}
-                  FollowEvent={item.FollowEvent}
-                  Comment={item.Comment}
+                  user={item.user}
+                  eventFollows={item.eventFollows}
+                  comments={item.comments}
                   id={item.id}
                   event={item.event as AddToCalendarButtonProps}
                   visibility={item.visibility}

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata, ResolvingMetadata } from "next/types";
 import { UserInfo } from "@/components/UserInfo";
-import Leaderboard from "@/components/Leaderboard";
+// import Leaderboard from "@/components/Leaderboard";
 import LeaderboardSkeleton from "@/components/LeaderboardSkeleton";
 import {
   Card,
@@ -36,7 +36,7 @@ export default async function Page() {
 
   return (
     <>
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Top Users</CardTitle>
           <CardDescription>Most Upcoming Events</CardDescription>
@@ -47,7 +47,7 @@ export default async function Page() {
           </Suspense>
         </CardContent>
       </Card>
-      <div className="p-4"></div>
+      <div className="p-4"></div> */}
       <div className="flex place-items-center">
         <div className="font-medium">All users</div>
       </div>

@@ -41,7 +41,7 @@ export async function UserInfo(props: UserInfoProps) {
         <Link href={`/${user.username}/events`}>
           <Image
             className="inline-block h-9 w-9 rounded-full"
-            src={user.imageUrl}
+            src={user.userImage}
             alt=""
             width={375}
             height={375}

@@ -1,99 +1,94 @@
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
+import { and, eq } from "drizzle-orm";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
+import { listFollows, lists, users } from "@/server/db/schema";
+import { generatePublicId } from "@/lib/utils";
 
 export const listRouter = createTRPCRouter({
   getAllForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.list.findMany({
-        where: {
-          User: {
-            username: input.userName,
+      const usersWithLists = ctx.db.query.users.findMany({
+        where: eq(users.username, input.userName),
+        with: {
+          lists: {
+            orderBy: (list, { asc }) => [asc(list.updatedAt)],
+            with: {
+              // userId replaced here
+              user: {
+                columns: { id: true, username: true },
+              },
+              // event to list replaced count
+              eventToLists: true,
+            },
           },
-        },
-        select: {
-          userId: true,
-          id: true,
-          name: true,
-          description: true,
-          _count: {
-            select: { events: true },
-          },
-          createdAt: true,
-          updatedAt: true,
-        },
-        orderBy: {
-          updatedAt: "asc",
         },
       });
+      return usersWithLists.then((users) => users[0]?.lists || []);
     }),
   getFollowing: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.list.findMany({
-        where: {
-          FollowList: {
-            some: {
-              User: {
-                username: input.userName,
+      const followLists = ctx.db.query.listFollows.findMany({
+        where: eq(users.username, input.userName),
+        with: {
+          list: {
+            // not sure why this is needed or not working
+            // orderBy: (list, { asc }) => [asc(list.updatedAt)],
+            with: {
+              // userId replaced here
+              user: {
+                columns: { id: true, username: true },
               },
+              // event to list replaced count
+              eventToLists: true,
+            },
+            columns: {
+              id: true,
+              name: true,
+              description: true,
+              createdAt: true,
+              updatedAt: true,
             },
           },
-        },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          _count: {
-            select: { events: true },
-          },
-          createdAt: true,
-          updatedAt: true,
-          User: {
-            select: {
-              username: true,
-            },
-          },
-        },
-        orderBy: {
-          updatedAt: "asc",
         },
       });
+      return followLists.then(
+        (followList) => followList?.map((item) => item.list) || null
+      );
     }),
   get: publicProcedure
     .input(z.object({ listId: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.list.findUnique({
-        where: {
-          id: input.listId,
-        },
-        select: {
-          id: true,
-          userId: true,
-          name: true,
-          description: true,
-          events: {
-            orderBy: {
-              startDateTime: "asc",
-            },
-            include: {
-              User: true,
-              FollowEvent: true,
-              Comment: true,
-            },
+      return ctx.db.query.lists
+        .findMany({
+          where: eq(lists.id, input.listId),
+          columns: {
+            id: true,
+            name: true,
+            description: true,
+            createdAt: true,
+            updatedAt: true,
           },
-          createdAt: true,
-          updatedAt: true,
-          FollowList: true,
-          User: true,
-        },
-      });
+          with: {
+            eventToLists: {
+              with: {
+                event: {
+                  with: { user: true, eventFollows: true, comments: true },
+                },
+              },
+            },
+            user: true,
+            listFollows: true,
+          },
+        })
+        .then((lists) => lists[0] || null);
     }),
   follow: protectedProcedure
     .input(z.object({ listId: z.string() }))
@@ -105,11 +100,9 @@ export const listRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.followList.create({
-        data: {
-          userId: userId,
-          listId: input.listId,
-        },
+      return ctx.db.insert(listFollows).values({
+        userId: userId,
+        listId: input.listId,
       });
     }),
   unfollow: protectedProcedure
@@ -122,14 +115,14 @@ export const listRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.followList.delete({
-        where: {
-          userId_listId: {
-            userId: userId,
-            listId: input.listId,
-          },
-        },
-      });
+      return ctx.db
+        .delete(listFollows)
+        .where(
+          and(
+            eq(listFollows.userId, userId),
+            eq(listFollows.listId, input.listId)
+          )
+        );
     }),
   create: protectedProcedure
     .input(
@@ -140,19 +133,24 @@ export const listRouter = createTRPCRouter({
     )
     .mutation(({ ctx, input }) => {
       const { userId } = ctx.auth;
+      const id = generatePublicId();
       if (!userId) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "No user id found in session",
         });
       }
-      return ctx.db.list.create({
-        data: {
+      return ctx.db
+        .insert(lists)
+        .values({
+          id: id,
           userId: userId,
           name: input.name,
           description: input.description,
-        },
-      });
+        })
+        .then(() => ({
+          id,
+        }));
     }),
   update: protectedProcedure
     .input(
@@ -170,15 +168,14 @@ export const listRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.list.update({
-        where: {
-          id: input.listId,
-        },
-        data: {
+      return ctx.db
+        .update(lists)
+        .set({
           name: input.name,
           description: input.description,
-        },
-      });
+        })
+        .where(eq(lists.id, input.listId))
+        .then(() => ({ id: input.listId }));
     }),
   delete: protectedProcedure
     .input(z.object({ listId: z.string() }))
@@ -190,10 +187,6 @@ export const listRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.list.delete({
-        where: {
-          id: input.listId,
-        },
-      });
+      return ctx.db.delete(lists).where(eq(lists.id, input.listId));
     }),
 });

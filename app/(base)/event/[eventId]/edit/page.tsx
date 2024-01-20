@@ -17,7 +17,7 @@ export default async function Page({
   }
 
   const eventData = event.event as AddToCalendarButtonProps;
-  const mostRecentComment = event.Comment.findLast(
+  const mostRecentComment = event.comments.findLast(
     (comment) => comment.content
   )?.content;
   return (
@@ -25,8 +25,8 @@ export default async function Page({
       {event && event.event ? (
         <>
           <YourDetails
-            lists={event.User.lists || undefined}
-            eventLists={event.eventList}
+            lists={event.user.lists || undefined}
+            eventLists={[]} // TODO: get event lists
             comment={mostRecentComment}
             visibility={event.visibility}
           />

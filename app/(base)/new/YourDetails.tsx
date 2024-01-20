@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SignedIn } from "@clerk/nextjs";
-import { List } from "@prisma/client";
 import { PenSquare } from "lucide-react";
+import { List } from "@/server/db/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FormLabel,

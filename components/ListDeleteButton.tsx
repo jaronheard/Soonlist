@@ -19,7 +19,7 @@ export function ListDeleteButton(props: ListDeleteButtonProps) {
     onError: () => {
       toast.error("Your list was not deleted. Please try again.");
     },
-    onSuccess: ({ id }) => {
+    onSuccess: () => {
       toast.success("List deleted.");
       router.refresh();
       router.push(`/${user?.username}/events`);

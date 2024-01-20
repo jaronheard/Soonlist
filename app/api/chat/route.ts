@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { RequestResponse } from "@prisma/client";
+import { RequestResponse } from "@/server/db/types";
 import { getPrompt } from "@/lib/prompts";
 
 export const dynamic = "force-dynamic";

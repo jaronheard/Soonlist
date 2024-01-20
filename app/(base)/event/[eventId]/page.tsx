@@ -1,5 +1,4 @@
 import { Metadata, ResolvingMetadata } from "next/types";
-import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { EventCard } from "@/components/EventCardNew";
 import { UserInfo } from "@/components/UserInfo";
@@ -52,7 +51,7 @@ export default async function Page({ params }: Props) {
     return <p className="text-lg text-gray-500">No event found.</p>;
   }
   const otherEvents = await api.event.getCreatedForUser.query({
-    userName: event.User.username,
+    userName: event.user.username,
   });
 
   const futureEvents = otherEvents
@@ -75,9 +74,9 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <EventCard
-        User={event.User}
-        FollowEvent={event.FollowEvent}
-        Comment={event.Comment}
+        user={event.user}
+        eventFollows={event.eventFollows}
+        comments={event.comments}
         key={event.id}
         id={event.id}
         event={event.event as AddToCalendarButtonProps}

@@ -19,7 +19,7 @@ export default async function ListCardsForUser({
   const user = await currentUser();
   const isOwner = user && user.username === userName;
   const hideAll = !isOwner && lists.length === 0;
-  const listsToShow = lists.filter((list) => list._count.events > 0);
+  const listsToShow = lists.filter((list) => list.eventToLists.length > 0);
   const listsToUse = isOwner ? lists : listsToShow;
 
   if (!lists || hideAll) {
@@ -39,7 +39,7 @@ export default async function ListCardsForUser({
             <ListCard
               key={list.name}
               name={list.name}
-              count={list._count.events}
+              count={list.eventToLists.length}
               id={list.id}
             />
           ))}

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/nextjs";
-import { FollowEvent, User, Comment } from "@prisma/client";
 import { useContext } from "react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
@@ -19,6 +18,10 @@ import { ConditionalWrapper } from "./ConditionalWrapper";
 import { FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
 import { EventWithUser } from "./EventList";
+import { eventFollows } from "@/server/db/schema";
+import { User } from "@/server/db/types";
+import { EventFollow } from "@/server/db/types";
+import { Comment } from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -35,9 +38,9 @@ import { SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventCardProps = {
-  User: User;
-  FollowEvent: FollowEvent[];
-  Comment: Comment[];
+  user: User;
+  eventFollows: EventFollow[];
+  comments: Comment[];
   id: string;
   createdAt: Date;
   event: AddToCalendarButtonProps;
@@ -230,13 +233,13 @@ function EventDescription({
 }
 
 function EventActionButton({
-  User,
+  user,
   event,
   id,
   isOwner,
   isFollowing,
 }: {
-  User: User;
+  user: User;
   event: AddToCalendarButtonProps;
   id: string;
   isOwner: boolean;
@@ -253,16 +256,16 @@ function EventActionButton({
           type="dropdown"
           event={event}
           id={id}
-          username={User.username}
+          username={user.username}
         />
         <FollowEventDropdownButton eventId={id} following={isFollowing} />
         <ShareButton type="dropdown" event={event} id={id} />
         {isOwner && (
           <>
             <DropdownMenuSeparator />
-            <EditButton userId={User.id} id={id} />
+            <EditButton userId={user.id} id={id} />
             <DropdownMenuSeparator />
-            <DeleteButton userId={User.id} id={id} />
+            <DeleteButton userId={user.id} id={id} />
           </>
         )}
       </DropdownMenuContent>
@@ -339,9 +342,9 @@ function SimilarEventsSummary({
 
   // Iterate over similarEvents and populate the map
   similarEvents.forEach(({ event }) => {
-    const userEvents = eventsByUser.get(event.User.username) || [];
+    const userEvents = eventsByUser.get(event.user.username) || [];
     userEvents.push(event);
-    eventsByUser.set(event.User.username, userEvents);
+    eventsByUser.set(event.user.username, userEvents);
   });
 
   // Convert the map to an array of JSX elements
@@ -389,13 +392,13 @@ function CuratorComment({ comment }: { comment?: Comment }) {
 }
 
 export function EventCard(props: EventCardProps) {
-  const { user } = useUser();
-  const { User, FollowEvent, id, event, singleEvent, visibility } = props;
-  const roles = user?.unsafeMetadata.roles as string[] | undefined;
-  const isSelf = user?.id === User.id;
+  const { user: clerkUser } = useUser();
+  const { user, eventFollows, id, event, singleEvent, visibility } = props;
+  const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
+  const isSelf = clerkUser?.id === user.id;
   const isOwner = isSelf || roles?.includes("admin");
-  const isFollowing = !!FollowEvent.find((item) => item.userId === user?.id);
-  const comment = props.Comment.findLast((item) => item.userId === user?.id);
+  const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
+  const comment = props.comments.findLast((item) => item.userId === user?.id);
   // always show curator if !isSelf
   const showOtherCurators = !isSelf && props.showOtherCurators;
   const showCurator = showOtherCurators || !props.hideCurator;
@@ -437,7 +440,7 @@ export function EventCard(props: EventCardProps) {
       />
       <div className="absolute right-4 top-5 sm:right-6">
         <EventActionButton
-          User={User}
+          user={user}
           event={event}
           id={id}
           isOwner={!!isOwner}
@@ -454,7 +457,7 @@ export function EventCard(props: EventCardProps) {
         <>
           <div className="p-1"></div>
           <EventCuratedBy
-            username={User.username}
+            username={user.username}
             comment={comment}
             similarEvents={props.similarEvents}
           />
