@@ -78,7 +78,7 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
 }));
 
 export const eventsToLists = mysqlTable(
-  "EventToList",
+  "EventToLists",
   {
     eventId: varchar("eventId", { length: 191 }).notNull(),
     listId: varchar("listId", { length: 191 }).notNull(),
