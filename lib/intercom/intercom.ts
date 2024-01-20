@@ -1,5 +1,13 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck - This is a copy of the intercom library, which is not typed
+// copied this script and it isn't typed, so we have to disable a bunch of rules
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-var */
+
+// @ts-nocheck
 
 export const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
 
@@ -8,33 +16,32 @@ export const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
 
 export const load = () => {
   (function () {
-    const w = window;
-    const ic = w.Intercom as unknown;
+    var w = window;
+    var ic = w.Intercom;
     if (typeof ic === "function") {
       ic("reattach_activator");
       ic("update", w.intercomSettings);
     } else {
-      const d = document;
-      const i = function () {
-        i.c(rest);
+      var d = document;
+      var i = function () {
+        i.c(arguments);
       };
       i.q = [];
       i.c = function (args) {
         i.q.push(args);
       };
       w.Intercom = i;
-      const l = function () {
-        const s = d.createElement("script");
+      var l = function () {
+        var s = d.createElement("script");
         s.type = "text/javascript";
         s.async = true;
         s.src = "https://widget.intercom.io/widget/ravmo56d";
-        const x = d.getElementsByTagName("script")[0];
+        var x = d.getElementsByTagName("script")[0];
         x.parentNode.insertBefore(s, x);
       };
       if (document.readyState === "complete") {
         l();
       } else if (w.attachEvent) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         w.attachEvent("onload", l);
       } else {
         w.addEventListener("load", l, false);
@@ -46,8 +53,8 @@ export const load = () => {
 // Initializes Intercom
 export const boot = (options: Intercom_.IntercomSettings) => {
   window &&
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    window.Intercom?.("boot", {
+    window.Intercom &&
+    window.Intercom("boot", {
       api_base: "https://api-iam.intercom.io",
       app_id: APP_ID,
       ...options,
@@ -55,6 +62,5 @@ export const boot = (options: Intercom_.IntercomSettings) => {
 };
 
 export const update = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  window && window.Intercom?.("update");
+  window && window.Intercom && window.Intercom("update");
 };
