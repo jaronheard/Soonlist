@@ -23,7 +23,7 @@ export const userRouter = createTRPCRouter({
   getByUsername: publicProcedure
     .input(z.object({ userName: z.string() }))
     .query(async ({ ctx, input }) => {
-      const user = ctx.db.query.users
+      return ctx.db.query.users
         .findMany({
           where: eq(users.username, input.userName),
         })
@@ -50,14 +50,17 @@ export const userRouter = createTRPCRouter({
         .then((followUsers) =>
           followUsers.map((followUser) => followUser.followingId)
         )
-        .then((userIds) =>
-          ctx.db.select().from(users).where(inArray(users.id, userIds))
-        );
+        .then((userIds) => {
+          if (!userIds.length || userIds.length === 0) {
+            return [];
+          }
+          return ctx.db.select().from(users).where(inArray(users.id, userIds));
+        });
     }),
   getIfFollowing: publicProcedure
     .input(z.object({ followerId: z.string(), followingId: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.db
+    .query(async ({ ctx, input }) => {
+      const userFollowsRecords = await ctx.db
         .select()
         .from(userFollows)
         .where(
@@ -66,6 +69,7 @@ export const userRouter = createTRPCRouter({
             eq(userFollows.followingId, input.followingId)
           )
         );
+      return userFollowsRecords.length > 0;
     }),
   follow: protectedProcedure
     .input(z.object({ followingId: z.string() }))

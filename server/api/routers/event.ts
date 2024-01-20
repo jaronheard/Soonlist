@@ -16,10 +16,17 @@ import {
   comments,
   eventToLists,
 } from "@/server/db/schema";
-import { NewComment, NewEvent, NewEventToLists } from "@/server/db/types";
+import {
+  NewComment,
+  NewEvent,
+  NewEventToLists,
+  UpdateComment,
+  UpdateEvent,
+} from "@/server/db/types";
+import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
 
 const eventCreateSchema = z.object({
-  event: z.any(), //TODO: add validation
+  event: AddToCalendarButtonPropsSchema,
   comment: z.string().optional(),
   lists: z.array(z.record(z.string().trim())),
   visibility: z.enum(["public", "private"]).optional(),
@@ -27,7 +34,8 @@ const eventCreateSchema = z.object({
 
 const eventUpdateSchema = z.object({
   id: z.string(),
-  event: z.any(),
+  // event infers type of AddToCalendarButtonProps
+  event: AddToCalendarButtonPropsSchema,
   comment: z.string().optional(),
   lists: z.array(z.record(z.string().trim())),
   visibility: z.enum(["public", "private"]).optional(),
@@ -284,19 +292,37 @@ export const eventRouter = createTRPCRouter({
       const hasLists = input.lists && input.lists.length > 0;
       const hasVisibility = input.visibility && input.visibility.length > 0;
 
+      let startTime = event.startTime;
+      let endTime = event.endTime;
+      let timeZone = event.timeZone;
+
+      // time zone is America/Los_Angeles if not specified
+      if (!timeZone) {
+        timeZone = "America/Los_Angeles";
+      }
+
+      // start time is 00:00 if not specified
+      if (!startTime) {
+        startTime = "00:00";
+      }
+      // end time is 23:59 if not specified
+      if (!endTime) {
+        endTime = "23:59";
+      }
+
       const start = Temporal.ZonedDateTime.from(
-        `${event.startDate}T${event.startTime}[${event.timeZone}]`
+        `${event.startDate}T${startTime}[${timeZone}]`
       );
       const end = Temporal.ZonedDateTime.from(
-        `${event.endDate}T${event.endTime}[${event.timeZone}]`
+        `${event.endDate}T${endTime}[${timeZone}]`
       );
-      const startUtc = start.toInstant().toString();
-      const endUtc = end.toInstant().toString();
+      const startUtcDate = new Date(start.epochMilliseconds);
+      const endUtcDate = new Date(end.epochMilliseconds);
 
       // check if user is event owner
       const eventOwner = await ctx.db.query.events
         .findMany({
-          where: and(eq(event.id, input.id), eq(event.userId, userId)),
+          where: and(eq(events.id, input.id), eq(events.userId, userId)),
           columns: {
             id: true,
           },
@@ -310,32 +336,40 @@ export const eventRouter = createTRPCRouter({
         });
       }
 
-      // if user is event owner, update event
       return ctx.db
         .transaction(async (tx) => {
-          await ctx.db
-            .update(event)
-            .set({
-              userId: userId,
-              event: event,
-              startDateTime: startUtc,
-              endDateTime: endUtc,
-              ...(hasVisibility && {
-                visibility: input.visibility,
-              }),
-            })
-            .where(eq(event.id, input.id));
-          if (hasComment) {
-            await ctx.db
+          const updateEvent = async (event: UpdateEvent, id: string) => {
+            return tx.update(events).set(event).where(eq(events.id, id));
+          };
+          const insertComment = async (comment: NewComment) => {
+            return tx
               .insert(comments)
-              .values({
-                content: input.comment || "",
-                userId: userId,
-                eventId: input.id,
-              })
+              .values(comment)
               .onDuplicateKeyUpdate({
                 set: { content: input.comment },
               });
+          };
+          const insertEventToLists = async (eventToList: NewEventToLists[]) => {
+            return tx.insert(eventToLists).values(eventToList);
+          };
+          await updateEvent(
+            {
+              userId: userId,
+              event: event,
+              startDateTime: startUtcDate,
+              endDateTime: endUtcDate,
+              ...(hasVisibility && {
+                visibility: input.visibility,
+              }),
+            },
+            input.id
+          );
+          if (hasComment) {
+            await insertComment({
+              content: input.comment || "",
+              userId: userId,
+              eventId: input.id,
+            });
           } else {
             await ctx.db.delete(comments).where(eq(comments.eventId, input.id));
           }
@@ -343,7 +377,7 @@ export const eventRouter = createTRPCRouter({
             await ctx.db
               .delete(eventToLists)
               .where(eq(eventToLists.eventId, input.id));
-            await ctx.db.insert(eventToLists).values(
+            await insertEventToLists(
               input.lists.map((list) => ({
                 eventId: input.id,
                 listId: list.value!,
