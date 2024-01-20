@@ -6,24 +6,27 @@ import { ZodError } from "zod";
 import {
   type SignedInAuthObject,
   SignedOutAuthObject,
+  User,
 } from "@clerk/nextjs/server";
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { db } from "@/server/db";
 
 interface CreateContextOptions {
   headers: Headers;
   db: typeof db;
-  // auth: User;
+  user: User | null;
   auth: SignedInAuthObject | SignedOutAuthObject;
 }
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = auth();
+  const user = await currentUser();
   // const session = getAuth(opts)
 
   return {
     db,
     auth: session,
+    currentUser: user,
     ...opts,
   };
 };
@@ -63,6 +66,7 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       auth: ctx.auth,
+      currentUser: ctx.currentUser,
       db,
     },
   });
