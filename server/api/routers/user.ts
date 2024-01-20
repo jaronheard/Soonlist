@@ -36,26 +36,39 @@ export const userRouter = createTRPCRouter({
   }),
   getFollowing: publicProcedure
     .input(z.object({ userName: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.query.userFollows
+    .query(async ({ ctx, input }) => {
+      // TODO: make this more efficient
+      const userId = await ctx.db.query.users
         .findMany({
-          where: eq(userFollows.followerId, input.userName),
-          with: {
-            following: true,
-          },
+          where: eq(users.username, input.userName),
           columns: {
-            followingId: true,
+            id: true,
           },
         })
-        .then((followUsers) =>
-          followUsers.map((followUser) => followUser.followingId)
-        )
-        .then((userIds) => {
-          if (!userIds.length || userIds.length === 0) {
-            return [];
-          }
-          return ctx.db.select().from(users).where(inArray(users.id, userIds));
-        });
+        .then((u) => u[0]?.id || null);
+      if (!userId) {
+        return [];
+      }
+      const userFollowRecords = await ctx.db.query.userFollows.findMany({
+        where: eq(userFollows.followerId, userId),
+        with: {
+          following: true,
+        },
+        columns: {
+          followingId: true,
+        },
+      });
+      const followingIds = userFollowRecords.map(
+        (userFollowRecord) => userFollowRecord.followingId
+      );
+      if (!followingIds.length || followingIds.length === 0) {
+        return [];
+      }
+      const userRecords = await ctx.db
+        .select()
+        .from(users)
+        .where(inArray(users.id, followingIds));
+      return userRecords;
     }),
   getIfFollowing: publicProcedure
     .input(z.object({ followerId: z.string(), followingId: z.string() }))

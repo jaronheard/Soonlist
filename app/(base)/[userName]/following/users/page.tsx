@@ -8,6 +8,8 @@ export default async function Page({ params }: Props) {
     userName: params.userName,
   });
 
+  console.log(users);
+
   return (
     <>
       <div className="flex place-items-center gap-2">

@@ -62,9 +62,7 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <div className="flex place-items-center gap-2">
-        <div className="font-medium">
-          Events from users and lists followed by
-        </div>
+        <div className="font-medium">Events from lists followed by</div>
         <Suspense>
           <UserInfo userName={params.userName} />
         </Suspense>

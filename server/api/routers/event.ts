@@ -8,7 +8,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { devLog, generatePublicId } from "@/lib/utils";
+import { devLog, filterDuplicates, generatePublicId } from "@/lib/utils";
 import {
   events,
   eventFollows,
@@ -101,14 +101,45 @@ export const eventRouter = createTRPCRouter({
                 with: {
                   eventToLists: {
                     with: {
-                      event: true,
+                      event: {
+                        with: {
+                          user: true,
+                          eventFollows: true,
+                          comments: true,
+                        },
+                      },
                     },
                   },
                 },
               },
             },
           },
-          eventFollows: { with: { event: true } },
+          eventFollows: {
+            with: {
+              event: {
+                with: {
+                  user: true,
+                  eventFollows: true,
+                  comments: true,
+                },
+              },
+            },
+          },
+          following: {
+            with: {
+              following: {
+                with: {
+                  events: {
+                    with: {
+                      eventFollows: true,
+                      comments: true,
+                      user: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
       const followedEvents = following.flatMap((user) =>
@@ -121,21 +152,23 @@ export const eventRouter = createTRPCRouter({
           )
         )
       );
-      // filter out duplicate events
-      const allFollowedEvents = [
+      const followedEventsFromUsers = following.flatMap((user) =>
+        user.following.flatMap((userFollow) => userFollow.following.events)
+      );
+      const followedEventsFromEventsAndLists = [
         ...followedEvents,
         ...followedEventsFromLists,
-      ].reduce((acc, event) => {
-        if (!acc.find((e) => e.id === event.id)) {
-          acc.push(event);
-        }
-        return acc;
-      }, [] as any[]);
-      return allFollowedEvents.sort(
+        ...followedEventsFromUsers,
+      ];
+      const allFollowedEvents = filterDuplicates(
+        followedEventsFromEventsAndLists
+      );
+      const sortedFollowedEvents = allFollowedEvents.sort(
         (a, b) =>
           new Date(a.startDateTime).getTime() -
           new Date(b.startDateTime).getTime()
       );
+      return sortedFollowedEvents;
     }),
   getSavedForUser: publicProcedure
     .input(z.object({ userName: z.string() }))
