@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from "next/types";
+import { type Metadata, type ResolvingMetadata } from "next/types";
 import { currentUser } from "@clerk/nextjs";
 import { UserInfo } from "@/components/UserInfo";
 import { ListEditButton } from "@/components/ListEditButton";

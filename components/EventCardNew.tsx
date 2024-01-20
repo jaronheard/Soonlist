@@ -17,12 +17,10 @@ import { ShareButton } from "./ShareButton";
 import { ConditionalWrapper } from "./ConditionalWrapper";
 import { FollowEventButton, FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
-import { EventWithUser } from "./EventList";
+import { type EventWithUser } from "./EventList";
 import { Button } from "./ui/button";
 import { eventFollows } from "@/server/db/schema";
-import { User } from "@/server/db/types";
-import { EventFollow } from "@/server/db/types";
-import { Comment } from "@/server/db/types";
+import { type User , type EventFollow , type Comment } from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -34,8 +32,8 @@ import {
   getDateTimeInfo,
   timeFormatDateInfo,
 } from "@/lib/utils";
-import { AddToCalendarButtonProps } from "@/types";
-import { SimilarityDetails } from "@/lib/similarEvents";
+import { type AddToCalendarButtonProps } from "@/types";
+import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventCardProps = {
@@ -127,7 +125,7 @@ function EventDescription({
         >
           <span
             dangerouslySetInnerHTML={{
-              __html: translateToHtml(description!),
+              __html: translateToHtml(description),
             }}
           ></span>
         </p>

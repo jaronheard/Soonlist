@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { RequestResponse } from "@/server/db/types";
+import { type RequestResponse } from "@/server/db/types";
 import { getPrompt } from "@/lib/prompts";
 
 export const dynamic = "force-dynamic";
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
   // Convert the response into a friendly text-stream
   const stream = OpenAIStream(response, {
     async onCompletion(completion) {
-      let errors = [];
+      const errors = [];
 
       // calculate time from initial request to completion
       const time = new Date().getTime() - requestStart.getTime();

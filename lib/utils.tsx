@@ -1,4 +1,4 @@
-import { Message } from "ai";
+import { type Message } from "ai";
 import ICAL from "ical.js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -348,7 +348,7 @@ export function timeFormat(time?: string) {
 
 export function timeFormatDateInfo(dateInfo: DateInfo) {
   let hours = dateInfo.hour;
-  let minutes = dateInfo.minute;
+  const minutes = dateInfo.minute;
   const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours === 0 ? 12 : hours; // Convert 0 to 12 for 12 AM

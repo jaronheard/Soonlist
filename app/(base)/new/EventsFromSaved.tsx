@@ -1,7 +1,7 @@
 "use client";
 
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 
 const blankEvent = {
   options: [

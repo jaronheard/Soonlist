@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ArrowBigRight, Sparkle, Wand } from "lucide-react";
 import { EventCard } from "./EventCardNew";
 import { api } from "@/trpc/server";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 
 export default async function SampleEvent({ eventId }: { eventId: string }) {
   const event = await api.event.get.query({

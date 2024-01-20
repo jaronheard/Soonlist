@@ -1,10 +1,10 @@
-import { Metadata, ResolvingMetadata } from "next/types";
+import { type Metadata, type ResolvingMetadata } from "next/types";
 import Image from "next/image";
 import { EventCard } from "@/components/EventCardNew";
 import { UserInfo } from "@/components/UserInfo";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 import { collapseSimilarEvents } from "@/lib/similarEvents";
-import EventList, { EventWithUser } from "@/components/EventList";
+import EventList, { type EventWithUser } from "@/components/EventList";
 import { api } from "@/trpc/server";
 
 type Props = {

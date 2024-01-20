@@ -1,6 +1,6 @@
 import { UserInfo } from "@/components/UserInfo";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 import ImageUpload from "@/app/(base)/new/ImageUpload";
 import { YourDetails } from "@/app/(base)/new/YourDetails";
 import { api } from "@/trpc/server";
@@ -22,7 +22,7 @@ export default async function Page({
   )?.content;
   return (
     <>
-      {event && event.event ? (
+      {event?.event ? (
         <>
           <YourDetails
             lists={event.user.lists || undefined}
@@ -34,7 +34,7 @@ export default async function Page({
           <ImageUpload images={eventData.images as string[]} />
           <div className="p-4"></div>
           <AddToCalendarCard
-            {...(eventData as AddToCalendarButtonProps)}
+            {...(eventData )}
             key={event.id}
             update
             updateId={params.eventId}

@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { User, EventFollow, Event, Comment } from "@/server/db/types";
+import { type User, type EventFollow, type Event, type Comment } from "@/server/db/types";
 import { EventCard } from "@/components/EventCard";
 import {
   Accordion,
@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/Accordian";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 import { collapseSimilarEvents } from "@/lib/similarEvents";
 import { cn } from "@/lib/utils";
 

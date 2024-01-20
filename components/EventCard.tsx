@@ -17,9 +17,9 @@ import { ShareButton } from "./ShareButton";
 import { ConditionalWrapper } from "./ConditionalWrapper";
 import { FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
-import { EventWithUser } from "./EventList";
+import { type EventWithUser } from "./EventList";
 import { eventFollows } from "@/server/db/schema";
-import { User, EventFollow, Comment } from "@/server/db/types";
+import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -31,8 +31,8 @@ import {
   getDateTimeInfo,
   timeFormatDateInfo,
 } from "@/lib/utils";
-import { AddToCalendarButtonProps } from "@/types";
-import { SimilarityDetails } from "@/lib/similarEvents";
+import { type AddToCalendarButtonProps } from "@/types";
+import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventCardProps = {
@@ -221,7 +221,7 @@ function EventDescription({
         >
           <span
             dangerouslySetInnerHTML={{
-              __html: translateToHtml(description!),
+              __html: translateToHtml(description),
             }}
           ></span>
         </p>
@@ -414,9 +414,9 @@ export function EventCard(props: EventCardProps) {
       <div className="flex items-center gap-4 pr-8">
         <EventDateDisplay
           startDate={event.startDate!}
-          startTime={event.startTime!}
+          startTime={event.startTime}
           endDate={event.endDate!}
-          endTime={event.endTime!}
+          endTime={event.endTime}
           timezone={event.timeZone || "America/Los_Angeles"}
         />
         <EventDetails

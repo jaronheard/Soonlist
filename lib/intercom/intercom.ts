@@ -7,14 +7,14 @@ export const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
 
 export const load = () => {
   (function () {
-    var w = window;
-    var ic = w.Intercom;
+    const w = window;
+    const ic = w.Intercom;
     if (typeof ic === "function") {
       ic("reattach_activator");
       ic("update", w.intercomSettings);
     } else {
-      var d = document;
-      var i = function () {
+      const d = document;
+      const i = function () {
         i.c(arguments);
       };
       i.q = [];
@@ -22,12 +22,12 @@ export const load = () => {
         i.q.push(args);
       };
       w.Intercom = i;
-      var l = function () {
-        var s = d.createElement("script");
+      const l = function () {
+        const s = d.createElement("script");
         s.type = "text/javascript";
         s.async = true;
         s.src = "https://widget.intercom.io/widget/ravmo56d";
-        var x = d.getElementsByTagName("script")[0];
+        const x = d.getElementsByTagName("script")[0];
         x.parentNode.insertBefore(s, x);
       };
       if (document.readyState === "complete") {
@@ -44,8 +44,7 @@ export const load = () => {
 // Initializes Intercom
 export const boot = (options: Intercom_.IntercomSettings) => {
   window &&
-    window.Intercom &&
-    window.Intercom("boot", {
+    window.Intercom?.("boot", {
       api_base: "https://api-iam.intercom.io",
       app_id: APP_ID,
       ...options,
@@ -53,5 +52,5 @@ export const boot = (options: Intercom_.IntercomSettings) => {
 };
 
 export const update = () => {
-  window && window.Intercom && window.Intercom("update");
+  window && window.Intercom?.("update");
 };

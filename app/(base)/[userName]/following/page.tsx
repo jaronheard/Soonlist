@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Metadata, ResolvingMetadata } from "next/types";
+import { type Metadata, type ResolvingMetadata } from "next/types";
 import { UserInfo } from "@/components/UserInfo";
 import EventList from "@/components/EventList";
 import { api } from "@/trpc/server";

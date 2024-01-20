@@ -1,6 +1,6 @@
 "use client";
 
-import { AddToCalendarButtonType } from "add-to-calendar-button-react";
+import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useChat } from "ai/react";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -23,7 +23,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
-import { List } from "@/server/db/types";
+import { type List } from "@/server/db/types";
 
 function Code({
   children,

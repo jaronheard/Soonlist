@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 import EventsError from "./EventsError";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { generatedIcsArrayToEvents } from "@/lib/utils";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 import { getPrompt } from "@/lib/prompts";
 
 const blankEvent = {

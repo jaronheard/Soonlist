@@ -1,7 +1,7 @@
 "use client";
 
 import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
-import { AddToCalendarButtonType } from "add-to-calendar-button-react";
+import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2, UploadCloud } from "lucide-react";

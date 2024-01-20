@@ -1,9 +1,9 @@
 "use client";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import React, { useState } from "react";
 import { generatedIcsArrayToEvents } from "@/lib/utils";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function Page() {

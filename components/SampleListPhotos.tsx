@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ArrowBigRight } from "lucide-react";
 import { api } from "@/trpc/server";
-import { AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonProps } from "@/types";
 
 export default async function SampleListPhotos({ listId }: { listId: string }) {
   const list = await api.list.get.query({ listId });

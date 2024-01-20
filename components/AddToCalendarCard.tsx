@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { atcb_action } from "add-to-calendar-button";
-import { AddToCalendarButtonType } from "add-to-calendar-button-react";
+import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useSearchParams } from "next/navigation";
 import { CalendarPlus, Text } from "lucide-react";
 import { SaveButton } from "./SaveButton";
