@@ -11,7 +11,7 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
   }
   // limit to 3 events from the end of the array
   const eventData = list.eventToLists.map(
-    (item) => item.event as AddToCalendarButtonProps
+    (item) => item.event.event as AddToCalendarButtonProps
   );
   const events = eventData.slice(-3);
 
