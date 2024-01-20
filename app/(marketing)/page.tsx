@@ -1,15 +1,10 @@
 import { Suspense } from "react";
 import { CalendarPlus, List, Megaphone, Share, Users, Zap } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import RainbowText from "@/components/RainbowText";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
-import { CTAButton } from "@/components/CallToActions";
-import NextEventsLoading from "@/components/NextEventsLoading";
 import SampleEvent from "@/components/SampleEvent";
-import SampleEventLoading from "@/components/SampleEventLoading";
 import SampleList from "@/components/SampleList";
 import SampleListPhotos from "@/components/SampleListPhotos";
 
@@ -335,6 +330,7 @@ export default function Page() {
                 <p>{`“${featuredTestimonial.body}”`}</p>
               </blockquote>
               <figcaption className="flex flex-wrap items-center gap-4 border-t border-gray-900/10 px-6 py-4 sm:flex-nowrap">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="h-10 w-10 flex-none rounded-full bg-gray-50"
                   src={featuredTestimonial.author.imageUrl}
@@ -379,6 +375,7 @@ export default function Page() {
                           <p>{`“${testimonial.body}”`}</p>
                         </blockquote>
                         <figcaption className="mt-6 flex items-center gap-x-4">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             className="h-10 w-10 rounded-full bg-gray-50"
                             src={testimonial.author.imageUrl}

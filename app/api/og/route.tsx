@@ -1,4 +1,3 @@
-import { Calendar } from "lucide-react";
 import { ImageResponse } from "next/og";
 // App router includes @vercel/og.
 // No need to install it.
@@ -37,7 +36,7 @@ export async function GET() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            /* @ts-expect-error  */
+            /* @ts-expect-error tailwind prop */
             tw="text-slate-900 h-8 w-8"
           >
             <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />

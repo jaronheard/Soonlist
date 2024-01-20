@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { atcb_action } from "add-to-calendar-button";
 import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
-import { useSearchParams } from "next/navigation";
 import { CalendarPlus, Text } from "lucide-react";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
@@ -19,22 +18,19 @@ import { useFormContext } from "@/context/FormContext";
 type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
   updateId?: string;
-  onClick?: any;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   children?: React.ReactNode;
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
 };
 
 export function AddToCalendarCard({
-  setAddToCalendarButtonProps: setAddToCalendarButtonProps,
   firstInputRef,
   ...initialProps
 }: AddToCalendarCardProps) {
   // get croppedImagesUrls from context
-  const { croppedImagesUrls, setCroppedImagesUrls } = useCroppedImageContext();
-  const { formData, setFormData } = useFormContext();
-  const searchParams = useSearchParams();
-  const filePath = searchParams.get("filePath");
+  const { croppedImagesUrls } = useCroppedImageContext();
+  const { formData } = useFormContext();
   const { notes, visibility, lists } = formData;
 
   // TODO: only use croppedImagesUrls if query param is set and same image

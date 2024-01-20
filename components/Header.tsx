@@ -2,7 +2,6 @@
 
 import {
   SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   useClerk,
@@ -61,20 +60,6 @@ const allEvents: { title: string; href: string; description: string }[] = [
     title: "All Events",
     href: "/events",
     description: "All events from all users",
-  },
-];
-const allLists: { title: string; href: string; description: string }[] = [
-  {
-    title: "All Lists",
-    href: "/lists",
-    description: "All lists you have created",
-  },
-];
-const userLists: { title: string; href: string; description: string }[] = [
-  {
-    title: "My Lists",
-    href: "/lists",
-    description: "All lists you have created",
   },
 ];
 const userFollowing: { title: string; href: string; description: string }[] = [
@@ -215,7 +200,7 @@ export function Nav() {
 const ListItemSimple = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, href, ...props }, ref) => {
+>(({ className, title }, ref) => {
   return (
     <NavigationMenuItem>
       <Link href="href" legacyBehavior passHref className={className} ref={ref}>
@@ -272,7 +257,7 @@ const UserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Image
-          alt={user?.primaryEmailAddress?.emailAddress!}
+          alt={"User"}
           src={user?.imageUrl}
           width={32}
           height={32}

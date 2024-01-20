@@ -47,6 +47,7 @@
     "cmdk": "^0.2.0",
     "dotenv-expand": "^10.0.0",
     "drizzle-orm": "^0.29.3",
+    "drizzle-zod": "^0.5.1",
     "ical.js": "^1.5.0",
     "ical2json": "^3.2.0",
     "lucide-react": "^0.302.0",

@@ -33,7 +33,7 @@ export function ShareButton(props: ShareButtonProps) {
       }
     } else {
       // Fallback for browsers that do not support the Share API
-      navigator.clipboard.writeText(
+      void navigator.clipboard.writeText(
         `${process.env.NEXT_PUBLIC_URL}/event/${props.id}`
       );
       toast("Event URL copied to clipboard!");

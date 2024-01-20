@@ -1,7 +1,7 @@
 "use client";
 import { UploadButton } from "@bytescale/upload-widget-react";
 import { useRouter } from "next/navigation";
-import { Image as ImageIcon, Upload } from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
 import { useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { TimezoneContext } from "@/context/TimezoneContext";

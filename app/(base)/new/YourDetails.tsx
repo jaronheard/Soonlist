@@ -73,7 +73,7 @@ export function YourDetails({
 
   // Watch for changes in the form
   React.useEffect(() => {
-    const subscription = form.watch((value, { name, type }) => {
+    const subscription = form.watch((value, { name }) => {
       if (name) {
         setFormData(form.getValues());
       }

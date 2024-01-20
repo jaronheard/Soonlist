@@ -1,6 +1,6 @@
 "use client";
 
-import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

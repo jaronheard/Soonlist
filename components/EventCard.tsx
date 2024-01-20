@@ -18,7 +18,6 @@ import { ConditionalWrapper } from "./ConditionalWrapper";
 import { FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
 import { type EventWithUser } from "./EventList";
-import { eventFollows } from "@/server/db/schema";
 import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
@@ -26,12 +25,11 @@ import {
   cn,
   showMultipleDays,
   endsNextDayBeforeMorning,
-  timeFormat,
   eventTimesAreDefined,
   getDateTimeInfo,
   timeFormatDateInfo,
 } from "@/lib/utils";
-import { type AddToCalendarButtonProps } from "@/types";
+import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
@@ -41,7 +39,7 @@ type EventCardProps = {
   comments: Comment[];
   id: string;
   createdAt: Date;
-  event: AddToCalendarButtonProps;
+  event: AddToCalendarButtonPropsRestricted;
   visibility: "public" | "private";
   singleEvent?: boolean;
   hideCurator?: boolean;
@@ -238,7 +236,7 @@ function EventActionButton({
   isFollowing,
 }: {
   user: User;
-  event: AddToCalendarButtonProps;
+  event: AddToCalendarButtonPropsRestricted;
   id: string;
   isOwner: boolean;
   isFollowing?: boolean;
@@ -346,33 +344,25 @@ function SimilarEventsSummary({
   });
 
   // Convert the map to an array of JSX elements
-  const userEventLinks = Array.from(eventsByUser).map(
-    ([username, events], index) => (
-      <span key={username}>
-        {username !== curatorUsername && (
-          <>
-            {!singleEvent && ", "}
-            <Link
-              href={`${username}/events`}
-              className="font-bold text-gray-900"
-            >
-              @{username}
-            </Link>
-          </>
-        )}
-        {events.map((event, eventIndex) => (
-          <sup key={event.id}>
-            <Link
-              href={`/event/${event.id}`}
-              className="font-bold text-gray-900"
-            >
-              *
-            </Link>
-          </sup>
-        ))}
-      </span>
-    )
-  );
+  const userEventLinks = Array.from(eventsByUser).map(([username, events]) => (
+    <span key={username}>
+      {username !== curatorUsername && (
+        <>
+          {!singleEvent && ", "}
+          <Link href={`${username}/events`} className="font-bold text-gray-900">
+            @{username}
+          </Link>
+        </>
+      )}
+      {events.map((event) => (
+        <sup key={event.id}>
+          <Link href={`/event/${event.id}`} className="font-bold text-gray-900">
+            *
+          </Link>
+        </sup>
+      ))}
+    </span>
+  ));
 
   return <>{userEventLinks}</>;
 }

@@ -1,22 +1,9 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import {
-  type SignedInAuthObject,
-  type SignedOutAuthObject,
-  type User,
-} from "@clerk/nextjs/server";
 import { auth, currentUser } from "@clerk/nextjs";
 import { db } from "@/server/db";
-
-interface CreateContextOptions {
-  headers: Headers;
-  db: typeof db;
-  user: User | null;
-  auth: SignedInAuthObject | SignedOutAuthObject;
-}
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = auth();

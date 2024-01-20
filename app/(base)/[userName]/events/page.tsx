@@ -25,9 +25,6 @@ export async function generateMetadata(
     };
   }
 
-  const currentEvents = events.filter(
-    (item) => item.startDateTime < new Date() && item.endDateTime > new Date()
-  );
   const futureEvents = events.filter(
     (item) => item.startDateTime >= new Date()
   );

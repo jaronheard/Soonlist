@@ -99,9 +99,6 @@ function isEventSimilar(
   };
 }
 
-const timeThreshold = 60; // 60 minutes
-const textThreshold = 0; // 0% similarity
-
 export type SimilarityDetails = ReturnType<typeof isEventSimilar>;
 
 export type SimilarEvents = {

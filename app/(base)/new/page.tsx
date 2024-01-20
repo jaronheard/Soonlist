@@ -13,7 +13,6 @@ const EventsFromRawText = lazy(() => import("./EventsFromRawText"));
 export const maxDuration = 60;
 
 type Props = {
-  params: {};
   searchParams: {
     rawText?: string;
     saveIntent?: boolean;
@@ -22,7 +21,7 @@ type Props = {
   };
 };
 
-export default async function Page({ params, searchParams }: Props) {
+export default async function Page({ searchParams }: Props) {
   const user = await currentUser();
   const username = user?.username;
   const lists =

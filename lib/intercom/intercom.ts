@@ -1,4 +1,5 @@
-// @ts-nocheck
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck - This is a copy of the intercom library, which is not typed
 
 export const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
 
@@ -8,14 +9,14 @@ export const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
 export const load = () => {
   (function () {
     const w = window;
-    const ic = w.Intercom;
+    const ic = w.Intercom as unknown;
     if (typeof ic === "function") {
       ic("reattach_activator");
       ic("update", w.intercomSettings);
     } else {
       const d = document;
       const i = function () {
-        i.c(arguments);
+        i.c(rest);
       };
       i.q = [];
       i.c = function (args) {
@@ -33,6 +34,7 @@ export const load = () => {
       if (document.readyState === "complete") {
         l();
       } else if (w.attachEvent) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         w.attachEvent("onload", l);
       } else {
         w.addEventListener("load", l, false);
@@ -44,6 +46,7 @@ export const load = () => {
 // Initializes Intercom
 export const boot = (options: Intercom_.IntercomSettings) => {
   window &&
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     window.Intercom?.("boot", {
       api_base: "https://api-iam.intercom.io",
       app_id: APP_ID,
@@ -52,5 +55,6 @@ export const boot = (options: Intercom_.IntercomSettings) => {
 };
 
 export const update = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   window && window.Intercom?.("update");
 };

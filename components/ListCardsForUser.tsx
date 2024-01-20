@@ -10,8 +10,8 @@ type ListCardsForUserProps = {
 
 export default async function ListCardsForUser({
   userName,
-  limit, // TODO: implement limit
-}: ListCardsForUserProps) {
+}: // TODO: implement limit
+ListCardsForUserProps) {
   const lists = await api.list.getAllForUser.query({
     userName,
   });
