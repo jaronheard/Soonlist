@@ -5,8 +5,6 @@ import dynamic from "next/dynamic";
 import { PHProvider, Providers } from "./providers";
 import { TRPCReactProvider } from "@/trpc/react";
 
-export const runtime = "edge";
-
 const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
   ssr: false,
 });
