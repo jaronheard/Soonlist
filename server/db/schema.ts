@@ -28,6 +28,7 @@ export const comments = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
+    oldId: varchar("oldId", { length: 191 }), // this is for the migration
   },
   (table) => {
     return {
