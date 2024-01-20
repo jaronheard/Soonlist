@@ -5,8 +5,9 @@ import dynamic from "next/dynamic";
 import { PHProvider, Providers } from "./providers";
 import { TRPCReactProvider } from "@/trpc/react";
 
-export const runtime = "edge";
-export const preferredRegion = "pdx1";
+// edge causes sigkill on vercel about 50% of the time
+// export const runtime = "edge";
+// export const preferredRegion = "pdx1";
 
 const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
   ssr: false,
