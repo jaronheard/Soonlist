@@ -59,7 +59,7 @@ export default function Page() {
             <li className="flex flex-col gap-4">
               <div className="flex gap-x-3">
                 <CheckCircleIcon
-                  className="mt-1 h-5 w-5 flex-none text-gray-600"
+                  className="mt-1 size-5 flex-none text-gray-600"
                   aria-hidden="true"
                 />
                 <span>
@@ -118,7 +118,7 @@ export default function Page() {
 
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 h-5 w-5 flex-none text-gray-600"
+                className="mt-1 size-5 flex-none text-gray-600"
                 aria-hidden="true"
               />
               <span>
@@ -136,7 +136,7 @@ export default function Page() {
           <ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600">
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 h-5 w-5 flex-none text-gray-600"
+                className="mt-1 size-5 flex-none text-gray-600"
                 aria-hidden="true"
               />
               <span>
@@ -150,7 +150,7 @@ export default function Page() {
             </li>
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 h-5 w-5 flex-none text-gray-600"
+                className="mt-1 size-5 flex-none text-gray-600"
                 aria-hidden="true"
               />
               <span>
@@ -162,7 +162,7 @@ export default function Page() {
             </li>
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 h-5 w-5 flex-none text-gray-600"
+                className="mt-1 size-5 flex-none text-gray-600"
                 aria-hidden="true"
               />
               <span>
@@ -199,7 +199,7 @@ export default function Page() {
             <ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600">
               <li className="flex gap-x-3">
                 <CurrencyDollarIcon
-                  className="mt-1 h-5 w-5 flex-none text-gray-600"
+                  className="mt-1 size-5 flex-none text-gray-600"
                   aria-hidden="true"
                 />
                 <span>
@@ -213,7 +213,7 @@ export default function Page() {
               </li>
               <li className="flex gap-x-3">
                 <CurrencyDollarIcon
-                  className="mt-1 h-5 w-5 flex-none text-gray-600"
+                  className="mt-1 size-5 flex-none text-gray-600"
                   aria-hidden="true"
                 />
                 <span>
@@ -227,7 +227,7 @@ export default function Page() {
               </li>
               <li className="flex gap-x-3">
                 <CurrencyDollarIcon
-                  className="mt-1 h-5 w-5 flex-none text-gray-600"
+                  className="mt-1 size-5 flex-none text-gray-600"
                   aria-hidden="true"
                 />
                 <span>

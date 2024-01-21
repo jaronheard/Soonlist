@@ -181,7 +181,7 @@ function EventDetails({
       <div className="p-1"></div>
       <div className="flex gap-2">
         {eventTimesAreDefined(startTime, endTime) && (
-          <div className="shrink-0 items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+          <div className="ring-gray-500/10 shrink-0 items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset">
             {timeFormatDateInfo(startDateInfo)}-
             {timeFormatDateInfo(endDateInfo)}
           </div>
@@ -190,7 +190,7 @@ function EventDetails({
           <Link
             href={`https://www.google.com/maps/search/?api=1&query=${location}`}
             className={cn(
-              "shrink items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10",
+              "ring-gray-500/10 shrink items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset",
               { "line-clamp-1 break-all": !singleEvent }
             )}
           >

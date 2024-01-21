@@ -40,7 +40,7 @@ export async function UserInfo(props: UserInfoProps) {
       <div className="flex items-center gap-3">
         <Link href={`/${user.username}/events`}>
           <Image
-            className="inline-block h-9 w-9 rounded-full"
+            className="inline-block size-9 rounded-full"
             src={user.userImage}
             alt=""
             width={375}
