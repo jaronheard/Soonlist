@@ -2,13 +2,10 @@ import { clsx } from "clsx";
 import Link from "next/link";
 
 const colors = [
-  "bg-red-500",
-  "bg-orange-500",
-  "bg-yellow-500",
-  "bg-green-500",
-  "bg-blue-500",
-  "bg-indigo-500",
-  "bg-purple-500",
+  "bg-accent-blue",
+  "bg-accent-red",
+  "bg-accent-orange",
+  "bg-accent-green",
 ];
 
 const getInitialsFromString = (str: string) => {

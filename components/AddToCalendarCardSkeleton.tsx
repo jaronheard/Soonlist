@@ -9,17 +9,17 @@ export function AddToCalendarCardSkeleton() {
     <>
       {/* fixed position loading spinner in bottom right of screen */}
       <div className="fixed bottom-2 right-2 z-50 flex rounded bg-gray-50 p-2 shadow-sm">
-        <Text className="mr-2 h-6 w-6 animate-pulse" />
-        <Loader2 className="h-6 w-6 animate-spin" />
+        <Text className="mr-2 size-6 animate-pulse" />
+        <Loader2 className="size-6 animate-spin" />
       </div>
       <Card className="max-w-screen sm:max-w-xl">
         <CardContent className="grid grid-cols-1 gap-6 py-6 shadow-md sm:grid-cols-6">
           <CardTitle className="col-span-full flex items-center justify-between">
             <div className="flex items-center">
-              <Text className="mr-2 h-6 w-6 animate-pulse" />
+              <Text className="mr-2 size-6 animate-pulse" />
               Event Details
             </div>
-            <Loader2 className="h-6 w-6 animate-spin" />
+            <Loader2 className="size-6 animate-spin" />
           </CardTitle>
           <div className="col-span-full">
             <Label htmlFor="name">Event</Label>
