@@ -32,7 +32,7 @@ import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
-type EventCardProps = {
+type EventProps = {
   user: User;
   eventFollows: EventFollow[];
   comments: Comment[];
@@ -255,7 +255,7 @@ function SimilarEventsSummary({
   return <> and others {userEventLinks}</>;
 }
 
-export function EventCard(props: EventCardProps) {
+export function Event(props: EventProps) {
   const { user: clerkUser } = useUser();
   const { user, eventFollows, id, event, singleEvent, visibility } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;

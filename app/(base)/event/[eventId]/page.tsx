@@ -1,6 +1,6 @@
 import { type Metadata, type ResolvingMetadata } from "next/types";
 import Image from "next/image";
-import { EventCard } from "@/components/EventCardNew";
+import { Event } from "@/components/Event";
 import { UserInfo } from "@/components/UserInfo";
 import {
   type AddToCalendarButtonPropsRestricted,
@@ -76,7 +76,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <EventCard
+      <Event
         user={event.user}
         eventFollows={event.eventFollows}
         comments={event.comments}

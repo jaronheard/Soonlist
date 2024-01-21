@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ArrowBigRight } from "lucide-react";
-import { EventCard } from "./EventCardNew";
+import { Event } from "./Event";
 import { api } from "@/trpc/server";
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 
@@ -31,7 +31,7 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
         <ArrowBigRight className="h-16 w-16 rotate-90 sm:rotate-0" />
       </div>
       <div className="grid place-items-center rounded-xl border-2 border-gray-100 bg-white text-left shadow-md">
-        <EventCard
+        <Event
           user={event.user}
           eventFollows={event.eventFollows}
           comments={event.comments}

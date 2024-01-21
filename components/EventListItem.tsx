@@ -33,7 +33,7 @@ import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
-type EventCardProps = {
+type EventListItem = {
   user: User;
   eventFollows: EventFollow[];
   comments: Comment[];
@@ -379,7 +379,7 @@ function CuratorComment({ comment }: { comment?: Comment }) {
   );
 }
 
-export function EventCard(props: EventCardProps) {
+export function EventListItem(props: EventListItem) {
   const { user: clerkUser } = useUser();
   const { user, eventFollows, id, event, singleEvent, visibility } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
