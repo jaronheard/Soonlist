@@ -1,7 +1,8 @@
 // use the lucide calendar icon for now
-
-import { Calendar } from "lucide-react";
-
-export default function Logo({ className }: { className?: string }) {
-  return <Calendar className={className} />;
+export default function Logo() {
+  return (
+    <h1 className="ml-2 hidden font-heading text-3xl font-bold tracking-tight text-foreground sm:block sm:text-5xl">
+      Soonlist
+    </h1>
+  );
 }

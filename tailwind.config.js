@@ -17,6 +17,18 @@ module.exports = {
     },
     extend: {
       colors: {
+        gray: {
+          100: "var(--neutral-3)",
+          200: "var(--neutral-3)",
+          300: "var(--neutral-3)",
+          400: "var(--neutral-2)",
+          500: "var(--neutral-2)",
+          600: "var(--neutral-1)",
+          700: "var(--neutral-1)",
+          800: "var(--neutral-1)",
+          900: "var(--neutral-0)",
+        },
+        black: "var(--neutral-0)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -41,6 +53,10 @@ module.exports = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          yellow: "var(--accent-1)",
+          orange: "var(--accent-2)",
+          blue: "var(--accent-3)",
+          green: "var(--accent-4)",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -49,6 +65,17 @@ module.exports = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        neutral: {
+          1: "var(--neutral-1)",
+          2: "var(--neutral-2)",
+          3: "var(--neutral-3)",
+          4: "var(--neutral-4)",
+        },
+        interactive: {
+          1: "var(--interactive-1)",
+          2: "var(--interactive-2)",
+          3: "var(--interactive-3)",
         },
       },
       borderRadius: {
@@ -72,6 +99,10 @@ module.exports = {
       },
       transitionProperty: {
         width: "width",
+      },
+      fontFamily: {
+        sans: ["var(--font-plex-sans)"],
+        heading: ["var(--font-kalam)"],
       },
     },
   },

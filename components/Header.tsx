@@ -83,10 +83,7 @@ export default function Header() {
       <div className="flex items-center justify-between gap-2 sm:grow sm:gap-0">
         <NavigationMenu>
           <Link href="/" className="relative flex items-center space-x-3">
-            <Logo className="size-8" />
-            <h1 className="ml-2 hidden text-2xl font-bold tracking-tight sm:block sm:text-4xl">
-              Soonlist
-            </h1>
+            <Logo />
             <Badge
               variant="secondary"
               className="absolute -bottom-2 left-[-1.9rem] scale-50 sm:static sm:scale-100"
