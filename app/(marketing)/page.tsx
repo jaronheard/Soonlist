@@ -143,7 +143,7 @@ export default function Page() {
         <div className="pt-24 sm:pt-32 lg:pt-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              <h1 className="font-heading text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Event lists for everybody
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -168,10 +168,7 @@ export default function Page() {
         <div className="py-12 sm:py-16"></div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <RainbowText className="text-base font-semibold leading-7 text-indigo-600">
-              Event lists made easy
-            </RainbowText>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Make and share lists of events
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -211,10 +208,7 @@ export default function Page() {
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <RainbowText className="text-base font-semibold leading-7 text-indigo-600">
-              Gather around shared interests
-            </RainbowText>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Calendars as common ground
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -248,10 +242,7 @@ export default function Page() {
           <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
             <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
               <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
-                <RainbowText className="text-base font-semibold leading-7 text-indigo-600">
-                  Amplify community
-                </RainbowText>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                   Building togetherness
                 </p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -317,10 +308,7 @@ export default function Page() {
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <RainbowText className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">
-              Testimonials
-            </RainbowText>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               People are already excited
             </p>
           </div>
