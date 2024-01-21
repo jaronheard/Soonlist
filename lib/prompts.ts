@@ -53,7 +53,8 @@ export const getText = (
       - DO NOT INCLUDE ANY LINE BREAKS AT THE BEGINNING OF A DESCRIPTION.
       - DO NOT INCLUDE ANY LINE BREAKS AT THE END OF A DESCRIPTION.
     - Define a link text with the following schema: 
-      - [url]https://www.example.com|Example Domain[/url].
+      - [url]https://www.example.com|Example Domain[/url] (where "Example Domain" is the link text)
+        - ONLY INCLUDE VALID AND RELEVANT LINKS
       - MUST use | as a separator between the URL and title.
 `;
 
@@ -71,6 +72,6 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 
   return {
     text: getText(date, timezoneIANA),
-    version: "v2024.01.07.1",
+    version: "v2024.01.21.1",
   };
 };
