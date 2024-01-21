@@ -48,19 +48,19 @@ export function FollowEventDropdownButton({
       >
         {isLoading && (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 size-4 animate-spin" />
             Please wait
           </>
         )}
         {!isLoading && following && (
           <>
-            <Check className="mr-2 h-4 w-4" />
+            <Check className="mr-2 size-4" />
             Event Saved
           </>
         )}
         {!isLoading && !following && (
           <>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Save Event
           </>
         )}
@@ -110,19 +110,19 @@ export function FollowEventButton({
       >
         {isLoading && (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 size-4 animate-spin" />
             Please wait
           </>
         )}
         {!isLoading && following && (
           <>
-            <Check className="mr-2 h-4 w-4" />
+            <Check className="mr-2 size-4" />
             Event Saved
           </>
         )}
         {!isLoading && !following && (
           <>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Save Event
           </>
         )}
@@ -162,7 +162,7 @@ export function FollowUserButton({
     <SignedIn>
       {isLoading && (
         <Button disabled size="sm">
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <Loader2 className="mr-2 size-4 animate-spin" />
           Please wait
         </Button>
       )}
@@ -177,13 +177,13 @@ export function FollowUserButton({
         >
           {following && (
             <>
-              <Check className="mr-2 h-4 w-4" />
+              <Check className="mr-2 size-4" />
               Following
             </>
           )}
           {!following && (
             <>
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="mr-2 size-4" />
               Follow
             </>
           )}
@@ -225,7 +225,7 @@ export function FollowListButton({
     <SignedIn>
       {isLoading && (
         <Button disabled size="sm">
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <Loader2 className="mr-2 size-4 animate-spin" />
           Please wait
         </Button>
       )}
@@ -240,13 +240,13 @@ export function FollowListButton({
         >
           {following && (
             <>
-              <Check className="mr-2 h-4 w-4" />
+              <Check className="mr-2 size-4" />
               Following List
             </>
           )}
           {!following && (
             <>
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="mr-2 size-4" />
               Follow List
             </>
           )}

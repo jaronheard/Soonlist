@@ -26,7 +26,7 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
       <div className="flex shrink-0 flex-row items-start gap-4 sm:flex-col">
         {firstImage && (
           <Image
-            className="h-24 w-24 rounded-lg sm:h-40 sm:w-40"
+            className="size-24 rounded-lg sm:size-40"
             alt="Sample image"
             src={firstImage}
             height={160}
@@ -35,7 +35,7 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
         )}
         {secondImage && (
           <Image
-            className="h-24 w-24 rounded-lg sm:h-40 sm:w-40"
+            className="size-24 rounded-lg sm:size-40"
             alt="Sample image"
             src={secondImage}
             height={160}
@@ -44,7 +44,7 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
         )}
         {thirdImage && (
           <Image
-            className="h-24 w-24 rounded-lg sm:h-40 sm:w-40"
+            className="size-24 rounded-lg sm:size-40"
             alt="Sample image"
             src={thirdImage}
             height={160}
@@ -54,13 +54,13 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
       </div>
       <div className="flex flex-row items-start gap-12 sm:flex-col sm:gap-32">
         {firstImage && (
-          <ArrowBigRight className="h-16 w-16 rotate-90 sm:rotate-0" />
+          <ArrowBigRight className="size-16 rotate-90 sm:rotate-0" />
         )}
         {secondImage && (
-          <ArrowBigRight className="h-16 w-16 rotate-90 sm:rotate-0" />
+          <ArrowBigRight className="size-16 rotate-90 sm:rotate-0" />
         )}
         {thirdImage && (
-          <ArrowBigRight className="h-16 w-16 rotate-90 sm:rotate-0" />
+          <ArrowBigRight className="size-16 rotate-90 sm:rotate-0" />
         )}
       </div>
     </div>

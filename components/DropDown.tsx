@@ -26,11 +26,11 @@ export default function DropDown({ vibe, setVibe }: DropDownProps) {
         <Menu.Button className="inline-flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black">
           {vibe}
           <ChevronUpIcon
-            className="ui-open:hidden -mr-1 ml-2 h-5 w-5"
+            className="ui-open:hidden -mr-1 ml-2 size-5"
             aria-hidden="true"
           />
           <ChevronDownIcon
-            className="ui-open:block -mr-1 ml-2 hidden h-5 w-5"
+            className="ui-open:block -mr-1 ml-2 hidden size-5"
             aria-hidden="true"
           />
         </Menu.Button>
@@ -63,7 +63,7 @@ export default function DropDown({ vibe, setVibe }: DropDownProps) {
                   >
                     <span>{vibeItem}</span>
                     {vibe === vibeItem ? (
-                      <CheckIcon className="text-bold h-4 w-4" />
+                      <CheckIcon className="text-bold size-4" />
                     ) : null}
                   </button>
                 )}

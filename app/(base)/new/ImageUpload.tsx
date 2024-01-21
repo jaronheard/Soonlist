@@ -333,7 +333,7 @@ export default function ImageUpload({
               size="sm"
               variant="outline"
             >
-              <Scissors className="mr-2 h-4 w-4" />
+              <Scissors className="mr-2 size-4" />
               Crop
             </Button>
           )}
@@ -360,9 +360,9 @@ export default function ImageUpload({
             {({ onClick }) => (
               <Button onClick={onClick} variant="secondary" size="sm">
                 {imageUrl ? (
-                  <SwitchCamera className="mr-2 h-4 w-4" />
+                  <SwitchCamera className="mr-2 size-4" />
                 ) : (
-                  <Upload className="mr-2 h-4 w-4" />
+                  <Upload className="mr-2 size-4" />
                 )}
                 {imageUrl ? "Replace" : "Upload"}
               </Button>
@@ -378,7 +378,7 @@ export default function ImageUpload({
               }}
               size="sm"
             >
-              <Trash className="mr-2 h-4 w-4" />
+              <Trash className="mr-2 size-4" />
               Delete
             </Button>
           )}

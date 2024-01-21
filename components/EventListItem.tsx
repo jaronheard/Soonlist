@@ -85,7 +85,7 @@ function EventDateDisplay({
     endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
   return (
     <div className="flex shrink-0 flex-row gap-1">
-      <div className="relative grid h-14 w-14 place-items-center rounded-md bg-gradient-to-b from-gray-900 to-gray-600">
+      <div className="relative grid size-14 place-items-center rounded-md bg-gradient-to-b from-gray-900 to-gray-600">
         <span className="text-xs font-semibold uppercase text-white">
           {startDateInfo?.monthName.substring(0, 3)}
         </span>
@@ -100,7 +100,7 @@ function EventDateDisplay({
         )}
       </div>
       {showMultiDay && (
-        <div className="grid h-14 w-14 place-items-center rounded-md bg-gradient-to-b from-gray-900 to-gray-600">
+        <div className="grid size-14 place-items-center rounded-md bg-gradient-to-b from-gray-900 to-gray-600">
           <span className="text-xs font-semibold uppercase text-white">
             {endDateInfo?.monthName.substring(0, 3)}
           </span>
@@ -243,8 +243,8 @@ function EventActionButton({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border bg-black transition-colors hover:bg-black">
-        <EllipsisVerticalIcon className="h-8 w-8 text-white" />
+      <DropdownMenuTrigger className="flex size-8 items-center justify-center rounded-md border bg-black transition-colors hover:bg-black">
+        <EllipsisVerticalIcon className="size-8 text-white" />
         <span className="sr-only">Open</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

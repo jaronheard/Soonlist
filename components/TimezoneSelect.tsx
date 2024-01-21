@@ -56,7 +56,7 @@ export function TimezoneSelect({
           className={`${widthClass} justify-between`}
         >
           <span className="truncate">{currentTimezone}</span>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className={`${widthClass} p-0`}>
@@ -79,7 +79,7 @@ export function TimezoneSelect({
               >
                 <Check
                   className={cn(
-                    "mr-2 h-4 w-4",
+                    "mr-2 size-4",
                     timezone === tz.value ? "opacity-100" : "opacity-0"
                   )}
                 />

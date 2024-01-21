@@ -45,7 +45,7 @@ export function Form({
         <>
           <div className="p-2"></div>
           <Button type="submit" disabled={!input}>
-            <Sparkles className="mr-2 h-4 w-4" />
+            <Sparkles className="mr-2 size-4" />
             Generate from text
           </Button>
           <p className="mt-4 text-center">
@@ -76,7 +76,7 @@ export function Form({
       {isLoading && (
         <>
           <Button disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 size-4 animate-spin" />
             Please wait
           </Button>
           <div className="p-1"></div>

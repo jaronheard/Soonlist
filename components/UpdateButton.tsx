@@ -46,7 +46,7 @@ export function UpdateButton(props: UpdateButtonProps) {
       <SignedIn>
         {updateEvent.isLoading && (
           <Button disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 size-4 animate-spin" />
             Please wait
           </Button>
         )}
@@ -62,7 +62,7 @@ export function UpdateButton(props: UpdateButtonProps) {
               })
             }
           >
-            <Save className="mr-2 h-4 w-4" /> Update
+            <Save className="mr-2 size-4" /> Update
           </Button>
         )}
       </SignedIn>

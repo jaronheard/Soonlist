@@ -43,7 +43,7 @@ export function ShareButton(props: ShareButtonProps) {
   if (props.type === "button") {
     return (
       <Button onClick={handleShareClick}>
-        <Share className="mr-2 h-4 w-4" />
+        <Share className="mr-2 size-4" />
         Share
       </Button>
     );
@@ -51,7 +51,7 @@ export function ShareButton(props: ShareButtonProps) {
   if (props.type === "dropdown") {
     return (
       <DropdownMenuItem onSelect={handleShareClick}>
-        <Share className="mr-2 h-4 w-4" />
+        <Share className="mr-2 size-4" />
         Share
       </DropdownMenuItem>
     );

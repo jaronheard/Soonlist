@@ -7,7 +7,7 @@ function LoadingEvent() {
     <div className="flex w-full">
       <div className="flex w-full flex-col space-y-2">
         <div className="flex items-start space-x-4">
-          <Skeleton className="h-16 w-16 rounded bg-gray-300" />
+          <Skeleton className="size-16 rounded bg-gray-300" />
           <div>
             <Skeleton className="h-8 w-48 rounded bg-gray-300" />
             <div className="p-2" />

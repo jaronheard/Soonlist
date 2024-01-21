@@ -32,7 +32,7 @@ export default function ListSaveButton(props: ListSaveButtonProps) {
       <SignedIn>
         {createList.isLoading && (
           <Button disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 size-4 animate-spin" />
             Please wait
           </Button>
         )}
@@ -45,7 +45,7 @@ export default function ListSaveButton(props: ListSaveButtonProps) {
               })
             }
           >
-            <Save className="mr-2 h-4 w-4" /> Save
+            <Save className="mr-2 size-4" /> Save
           </Button>
         )}
       </SignedIn>

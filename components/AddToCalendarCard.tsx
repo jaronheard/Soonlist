@@ -97,7 +97,7 @@ export function AddToCalendarCard({
       <CardContent className="grid grid-cols-1 gap-6 py-6 shadow-md sm:grid-cols-6">
         <CardTitle className="col-span-full flex items-center justify-between">
           <div className="flex items-center">
-            <Text className="mr-2 h-6 w-6" />
+            <Text className="mr-2 size-6" />
             Event Details
           </div>
         </CardTitle>
@@ -231,7 +231,7 @@ export function AddToCalendarCard({
             variant="secondary"
             onClick={() => atcb_action(eventForCalendar)}
           >
-            <CalendarPlus className="mr-2 h-4 w-4" />
+            <CalendarPlus className="mr-2 size-4" />
             Add to Calendar
           </Button>
         </div>

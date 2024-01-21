@@ -46,7 +46,7 @@ export function SaveButton(props: SaveButtonProps) {
       <SignedIn>
         {updateEvent.isLoading && (
           <Button disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 size-4 animate-spin" />
             Please wait
           </Button>
         )}
@@ -62,7 +62,7 @@ export function SaveButton(props: SaveButtonProps) {
               localStorage.removeItem("updatedProps");
             }}
           >
-            <UploadCloud className="mr-2 h-4 w-4" /> Publish
+            <UploadCloud className="mr-2 size-4" /> Publish
           </Button>
         )}
       </SignedIn>

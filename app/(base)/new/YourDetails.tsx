@@ -85,7 +85,7 @@ export function YourDetails({
     <Card className="max-w-screen w-full sm:max-w-xl">
       <CardHeader>
         <CardTitle className="flex items-center">
-          <PenSquare className="mr-2 h-6 w-6" />
+          <PenSquare className="mr-2 size-6" />
           My Details
         </CardTitle>
       </CardHeader>

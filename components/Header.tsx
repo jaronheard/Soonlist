@@ -83,7 +83,7 @@ export default function Header() {
       <div className="flex items-center justify-between gap-2 sm:grow sm:gap-0">
         <NavigationMenu>
           <Link href="/" className="relative flex items-center space-x-3">
-            <Logo className="h-8 w-8" />
+            <Logo className="size-8" />
             <h1 className="ml-2 hidden text-2xl font-bold tracking-tight sm:block sm:text-4xl">
               Soonlist
             </h1>
@@ -249,7 +249,7 @@ const UserMenu = () => {
   // if not loaded return a 32x32 grey circle pulsing
   if (!isLoaded || !user?.id) {
     return (
-      <div className="h-8 w-8 animate-pulse rounded-full bg-gray-100 p-1"></div>
+      <div className="size-8 animate-pulse rounded-full bg-gray-100 p-1"></div>
     );
   }
 
@@ -285,7 +285,7 @@ const SettingsMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Settings className="h-8 w-8 rounded-full bg-black p-1 text-white" />
+        <Settings className="size-8 rounded-full bg-black p-1 text-white" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Timezone</DropdownMenuLabel>

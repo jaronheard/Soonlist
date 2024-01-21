@@ -229,7 +229,7 @@ export default function Page() {
                 <div key={feature.name} className="flex flex-col">
                   <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
                     <feature.icon
-                      className="h-5 w-5 flex-none text-gray-600"
+                      className="size-5 flex-none text-gray-600"
                       aria-hidden="true"
                     />
                     {feature.name}
@@ -265,7 +265,7 @@ export default function Page() {
                     <div key={feature.name} className="relative pl-9">
                       <dt className="inline font-semibold text-gray-900">
                         <feature.icon
-                          className="absolute left-1 top-1 h-5 w-5 text-gray-600"
+                          className="absolute left-1 top-1 size-5 text-gray-600"
                           aria-hidden="true"
                         />
                         {feature.name}.
@@ -332,7 +332,7 @@ export default function Page() {
               <figcaption className="flex flex-wrap items-center gap-4 border-t border-gray-900/10 px-6 py-4 sm:flex-nowrap">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  className="h-10 w-10 flex-none rounded-full bg-gray-50"
+                  className="size-10 flex-none rounded-full bg-gray-50"
                   src={featuredTestimonial.author.imageUrl}
                   alt=""
                 />
@@ -377,7 +377,7 @@ export default function Page() {
                         <figcaption className="mt-6 flex items-center gap-x-4">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            className="h-10 w-10 rounded-full bg-gray-50"
+                            className="size-10 rounded-full bg-gray-50"
                             src={testimonial.author.imageUrl}
                             alt=""
                           />

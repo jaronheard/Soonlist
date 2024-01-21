@@ -20,7 +20,7 @@ export function CalendarButton(props: CalendarButtonProps) {
   if (props.type === "dropdown") {
     return (
       <DropdownMenuItem onSelect={() => atcb_action(eventForCalendar)}>
-        <CalendarPlus className="mr-2 h-4 w-4" />
+        <CalendarPlus className="mr-2 size-4" />
         Add to Calendar
       </DropdownMenuItem>
     );
@@ -33,7 +33,7 @@ export function CalendarButton(props: CalendarButtonProps) {
         onClick={() => atcb_action(eventForCalendar)}
         variant={"secondary"}
       >
-        <CalendarPlus className="mr-2 h-4 w-4" />
+        <CalendarPlus className="mr-2 size-4" />
         Add to Calendar
       </Button>
     );

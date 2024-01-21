@@ -96,11 +96,11 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
       <Tabs defaultValue="text" className="max-w-screen sm:max-w-xl">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="text">
-            <Sparkles className="mr-2 h-4 w-4" />
+            <Sparkles className="mr-2 size-4" />
             Image/Text
           </TabsTrigger>
           <TabsTrigger value="shortcut">
-            <Sparkles className="mr-2 h-4 w-4" />
+            <Sparkles className="mr-2 size-4" />
             Shortcut
           </TabsTrigger>
           <TabsTrigger value="manual">Manual</TabsTrigger>
@@ -142,7 +142,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Download className="mr-2 h-4 w-4" />
+                  <Download className="mr-2 size-4" />
                   Install Soonlist shortcut
                 </a>
               </Button>
@@ -155,7 +155,7 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
                 <li>
                   Use{" "}
                   <Code>
-                    <Share className="inline-block h-4 w-4" /> Share
+                    <Share className="inline-block size-4" /> Share
                   </Code>{" "}
                   on any screenshot, photo, or text.
                 </li>

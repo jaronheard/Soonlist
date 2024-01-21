@@ -20,7 +20,7 @@ export function ListEditButton(props: ListEditButtonProps) {
   return (
     <SignedIn>
       <Link href={`/list/${props.listId}/edit`} className={buttonVariants()}>
-        <Edit className="mr-2 h-4 w-4" /> Edit
+        <Edit className="mr-2 size-4" /> Edit
       </Link>
     </SignedIn>
   );

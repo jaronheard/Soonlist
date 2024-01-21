@@ -21,14 +21,14 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
       {fullImageUrl && (
         <Image
           src={fullImageUrl}
-          className="ring-dashed mx-auto h-auto max-h-80 w-auto rounded-xl object-cover shadow-sm outline-dashed outline-2 outline-offset-4 outline-gray-100"
+          className="ring-dashed mx-auto size-auto max-h-80 rounded-xl object-cover shadow-sm outline-dashed outline-2 outline-offset-4 outline-gray-100"
           alt=""
           width={640}
           height={480}
         />
       )}
       <div className="flex sm:flex-row">
-        <ArrowBigRight className="h-16 w-16 rotate-90 sm:rotate-0" />
+        <ArrowBigRight className="size-16 rotate-90 sm:rotate-0" />
       </div>
       <div className="grid place-items-center rounded-xl border-2 border-gray-100 bg-white text-left shadow-md">
         <Event

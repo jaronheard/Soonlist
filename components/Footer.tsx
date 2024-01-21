@@ -107,14 +107,14 @@ export default function Footer() {
         <div className="mx-auto px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
           <div className="xl:grid xl:grid-cols-3 xl:gap-8">
             <div className="space-y-8">
-              <Logo className="h-8 w-8" />
+              <Logo className="size-8" />
               <Button size={"sm"} variant={"secondary"} asChild>
                 <a
                   href="https://buy.stripe.com/4gwaFB6sJ8Ah8ykcMM"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <CircleDollarSign className="mr-2 h-4 w-4"></CircleDollarSign>
+                  <CircleDollarSign className="mr-2 size-4"></CircleDollarSign>
                   Support Soonlist
                 </a>
               </Button>
@@ -126,7 +126,7 @@ export default function Footer() {
                     className="text-gray-400 hover:text-gray-500"
                   >
                     <span className="sr-only">{item.name}</span>
-                    <item.icon className="h-6 w-6" aria-hidden="true" />
+                    <item.icon className="size-6" aria-hidden="true" />
                   </Link>
                 ))}
               </div>
