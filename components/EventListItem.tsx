@@ -243,7 +243,7 @@ function EventActionButton({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex size-8 items-center justify-center rounded-md border bg-black transition-colors hover:bg-black">
+      <DropdownMenuTrigger className="ing-offset-background flex size-8 items-center justify-center rounded-md bg-primary transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
         <EllipsisVerticalIcon className="size-8 text-white" />
         <span className="sr-only">Open</span>
       </DropdownMenuTrigger>
