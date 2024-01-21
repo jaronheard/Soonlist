@@ -5,7 +5,7 @@ import {
   type Event,
   type Comment,
 } from "@/server/db/types";
-import { EventCard } from "@/components/EventCard";
+import { EventListItem } from "@/components/EventListItem";
 import {
   Accordion,
   AccordionItem,
@@ -83,7 +83,7 @@ export default function EventList({
             ) : (
               <ul role="list" className="max-w-full divide-y divide-gray-100">
                 {pastEventsToUse.map(({ event: item, similarEvents }) => (
-                  <EventCard
+                  <EventListItem
                     key={item.id}
                     user={item.user}
                     eventFollows={item.eventFollows}
@@ -124,7 +124,7 @@ export default function EventList({
                 className="max-w-full divide-y divide-gray-100 rounded-xl"
               >
                 {currentEventsToUse.map(({ event: item, similarEvents }) => (
-                  <EventCard
+                  <EventListItem
                     key={item.id}
                     user={item.user}
                     eventFollows={item.eventFollows}
@@ -173,7 +173,7 @@ export default function EventList({
               className="max-w-full divide-y divide-gray-100 rounded-xl"
             >
               {futureEventsToUse.map(({ event: item, similarEvents }) => (
-                <EventCard
+                <EventListItem
                   key={item.id}
                   user={item.user}
                   eventFollows={item.eventFollows}
