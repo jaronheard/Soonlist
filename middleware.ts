@@ -36,6 +36,7 @@ export default authMiddleware({
     "/_vercel/speed-insights/vitals",
     "/.well-known/acme-challenge/(.*)",
     "/.well-known/vercel-user-meta",
+    "/__nextjs_original-stack-frame",
   ],
 });
 
