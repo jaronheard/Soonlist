@@ -17,6 +17,18 @@ module.exports = {
     },
     extend: {
       colors: {
+        gray: {
+          100: "var(--neutral-3)",
+          200: "var(--neutral-3)",
+          300: "var(--neutral-3)",
+          400: "var(--neutral-2)",
+          500: "var(--neutral-2)",
+          600: "var(--neutral-1)",
+          700: "var(--neutral-1)",
+          800: "var(--neutral-1)",
+          900: "var(--neutral-0)",
+        },
+        black: "var(--neutral-0)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -61,17 +61,17 @@
 
 @layer base {
   :root {
-    --accent1: #FEEA9F;
-    --accent2: #FFD1BA;
-    --accent3: #7ACEFC;
-    --accent4: #C4DA9D;
-    --interactive1: #5A32FB;
-    --interactive2: #E0D9FF;
-    --interactive3: #F4F1FF;
-    --neutral0: #162135;
-    --neutral1: #34435F;
-    --neutral2: #627496;
-    --neutral3: #DCE0E8;
+    --accent-1: #FEEA9F;
+    --accent-2: #FFD1BA;
+    --accent-3: #7ACEFC;
+    --accent-4: #C4DA9D;
+    --interactive-1: #5A32FB;
+    --interactive-2: #E0D9FF;
+    --interactive-3: #F4F1FF;
+    --neutral-0: #162135;
+    --neutral-1: #34435F;
+    --neutral-2: #627496;
+    --neutral-3: #DCE0E8;
     --background: 0 0% 96.86%;
     --foreground: 218.71 41.33% 14.71%;
     --card: 0 0% 100%;
