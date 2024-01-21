@@ -2,12 +2,27 @@ import { type Metadata } from "next";
 import "@/styles/globals.css";
 import { cookies } from "next/headers";
 import dynamic from "next/dynamic";
+import { Kalam, IBM_Plex_Sans } from "next/font/google";
 import { PHProvider, Providers } from "./providers";
 import { TRPCReactProvider } from "@/trpc/react";
 
 // edge causes sigkill on vercel about 50% of the time
 // export const runtime = "edge";
 // export const preferredRegion = "pdx1";
+
+const kalam = Kalam({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "700"],
+  variable: "--font-kalam",
+});
+
+const plex_sans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plex-sans",
+});
 
 const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
   ssr: false,
@@ -44,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${kalam.variable} ${plex_sans.variable}`}>
       <PHProvider>
         <body>
           <PostHogPageView />

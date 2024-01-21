@@ -73,6 +73,10 @@ module.exports = {
       transitionProperty: {
         width: "width",
       },
+      fontFamily: {
+        sans: ["var(--font-plex-sans)"],
+        heading: ["var(--font-kalam)"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
