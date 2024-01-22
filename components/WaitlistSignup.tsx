@@ -27,12 +27,12 @@ const formSchema = z.object({
   zipcode: z.string().min(5, {
     message: "Zipcode must be at least 5 characters.",
   }),
-  why: z
-    .string()
-    .max(1000, {
-      message: "Why must be less than 1000 characters.",
-    })
-    .optional(),
+  // why: z
+  //   .string()
+  //   .max(1000, {
+  //     message: "Why must be less than 1000 characters.",
+  //   })
+  //   .optional(),
 });
 
 export function WaitlistSignup() {
@@ -42,7 +42,7 @@ export function WaitlistSignup() {
     defaultValues: {
       email: "",
       zipcode: "",
-      why: "",
+      // why: "",
     },
   });
 
@@ -62,21 +62,25 @@ export function WaitlistSignup() {
 
   return (
     <>
-      <div className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+      <div className="text-center font-heading text-4xl font-bold leading-[1.0833] tracking-tight text-gray-900 sm:text-5xl">
         Get early access
       </div>
+      <p className="mx-auto mt-6 max-w-3xl text-center text-2xl leading-9 text-gray-400">
+        Soonlist is currently in preview. Be one of the first to know when we
+        launch in your area, and get free early supporter perks! 🎉
+      </p>
       <div className="py-4"></div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 md:flex-row md:gap-4"
+          className="flex flex-col justify-center gap-4 md:flex-row md:gap-4"
         >
-          <div className="flex w-56 shrink-0 flex-col gap-4 sm:w-96 sm:flex-row">
+          <div className="flex flex-col gap-4 sm:flex-row">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-96 sm:w-[36rem]">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="" {...field} />
@@ -101,7 +105,7 @@ export function WaitlistSignup() {
               )}
             />
           </div>
-          <FormField
+          {/* <FormField
             control={form.control}
             name="why"
             render={({ field }) => (
@@ -121,9 +125,9 @@ export function WaitlistSignup() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button className="max-w-min md:mt-8" type="submit">
-            Join Waitlist
+            Join the waitlist
           </Button>
         </form>
       </Form>

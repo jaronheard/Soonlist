@@ -91,11 +91,11 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <>
+    <div className="mx-auto max-w-7xl">
       <SignedOut>
         <div
           id="waitlist"
-          className="mx-6 max-w-7xl rounded-xl border-2 border-gray-100 bg-yellow-50 px-6 py-4 shadow-md lg:mx-8"
+          className="rounded-xl border-2 border-gray-100 bg-white px-24 py-16 shadow-md"
         >
           <WaitlistSignup />
         </div>
@@ -272,6 +272,6 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
