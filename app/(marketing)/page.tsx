@@ -1,10 +1,6 @@
-import { Suspense } from "react";
 import {
   ArrowRight,
   Calendar,
-  CalendarPlus,
-  Link,
-  List,
   Megaphone,
   Share,
   Sparkles,
@@ -12,12 +8,10 @@ import {
   Zap,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
-import SampleEvent from "@/components/SampleEvent";
-import SampleList from "@/components/SampleList";
-import SampleListPhotos from "@/components/SampleListPhotos";
 import { CTAButton } from "@/components/CallToActions";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 const advancedFeatures = [
   {
@@ -235,11 +229,12 @@ export default function Page() {
             </div>
             <div className="mt-10 flex items-center gap-x-6">
               <CTAButton />
-              <Button variant="link" asChild>
-                <Link href="/explore">
-                  Explore <span aria-hidden="true">→</span>
-                </Link>
-              </Button>
+              <Link
+                href="/explore"
+                className={buttonVariants({ variant: "secondary" })}
+              >
+                Explore <ArrowRight className="ml-1 size-4" />
+              </Link>
             </div>
           </div>
         </div>
@@ -266,52 +261,49 @@ export default function Page() {
 
       <div className="relative isolate bg-white px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
-          <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
-            <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
-              <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
-                Building togetherness
-              </h1>
-              <p className="mt-6 text-xl leading-7.5 text-gray-400 sm:text-2xl sm:leading-9">
-                We&apos;re building an ecosystem that simplifies discovering,
-                sharing, and engaging with events. It&apos;s a space where
-                everyone has the power and tools to contribute to our shared
-                calendars and build community.
-              </p>
-              <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
-                {advancedFeatures.map((feature) => (
-                  <div key={feature.name} className="relative flex gap-8">
-                    <feature.icon
-                      className="size-10 shrink-0 rounded-full bg-interactive-2 p-2 text-neutral-1
+          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
+            <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
+              Building togetherness
+            </h1>
+            <p className="mt-6 text-xl leading-7.5 text-gray-400 sm:text-2xl sm:leading-9">
+              We&apos;re building an ecosystem that simplifies discovering,
+              sharing, and engaging with events. It&apos;s a space where
+              everyone has the power and tools to contribute to our shared
+              calendars and build community.
+            </p>
+            <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
+              {advancedFeatures.map((feature) => (
+                <div key={feature.name} className="relative flex gap-8">
+                  <feature.icon
+                    className="size-10 shrink-0 rounded-full bg-interactive-2 p-2 text-neutral-1
                       "
-                      aria-hidden="true"
-                    />
-                    <div className="flex flex-col gap-2">
-                      <dt className="block text-2xl font-semibold leading-normal text-gray-900">
-                        {feature.name}
-                      </dt>{" "}
-                      <dd className="block text-lg leading-6 text-neutral-2">
-                        {feature.description}
-                      </dd>
-                    </div>
+                    aria-hidden="true"
+                  />
+                  <div className="flex flex-col gap-2">
+                    <dt className="block text-2xl font-semibold leading-normal text-gray-900">
+                      {feature.name}
+                    </dt>{" "}
+                    <dd className="block text-lg leading-6 text-neutral-2">
+                      {feature.description}
+                    </dd>
                   </div>
-                ))}
-              </dl>
-            </div>
-            <div className="sm:p-6"></div>
+                </div>
+              ))}
+            </dl>
           </div>
-          <div className="relative h-full overflow-hidden rounded-xl sm:px-6 lg:px-0">
+          <div className="relative h-full min-h-[24rem] overflow-hidden rounded-xl sm:px-6 lg:px-0">
             <Image
               src="https://upcdn.io/12a1yek/raw/uploads/2024/01/17/IMG_3960.png"
               alt=""
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1008px"
-              className="object-fit"
+              className="object-cover"
             />
           </div>
         </div>
       </div>
       <div className="relative isolate bg-white pb-32 pt-24 sm:pt-32">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
           <div className="mx-auto max-w-xl text-center">
             <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               People are already excited
@@ -319,7 +311,7 @@ export default function Page() {
           </div>
           <div className="mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none">
             <div className="-mt-8 sm:-mx-4 sm:columns-2 sm:text-[0] lg:columns-3">
-              {testimonials.map((testimonial, idx) => (
+              {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.author.handle}
                   className="pt-8 sm:inline-block sm:w-full sm:px-4"

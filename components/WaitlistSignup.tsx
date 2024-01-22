@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { toast } from "sonner";
-import { Textarea } from "./ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
-import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -27,12 +25,6 @@ const formSchema = z.object({
   zipcode: z.string().min(5, {
     message: "Zipcode must be at least 5 characters.",
   }),
-  // why: z
-  //   .string()
-  //   .max(1000, {
-  //     message: "Why must be less than 1000 characters.",
-  //   })
-  //   .optional(),
 });
 
 export function WaitlistSignup() {
@@ -80,7 +72,7 @@ export function WaitlistSignup() {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="w-96 sm:w-[36rem]">
+                <FormItem className="max-w-48 sm:max-w-[36rem]">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="" {...field} />
@@ -105,27 +97,6 @@ export function WaitlistSignup() {
               )}
             />
           </div>
-          {/* <FormField
-            control={form.control}
-            name="why"
-            render={({ field }) => (
-              <FormItem
-                className={cn("transition-all duration-150", {
-                  "w-full h-44 opacity-100": form.formState.isDirty,
-                  "w-0 h-0 md:h-44 opacity-0": !form.formState.isDirty,
-                })}
-              >
-                <FormLabel>Why (optional)</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} rows={2} />
-                </FormControl>
-                <FormDescription>
-                  Tell us what excites you about SoonList (optional).
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
           <Button className="max-w-min md:mt-8" type="submit">
             Join the waitlist
           </Button>

@@ -9,11 +9,13 @@ export default function Footer() {
   return (
     <div className="">
       <SignedOut>
-        <div
-          id="waitlist"
-          className=" mx-auto max-w-7xl rounded-xl border-2 border-gray-100 bg-white px-24 py-16 shadow-md"
-        >
-          <WaitlistSignup />
+        <div className="max-w-7xl px-6 sm:px-8">
+          <div
+            id="waitlist"
+            className=" mx-auto rounded-xl border-2 border-gray-100 bg-white px-8 py-16 shadow-md sm:px-24"
+          >
+            <WaitlistSignup />
+          </div>
         </div>
         <div className="p-12"></div>
       </SignedOut>
