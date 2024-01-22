@@ -164,7 +164,7 @@ function EventDetails({ className }: { className?: string }) {
 
 function MakeAndShareListsOfEvents() {
   return (
-    <div className="rounded-xl border border-neutral-3 px-24 py-16 text-center">
+    <div className="px-4 py-16 text-center sm:rounded-xl sm:border sm:border-neutral-3 sm:px-16 lg:px-24">
       <div className="mx-auto max-w-2.5xl">
         <h1 className="font-heading text-5xl font-bold leading-[1.08333] tracking-tight text-gray-800">
           Make and share lists of events
@@ -175,7 +175,7 @@ function MakeAndShareListsOfEvents() {
           around events that matter.
         </p>
       </div>
-      <div className="mt-12 grid grid-cols-3 gap-8">
+      <div className="mt-12 grid gap-8 sm:grid-cols-3">
         <div>
           <h2 className="text-2.5xl font-bold leading-9 tracking-wide">
             Discover Events
@@ -230,8 +230,8 @@ function MakeAndShareListsOfEvents() {
           <p className="mt-2 text-lg leading-7 text-gray-500">
             Organize events into useful, shareable lists. Easily share events.
           </p>
-          <div className="pt-16"></div>
-          <div className="relative mt-5">
+          <div className="pt-24"></div>
+          <div className="relative h-64">
             <div className="absolute z-30 mr-5 rounded-lg border-[0.85px] border-neutral-3 bg-white p-4 text-left shadow-sm">
               <EventDetails />
             </div>
@@ -274,7 +274,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="isolate mx-auto -mt-24 max-w-7xl rounded-lg bg-white">
+      <div className="isolate mx-auto -mt-24 max-w-7xl bg-white sm:rounded-lg">
         <MakeAndShareListsOfEvents />
       </div>
       <div className="bg-white py-24 sm:py-32">
