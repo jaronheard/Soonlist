@@ -166,7 +166,7 @@ function MakeAndShareListsOfEvents() {
   return (
     <div className="px-4 py-16 text-center sm:rounded-xl sm:border sm:border-neutral-3 sm:px-16 lg:px-24">
       <div className="mx-auto max-w-2.5xl">
-        <h1 className="font-heading text-5xl font-bold leading-[1.08333] tracking-tight text-gray-800">
+        <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
           Make and share lists of events
         </h1>
         <p className="mx-auto mt-6 max-w-3xl text-2xl leading-9 text-gray-400">
@@ -253,7 +253,7 @@ export default function Page() {
     <div className="bg-white">
       <div className="relative isolate bg-interactive-3 px-6 pt-14 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 pb-48 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
             <div className="mx-auto">
               <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 sm:text-8xl sm:leading-[0.875]">
                 Event lists for{" "}
@@ -277,7 +277,23 @@ export default function Page() {
       <div className="isolate mx-auto -mt-24 max-w-7xl bg-white sm:rounded-lg">
         <MakeAndShareListsOfEvents />
       </div>
-      <div className="bg-white py-24 sm:py-32">
+      <div className="relative isolate bg-white px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="mx-auto">
+              <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
+                Curated event lists built by community members you know and
+                trust
+              </h1>
+              <p className="mt-6 text-xl leading-7.5 text-gray-400 sm:text-2xl sm:leading-9">
+                Join a network of passionate curators and participants building
+                community around events that matter.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
             <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -308,48 +324,50 @@ export default function Page() {
             </dl>
           </div>
         </div>
-      </div>
-      <div className="overflow-hidden bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
-            <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
-              <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
-                <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  Building togetherness
-                </p>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
-                  We&apos;re building an ecosystem that simplifies discovering,
-                  sharing, and engaging with events. It&apos;s a space where
-                  everyone has the power and tools to contribute to our shared
-                  calendars and build community.
-                </p>
-                <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
-                  {advancedFeatures.map((feature) => (
-                    <div key={feature.name} className="relative pl-9">
-                      <dt className="inline font-semibold text-gray-900">
-                        <feature.icon
-                          className="absolute left-1 top-1 size-5 text-gray-600"
-                          aria-hidden="true"
-                        />
-                        {feature.name}.
+      </div> */}
+      <div className="relative isolate bg-white px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
+          <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
+            <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
+              <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
+                Building togetherness
+              </h1>
+              <p className="mt-6 text-xl leading-7.5 text-gray-400 sm:text-2xl sm:leading-9">
+                We&apos;re building an ecosystem that simplifies discovering,
+                sharing, and engaging with events. It&apos;s a space where
+                everyone has the power and tools to contribute to our shared
+                calendars and build community.
+              </p>
+              <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
+                {advancedFeatures.map((feature) => (
+                  <div key={feature.name} className="relative flex gap-8">
+                    <feature.icon
+                      className="size-10 shrink-0 rounded-full bg-interactive-2 p-2 text-neutral-1
+                      "
+                      aria-hidden="true"
+                    />
+                    <div className="flex flex-col gap-2">
+                      <dt className="block text-2xl font-semibold leading-normal text-gray-900">
+                        {feature.name}
                       </dt>{" "}
-                      <dd className="inline">{feature.description}</dd>
+                      <dd className="block text-lg leading-6 text-neutral-2">
+                        {feature.description}
+                      </dd>
                     </div>
-                  ))}
-                </dl>
-              </div>
+                  </div>
+                ))}
+              </dl>
             </div>
-            <div className="sm:px-6 lg:px-0">
-              <div className="relative isolate overflow-hidden bg-gradient-to-br from-green-500/10 via-blue-500/10 to-indigo-500/10 sm:mx-auto sm:max-w-2xl sm:rounded-3xl lg:max-w-none">
-                <Image
-                  src="https://upcdn.io/12a1yek/raw/uploads/2024/01/17/IMG_3960.png"
-                  alt=""
-                  height={1344}
-                  width={1008}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1008px"
-                />
-              </div>
-            </div>
+            <div className="sm:p-6"></div>
+          </div>
+          <div className="relative h-full overflow-hidden rounded-xl sm:px-6 lg:px-0">
+            <Image
+              src="https://upcdn.io/12a1yek/raw/uploads/2024/01/17/IMG_3960.png"
+              alt=""
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1008px"
+              className="object-fit"
+            />
           </div>
         </div>
       </div>

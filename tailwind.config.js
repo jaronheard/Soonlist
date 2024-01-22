@@ -108,6 +108,9 @@ module.exports = {
         tight: "-0.09rem",
         tighterish: "-0.18rem",
       },
+      lineHeight: {
+        7.5: "1.875rem",
+      },
       spacing: {
         "2.5xl": "44.125rem",
         "7xl": "87.5rem",
