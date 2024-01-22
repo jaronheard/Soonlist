@@ -12,37 +12,12 @@ import {
   Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
 import SampleEvent from "@/components/SampleEvent";
 import SampleList from "@/components/SampleList";
 import SampleListPhotos from "@/components/SampleListPhotos";
 import { CTAButton } from "@/components/CallToActions";
 import { Button } from "@/components/ui/button";
-
-const features = [
-  {
-    name: "Find & Add Events",
-    description:
-      "Discover events from other curators or add your own in just a few clicks. AI simplifies the process, making event curation quick and easy.",
-    href: "#",
-    icon: CalendarPlus,
-  },
-  {
-    name: "Curate Event Lists",
-    description:
-      "Organize events into useful, shareable lists. Follow others curators for an event feed personalized to  your interests and the communities you care about.",
-    href: "#",
-    icon: List,
-  },
-  {
-    name: "Share & Sync",
-    description:
-      "Easily share events and lists with others via a simple web link anyone can use. Add events or lists to your personal calendar with a click.",
-    href: "#",
-    icon: Share,
-  },
-];
 
 const advancedFeatures = [
   {
@@ -65,68 +40,63 @@ const advancedFeatures = [
   },
 ];
 
-const featuredTestimonial = {
-  body: "As an organizer of dance parties and environmental justice activist, I've been dreaming of making event lists this easy for years!",
-  author: {
-    name: "Sarah Baker",
-    handle: "boogiebuffet",
-    imageUrl:
-      "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWEJKQ0oxZDdVc05BcW9tUHhielljR0t0QmQifQ&w=750&q=75",
-    logoUrl: makingEarthCool.src,
-  },
-};
 const testimonials = [
-  [
-    [
-      {
-        body: "The commitment to community and collective growth is evident, and I'm here for it.",
-        author: {
-          name: "jennifer batchelor",
-          handle: "jennybatch",
-          imageUrl:
-            "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWE45MmZWcW5PdUE2T0VCalVBMVRRM3ViaEMifQ&w=750&q=75",
-        },
-      },
-    ],
-    [
-      {
-        body: "Screenshotting an Instagram story and turning it into a calendar event on the open web in seconds feels like getting away with something!",
-        author: {
-          name: "Jaron Heard",
-          handle: "jaronheard",
-          imageUrl:
-            "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWERpc3hISWJyWkZFOUFJV3VrZ21vRkJNcnAifQ&w=750&q=75",
-        },
-      },
-      // More testimonials...
-    ],
-  ],
-  [
-    // [
-    //   {
-    //     body: "The personal calendar sync feature is brilliant – it keeps me organized and connected with my community's activities.",
-    //     author: {
-    //       name: "Josh Carr",
-    //       handle: "joshcarr",
-    //       imageUrl:
-    //         "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWEJJUDFzTW9JWmN4eURvU3JISERnTDFpbTQifQ&w=750&q=75",
-    //     },
-    //   },
-    //   // More testimonials...
-    // ],
-    // [
-    //   {
-    //     body: "Even in these early stages, the vision for how this can benefit communities is clear and it's exciting to be part of.",
-    //     author: {
-    //       name: "Jenny M Ng",
-    //       handle: "jenny",
-    //       imageUrl:
-    //         "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWHJ6Smw3NWE3ckVUY0F5R2tjWW5lTWdteTkifQ&w=750&q=75",
-    //     },
-    //   },
-    //   // More testimonials...
-    // ],
-  ],
+  {
+    body: "The commitment to community and collective growth is evident, and I'm here for it.",
+    author: {
+      name: "Jennifer Batchelor",
+      handle: "jennybatch",
+      imageUrl:
+        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWE45MmZWcW5PdUE2T0VCalVBMVRRM3ViaEMifQ&w=750&q=75",
+    },
+  },
+  {
+    body: "Screenshotting an Instagram story and turning it into a calendar event on the open web in seconds feels like getting away with something!",
+    author: {
+      name: "Jaron Heard",
+      handle: "jaronheard",
+      imageUrl:
+        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWERpc3hISWJyWkZFOUFJV3VrZ21vRkJNcnAifQ&w=750&q=75",
+    },
+  },
+  // More testimonials...
+  {
+    body: "As an organizer of dance parties and environmental justice activist, I've been dreaming of making event lists this easy for years!",
+    author: {
+      name: "Sarah Baker",
+      handle: "boogiebuffet",
+      imageUrl:
+        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWEJKQ0oxZDdVc05BcW9tUHhielljR0t0QmQifQ&w=750&q=75",
+      logoUrl: makingEarthCool.src,
+    },
+  },
+  {
+    body: "I love being able to save the shows I'm interested in and sharing my list with my friends.",
+    author: {
+      name: "Josh Carr",
+      handle: "joshcarr",
+      imageUrl:
+        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWEJJUDFzTW9JWmN4eURvU3JISERnTDFpbTQifQ&w=750&q=75",
+    },
+  },
+  {
+    body: "I love being able to see what's happening without having to scroll through social media.",
+    author: {
+      name: "Gina Roberti",
+      handle: "ginabobina",
+      imageUrl:
+        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWTBoWlBNUkxMc2FCazNEUDV5QkRDSThjZWkifQ&w=750&q=75",
+    },
+  },
+  {
+    body: "Even in these early stages, the vision for how this can benefit communities is clear and it's exciting to be part of.",
+    author: {
+      name: "Sarah Ashton",
+      handle: "sarah-a",
+      imageUrl:
+        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWUpwZnIyc25rM0JBOERmbUFPNXFMWlo0MXIifQ&w=750&q=75",
+    },
+  },
 ];
 
 const sampleEventId =
@@ -293,38 +263,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Calendars as common ground
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Easily discover, curate, and share events that bring us together.
-              Join a network of passionate curators and participants building
-              community around events that matter.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-              {features.map((feature) => (
-                <div key={feature.name} className="flex flex-col">
-                  <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
-                    <feature.icon
-                      className="size-5 flex-none text-gray-600"
-                      aria-hidden="true"
-                    />
-                    {feature.name}
-                  </dt>
-                  <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                    <p className="flex-auto">{feature.description}</p>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-      </div> */}
+
       <div className="relative isolate bg-white px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
           <div className="px-6 lg:px-0 lg:pr-4 lg:pt-4">
@@ -372,82 +311,42 @@ export default function Page() {
         </div>
       </div>
       <div className="relative isolate bg-white pb-32 pt-24 sm:pt-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-xl text-center">
             <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               People are already excited
             </p>
           </div>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
-            <figure className="ring-gray-900/5 rounded-2xl bg-white shadow-lg ring-1 sm:col-span-2 xl:col-start-2 xl:row-end-1">
-              <blockquote className="p-6 text-lg font-semibold leading-7 tracking-tight text-gray-900 sm:p-12 sm:text-xl sm:leading-8">
-                <p>{`“${featuredTestimonial.body}”`}</p>
-              </blockquote>
-              <figcaption className="border-gray-900/10 flex flex-wrap items-center gap-4 border-t px-6 py-4 sm:flex-nowrap">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  className="size-10 flex-none rounded-full bg-gray-50"
-                  src={featuredTestimonial.author.imageUrl}
-                  alt=""
-                />
-                <div className="flex-auto">
-                  <div className="font-semibold">
-                    {featuredTestimonial.author.name}
-                  </div>
-                  <div className="text-gray-600">{`@${featuredTestimonial.author.handle}`}</div>
+          <div className="mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none">
+            <div className="-mt-8 sm:-mx-4 sm:columns-2 sm:text-[0] lg:columns-3">
+              {testimonials.map((testimonial, idx) => (
+                <div
+                  key={testimonial.author.handle}
+                  className="pt-8 sm:inline-block sm:w-full sm:px-4"
+                >
+                  <figure className="rounded-[10px] border-[0.85px] border-neutral-3 bg-accent-yellow p-6 shadow-sm">
+                    <blockquote className="text-center font-heading text-2xl font-bold text-neutral-1">
+                      <p>{`“${testimonial.body}”`}</p>
+                    </blockquote>
+                    <figcaption className="w-min-content mt-6 flex items-center justify-center gap-x-4">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="size-14 rounded-full border-[6px] border-accent-orange"
+                        src={testimonial.author.imageUrl}
+                        alt=""
+                      />
+                      <div>
+                        <div className="text-lg font-semibold leading-none text-neutral-1">
+                          {testimonial.author.name}
+                        </div>
+                        <div className="py-0.5"></div>
+                        <div className="text-lg font-medium leading-none text-neutral-2">{`@${testimonial.author.handle}`}</div>
+                      </div>
+                    </figcaption>
+                  </figure>
                 </div>
-                {/* <img
-                  className="h-10 w-auto flex-none rounded-full"
-                  src={featuredTestimonial.author.logoUrl}
-                  alt=""
-                /> */}
-              </figcaption>
-            </figure>
-            {testimonials.map((columnGroup, columnGroupIdx) => (
-              <div
-                key={columnGroupIdx}
-                className="space-y-8 xl:contents xl:space-y-0"
-              >
-                {columnGroup.map((column, columnIdx) => (
-                  <div
-                    key={columnIdx}
-                    className={cn(
-                      (columnGroupIdx === 0 && columnIdx === 0) ||
-                        (columnGroupIdx === testimonials.length - 1 &&
-                          columnIdx === columnGroup.length - 1)
-                        ? "xl:row-span-2"
-                        : "xl:row-start-1",
-                      "space-y-8"
-                    )}
-                  >
-                    {column.map((testimonial) => (
-                      <figure
-                        key={testimonial.author.handle}
-                        className="ring-gray-900/5 rounded-2xl bg-white p-6 shadow-lg ring-1"
-                      >
-                        <blockquote className="text-gray-900">
-                          <p>{`“${testimonial.body}”`}</p>
-                        </blockquote>
-                        <figcaption className="mt-6 flex items-center gap-x-4">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            className="size-10 rounded-full bg-gray-50"
-                            src={testimonial.author.imageUrl}
-                            alt=""
-                          />
-                          <div>
-                            <div className="font-semibold">
-                              {testimonial.author.name}
-                            </div>
-                            <div className="text-gray-600">{`@${testimonial.author.handle}`}</div>
-                          </div>
-                        </figcaption>
-                      </figure>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
