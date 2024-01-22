@@ -52,7 +52,7 @@ export function WaitlistSignup() {
     },
     onSuccess: () => {
       form.reset();
-      toast.success("You've been added to the waitlist.");
+      toast.success("🎉 You're on the list!");
     },
   });
   // 2. Define a submit handler.
