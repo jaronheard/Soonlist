@@ -109,7 +109,7 @@ export function Nav() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        {/* <SignedIn>
+        <SignedIn>
           <NavigationMenuItem>
             <NavigationMenuTrigger>Events</NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -183,7 +183,7 @@ export function Nav() {
               About
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem> */}
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
