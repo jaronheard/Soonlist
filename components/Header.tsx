@@ -109,7 +109,7 @@ export function Nav() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <SignedIn>
+        {/* <SignedIn>
           <NavigationMenuItem>
             <NavigationMenuTrigger>Events</NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -183,7 +183,7 @@ export function Nav() {
               About
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   );
@@ -277,7 +277,7 @@ const SettingsMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Settings className="size-8 rounded-full bg-black p-1 text-white" />
+        <Settings className="size-8 rounded-full bg-interactive-1 p-1 text-white" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Timezone</DropdownMenuLabel>
