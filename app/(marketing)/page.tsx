@@ -125,7 +125,7 @@ const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 export default function Page() {
   return (
     <div className="bg-white">
-      <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="relative isolate bg-interactive-3 px-6 pt-14 lg:px-8">
         <div className="pt-24 sm:pt-32 lg:pt-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">

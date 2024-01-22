@@ -79,32 +79,36 @@ const allUsers: { title: string; href: string; description: string }[] = [
 
 export default function Header() {
   return (
-    <header className="mt-3 flex w-full items-center justify-between px-2 pb-4 sm:mt-5 sm:px-4 sm:pb-7">
-      <div className="flex items-center justify-between gap-2 sm:grow sm:gap-0">
-        <NavigationMenu>
-          <Link href="/" className="relative flex items-center space-x-3">
-            <Logo />
-            <Badge
-              variant="secondary"
-              className="absolute -bottom-2 left-[-1.9rem] scale-50 sm:static sm:scale-100"
-            >
-              Preview
-            </Badge>
-          </Link>
-        </NavigationMenu>
-      </div>
-      <div className="flex gap-4">
-        <Nav />
-        <NavigationMenu>
-          <SignedIn>
-            <UserMenu />
-          </SignedIn>
-          <SignedOut>
-            <SettingsMenu />
-          </SignedOut>
-        </NavigationMenu>
-      </div>
-    </header>
+    <div className="sticky top-0 z-50 bg-interactive-3">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-2 pb-4 pt-3 sm:px-4 sm:pb-7 sm:pt-5">
+        <div className="flex items-center justify-between gap-2 sm:grow sm:gap-0">
+          <NavigationMenu>
+            <Link href="/" className="relative flex items-center space-x-3">
+              <Logo />
+              <div className="pb-3">
+                <Badge
+                  variant="secondary"
+                  className="scale-50 sm:static sm:scale-100"
+                >
+                  Preview
+                </Badge>
+              </div>
+            </Link>
+          </NavigationMenu>
+        </div>
+        <div className="flex gap-4">
+          <Nav />
+          <NavigationMenu>
+            <SignedIn>
+              <UserMenu />
+            </SignedIn>
+            <SignedOut>
+              <SettingsMenu />
+            </SignedOut>
+          </NavigationMenu>
+        </div>
+      </header>
+    </div>
   );
 }
 
