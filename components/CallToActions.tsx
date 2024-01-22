@@ -28,7 +28,7 @@ export function CTAButton() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span className="mr-2">🌈</span> Let us show you how
+        Let us show you how
       </a>
     </Button>
   );

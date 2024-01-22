@@ -21,7 +21,6 @@ import {
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
 import { Separator } from "./ui/separator";
-import { Badge } from "./ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -80,19 +79,11 @@ const allUsers: { title: string; href: string; description: string }[] = [
 export default function Header() {
   return (
     <div className="sticky top-0 z-50 bg-interactive-3">
-      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-2 pb-4 pt-3 sm:px-4 sm:pb-7 sm:pt-5">
+      <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-2 pb-4 pt-3 sm:px-4 sm:pb-7 sm:pt-5">
         <div className="flex items-center justify-between gap-2 sm:grow sm:gap-0">
           <NavigationMenu>
             <Link href="/" className="relative flex items-center space-x-3">
               <Logo />
-              <div className="pb-3">
-                <Badge
-                  variant="secondary"
-                  className="scale-50 sm:static sm:scale-100"
-                >
-                  Preview
-                </Badge>
-              </div>
             </Link>
           </NavigationMenu>
         </div>

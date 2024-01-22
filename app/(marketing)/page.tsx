@@ -1,11 +1,24 @@
 import { Suspense } from "react";
-import { CalendarPlus, List, Megaphone, Share, Users, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  CalendarPlus,
+  Link,
+  List,
+  Megaphone,
+  Share,
+  Sparkles,
+  Users,
+  Zap,
+} from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
 import SampleEvent from "@/components/SampleEvent";
 import SampleList from "@/components/SampleList";
 import SampleListPhotos from "@/components/SampleListPhotos";
+import { CTAButton } from "@/components/CallToActions";
+import { Button } from "@/components/ui/button";
 
 const features = [
   {
@@ -122,62 +135,147 @@ const sampleEventId =
     : "clrg63xn20001zyzg6gnwzktg";
 const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
+function EventDetails({ className }: { className?: string }) {
+  return (
+    <div className={className}>
+      <div className="text-xs text-gray-500">
+        7:30PM - 11:00PM // Turn Turn Turn
+      </div>
+      <div className="mt-1 text-lg font-semibold">
+        Dance Parpy: Sweat Out 2023
+      </div>
+      <p className="mt-1 text-sm text-gray-500">
+        Let go! The entry fee ranges from $5 to $10. Arrive by 8:15 to be
+        entered into a vinyl raffle where the top prize is $88 Mississippi...
+      </p>
+      <div className="flex w-full justify-between text-interactive-1">
+        <div className="mt-4 inline-flex items-center text-sm font-medium">
+          Learn more
+          <ArrowRight className="ml-1 size-4 text-interactive-2" />
+        </div>
+        <div className="mt-4 flex space-x-2">
+          <Calendar className="size-8 rounded-full bg-interactive-3 p-1.5 text-interactive-1" />
+          <Share className="size-8 rounded-full bg-interactive-3 p-1.5 text-interactive-1" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MakeAndShareListsOfEvents() {
+  return (
+    <div className="rounded-xl border border-neutral-3 px-24 py-16 text-center">
+      <div className="mx-auto max-w-2.5xl">
+        <h1 className="font-heading text-5xl font-bold leading-[1.08333] tracking-tight text-gray-800">
+          Make and share lists of events
+        </h1>
+        <p className="mx-auto mt-6 max-w-3xl text-2xl leading-9 text-gray-400">
+          Easily discover, curate, and share events that bring us together. Join
+          a network of passionate curators and participants building community
+          around events that matter.
+        </p>
+      </div>
+      <div className="mt-12 grid grid-cols-3 gap-8">
+        <div>
+          <h2 className="text-2.5xl font-bold leading-9 tracking-wide">
+            Discover Events
+          </h2>
+          <div className="py-2"></div>
+          <p className="mt-2 text-lg leading-7 text-gray-500">
+            Discover events from other curators or add your own in just a few
+            clicks.
+          </p>
+          <div className="flex space-x-2 px-5 pt-14">
+            <Image
+              src="https://upcdn.io/12a1yek/raw/uploads/Soonlist/events-collage.png"
+              height={316}
+              width={285}
+              alt=""
+              className="size-full"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col items-center">
+          <h2 className="text-2.5xl font-bold leading-9 tracking-wide">
+            Curate & Build
+          </h2>
+          <div className="py-2"></div>
+          <p className="mt-2 text-lg leading-7 text-gray-500">
+            Let AI do the work of uncovering dates, times, locations, and more.
+          </p>
+          <div className="flex space-x-2 px-5 pt-12">
+            <div className="flex h-80 items-start justify-center rounded-full bg-interactive-3 text-base font-bold leading-5 text-interactive-1">
+              <div className="">
+                <Sparkles className="mx-auto mb-6 mt-4 size-12 rounded-full bg-interactive-2 p-1.5" />
+                <div className="flex flex-col gap-2">
+                  <div className="">JAN 17 WEDS</div>
+                  <div className="">4:00PM - 5:00PM</div>
+                  <div className="text-balance">
+                    Dance Parpy: Sweat Out 2023 w/ PLNT DDJ
+                  </div>
+                  <p className="text-balance px-3.5 font-medium">
+                    Let go! The entry fee ranges from $5 to $10. Arrive by 8:15
+                    to be entered...
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2 className="text-2.5xl font-bold leading-9 tracking-wide">
+            Share & Sync
+          </h2>
+          <div className="py-2"></div>
+          <p className="mt-2 text-lg leading-7 text-gray-500">
+            Organize events into useful, shareable lists. Easily share events.
+          </p>
+          <div className="pt-16"></div>
+          <div className="relative mt-5">
+            <div className="absolute z-30 mr-5 rounded-lg border-[0.85px] border-neutral-3 bg-white p-4 text-left shadow-sm">
+              <EventDetails />
+            </div>
+            <div className="absolute inset-x-2.5 top-2.5 z-20 rounded-lg border-[0.85px] border-neutral-3 bg-white p-4 text-left shadow-sm">
+              <EventDetails className="opacity-0" />
+            </div>
+            <div className="absolute left-5 top-5 z-10 rounded-lg border-[0.85px] border-neutral-3 bg-white p-4 text-left shadow-sm">
+              <EventDetails className="opacity-0" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Page() {
   return (
     <div className="bg-white">
       <div className="relative isolate bg-interactive-3 px-6 pt-14 lg:px-8">
-        <div className="pt-24 sm:pt-32 lg:pt-40">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 pb-48 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h1 className="font-heading text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Event lists for everybody
+            <div className="mx-auto">
+              <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 sm:text-8xl sm:leading-[0.875]">
+                Event lists for{" "}
+                <span className="text-interactive-1">everybody</span>
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
+              <p className="mt-6 max-w-[30rem] text-2xl leading-9 text-gray-400">
                 Gather and share events that matter to you and your communities
               </p>
             </div>
-          </div>
-        </div>
-        {/* <div className="mt-10 flex items-center justify-center gap-x-6">
-          <CTAButton />
-          <Button variant="link" asChild>
-            <Link href="/explore">
-              Explore <span aria-hidden="true">→</span>
-            </Link>
-          </Button>
-        </div> */}
-
-        <div className="py-4"></div>
-        <Suspense fallback={<div />}>
-          <SampleEvent eventId={sampleEventId} />
-        </Suspense>
-        <div className="py-12 sm:py-16"></div>
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Make and share lists of events
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Add your events or others events to lists to share
-            </p>
-          </div>
-        </div>
-        <div className="py-4"></div>
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row">
-          <div className="shrink-0">
-            <div className="sm:p-12"></div>
-            <Suspense fallback={<div />}>
-              <SampleListPhotos listId={sampleEventListId} />
-            </Suspense>
-          </div>
-          <div className="mx-auto place-items-center rounded-xl border-2 border-gray-100 bg-white px-4 pt-4 text-left shadow-md">
-            <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-none">
-              <Suspense fallback={<div />}>
-                <SampleList listId={sampleEventListId} />
-              </Suspense>
+            <div className="mt-10 flex items-center gap-x-6">
+              <CTAButton />
+              <Button variant="link" asChild>
+                <Link href="/explore">
+                  Explore <span aria-hidden="true">→</span>
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
+      </div>
+      <div className="isolate mx-auto -mt-24 max-w-7xl rounded-lg bg-white">
+        <MakeAndShareListsOfEvents />
       </div>
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
