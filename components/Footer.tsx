@@ -6,6 +6,57 @@ import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { WaitlistSignup } from "./WaitlistSignup";
 
+/**
+ * v0 by Vercel.
+ * @see https://v0.dev/t/S4F9jLtwsxO
+ */
+import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
+
+export default function Footer() {
+  return (
+    <footer className="w-full bg-neutral-1 p-24 text-background">
+      <nav className="mx-auto flex max-w-7xl justify-between ">
+        <div>
+          <h1 className="font-heading text-4xl font-bold">Soonlist</h1>
+          <div className="mt-6 flex space-x-4">
+            <Button size="sm">Support</Button>
+            <Button size="sm">Instagram</Button>
+            <Button size="sm">GitHub</Button>
+          </div>
+        </div>
+        <div>
+          <h2 className="text-lg font-medium opacity-[66.666%]">Events</h2>
+          <ul className="text-semibold mt-2 space-y-1 text-lg">
+            <li>New Events</li>
+            <li>All Events</li>
+            <li>Explore</li>
+          </ul>
+        </div>
+        <div>
+          <h2 className="text-lg font-medium opacity-[66.666%]">Support</h2>
+          <ul className="text-semibold mt-2 space-y-1 text-lg">
+            <li>Contact Us</li>
+            <li>Changelog</li>
+          </ul>
+        </div>
+        <div>
+          <h2 className="text-lg font-medium opacity-[66.666%]">Project</h2>
+          <ul className="text-semibold mt-2 space-y-1 text-lg">
+            <li>About</li>
+          </ul>
+        </div>
+        <div>
+          <h2 className="text-lg font-medium opacity-[66.666%]">Legal</h2>
+          <ul className="text-semibold mt-2 space-y-1 text-lg">
+            <li>Privacy</li>
+            <li>Terms</li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+  );
+}
+
 const navigation = {
   events: [
     { name: "New Event", href: "/events/new" },
@@ -89,7 +140,7 @@ const navigation = {
   ],
 };
 
-export default function Footer() {
+export function OldFooter() {
   return (
     <div className="mx-auto max-w-7xl">
       <SignedOut>
@@ -100,7 +151,7 @@ export default function Footer() {
           <WaitlistSignup />
         </div>
       </SignedOut>
-      <footer className="w-full bg-white" aria-labelledby="footer-heading">
+      <footer className="w-full bg-neutral-1" aria-labelledby="footer-heading">
         <h2 id="footer-heading" className="sr-only">
           Footer
         </h2>
