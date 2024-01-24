@@ -1,7 +1,7 @@
 "use client";
 
 import { atcb_action } from "add-to-calendar-button";
-import { CalendarPlus } from "lucide-react";
+import { CalendarIcon, CalendarPlus } from "lucide-react";
 import { DropdownMenuItem } from "./DropdownMenu";
 import { Button } from "./ui/button";
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
@@ -10,7 +10,7 @@ type CalendarButtonProps = {
   event: AddToCalendarButtonPropsRestricted;
   id: string;
   username: string;
-  type: "button" | "dropdown";
+  type: "button" | "dropdown" | "icon";
 };
 
 export function CalendarButton(props: CalendarButtonProps) {
@@ -35,6 +35,18 @@ export function CalendarButton(props: CalendarButtonProps) {
       >
         <CalendarPlus className="mr-2 size-4" />
         Add to Calendar
+      </Button>
+    );
+  }
+
+  if (props.type === "icon") {
+    return (
+      <Button
+        onClick={() => atcb_action(eventForCalendar)}
+        variant={"secondary"}
+        size={"icon"}
+      >
+        <CalendarIcon className="size-6" />
       </Button>
     );
   }

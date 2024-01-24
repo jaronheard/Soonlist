@@ -1,30 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useContext } from "react";
+import { ArrowRight } from "lucide-react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./DropdownMenu";
 import { CalendarButton } from "./CalendarButton";
 import { ShareButton } from "./ShareButton";
-import { ConditionalWrapper } from "./ConditionalWrapper";
-import { FollowEventDropdownButton } from "./FollowButtons";
-import { Badge } from "./ui/badge";
 import { type EventWithUser } from "./EventList";
+import { buttonVariants } from "./ui/button";
 import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
   cn,
   showMultipleDays,
-  endsNextDayBeforeMorning,
+  // endsNextDayBeforeMorning,
   eventTimesAreDefined,
   getDateTimeInfo,
   timeFormatDateInfo,
@@ -33,7 +26,7 @@ import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
-type EventListItem = {
+type EventListItemProps = {
   user: User;
   eventFollows: EventFollow[];
   comments: Comment[];
@@ -41,7 +34,6 @@ type EventListItem = {
   createdAt: Date;
   event: AddToCalendarButtonPropsRestricted;
   visibility: "public" | "private";
-  singleEvent?: boolean;
   hideCurator?: boolean;
   showOtherCurators?: boolean;
   similarEvents?: {
@@ -56,12 +48,14 @@ function EventDateDisplay({
   endDate,
   endTime,
   timezone,
+  UserInfoIcon,
 }: {
   startDate: string;
   startTime?: string;
   endDate: string;
   endTime?: string;
   timezone: string;
+  UserInfoIcon?: React.ReactNode;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   if (!startDate || !endDate) {
@@ -81,37 +75,24 @@ function EventDateDisplay({
     ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
     : getDateInfoUTC(endDate);
   const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
-  const showNightIcon =
-    endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
+  // const showNightIcon =
+  //   endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
+
   return (
-    <div className="flex shrink-0 flex-row gap-1">
-      <div className="relative grid size-14 place-items-center rounded-md bg-gradient-to-b from-gray-900 to-gray-600">
-        <span className="text-xs font-semibold uppercase text-white">
-          {startDateInfo?.monthName.substring(0, 3)}
-        </span>
-        <span className="-mt-2 text-2xl font-extrabold text-white">
-          {startDateInfo?.day}
-        </span>
-        <span className="-mt-2 text-xs font-light uppercase text-white">
-          {startDateInfo?.dayOfWeek.substring(0, 3)}
-        </span>
-        {showNightIcon && (
-          <div className="absolute -right-2 -top-2 text-2xl">🌛</div>
-        )}
+    <div className="flex flex-col items-center justify-center gap-3">
+      <div className="text-lg font-semibold uppercase leading-none text-neutral-2">
+        {startDateInfo?.monthName.substring(0, 3)}
       </div>
-      {showMultiDay && (
-        <div className="grid size-14 place-items-center rounded-md bg-gradient-to-b from-gray-900 to-gray-600">
-          <span className="text-xs font-semibold uppercase text-white">
-            {endDateInfo?.monthName.substring(0, 3)}
-          </span>
-          <span className="-mt-2 text-2xl font-extrabold text-white">
-            {endDateInfo?.day}
-          </span>
-          <span className="-mt-2 text-xs font-light uppercase text-white">
-            {endDateInfo?.dayOfWeek.substring(0, 3)}
-          </span>
-        </div>
-      )}
+      <div className="font-heading text-4xl font-bold leading-none tracking-tighter text-neutral-1">
+        {startDateInfo?.day}
+      </div>
+      {UserInfoIcon && <div className="p-3">{UserInfoIcon}</div>}
+      <div
+        className=" text-lg font-semibold lowercase leading-none text-neutral-2"
+        style={{ writingMode: "vertical-rl" }}
+      >
+        {startDateInfo?.dayOfWeek.substring(0, 4)}
+      </div>
     </div>
   );
 }
@@ -125,7 +106,8 @@ function EventDetails({
   endTime,
   timezone,
   location,
-  singleEvent,
+  description,
+  EventActionButtons,
 }: {
   id: string;
   name: string;
@@ -134,8 +116,9 @@ function EventDetails({
   endTime: string;
   endDate: string;
   timezone: string;
+  description?: string;
   location?: string;
-  singleEvent?: boolean;
+  EventActionButtons?: React.ReactNode;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   if (!startDate || !endDate) {
@@ -160,43 +143,51 @@ function EventDetails({
     return null;
   }
 
+  if (!description) {
+    description = "";
+  }
+
   return (
-    <div>
-      <ConditionalWrapper
-        condition={!singleEvent}
-        wrapper={(children) => <Link href={`/event/${id}`}>{children}</Link>}
-      >
-        <h3
-          className={cn(
-            "text-lg font-semibold leading-6 text-gray-900 sm:text-xl",
-            {
-              "md:line-clamp-1 line-clamp-2 md:break-all break-words":
-                !singleEvent,
-            }
-          )}
-        >
-          {name}
-        </h3>
-      </ConditionalWrapper>
-      <div className="p-1"></div>
-      <div className="flex gap-2">
+    <div className="flex flex-col items-start justify-center gap-2">
+      <div className="flex-start flex gap-2 text-lg font-medium leading-none">
         {eventTimesAreDefined(startTime, endTime) && (
-          <div className="ring-gray-500/10 shrink-0 items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset">
-            {timeFormatDateInfo(startDateInfo)}-
-            {timeFormatDateInfo(endDateInfo)}
-          </div>
+          <>
+            <div className="shrink-0 text-neutral-2">
+              {timeFormatDateInfo(startDateInfo)}-
+              {timeFormatDateInfo(endDateInfo)}
+            </div>
+            <div className="text-neutral-3">{"//"}</div>
+          </>
         )}
+
         {location && (
           <Link
             href={`https://www.google.com/maps/search/?api=1&query=${location}`}
-            className={cn(
-              "ring-gray-500/10 shrink items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset",
-              { "line-clamp-1 break-all": !singleEvent }
-            )}
+            className={"line-clamp-1 shrink break-all text-neutral-2"}
           >
-            📍 {location}
+            {location}
           </Link>
         )}
+      </div>
+      <div className="flex flex-col gap-5">
+        <h3
+          className={
+            "line-clamp-1 break-all text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
+          }
+        >
+          {name}
+        </h3>
+        <EventDescription description={description} />
+        <div className="flex w-full justify-between">
+          <Link
+            href={`/event/${id}`}
+            className={cn(buttonVariants({ variant: "link" }), "group -ml-4")}
+          >
+            Learn more{" "}
+            <ArrowRight className="ml-1 size-4 text-interactive-2 " />
+          </Link>
+          {EventActionButtons && <>{EventActionButtons}</>}
+        </div>
       </div>
     </div>
   );
@@ -204,31 +195,22 @@ function EventDetails({
 
 function EventDescription({
   description,
-  singleEvent,
 }: {
   description: string;
   singleEvent?: boolean;
 }) {
   return (
-    <div className="flex min-w-0 gap-x-4">
-      <div className="min-w-0 flex-auto" suppressHydrationWarning>
-        <p
-          className={cn("mt-1 text-sm leading-6 text-gray-600", {
-            "line-clamp-2": !singleEvent,
-          })}
-        >
-          <span
-            dangerouslySetInnerHTML={{
-              __html: translateToHtml(description),
-            }}
-          ></span>
-        </p>
-      </div>
-    </div>
+    <p className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: translateToHtml(description),
+        }}
+      ></span>
+    </p>
   );
 }
 
-function EventActionButton({
+function EventActionButtons({
   user,
   event,
   id,
@@ -242,172 +224,104 @@ function EventActionButton({
   isFollowing?: boolean;
 }) {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="ing-offset-background flex size-8 items-center justify-center rounded-md bg-primary transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        <EllipsisVerticalIcon className="size-8 text-white" />
-        <span className="sr-only">Open</span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <CalendarButton
-          type="dropdown"
-          event={event}
-          id={id}
-          username={user.username}
-        />
-        <FollowEventDropdownButton eventId={id} following={isFollowing} />
-        <ShareButton type="dropdown" event={event} id={id} />
-        {isOwner && (
-          <>
-            <DropdownMenuSeparator />
-            <EditButton userId={user.id} id={id} />
-            <DropdownMenuSeparator />
-            <DeleteButton userId={user.id} id={id} />
-          </>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-function EventCuratedBy({
-  username,
-  comment,
-  similarEvents,
-}: {
-  username: string;
-  comment?: Comment;
-  similarEvents?: {
-    event: EventWithUser;
-    similarityDetails: SimilarityDetails;
-  }[];
-}) {
-  return (
-    <div className="flex items-center gap-2">
-      <p className="whitespace-nowrap text-xs font-medium text-gray-500">
-        Collected by{" "}
-        <Link
-          href={`/${username}/events`}
-          className="font-bold text-gray-900"
-        >{`@${username}`}</Link>
-        {similarEvents && similarEvents.length > 0 && (
-          <SimilarEventsSummary
-            similarEvents={similarEvents}
-            curatorUsername={username}
-          />
-        )}
-      </p>
-      {comment && (
-        <Badge className="inline-flex" variant="outline">
-          <span className="line-clamp-1">&ldquo;{comment.content}&rdquo;</span>
-        </Badge>
-      )}
-    </div>
-  );
-}
-
-function SimilarEventsForSingleEvent({
-  similarEvents,
-}: {
-  similarEvents: {
-    event: EventWithUser;
-    similarityDetails: SimilarityDetails;
-  }[];
-}) {
-  return (
-    <p className="whitespace-nowrap text-xs font-medium text-gray-500">
-      Similar events by{" "}
-      <SimilarEventsSummary similarEvents={similarEvents} singleEvent />
-    </p>
-  );
-}
-
-function SimilarEventsSummary({
-  similarEvents,
-  curatorUsername,
-  singleEvent,
-}: {
-  similarEvents: {
-    event: EventWithUser;
-    similarityDetails: SimilarityDetails;
-  }[];
-  curatorUsername?: string;
-  singleEvent?: boolean;
-}) {
-  // Create a map to group events by username
-  const eventsByUser = new Map<string, EventWithUser[]>();
-
-  // Iterate over similarEvents and populate the map
-  similarEvents.forEach(({ event }) => {
-    const userEvents = eventsByUser.get(event.user.username) || [];
-    userEvents.push(event);
-    eventsByUser.set(event.user.username, userEvents);
-  });
-
-  // Convert the map to an array of JSX elements
-  const userEventLinks = Array.from(eventsByUser).map(([username, events]) => (
-    <span key={username}>
-      {username !== curatorUsername && (
+    <div className="flex gap-3">
+      <CalendarButton
+        type="icon"
+        event={event}
+        id={id}
+        username={user.username}
+      />
+      {/* <FollowEventDropdownButton eventId={id} following={isFollowing} /> */}
+      <ShareButton type="icon" event={event} id={id} />
+      {isOwner && (
         <>
-          {!singleEvent && ", "}
-          <Link href={`${username}/events`} className="font-bold text-gray-900">
-            @{username}
-          </Link>
+          <EditButton userId={user.id} id={id} />
+          <DeleteButton userId={user.id} id={id} />
         </>
       )}
-      {events.map((event) => (
-        <sup key={event.id}>
-          <Link href={`/event/${event.id}`} className="font-bold text-gray-900">
-            *
-          </Link>
-        </sup>
-      ))}
-    </span>
-  ));
-
-  return <>{userEventLinks}</>;
-}
-
-function CuratorComment({ comment }: { comment?: Comment }) {
-  return (
-    <div className="flex items-center gap-2">
-      {comment && (
-        <Badge className="inline-flex" variant="outline">
-          <span>&ldquo;{comment.content}&rdquo;</span>
-        </Badge>
-      )}
     </div>
   );
 }
 
-export function EventListItem(props: EventListItem) {
+// function EventCuratedBy({
+//   username,
+//   comment,
+//   similarEvents,
+// }: {
+//   username: string;
+//   comment?: Comment;
+//   similarEvents?: {
+//     event: EventWithUser;
+//     similarityDetails: SimilarityDetails;
+//   }[];
+// }) {
+//   return (
+//     <div className="flex items-center gap-2">
+//       <p className="whitespace-nowrap text-xs font-medium text-gray-500">
+//         Collected by{" "}
+//         <Link
+//           href={`/${username}/events`}
+//           className="font-bold text-gray-900"
+//         >{`@${username}`}</Link>
+//         {similarEvents && similarEvents.length > 0 && (
+//           <SimilarEventsSummary
+//             similarEvents={similarEvents}
+//             curatorUsername={username}
+//           />
+//         )}
+//       </p>
+//       {comment && (
+//         <Badge className="inline-flex" variant="outline">
+//           <span className="line-clamp-1">&ldquo;{comment.content}&rdquo;</span>
+//         </Badge>
+//       )}
+//     </div>
+//   );
+// }
+
+export function EventListItem(props: EventListItemProps) {
   const { user: clerkUser } = useUser();
-  const { user, eventFollows, id, event, singleEvent, visibility } = props;
+  const { user, eventFollows, id, event } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf = clerkUser?.id === user.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
-  const comment = props.comments.findLast((item) => item.userId === user?.id);
+  // const comment = props.comments.findLast((item) => item.userId === user?.id);
   // always show curator if !isSelf
-  const showOtherCurators = !isSelf && props.showOtherCurators;
-  const showCurator = showOtherCurators || !props.hideCurator;
+  // const showOtherCurators = !isSelf && props.showOtherCurators;
+  // const showCurator = showOtherCurators || !props.hideCurator;
 
   return (
-    <li className="relative grid px-4 py-5 sm:px-6">
-      {visibility === "private" && (
+    <li className="grid rounded-xl border border-neutral-3 bg-white p-7 shadow-sm">
+      {/* {visibility === "private" && (
         <>
           <Badge className="max-w-fit" variant="destructive">
             Unlisted Event
           </Badge>
           <div className="p-1"></div>
         </>
-      )}
-      <div className="flex items-center gap-4 pr-8">
+      )} */}
+      <div className="flex items-start gap-7">
         <EventDateDisplay
           startDate={event.startDate!}
           startTime={event.startTime}
           endDate={event.endDate!}
           endTime={event.endTime}
           timezone={event.timeZone || "America/Los_Angeles"}
+          UserInfoIcon={
+            <Link
+              href={`/${user.username}/events`}
+              className="block size-[2.625rem] shrink-0 "
+            >
+              <Image
+                className="rounded-full border-8 border-accent-yellow"
+                src={user.userImage}
+                alt=""
+                width={375}
+                height={375}
+              />
+            </Link>
+          }
         />
         <EventDetails
           id={id}
@@ -418,30 +332,19 @@ export function EventListItem(props: EventListItem) {
           endTime={event.endTime!}
           timezone={event.timeZone || "America/Los_Angeles"}
           location={event.location}
-          singleEvent={singleEvent}
+          description={event.description}
+          EventActionButtons={
+            <EventActionButtons
+              user={user}
+              event={event}
+              id={id}
+              isOwner={!!isOwner}
+              isFollowing={isFollowing}
+            />
+          }
         />
       </div>
-      <div className="p-1"></div>
-      <EventDescription
-        description={event.description!}
-        singleEvent={singleEvent}
-      />
-      <div className="absolute right-4 top-5 sm:right-6">
-        <EventActionButton
-          user={user}
-          event={event}
-          id={id}
-          isOwner={!!isOwner}
-          isFollowing={isFollowing}
-        />
-      </div>
-      {singleEvent && (
-        <>
-          <div className="p-1"></div>
-          <CuratorComment comment={comment} />
-        </>
-      )}
-      {showCurator && (
+      {/* {showCurator && (
         <>
           <div className="p-1"></div>
           <EventCuratedBy
@@ -450,12 +353,7 @@ export function EventListItem(props: EventListItem) {
             similarEvents={props.similarEvents}
           />
         </>
-      )}
-      {singleEvent && props.similarEvents && props.similarEvents.length > 0 && (
-        <>
-          <SimilarEventsForSingleEvent similarEvents={props.similarEvents} />
-        </>
-      )}
+      )} */}
     </li>
   );
 }

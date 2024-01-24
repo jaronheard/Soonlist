@@ -7,6 +7,7 @@ import { api } from "@/trpc/server";
 type UserInfoProps = {
   userId?: string;
   userName?: string;
+  variant?: "default" | "icon";
 };
 
 export async function UserInfo(props: UserInfoProps) {
@@ -35,6 +36,19 @@ export async function UserInfo(props: UserInfoProps) {
       followingId: user.id,
     }));
 
+  if (props.variant === "icon") {
+    return (
+      <Link href={`/${user.username}/events`} className="group">
+        <Image
+          className="size-[2.625rem] rounded-full border-8 border-accent-yellow"
+          src={user.userImage}
+          alt=""
+          width={375}
+          height={375}
+        />
+      </Link>
+    );
+  }
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
       <div className="flex items-center gap-3">

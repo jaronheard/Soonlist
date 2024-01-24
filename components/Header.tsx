@@ -177,13 +177,13 @@ export function Nav() {
             </NavigationMenuContent>
           </NavigationMenuItem>
         </SignedIn>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Link href="/onboarding" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               About
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   );

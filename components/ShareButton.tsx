@@ -9,7 +9,7 @@ import { type AddToCalendarButtonProps } from "@/types";
 export type ShareButtonProps = {
   id: string;
   event: AddToCalendarButtonProps;
-  type: "button" | "dropdown";
+  type: "button" | "dropdown" | "icon";
 };
 
 export function ShareButton(props: ShareButtonProps) {
@@ -54,6 +54,13 @@ export function ShareButton(props: ShareButtonProps) {
         <Share className="mr-2 size-4" />
         Share
       </DropdownMenuItem>
+    );
+  }
+  if (props.type === "icon") {
+    return (
+      <Button onClick={handleShareClick} variant={"secondary"} size={"icon"}>
+        <Share className="size-6" />
+      </Button>
     );
   }
 }

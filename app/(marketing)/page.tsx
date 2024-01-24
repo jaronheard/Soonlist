@@ -12,6 +12,7 @@ import Link from "next/link";
 import makingEarthCool from "@/assets/making-earth-cool.jpeg";
 import { CTAButton } from "@/components/CallToActions";
 import { buttonVariants } from "@/components/ui/button";
+import SampleEvent from "@/components/SampleEvent";
 
 const advancedFeatures = [
   {
@@ -96,7 +97,7 @@ const testimonials = [
 const sampleEventId =
   process.env.NODE_ENV === "production"
     ? "clrh2zo6p0001asmk0axrq55h"
-    : "clrg63xn20001zyzg6gnwzktg";
+    : "clrh2zo6p0001asmk0axrq55h";
 const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
 function EventDetails({ className }: { className?: string }) {
@@ -217,7 +218,7 @@ export default function Page() {
     <div className="bg-white">
       <div className="relative isolate bg-interactive-3 px-6 pt-14 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 pb-48 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto">
             <div className="mx-auto">
               <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 sm:text-8xl sm:leading-[0.875]">
                 Event lists for{" "}
@@ -236,6 +237,9 @@ export default function Page() {
                 Explore <ArrowRight className="ml-1 size-4" />
               </Link>
             </div>
+          </div>
+          <div className="mx-auto">
+            <SampleEvent eventId={sampleEventId} />
           </div>
         </div>
       </div>
