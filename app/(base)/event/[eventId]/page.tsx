@@ -92,19 +92,17 @@ export default async function Page({ params }: Props) {
       />
       <div className="w-full border-b border-neutral-3 pt-16 sm:pt-24"></div>
       <div className="w-full pt-16 sm:pt-24"></div>
-      <div className="mr-auto flex place-items-center gap-2.5 px-6">
-        <div className="font-medium">More events from</div>
-        <UserInfo userId={event.userId} />
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-40">
+        <UserInfo userId={event.userId} variant="description" />
+        <EventList
+          currentEvents={[]}
+          pastEvents={[]}
+          futureEvents={futureEvents}
+          hideCurator
+          variant="future-minimal"
+          showOtherCurators={true}
+        ></EventList>
       </div>
-      <div className="p-2"></div>
-      <EventList
-        currentEvents={[]}
-        pastEvents={[]}
-        futureEvents={futureEvents}
-        hideCurator
-        variant="future-minimal"
-        showOtherCurators={true}
-      ></EventList>
     </>
   );
 }

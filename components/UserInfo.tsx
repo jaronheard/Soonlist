@@ -7,7 +7,7 @@ import { api } from "@/trpc/server";
 type UserInfoProps = {
   userId?: string;
   userName?: string;
-  variant?: "default" | "icon";
+  variant?: "default" | "icon" | "description";
 };
 
 export async function UserInfo(props: UserInfoProps) {
@@ -47,6 +47,39 @@ export async function UserInfo(props: UserInfoProps) {
           height={375}
         />
       </Link>
+    );
+  }
+
+  if (props.variant === "description") {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-6">
+          <Link href={`/${user.username}/events`}>
+            <Image
+              className="content-box size-20 rounded-full border-8 border-accent-yellow"
+              src={user.userImage}
+              alt=""
+              width={375}
+              height={375}
+            />
+          </Link>
+          <div className="flex flex-col">
+            <Link href={`/${user.username}/events`}>
+              <p className="font-heading text-5xl font-bold leading-[3.5rem] tracking-tight text-neutral-1">
+                {user.displayName}
+              </p>
+              <p className="text-2xl font-bold leading-normal tracking-wide">
+                @{user.username}
+              </p>
+            </Link>
+          </div>
+        </div>
+        <div className="text-2xl text-neutral-2">
+          {/* {user.description} */}
+          Purus auctor purus nisl tempor elementum sit odio malesuada enim. Nunc
+          est est pellentesque imperdiet sagittis turpis ullamcorper.
+        </div>
+      </div>
     );
   }
   return (
