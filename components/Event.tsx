@@ -269,7 +269,7 @@ export function Event(props: EventProps) {
   );
 
   return (
-    <div className="relative mx-6 py-6">
+    <div className="">
       {visibility === "private" && (
         <>
           <Badge className="max-w-fit" variant="destructive">

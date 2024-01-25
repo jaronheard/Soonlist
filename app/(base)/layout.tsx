@@ -7,12 +7,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Header />
       <Toaster />
-      <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center">
-        <main className="my-12 flex w-full flex-1 flex-col items-center justify-center sm:my-20 sm:px-4">
-          {children}
-        </main>
-        <Footer />
-      </div>
+      <main className="mx-auto w-full max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
+        {children}
+      </main>
+      <Footer />
     </>
   );
 }
