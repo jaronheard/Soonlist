@@ -176,13 +176,14 @@ function EventDetails({
           {name}
         </h3>
         {image && (
-          <Link href={`/event/${id}`}>
+          <Link href={`/event/${id}`} className="block w-full">
             <Image
-              className="h-28 w-full rounded-xl object-cover sm:h-56 lg:hidden"
+              className="max-h-28 rounded-xl object-cover sm:max-h-56 lg:hidden"
               src={image}
               alt=""
               width={375}
               height={375}
+              layout="responsive"
             />
           </Link>
         )}
