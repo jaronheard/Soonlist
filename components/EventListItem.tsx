@@ -168,13 +168,14 @@ function EventDetails({
         )}
       </div>
       <div className="flex flex-col items-start gap-4">
-        <h3
+        <Link
+          href={`/event/${id}`}
           className={
             "line-clamp-2 pr-12 text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
           }
         >
           {name}
-        </h3>
+        </Link>
         {image && (
           <Link href={`/event/${id}`} className="block w-full">
             <Image
