@@ -42,61 +42,6 @@ type EventListItemProps = {
   }[];
 };
 
-function EventDateDisplay({
-  startDate,
-  startTime,
-  endDate,
-  endTime,
-  timezone,
-  UserInfoIcon,
-}: {
-  startDate: string;
-  startTime?: string;
-  endDate: string;
-  endTime?: string;
-  timezone: string;
-  UserInfoIcon?: React.ReactNode;
-}) {
-  const { timezone: userTimezone } = useContext(TimezoneContext);
-  if (!startDate || !endDate) {
-    console.error("startDate or endDate is missing");
-    return null;
-  }
-
-  if (!timezone) {
-    console.error("timezone is missing");
-    return null;
-  }
-
-  const startDateInfo = startTime
-    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
-    : getDateInfoUTC(startDate);
-  const endDateInfo = endTime
-    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
-    : getDateInfoUTC(endDate);
-  const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
-  // const showNightIcon =
-  //   endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-3">
-      <div className="text-lg font-semibold uppercase leading-none text-neutral-2">
-        {startDateInfo?.monthName.substring(0, 3)}
-      </div>
-      <div className="font-heading text-4xl font-bold leading-none tracking-tighter text-neutral-1">
-        {startDateInfo?.day}
-      </div>
-      {UserInfoIcon && <div className="p-3">{UserInfoIcon}</div>}
-      <div
-        className=" text-lg font-semibold lowercase leading-none text-neutral-2"
-        style={{ writingMode: "vertical-rl" }}
-      >
-        {startDateInfo?.dayOfWeek.substring(0, 4)}
-      </div>
-    </div>
-  );
-}
-
 function EventDateDisplaySimple({
   startDate,
   startTime,
@@ -326,42 +271,6 @@ function EventActionButtons({
   );
 }
 
-// function EventCuratedBy({
-//   username,
-//   comment,
-//   similarEvents,
-// }: {
-//   username: string;
-//   comment?: Comment;
-//   similarEvents?: {
-//     event: EventWithUser;
-//     similarityDetails: SimilarityDetails;
-//   }[];
-// }) {
-//   return (
-//     <div className="flex items-center gap-2">
-//       <p className="whitespace-nowrap text-xs font-medium text-gray-500">
-//         Collected by{" "}
-//         <Link
-//           href={`/${username}/events`}
-//           className="font-bold text-gray-900"
-//         >{`@${username}`}</Link>
-//         {similarEvents && similarEvents.length > 0 && (
-//           <SimilarEventsSummary
-//             similarEvents={similarEvents}
-//             curatorUsername={username}
-//           />
-//         )}
-//       </p>
-//       {comment && (
-//         <Badge className="inline-flex" variant="outline">
-//           <span className="line-clamp-1">&ldquo;{comment.content}&rdquo;</span>
-//         </Badge>
-//       )}
-//     </div>
-//   );
-// }
-
 export function EventListItem(props: EventListItemProps) {
   const { user: clerkUser } = useUser();
   const { user, eventFollows, id, event } = props;
@@ -408,27 +317,6 @@ export function EventListItem(props: EventListItemProps) {
           />
         </div>
         <div className="flex items-start gap-7">
-          {/* <EventDateDisplay
-          startDate={event.startDate!}
-          startTime={event.startTime}
-          endDate={event.endDate!}
-          endTime={event.endTime}
-          timezone={event.timeZone || "America/Los_Angeles"}
-          UserInfoIcon={
-            <Link
-              href={`/${user.username}/events`}
-              className="block size-[2.625rem] shrink-0 "
-            >
-              <Image
-                className="rounded-full border-8 border-accent-yellow"
-                src={user.userImage}
-                alt=""
-                width={375}
-                height={375}
-              />
-            </Link>
-          }
-        /> */}
           <EventDetails
             id={id}
             name={event.name!}
@@ -451,16 +339,6 @@ export function EventListItem(props: EventListItemProps) {
             }
           />
         </div>
-        {/* {showCurator && (
-        <>
-          <div className="p-1"></div>
-          <EventCuratedBy
-            username={user.username}
-            comment={comment}
-            similarEvents={props.similarEvents}
-          />
-        </>
-      )} */}
       </li>
     </div>
   );
