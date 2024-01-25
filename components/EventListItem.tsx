@@ -146,6 +146,7 @@ function EventDateDisplaySimple({
 function EventDetails({
   id,
   name,
+  image,
   startDate,
   startTime,
   endDate,
@@ -157,6 +158,7 @@ function EventDetails({
 }: {
   id: string;
   name: string;
+  image?: string;
   startTime: string;
   startDate: string;
   endTime: string;
@@ -228,6 +230,17 @@ function EventDetails({
         >
           {name}
         </h3>
+        {image && (
+          <Link href={`/event/${id}`}>
+            <Image
+              className="h-28 w-full rounded-xl object-cover sm:h-56 lg:hidden"
+              src={image}
+              alt=""
+              width={375}
+              height={375}
+            />
+          </Link>
+        )}
         <EventDescription description={description} />
         <Link
           href={`/event/${id}`}
@@ -356,14 +369,27 @@ export function EventListItem(props: EventListItemProps) {
   const isSelf = clerkUser?.id === user.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
+  const image = event.images?.[3];
   // const comment = props.comments.findLast((item) => item.userId === user?.id);
   // always show curator if !isSelf
   // const showOtherCurators = !isSelf && props.showOtherCurators;
   // const showCurator = showOtherCurators || !props.hideCurator;
 
   return (
-    <li className="relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm">
-      {/* {visibility === "private" && (
+    <div className="relative">
+      {image && (
+        <Link href={`/event/${id}`}>
+          <Image
+            className="absolute left-0 top-7 z-10 hidden size-20 -translate-x-1/2 rounded-xl lg:block"
+            src={image}
+            alt=""
+            width={375}
+            height={375}
+          />
+        </Link>
+      )}
+      <li className="relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm lg:pl-16">
+        {/* {visibility === "private" && (
         <>
           <Badge className="max-w-fit" variant="destructive">
             Unlisted Event
@@ -371,18 +397,18 @@ export function EventListItem(props: EventListItemProps) {
           <div className="p-1"></div>
         </>
       )} */}
-      <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
-      <div className="absolute right-0 top-0 p-3">
-        <EventDateDisplaySimple
-          startDate={event.startDate!}
-          startTime={event.startTime}
-          endDate={event.endDate!}
-          endTime={event.endTime}
-          timezone={event.timeZone || "America/Los_Angeles"}
-        />
-      </div>
-      <div className="flex items-start gap-7">
-        {/* <EventDateDisplay
+        <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
+        <div className="absolute right-0 top-0 p-3">
+          <EventDateDisplaySimple
+            startDate={event.startDate!}
+            startTime={event.startTime}
+            endDate={event.endDate!}
+            endTime={event.endTime}
+            timezone={event.timeZone || "America/Los_Angeles"}
+          />
+        </div>
+        <div className="flex items-start gap-7">
+          {/* <EventDateDisplay
           startDate={event.startDate!}
           startTime={event.startTime}
           endDate={event.endDate!}
@@ -403,28 +429,29 @@ export function EventListItem(props: EventListItemProps) {
             </Link>
           }
         /> */}
-        <EventDetails
-          id={id}
-          name={event.name!}
-          startDate={event.startDate!}
-          endDate={event.endDate!}
-          startTime={event.startTime!}
-          endTime={event.endTime!}
-          timezone={event.timeZone || "America/Los_Angeles"}
-          location={event.location}
-          description={event.description}
-          EventActionButtons={
-            <EventActionButtons
-              user={user}
-              event={event}
-              id={id}
-              isOwner={!!isOwner}
-              isFollowing={isFollowing}
-            />
-          }
-        />
-      </div>
-      {/* {showCurator && (
+          <EventDetails
+            id={id}
+            name={event.name!}
+            image={image}
+            startDate={event.startDate!}
+            endDate={event.endDate!}
+            startTime={event.startTime!}
+            endTime={event.endTime!}
+            timezone={event.timeZone || "America/Los_Angeles"}
+            location={event.location}
+            description={event.description}
+            EventActionButtons={
+              <EventActionButtons
+                user={user}
+                event={event}
+                id={id}
+                isOwner={!!isOwner}
+                isFollowing={isFollowing}
+              />
+            }
+          />
+        </div>
+        {/* {showCurator && (
         <>
           <div className="p-1"></div>
           <EventCuratedBy
@@ -434,6 +461,7 @@ export function EventListItem(props: EventListItemProps) {
           />
         </>
       )} */}
-    </li>
+      </li>
+    </div>
   );
 }

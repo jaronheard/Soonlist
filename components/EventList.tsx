@@ -81,7 +81,7 @@ export default function EventList({
             {pastEventsToUse.length === 0 ? (
               <p className="mx-6 text-lg text-gray-500">No past events.</p>
             ) : (
-              <ul role="list" className="flex max-w-full flex-col gap-2">
+              <ul role="list" className="flex max-w-full flex-col gap-4">
                 {pastEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventListItem
                     key={item.id}
@@ -121,7 +121,7 @@ export default function EventList({
             ) : (
               <ul
                 role="list"
-                className="flex max-w-full flex-col gap-2 rounded-xl"
+                className="flex max-w-full flex-col gap-4 rounded-xl"
               >
                 {currentEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventListItem
@@ -168,10 +168,7 @@ export default function EventList({
           {futureEventsToUse.length === 0 ? (
             <p className="mx-6 text-lg text-gray-500">No future events.</p>
           ) : (
-            <ul
-              role="list"
-              className="flex max-w-full flex-col gap-2 rounded-xl"
-            >
+            <ul role="list" className="flex max-w-full flex-col gap-4">
               {futureEventsToUse.map(({ event: item, similarEvents }) => (
                 <EventListItem
                   key={item.id}
