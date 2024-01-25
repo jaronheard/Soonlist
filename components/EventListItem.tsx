@@ -97,6 +97,52 @@ function EventDateDisplay({
   );
 }
 
+function EventDateDisplaySimple({
+  startDate,
+  startTime,
+  endDate,
+  endTime,
+  timezone,
+}: {
+  startDate: string;
+  startTime?: string;
+  endDate: string;
+  endTime?: string;
+  timezone: string;
+}) {
+  const { timezone: userTimezone } = useContext(TimezoneContext);
+  if (!startDate || !endDate) {
+    console.error("startDate or endDate is missing");
+    return null;
+  }
+
+  if (!timezone) {
+    console.error("timezone is missing");
+    return null;
+  }
+
+  const startDateInfo = startTime
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(startDate);
+  const endDateInfo = endTime
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(endDate);
+  const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
+  // const showNightIcon =
+  //   endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-3">
+      <div className="text-lg font-semibold uppercase leading-none text-neutral-2">
+        {startDateInfo?.monthName.substring(0, 3)}
+      </div>
+      <div className="font-heading text-4xl font-bold leading-none tracking-tighter text-neutral-1">
+        {startDateInfo?.day}
+      </div>
+    </div>
+  );
+}
+
 function EventDetails({
   id,
   name,
@@ -149,10 +195,15 @@ function EventDetails({
 
   return (
     <div className="flex flex-col items-start justify-center gap-2">
-      <div className="flex-start flex gap-2 text-lg font-medium leading-none">
+      <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
         {eventTimesAreDefined(startTime, endTime) && (
           <>
             <div className="shrink-0 text-neutral-2">
+              {startDateInfo?.dayOfWeek.substring(0, 3)}
+              {", "}
+              {startDateInfo?.month}/{startDateInfo?.day}/
+              {startDateInfo?.year.toString().substring(2, 4)}{" "}
+              <span className="text-neutral-3">{"//"}</span>{" "}
               {timeFormatDateInfo(startDateInfo)}-
               {timeFormatDateInfo(endDateInfo)}
             </div>
@@ -169,23 +220,25 @@ function EventDetails({
           </Link>
         )}
       </div>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col items-start gap-4">
         <h3
           className={
-            "line-clamp-1 break-all text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
+            "line-clamp-2 pr-12 text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
           }
         >
           {name}
         </h3>
         <EventDescription description={description} />
-        <div className="flex w-full justify-between">
-          <Link
-            href={`/event/${id}`}
-            className={cn(buttonVariants({ variant: "link" }), "group -ml-4")}
-          >
-            Learn more{" "}
-            <ArrowRight className="ml-1 size-4 text-interactive-2 " />
-          </Link>
+        <Link
+          href={`/event/${id}`}
+          className={cn(
+            buttonVariants({ variant: "link" }),
+            "group h-full p-0"
+          )}
+        >
+          Learn more <ArrowRight className="ml-1 size-4 text-interactive-2 " />
+        </Link>
+        <div className="place-self-end">
           {EventActionButtons && <>{EventActionButtons}</>}
         </div>
       </div>
@@ -224,7 +277,24 @@ function EventActionButtons({
   isFollowing?: boolean;
 }) {
   return (
-    <div className="flex gap-3">
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
+        <div className="text-lg font-medium leading-none text-neutral-2">
+          added by @{user.username}
+        </div>
+        <Link
+          href={`/${user.username}/events`}
+          className="box-content block size-[2.625rem] shrink-0 rounded-full border-4 border-accent-yellow"
+        >
+          <Image
+            className="rounded-full"
+            src={user.userImage}
+            alt=""
+            width={375}
+            height={375}
+          />
+        </Link>
+      </div>
       <CalendarButton
         type="icon"
         event={event}
@@ -292,7 +362,7 @@ export function EventListItem(props: EventListItemProps) {
   // const showCurator = showOtherCurators || !props.hideCurator;
 
   return (
-    <li className="grid rounded-xl border border-neutral-3 bg-white p-7 shadow-sm">
+    <li className="relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm">
       {/* {visibility === "private" && (
         <>
           <Badge className="max-w-fit" variant="destructive">
@@ -301,8 +371,18 @@ export function EventListItem(props: EventListItemProps) {
           <div className="p-1"></div>
         </>
       )} */}
+      <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
+      <div className="absolute right-0 top-0 p-3">
+        <EventDateDisplaySimple
+          startDate={event.startDate!}
+          startTime={event.startTime}
+          endDate={event.endDate!}
+          endTime={event.endTime}
+          timezone={event.timeZone || "America/Los_Angeles"}
+        />
+      </div>
       <div className="flex items-start gap-7">
-        <EventDateDisplay
+        {/* <EventDateDisplay
           startDate={event.startDate!}
           startTime={event.startTime}
           endDate={event.endDate!}
@@ -322,7 +402,7 @@ export function EventListItem(props: EventListItemProps) {
               />
             </Link>
           }
-        />
+        /> */}
         <EventDetails
           id={id}
           name={event.name!}
