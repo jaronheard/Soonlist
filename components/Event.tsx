@@ -282,6 +282,29 @@ export function Event(props: EventProps) {
             <h1 className="font-heading text-5xl font-bold leading-[3.5rem]">
               {event.name}
             </h1>
+            <div className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2">
+              <Image
+                src={user.userImage}
+                width={375}
+                height={375}
+                alt=""
+                className="size-[5.375rem]"
+              />
+              <div className="flex flex-col gap-1 p-5">
+                <div className="text-xl font-bold leading-6 tracking-wide text-interactive-1">
+                  List Name
+                </div>
+                <div className="text-lg font-medium leading-none text-neutral-2">
+                  curated by{" "}
+                  <Link
+                    className="font-semibold text-interactive-1"
+                    href={`/${user.username}/events`}
+                  >
+                    @{user.username}
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="flex flex-col gap-8 pt-8">
             <EventDescription
