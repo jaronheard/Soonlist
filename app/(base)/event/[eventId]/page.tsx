@@ -86,21 +86,12 @@ export default async function Page({ params }: Props) {
         createdAt={event.createdAt}
         visibility={event.visibility}
         similarEvents={similarEvents}
+        image={fullImageUrl}
         singleEvent
         hideCurator
       />
-      {fullImageUrl && (
-        <>
-          <Image
-            src={fullImageUrl}
-            className="mx-auto h-auto w-2/3 object-cover sm:w-1/3"
-            alt=""
-            width={640}
-            height={480}
-          />
-        </>
-      )}
-      <div className="p-12 sm:p-16"></div>
+      <div className="w-full border-b border-neutral-3 pt-16 sm:pt-24"></div>
+      <div className="w-full pt-16 sm:pt-24"></div>
       <div className="mr-auto flex place-items-center gap-2.5 px-6">
         <div className="font-medium">More events from</div>
         <UserInfo userId={event.userId} />

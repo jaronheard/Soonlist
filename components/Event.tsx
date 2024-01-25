@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import { useContext } from "react";
@@ -39,6 +40,7 @@ type EventProps = {
   id: string;
   createdAt: Date;
   event: AddToCalendarButtonPropsRestricted;
+  image?: string;
   visibility: "public" | "private";
   singleEvent?: boolean;
   hideCurator?: boolean;
@@ -49,61 +51,6 @@ type EventProps = {
   }[];
 };
 
-function EventDateDisplaySimple({
-  startDate,
-  endDate,
-  startTime,
-  endTime,
-  timezone,
-}: {
-  startDate?: string;
-  endDate?: string;
-  startTime?: string;
-  endTime?: string;
-  timezone?: string;
-}) {
-  const { timezone: userTimezone } = useContext(TimezoneContext);
-  if (!startDate || !endDate) {
-    console.error("startDate or endDate is missing");
-    return null;
-  }
-
-  if (!timezone) {
-    console.error("timezone is missing");
-    return null;
-  }
-
-  const startDateInfo = startTime
-    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
-    : getDateInfoUTC(startDate);
-  const endDateInfo = endTime
-    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
-    : getDateInfoUTC(endDate);
-  const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
-  const showNightIcon =
-    endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
-  const showTimeRange = eventTimesAreDefined(startTime, endTime);
-
-  if (!startDateInfo || !endDateInfo) {
-    console.error("startDateInfo or endDateInfo is missing");
-    return null;
-  }
-
-  const formattedStartDate = `${startDateInfo.dayOfWeek.toUpperCase()}, ${startDateInfo.monthName
-    .substring(0, 3)
-    .toUpperCase()} ${startDateInfo.day}`;
-
-  const formattedTimes = showTimeRange
-    ? `${timeFormatDateInfo(startDateInfo)}-${timeFormatDateInfo(endDateInfo)}`
-    : "";
-  return (
-    <span>
-      {formattedStartDate} {formattedTimes}
-      {showTimeRange && showNightIcon && "🌛"}
-    </span>
-  );
-}
-
 function EventDescription({
   description,
   singleEvent,
@@ -112,21 +59,13 @@ function EventDescription({
   singleEvent?: boolean;
 }) {
   return (
-    <div className="flex min-w-0 gap-x-4">
-      <div className="min-w-0 flex-auto" suppressHydrationWarning>
-        <p
-          className={cn("mt-1 text-sm leading-6 text-gray-600", {
-            "line-clamp-2": !singleEvent,
-          })}
-        >
-          <span
-            dangerouslySetInnerHTML={{
-              __html: translateToHtml(description),
-            }}
-          ></span>
-        </p>
-      </div>
-    </div>
+    <p className={"text-lg leading-7 text-neutral-1"}>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: translateToHtml(description),
+        }}
+      ></span>
+    </p>
   );
 }
 
@@ -257,7 +196,8 @@ function SimilarEventsSummary({
 
 export function Event(props: EventProps) {
   const { user: clerkUser } = useUser();
-  const { user, eventFollows, id, event, singleEvent, visibility } = props;
+  const { user, eventFollows, id, event, image, singleEvent, visibility } =
+    props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf = clerkUser?.id === user.id;
   const isOwner = isSelf || roles?.includes("admin");
@@ -268,61 +208,109 @@ export function Event(props: EventProps) {
     (item) => item.userId === clerkUser?.id
   );
 
+  const {
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    timeZone: timezone,
+    location,
+  } = event;
+
+  const { timezone: userTimezone } = useContext(TimezoneContext);
+  if (!startDate || !endDate) {
+    console.error("startDate or endDate is missing");
+    return null;
+  }
+
+  if (!timezone) {
+    console.error("timezone is missing");
+    return null;
+  }
+
+  const startDateInfo = startTime
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(startDate);
+  const endDateInfo = endTime
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(endDate);
+
+  if (!startDateInfo || !endDateInfo) {
+    console.error("startDateInfo or endDateInfo is missing");
+    return null;
+  }
+
   return (
     <div className="">
-      {visibility === "private" && (
+      {/* {visibility === "private" && (
         <>
           <Badge className="max-w-fit" variant="destructive">
             Unlisted Event
           </Badge>
         </>
-      )}
-      <div className="flex flex-col border-b border-gray-200 py-4">
+      )} */}
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-40">
         <div>
-          <div className="text-sm font-bold uppercase text-gray-600">
-            <EventDateDisplaySimple
-              startDate={event.startDate}
-              startTime={event.startTime}
-              timezone={event.timeZone || "America/Los_Angeles"}
-              endTime={event.endTime}
-              endDate={event.endDate}
-            />
+          <div className="flex flex-col gap-5">
+            {/* duplicated with EventListItem */}
+            <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
+              {eventTimesAreDefined(startTime, endTime) && (
+                <>
+                  <div className="shrink-0 text-neutral-2">
+                    {startDateInfo?.dayOfWeek.substring(0, 3)}
+                    {", "}
+                    {startDateInfo?.month}/{startDateInfo?.day}/
+                    {startDateInfo?.year.toString().substring(2, 4)}{" "}
+                    <span className="text-neutral-3">{"//"}</span>{" "}
+                    {timeFormatDateInfo(startDateInfo)}-
+                    {timeFormatDateInfo(endDateInfo)}
+                  </div>
+                  <div className="text-neutral-3">{"//"}</div>
+                </>
+              )}
+
+              {location && (
+                <Link
+                  href={`https://www.google.com/maps/search/?api=1&query=${location}`}
+                  className={"line-clamp-1 shrink break-all text-neutral-2"}
+                >
+                  {location}
+                </Link>
+              )}
+            </div>
+            {/* end duplicated with EventListItem */}
+            <h1 className="font-heading text-5xl font-bold leading-[3.5rem]">
+              {event.name}
+            </h1>
           </div>
-          <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl">
-            {event.name}
-          </h1>
-          {event.location && (
-            <Link
-              className="mt-1 max-w-2xl border-b border-gray-200 text-sm text-gray-500 hover:border-gray-900 hover:text-gray-900"
-              href={`https://www.google.com/maps/search/?api=1&query=${event.location}`}
-            >
-              📍 {event.location}
-            </Link>
-          )}
-          <div className="p-1"></div>
-          <EventCuratedBy
-            username={user.username}
-            comment={comment}
-            similarEvents={props.similarEvents}
-          />
+          <div className="flex flex-col gap-8 pt-8">
+            <EventDescription
+              description={event.description!}
+              singleEvent={singleEvent}
+            />
+            <div className="flex flex-wrap gap-2">
+              <ShareButton type="button" event={event} id={id} />
+              <CalendarButton
+                type="button"
+                event={event}
+                id={id}
+                username={user.username}
+              />
+              <FollowEventButton eventId={id} following={isFollowing} />
+            </div>
+          </div>
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <ShareButton type="button" event={event} id={id} />
-          <CalendarButton
-            type="button"
-            event={event}
-            id={id}
-            username={user.username}
+        {image && (
+          <Image
+            src={image}
+            className="mx-auto h-auto max-h-96 w-full object-contain"
+            alt=""
+            width={640}
+            height={480}
           />
-          <FollowEventButton eventId={id} following={isFollowing} />
-        </div>
+        )}
       </div>
-      <div className="p-1"></div>
-      <EventDescription
-        description={event.description!}
-        singleEvent={singleEvent}
-      />
-      <div className="absolute right-2 top-6">
+      {/* <div className="absolute right-2 top-6">
         {isOwner && (
           <SignedIn>
             <EventActionButton
@@ -334,7 +322,7 @@ export function Event(props: EventProps) {
             />
           </SignedIn>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -49,9 +49,9 @@ function EventDateDisplaySimple({
   endTime,
   timezone,
 }: {
-  startDate: string;
+  startDate?: string;
   startTime?: string;
-  endDate: string;
+  endDate?: string;
   endTime?: string;
   timezone: string;
 }) {
@@ -142,6 +142,7 @@ function EventDetails({
 
   return (
     <div className="flex flex-col items-start justify-center gap-2">
+      {/* duplicated with Event */}
       <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
         {eventTimesAreDefined(startTime, endTime) && (
           <>
@@ -167,6 +168,7 @@ function EventDetails({
           </Link>
         )}
       </div>
+      {/* end duplicated with Event */}
       <div className="flex flex-col items-start gap-4">
         <Link
           href={`/event/${id}`}
@@ -311,9 +313,9 @@ export function EventListItem(props: EventListItemProps) {
         <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
         <div className="absolute right-0 top-0 p-3">
           <EventDateDisplaySimple
-            startDate={event.startDate!}
+            startDate={event.startDate}
             startTime={event.startTime}
-            endDate={event.endDate!}
+            endDate={event.endDate}
             endTime={event.endTime}
             timezone={event.timeZone || "America/Los_Angeles"}
           />
