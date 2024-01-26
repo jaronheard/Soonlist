@@ -63,16 +63,11 @@ export default function EventList({
       defaultValue={["current-events", "future-events"]}
     >
       {showPastEvents && (
-        <AccordionItem
-          value="past-events"
-          className={clsx("px-6 opacity-80", {
-            "border-b-0": currentEventsToUse.length > 0,
-          })}
-        >
+        <AccordionItem value="past-events" className={clsx("px-6 opacity-80")}>
           <AccordionTrigger>
-            <div className="flex gap-1.5">
+            <div className="flex w-full items-center justify-between">
               Past events
-              <span className="mr-2 inline-flex items-center justify-center rounded-full bg-gray-600 px-2 py-1 text-xs font-bold leading-none text-slate-100">
+              <span className="inline-flex items-center justify-center rounded-full bg-interactive-1 px-2 py-1 text-lg font-semibold leading-none text-white">
                 {pastEventsToUse.length}
               </span>
             </div>
@@ -103,14 +98,11 @@ export default function EventList({
         </AccordionItem>
       )}
       {showCurrentEvents && currentEventsToUse.length > 0 && (
-        <AccordionItem
-          value="current-events"
-          className="ring-black/10 relative border-b-0 bg-gradient-to-tr from-blue-500/10 via-indigo-500/10 to-purple-500/10 px-6 ring-1 sm:rounded-2xl"
-        >
-          <AccordionTrigger>
-            <div className="flex gap-1.5 font-semibold">
+        <AccordionItem value="current-events" className="px-6">
+          <AccordionTrigger className="-mx-6 px-6">
+            <div className="flex w-full items-center justify-between">
               Happening now
-              <span className="mr-2 inline-flex items-center justify-center rounded-full bg-gray-600 px-2 py-1 text-xs font-bold leading-none text-slate-100">
+              <span className="inline-flex items-center justify-center rounded-full bg-interactive-1 px-2 py-1 text-lg font-semibold leading-none text-white">
                 {currentEventsToUse.length}
               </span>
             </div>
@@ -145,9 +137,7 @@ export default function EventList({
       )}
       <AccordionItem
         value="future-events"
-        className={clsx("px-6", {
-          "border-b-0": futureEventsToUse.length > 0,
-        })}
+        className={clsx("px-6")}
         disabled={variant === "future-minimal"}
       >
         {variant !== "future-minimal" && (
@@ -156,9 +146,9 @@ export default function EventList({
               "hover:no-underline": variant === "future-minimal",
             })}
           >
-            <div className="flex gap-1.5">
+            <div className="flex w-full items-center justify-between">
               Upcoming events
-              <span className="mr-2 inline-flex items-center justify-center rounded-full bg-gray-600 px-2 py-1 text-xs font-bold leading-none text-slate-100">
+              <span className="inline-flex items-center justify-center rounded-full bg-interactive-1 px-2 py-1 text-lg font-semibold leading-none text-white">
                 {futureEventsToUse.length}
               </span>
             </div>
