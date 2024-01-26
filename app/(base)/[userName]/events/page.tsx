@@ -63,16 +63,11 @@ export default async function Page({ params }: Props) {
   );
 
   return (
-    <>
-      <div className="flex place-items-center gap-2">
-        <div className="font-medium">Events added and saved by</div>
-        <Suspense>
-          <UserInfo userName={params.userName} />
-        </Suspense>
+    <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-40">
+      <div className="flex flex-col gap-4">
+        <UserInfo userName={params.userName} variant="description" />
+        <ListCardsForUser userName={params.userName} limit={10} />
       </div>
-      <div className="p-4"></div>
-      <ListCardsForUser userName={params.userName} limit={10} />
-      <h2 className="text-sm font-medium text-gray-500">All Events</h2>
       <EventList
         currentEvents={currentEvents}
         pastEvents={pastEvents}
@@ -81,7 +76,6 @@ export default async function Page({ params }: Props) {
         showOtherCurators={true}
         showPrivateEvents={self}
       />
-      <div className="p-5"></div>
-    </>
+    </div>
   );
 }

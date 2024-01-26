@@ -295,7 +295,7 @@ export function Event(props: EventProps) {
                   List Name
                 </div>
                 <div className="text-lg font-medium leading-none text-neutral-2">
-                  curated by{" "}
+                  by{" "}
                   <Link
                     className="font-semibold text-interactive-1"
                     href={`/${user.username}/events`}

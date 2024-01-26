@@ -47,6 +47,7 @@ export default async function Page({ params }: Props) {
               name={list.name}
               count={list.eventToLists.length}
               id={list.id}
+              username={list.user.username}
             />
             <FollowListButton listId={list.id} following={true} />
             <UserInfo userName={list.user.username} />
