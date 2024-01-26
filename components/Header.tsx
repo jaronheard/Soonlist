@@ -9,8 +9,10 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
+import { CalendarPlus, Menu } from "lucide-react";
 import * as React from "react";
-import { Settings } from "lucide-react";
+import { toast } from "sonner";
+import Logo from "./Logo";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -30,8 +32,9 @@ import {
   DropdownMenuTrigger,
 } from "./DropdownMenu";
 import { TimezoneSelect } from "./TimezoneSelect";
-import { Button } from "./ui/button";
-import Logo from "./Logo";
+import { Button, buttonVariants } from "./ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { ScrollArea } from "./ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 const newEvent: { title: string; href: string; description: string }[] = [
@@ -79,23 +82,22 @@ const allUsers: { title: string; href: string; description: string }[] = [
 export default function Header() {
   return (
     <div className="sticky top-0 z-50 bg-interactive-3">
-      <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-2 pb-4 pt-3 sm:px-4 sm:pb-7 sm:pt-5">
-        <div className="flex items-center justify-between gap-2 sm:grow sm:gap-0">
+      <header className="mx-auto flex w-full max-w-7xl items-center justify-between pb-4 pl-2 pt-3 sm:px-4 sm:pb-7 sm:pt-5">
+        <div className="flex items-center sm:grow sm:gap-0">
           <NavigationMenu>
-            <Link href="/" className="relative flex items-center space-x-3">
-              <Logo />
+            <Link href="/" className="relative flex items-center">
+              <Logo variant="hidePreview" className="block sm:hidden" />
+              <Logo className="hidden sm:block" />
             </Link>
           </NavigationMenu>
         </div>
-        <div className="flex gap-4">
+        <div className="flex shrink-0 sm:gap-5">
           <Nav />
           <NavigationMenu>
             <SignedIn>
               <UserMenu />
             </SignedIn>
-            <SignedOut>
-              <SettingsMenu />
-            </SignedOut>
+            <MobileNav />
           </NavigationMenu>
         </div>
       </header>
@@ -108,9 +110,9 @@ export function Nav() {
 
   return (
     <NavigationMenu>
-      <NavigationMenuList>
+      <NavigationMenuList className="flex gap-3">
         <SignedIn>
-          <NavigationMenuItem>
+          <NavigationMenuItem className="hidden lg:block">
             <NavigationMenuTrigger>Events</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[300px] gap-3 p-4 sm:w-[400px]">
@@ -149,7 +151,7 @@ export function Nav() {
           </NavigationMenuItem>
         </SignedIn>
         <SignedIn>
-          <NavigationMenuItem>
+          <NavigationMenuItem className="hidden lg:block">
             <NavigationMenuTrigger>Users</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[300px] gap-3 p-4 sm:w-[400px]">
@@ -177,13 +179,30 @@ export function Nav() {
             </NavigationMenuContent>
           </NavigationMenuItem>
         </SignedIn>
-        {/* <NavigationMenuItem>
+        <NavigationMenuItem className="hidden lg:block">
           <Link href="/onboarding" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               About
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem> */}
+        </NavigationMenuItem>
+        <SignedOut>
+          <NavigationMenuItem className="hidden lg:block">
+            <SignInButton afterSignUpUrl="/onboarding">
+              <Button variant="secondary">Log In</Button>
+            </SignInButton>
+          </NavigationMenuItem>
+        </SignedOut>
+        <NavigationMenuItem>
+          <Link href="/new" legacyBehavior passHref>
+            <NavigationMenuLink
+              className={buttonVariants({ variant: "default" })}
+            >
+              <CalendarPlus className="mr-2 size-4"></CalendarPlus>
+              Add<span className="inline">&nbsp;Event</span>
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
@@ -221,8 +240,10 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          <div className="text-lg font-medium leading-none text-foreground">
+            {title}
+          </div>
+          <p className="line-clamp-2 text-lg leading-snug text-muted-foreground">
             {children}
           </p>
         </Link>
@@ -247,7 +268,7 @@ const UserMenu = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="hidden py-2 lg:block">
         <Image
           alt={"User"}
           src={user?.imageUrl}
@@ -256,15 +277,13 @@ const UserMenu = () => {
           className="rounded-full border border-gray-200 drop-shadow-sm"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="flex flex-col gap-1">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => openUserProfile()}>
           Profile
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuLabel>Timezone</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <TimezoneSelect />
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>Sign Out</DropdownMenuItem>
@@ -273,30 +292,270 @@ const UserMenu = () => {
   );
 };
 
-const SettingsMenu = () => {
+const mainNav = [
+  {
+    title: "About",
+    href: "/about",
+  },
+];
+
+const sideNav = [
+  {
+    title: "Events",
+    items: [
+      {
+        title: "My Events",
+        href: "/events",
+        signedInOnly: true,
+      },
+      {
+        title: "Following",
+        href: "/following",
+        signedInOnly: true,
+      },
+      {
+        title: "Explore",
+        href: "/explore",
+      },
+      // { title: "All", href: "/events", signedInOnly: true },
+      {
+        title: "Add",
+        href: "/events/new",
+      },
+    ],
+  },
+  {
+    title: "Users",
+    items: [
+      {
+        title: "Following",
+        href: "/following/users",
+        signedInOnly: true,
+      },
+      // {
+      //   title: "All",
+      //   href: "/users",
+      //   signedInOnly: true,
+      // },
+      {
+        title: "Explore",
+        href: "/users",
+        signedOutOnly: true,
+      },
+    ],
+  },
+];
+
+export function MobileNav() {
+  const [open, setOpen] = React.useState(false);
+  const { user } = useUser();
+  const { signOut, openUserProfile } = useClerk();
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Settings className="size-8 rounded-full bg-interactive-1 p-1 text-white" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Timezone</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <TimezoneSelect />
-        <DropdownMenuSeparator />
-        <SignInButton afterSignUpUrl="/onboarding">
-          <DropdownMenuItem>
-            <Button variant="secondary" className="w-full">
-              Log In
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" className="block lg:hidden">
+          <Menu className="size-6 text-interactive-1" />
+          <span className="sr-only">Toggle Menu</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        size="xl"
+        position="right"
+        className="bg-interactive-3 pl-0 pt-2"
+      >
+        <MobileLink href="/" className="" onOpenChange={setOpen}>
+          <Logo className="scale-75" variant="hidePreview" />
+        </MobileLink>
+        <ScrollArea className="h-full pl-6">
+          <div className="pt-2">
+            <TimezoneSelect />
+          </div>
+          <SignedIn>
+            <Separator className="my-3" />
+            <div className="flex items-center gap-2">
+              {user?.imageUrl ? (
+                <Image
+                  alt={"User"}
+                  src={user?.imageUrl}
+                  width={32}
+                  height={32}
+                  className="size-8 rounded-full"
+                />
+              ) : (
+                <div className="size-8 rounded-full bg-gray-100"></div>
+              )}
+              <div className="text-lg font-medium text-neutral-2">
+                @{user?.username}
+              </div>
+            </div>
+            <div className="pt-3">
+              <MobileButton
+                href="/profile"
+                onOpenChange={setOpen}
+                onClick={() => openUserProfile()}
+                className="w-full justify-start py-0 pl-0"
+              >
+                Profile
+              </MobileButton>
+            </div>
+          </SignedIn>
+          <Separator className="my-3" />
+          <div className="flex flex-col space-y-3">
+            {mainNav?.map(
+              (item) =>
+                item.href && (
+                  <MobileLink
+                    key={item.href}
+                    href={item.href}
+                    onOpenChange={setOpen}
+                  >
+                    {item.title}
+                  </MobileLink>
+                )
+            )}
+          </div>
+          <div className="flex flex-col space-y-2">
+            {sideNav.map((item, index) => (
+              <div key={index} className="flex flex-col space-y-3 pt-6">
+                <div className="text-lg font-medium text-neutral-2">
+                  {item.title}
+                </div>
+                {item?.items?.length &&
+                  item.items.map((item) => (
+                    <React.Fragment key={item.href}>
+                      {item.href ? (
+                        <MobileLink href={item.href} onOpenChange={setOpen}>
+                          {item.title}
+                        </MobileLink>
+                      ) : (
+                        item.title
+                      )}
+                    </React.Fragment>
+                  ))}
+              </div>
+            ))}
+          </div>
+          <Separator className="my-3" />
+          <SignedOut>
+            <SignInButton afterSignUpUrl="/onboarding">
+              <Button variant="secondary" className="w-full">
+                Log In
+              </Button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() => {
+                setOpen(false);
+                return signOut().then(() => {
+                  toast("Logged out");
+                });
+              }}
+            >
+              Log Out
             </Button>
-          </DropdownMenuItem>
-        </SignInButton>
-        {/* <SignUpButton afterSignUpUrl="/onboarding">
-          <DropdownMenuItem>
-            <Button className="w-full">🌈 Sign Up</Button>
-          </DropdownMenuItem>
-        </SignUpButton> */}
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </SignedIn>
+          <div className="pb-16"></div>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
   );
+}
+
+type MobileLinkProps = {
+  href: string;
+  onOpenChange?: (open: boolean) => void;
+  children: React.ReactNode;
+  className?: string;
+  signedInOnly?: boolean;
+  signedOutOnly?: boolean;
 };
+
+function MobileLink({
+  href,
+  onOpenChange,
+  className,
+  children,
+  signedInOnly,
+  signedOutOnly,
+  ...props
+}: MobileLinkProps) {
+  if (signedOutOnly) {
+    return (
+      <SignedOut>
+        <Link
+          href={href}
+          onClick={() => {
+            onOpenChange?.(false);
+          }}
+          className={cn(
+            className,
+            "text-lg font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          )}
+          {...props}
+        >
+          {children}
+        </Link>
+      </SignedOut>
+    );
+  }
+  if (signedInOnly) {
+    return (
+      <SignedIn>
+        <Link
+          href={href}
+          onClick={() => {
+            onOpenChange?.(false);
+          }}
+          className={cn(
+            className,
+            "text-lg font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          )}
+          {...props}
+        >
+          {children}
+        </Link>
+      </SignedIn>
+    );
+  }
+  return (
+    <Link
+      href={href}
+      onClick={() => {
+        onOpenChange?.(false);
+      }}
+      className={cn(
+        className,
+        "text-lg font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+      )}
+      {...props}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function MobileButton({
+  onOpenChange,
+  className,
+  children,
+  onClick,
+  ...props
+}: MobileLinkProps & { onClick: () => void }) {
+  return (
+    <Button
+      onClick={() => {
+        onClick();
+        onOpenChange?.(false);
+      }}
+      variant={"ghost"}
+      className={cn(className, "text-lg font-medium text-neutral-1")}
+      {...props}
+    >
+      {children}
+    </Button>
+  );
+}

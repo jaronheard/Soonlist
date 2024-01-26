@@ -44,7 +44,7 @@ export function TimezoneSelect({
     timezones,
   });
   const currentTimezone = options.find((tz) => tz.value === timezone)?.label;
-  const widthClass = fullWidth ? "w-full" : "w-[200px]";
+  const widthClass = fullWidth ? "w-full" : "w-[240px]";
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
