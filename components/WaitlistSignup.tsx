@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { toast } from "sonner";
+import { ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -98,7 +99,8 @@ export function WaitlistSignup() {
             />
           </div>
           <Button className="max-w-min md:mt-8" type="submit">
-            Join the waitlist
+            <ClipboardList className="mr-2 size-4"></ClipboardList>
+            Get on the list
           </Button>
         </form>
       </Form>

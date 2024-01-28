@@ -8,6 +8,7 @@ export default authMiddleware({
     "/",
     "/terms",
     "/privacy",
+    "/early-access",
     "/new",
     "/explore",
     "/old-new",

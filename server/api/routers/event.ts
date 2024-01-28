@@ -270,6 +270,7 @@ export const eventRouter = createTRPCRouter({
           eventFollows: true,
           comments: true,
         },
+        orderBy: [asc(events.startDateTime)],
         limit: input?.limit,
       });
     }),

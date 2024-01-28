@@ -9,7 +9,7 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
-import { CalendarPlus, Menu } from "lucide-react";
+import { CalendarPlus, FastForward, Menu, Star, UserPlus } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
 import Logo from "./Logo";
@@ -194,14 +194,26 @@ export function Nav() {
           </NavigationMenuItem>
         </SignedOut>
         <NavigationMenuItem>
-          <Link href="/new" legacyBehavior passHref>
-            <NavigationMenuLink
-              className={buttonVariants({ variant: "default" })}
-            >
-              <CalendarPlus className="mr-2 size-4"></CalendarPlus>
-              Add<span className="inline">&nbsp;Event</span>
-            </NavigationMenuLink>
-          </Link>
+          <SignedIn>
+            <Link href="/new" legacyBehavior passHref>
+              <NavigationMenuLink
+                className={buttonVariants({ variant: "default" })}
+              >
+                <CalendarPlus className="mr-2 size-4"></CalendarPlus>
+                Add<span className="inline">&nbsp;Event</span>
+              </NavigationMenuLink>
+            </Link>
+          </SignedIn>
+          <SignedOut>
+            <Link href="/early-access" legacyBehavior passHref>
+              <NavigationMenuLink
+                className={buttonVariants({ variant: "default" })}
+              >
+                <Star className="mr-2 hidden size-4 sm:block"></Star>
+                Early Access
+              </NavigationMenuLink>
+            </Link>
+          </SignedOut>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
