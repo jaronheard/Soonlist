@@ -155,21 +155,11 @@ function EventDetails({
               {timeFormatDateInfo(startDateInfo)}-
               {timeFormatDateInfo(endDateInfo)}
             </div>
-            <div className="text-neutral-3">{"//"}</div>
           </>
-        )}
-
-        {location && (
-          <Link
-            href={`https://www.google.com/maps/search/?api=1&query=${location}`}
-            className={"line-clamp-1 shrink break-all text-neutral-2"}
-          >
-            {location}
-          </Link>
         )}
       </div>
       {/* end duplicated with Event */}
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-start gap-2">
         <Link
           href={`/event/${id}`}
           className={
@@ -178,19 +168,19 @@ function EventDetails({
         >
           {name}
         </Link>
-        {image && (
-          <Link href={`/event/${id}`} className="block w-full">
-            <Image
-              className="max-h-28 rounded-xl object-cover sm:max-h-56 lg:hidden"
-              src={image}
-              alt=""
-              width={375}
-              height={375}
-              layout="responsive"
-            />
-          </Link>
-        )}
-        <EventDescription description={description} />
+        <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
+          {location && (
+            <Link
+              href={`https://www.google.com/maps/search/?api=1&query=${location}`}
+              className={"line-clamp-1 shrink break-all text-neutral-2"}
+            >
+              {location}
+            </Link>
+          )}
+        </div>
+        <div className="pt-2">
+          <EventDescription description={description} />
+        </div>
         <Link
           href={`/event/${id}`}
           className={cn(

@@ -9,7 +9,7 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
-import { CalendarPlus, FastForward, Menu, Star, UserPlus } from "lucide-react";
+import { CalendarPlus, Menu, Star } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
 import Logo from "./Logo";

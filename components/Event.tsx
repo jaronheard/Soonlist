@@ -265,10 +265,14 @@ export function Event(props: EventProps) {
                     {timeFormatDateInfo(startDateInfo)}-
                     {timeFormatDateInfo(endDateInfo)}
                   </div>
-                  <div className="text-neutral-3">{"//"}</div>
                 </>
               )}
-
+            </div>
+            {/* end duplicated with EventListItem */}
+            <h1 className="font-heading text-5xl font-bold leading-[3.5rem]">
+              {event.name}
+            </h1>
+            <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
               {location && (
                 <Link
                   href={`https://www.google.com/maps/search/?api=1&query=${location}`}
@@ -278,10 +282,6 @@ export function Event(props: EventProps) {
                 </Link>
               )}
             </div>
-            {/* end duplicated with EventListItem */}
-            <h1 className="font-heading text-5xl font-bold leading-[3.5rem]">
-              {event.name}
-            </h1>
             <div className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2">
               <Image
                 src={user.userImage}

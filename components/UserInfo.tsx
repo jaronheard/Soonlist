@@ -75,9 +75,9 @@ export async function UserInfo(props: UserInfoProps) {
           </div>
         </div>
         <div className="text-2xl text-neutral-2">
-          {/* {user.description} */}
-          Purus auctor purus nisl tempor elementum sit odio malesuada enim. Nunc
-          est est pellentesque imperdiet sagittis turpis ullamcorper.
+          {/* {user.description} */}A short bio will go here. Something like:
+          I&apos;m a Taurus, I like coffee and staying up late. Also links to
+          whatever contact methods people want to provide.
         </div>
       </div>
     );
