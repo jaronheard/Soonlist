@@ -94,7 +94,7 @@ export function AddToCalendarCard({
 
   return (
     <Card className="max-w-screen sm:max-w-xl">
-      <CardContent className="grid grid-cols-1 gap-6 py-6 shadow-md sm:grid-cols-6">
+      <CardContent className="grid grid-cols-1 gap-6 rounded-lg py-6 shadow-md sm:grid-cols-6">
         <CardTitle className="col-span-full flex items-center justify-between">
           <div className="flex items-center">
             <Text className="mr-2 size-6" />
@@ -232,7 +232,7 @@ export function AddToCalendarCard({
             onClick={() => atcb_action(eventForCalendar)}
           >
             <CalendarPlus className="mr-2 size-4" />
-            Add to Calendar
+            <span className="hidden sm:inline">Add to </span>Calendar
           </Button>
         </div>
       </CardContent>

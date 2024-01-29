@@ -229,7 +229,7 @@ function EventActionButtons({
   isFollowing?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-3">
       <div className="flex items-center gap-4">
         <div className="text-lg font-medium leading-none text-neutral-2">
           added by @{user.username}
@@ -257,8 +257,8 @@ function EventActionButtons({
       <ShareButton type="icon" event={event} id={id} />
       {isOwner && (
         <>
-          <EditButton userId={user.id} id={id} />
-          <DeleteButton userId={user.id} id={id} />
+          <EditButton type="icon" userId={user.id} id={id} />
+          <DeleteButton type="icon" userId={user.id} id={id} />
         </>
       )}
     </div>

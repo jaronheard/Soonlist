@@ -34,7 +34,7 @@ export function CalendarButton(props: CalendarButtonProps) {
         variant={"secondary"}
       >
         <CalendarPlus className="mr-2 size-4" />
-        Add to Calendar
+        <span className="hidden sm:inline">Add to </span>Calendar
       </Button>
     );
   }

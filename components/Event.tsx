@@ -100,9 +100,9 @@ function EventActionButton({
         {isOwner && (
           <>
             <DropdownMenuSeparator />
-            <EditButton userId={user.id} id={id} />
+            <EditButton type="dropdown" userId={user.id} id={id} />
             <DropdownMenuSeparator />
-            <DeleteButton userId={user.id} id={id} />
+            <DeleteButton type="dropdown" userId={user.id} id={id} />
           </>
         )}
       </DropdownMenuContent>
