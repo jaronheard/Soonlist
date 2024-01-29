@@ -53,7 +53,7 @@ export function TimezoneSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`${widthClass} justify-between`}
+          className={`${widthClass} justify-between rounded-md text-sm`}
         >
           <span className="truncate">{currentTimezone}</span>
           <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />

@@ -255,7 +255,7 @@ export default function ImageUpload({
 
   return (
     <Card className="max-w-screen w-full sm:max-w-xl">
-      <CardContent className="grid grid-cols-1 place-items-center gap-0 rounded-lg py-4 shadow-md">
+      <CardContent className="grid grid-cols-1 place-items-center gap-0 rounded-md py-4 shadow-md">
         <CardTitle>Event Image</CardTitle>
         <p className="mx-auto block text-sm font-medium leading-6 text-gray-900">
           <span className="text-gray-500">(Optional)</span>

@@ -479,7 +479,7 @@ export const eventRouter = createTRPCRouter({
       const values = {
         id: eventid,
         userId: userId,
-        userName: ctx.auth.user?.username || "unknown",
+        userName: username || "unknown",
         event: event,
         startDateTime: startUtcDate,
         endDateTime: endUtcDate,
