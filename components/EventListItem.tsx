@@ -146,7 +146,7 @@ function EventDetails({
       <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
         {eventTimesAreDefined(startTime, endTime) && (
           <>
-            <div className="shrink-0 text-neutral-2">
+            <div className="flex-wrap text-neutral-2">
               {startDateInfo?.dayOfWeek.substring(0, 3)}
               {", "}
               {startDateInfo?.month}/{startDateInfo?.day}/

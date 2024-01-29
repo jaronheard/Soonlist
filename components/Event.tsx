@@ -282,7 +282,10 @@ export function Event(props: EventProps) {
                 </Link>
               )}
             </div>
-            <div className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2">
+            <Link
+              href={`/${user.username}/events`}
+              className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2"
+            >
               <Image
                 src={user.userImage}
                 width={375}
@@ -292,19 +295,16 @@ export function Event(props: EventProps) {
               />
               <div className="flex flex-col gap-1 p-5">
                 <div className="text-xl font-bold leading-6 tracking-wide text-interactive-1">
-                  List Name
+                  All Events
                 </div>
                 <div className="text-lg font-medium leading-none text-neutral-2">
                   by{" "}
-                  <Link
-                    className="font-semibold text-interactive-1"
-                    href={`/${user.username}/events`}
-                  >
+                  <span className="font-semibold text-interactive-1">
                     @{user.username}
-                  </Link>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
           <div className="flex flex-col gap-8 pt-8">
             <EventDescription
