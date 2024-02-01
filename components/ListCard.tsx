@@ -42,7 +42,7 @@ export default function ListCard(props: {
       >
         {getInitialsFromString(props.name)}
       </div>
-      <div className="flex shrink-0 grow flex-col gap-1 p-5">
+      <div className="flex min-w-0 grow flex-col gap-1 p-5">
         <div className="flex justify-between">
           <div className="truncate text-xl font-bold leading-6 tracking-wide text-interactive-1">
             {props.name}

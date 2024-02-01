@@ -13,6 +13,7 @@ import makingEarthCool from "@/assets/making-earth-cool.jpeg";
 import { CTAButton } from "@/components/CallToActions";
 import { buttonVariants } from "@/components/ui/button";
 import SampleEvent from "@/components/SampleEvent";
+import SampleList from "@/components/SampleList";
 
 const advancedFeatures = [
   {
@@ -247,7 +248,7 @@ export default function Page() {
         <MakeAndShareListsOfEvents />
       </div>
       <div className="relative isolate bg-white px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 md:grid-cols-2 md:gap-x-16 md:pt-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 md:grid-cols-2 md:gap-x-16 md:pt-24">
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto">
               <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 md:text-5xl">
@@ -260,9 +261,9 @@ export default function Page() {
               </p>
             </div>
           </div>
+          <SampleList listId={sampleEventListId} />
         </div>
       </div>
-
       <div className="relative isolate bg-white px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 md:grid-cols-2 md:gap-x-16 md:pt-24">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">

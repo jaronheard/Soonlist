@@ -1,4 +1,4 @@
-import { UserInfo } from "@/components/UserInfo";
+import ListCard from "./ListCard";
 import EventList from "@/components/EventList";
 import { api } from "@/trpc/server";
 
@@ -13,17 +13,7 @@ export default async function SampleList({ listId }: { listId: string }) {
 
   return (
     <div>
-      <div className="flex flex-col items-start gap-4 px-4 sm:flex-row">
-        <div className="align-center flex w-full flex-col gap-4 sm:flex-row sm:justify-between">
-          <div className="flex flex-col">
-            <div className="text-xl font-medium">{list.name}</div>
-            <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-              {list.description}
-            </p>
-          </div>
-          <UserInfo userId={list.user.id} />
-        </div>
-      </div>
+      <ListCard name={list.name} username={list.user.username} id={listId} />
       <div className="p-2"></div>
       <EventList
         currentEvents={[]}
