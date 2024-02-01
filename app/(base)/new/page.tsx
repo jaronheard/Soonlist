@@ -33,59 +33,53 @@ export default async function Page({ searchParams }: Props) {
 
   if (searchParams.saveIntent) {
     return (
-      <>
+      <div className="flex w-full flex-col items-center gap-8">
         <YourDetails lists={lists || undefined} />
-        <div className="p-4"></div>
         <ImageUpload filePath={searchParams.filePath} />
-        <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromSaved />
         </Suspense>
-      </>
+      </div>
     );
   }
 
   if (searchParams.filePath && !searchParams.rawText) {
     return (
-      <>
+      <div className="flex w-full flex-col items-center gap-8">
         <YourDetails lists={lists || undefined} />
-        <div className="p-4"></div>
         <ImageUpload filePath={searchParams.filePath} />
-        <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromImage
             timezone={timezone}
             filePath={searchParams.filePath}
           />
         </Suspense>
-      </>
+      </div>
     );
   }
 
   if (!searchParams.rawText) {
     return (
-      <>
+      <div className="flex w-full flex-col items-center gap-8">
         <Suspense>
           <AddEvent lists={lists || undefined} />
         </Suspense>
-      </>
+      </div>
     );
   }
 
   if (searchParams.rawText) {
     return (
-      <>
+      <div className="flex w-full flex-col items-center gap-8">
         <YourDetails lists={lists || undefined} />
-        <div className="p-4"></div>
         <ImageUpload filePath={searchParams.filePath} />
-        <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromRawText
             timezone={timezone}
             rawText={searchParams.rawText}
           />
         </Suspense>
-      </>
+      </div>
     );
   }
 }
