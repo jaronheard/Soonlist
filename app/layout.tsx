@@ -30,9 +30,9 @@ const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
 });
 
 const title = "Soonlist";
-const tagline = "Create, collect, curate & share events";
+const tagline = "Event lists for everybody";
 const description =
-  "Join a network of passionate curators and participants building community around events that matter.";
+  "Gather and share events that matter to you and your communities.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.soonlist.com/"),
@@ -40,15 +40,15 @@ export const metadata: Metadata = {
   description: tagline,
   openGraph: {
     siteName: "Soonlist",
-    title: "Create, collect, curate & share events",
+    title: "Event lists for everybody",
     description,
     locale: "en_US",
     type: "website",
     images: [
       {
         url: "/api/og",
-        width: 800,
-        height: 400,
+        width: 1200,
+        height: 630,
       },
     ],
   },
