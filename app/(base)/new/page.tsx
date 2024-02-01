@@ -1,13 +1,16 @@
 import { Suspense, lazy } from "react";
 import { currentUser } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
 import AddEvent from "../AddEvent";
 import ImageUpload from "./ImageUpload";
-import EventsFromSaved from "./EventsFromSaved";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
 
+const EventsFromSaved = dynamic(() => import("./EventsFromSaved"), {
+  ssr: false,
+});
 const EventsFromRawText = lazy(() => import("./EventsFromRawText"));
 
 export const maxDuration = 60;
@@ -33,13 +36,13 @@ export default async function Page({ searchParams }: Props) {
 
   if (searchParams.saveIntent) {
     return (
-      <div className="flex w-full flex-col items-center gap-8">
-        <YourDetails lists={lists || undefined} />
-        <ImageUpload filePath={searchParams.filePath} />
-        <Suspense fallback={<AddToCalendarCardSkeleton />}>
+      <Suspense>
+        <div className="flex w-full flex-col items-center gap-8">
+          <YourDetails lists={lists || undefined} />
+          <ImageUpload filePath={searchParams.filePath} />
           <EventsFromSaved />
-        </Suspense>
-      </div>
+        </div>
+      </Suspense>
     );
   }
 
