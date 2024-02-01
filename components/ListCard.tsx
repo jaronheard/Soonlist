@@ -1,9 +1,10 @@
 import { clsx } from "clsx";
-import { FileStack, SquareStack } from "lucide-react";
+import { SquareStack } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const colors = [
-  "bg-accent-blue",
+  // "bg-accent-blue",
   "bg-accent-red",
   "bg-accent-orange",
   "bg-accent-green",
@@ -21,42 +22,43 @@ const getRainbowColorFromString = (initials: string) => {
 
 export default function ListCard(props: {
   name: string;
-  id: string;
-  count: number;
+  id?: string;
   username: string;
+  className?: string;
 }) {
   return (
-    <li>
-      <Link
-        href={`/list/${props.id}`}
-        className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2"
+    <Link
+      href={props?.id ? `/list/${props.id}` : `/${props.username}/events`}
+      className={cn(
+        "item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2",
+        props.className
+      )}
+    >
+      <div
+        className={clsx(
+          getRainbowColorFromString(props.name),
+          "size-[5.375rem] flex-shrink-0 items-center justify-center rounded-l-md text-4xl font-bold font-heading leading-none text-white flex pt-1"
+        )}
       >
-        <div
-          className={clsx(
-            getRainbowColorFromString(props.name),
-            "size-[5.375rem] flex-shrink-0 items-center justify-center rounded-l-md text-4xl font-bold font-heading leading-none text-white flex pt-1"
-          )}
-        >
-          {getInitialsFromString(props.name)}
-        </div>
-        <div className="flex shrink-0 flex-col gap-1 p-5">
-          <div className="space-between flex w-full">
-            <div className="truncate text-xl font-bold leading-6 tracking-wide text-interactive-1">
-              {props.name}
-            </div>
-            <SquareStack className="ml-4 size-6 text-interactive-1" />
+        {getInitialsFromString(props.name)}
+      </div>
+      <div className="flex shrink-0 grow flex-col gap-1 p-5">
+        <div className="flex justify-between">
+          <div className="truncate text-xl font-bold leading-6 tracking-wide text-interactive-1">
+            {props.name}
           </div>
-          <div className="truncate text-lg font-medium leading-none text-neutral-2">
-            by{" "}
-            <Link
-              className="font-semibold text-interactive-1"
-              href={`/${props.username}/events`}
-            >
-              @{props.username}
-            </Link>
-          </div>
+          <SquareStack className="ml-4 size-6 text-interactive-1" />
         </div>
-      </Link>
-    </li>
+        <div className="truncate text-lg font-medium leading-none text-neutral-2">
+          curated by{" "}
+          <Link
+            className="font-semibold text-interactive-1"
+            href={`/${props.username}/events`}
+          >
+            @{props.username}
+          </Link>
+        </div>
+      </div>
+    </Link>
   );
 }

@@ -34,7 +34,7 @@ ListCardsForUserProps) {
           <ListCard
             key={list.name}
             name={list.name}
-            count={list.eventToLists.length}
+            // count={list.eventToLists.length}
             id={list.id}
             username={list.user.username}
           />

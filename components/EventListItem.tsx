@@ -291,7 +291,12 @@ export function EventListItem(props: EventListItemProps) {
           />
         </Link>
       )}
-      <li className="relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm lg:pl-16">
+      <li
+        className={cn(
+          "relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm",
+          { "lg:pl-16": !!image }
+        )}
+      >
         {/* {visibility === "private" && (
         <>
           <Badge className="max-w-fit" variant="destructive">

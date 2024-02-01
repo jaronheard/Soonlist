@@ -129,9 +129,9 @@ function EventDetails({ className }: { className?: string }) {
 
 function MakeAndShareListsOfEvents() {
   return (
-    <div className="px-4 py-16 text-center sm:rounded-xl sm:border sm:border-neutral-3 sm:px-16 lg:px-24">
+    <div className="px-4 py-16 text-center md:rounded-xl md:border md:border-neutral-3 md:px-16 lg:px-24">
       <div className="mx-auto max-w-2.5xl">
-        <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
+        <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 md:text-5xl">
           Make and share lists of events
         </h1>
         <p className="mx-auto mt-6 max-w-3xl text-2xl leading-9 text-gray-400">
@@ -140,7 +140,7 @@ function MakeAndShareListsOfEvents() {
           around events that matter.
         </p>
       </div>
-      <div className="mt-12 grid gap-8 sm:grid-cols-3">
+      <div className="mt-12 grid gap-8 md:grid-cols-3">
         <div>
           <h2 className="text-2.5xl font-bold leading-9 tracking-wide">
             Discover Events
@@ -217,10 +217,10 @@ export default function Page() {
   return (
     <div className="bg-white">
       <div className="relative isolate bg-interactive-3 px-6 pt-14 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 pb-48 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 pb-48 md:grid-cols-2 md:gap-x-16 md:pt-24">
           <div className="mx-auto">
             <div className="mx-auto">
-              <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 sm:text-8xl sm:leading-[0.875]">
+              <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 md:text-8xl md:leading-[0.875]">
                 Event lists for{" "}
                 <span className="text-interactive-1">everybody</span>
               </h1>
@@ -243,18 +243,18 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="isolate mx-auto -mt-24 max-w-7xl bg-white sm:rounded-lg">
+      <div className="isolate mx-auto -mt-24 max-w-7xl bg-white md:rounded-lg">
         <MakeAndShareListsOfEvents />
       </div>
       <div className="relative isolate bg-white px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-16 py-16 md:grid-cols-2 md:gap-x-16 md:pt-24">
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto">
-              <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
+              <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 md:text-5xl">
                 Curated event lists built by community members you know and
                 trust
               </h1>
-              <p className="mt-6 text-xl leading-7.5 text-gray-400 sm:text-2xl sm:leading-9">
+              <p className="mt-6 text-xl leading-7.5 text-gray-400 md:text-2xl md:leading-9">
                 Join a network of passionate curators and participants building
                 community around events that matter.
               </p>
@@ -264,12 +264,12 @@ export default function Page() {
       </div>
 
       <div className="relative isolate bg-white px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 sm:grid-cols-2 sm:gap-x-16 sm:pt-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 md:grid-cols-2 md:gap-x-16 md:pt-24">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
-            <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 sm:text-5xl">
+            <h1 className="font-heading text-4xl font-bold leading-[1.08333] tracking-tight text-gray-800 md:text-5xl">
               Building togetherness
             </h1>
-            <p className="mt-6 text-xl leading-7.5 text-gray-400 sm:text-2xl sm:leading-9">
+            <p className="mt-6 text-xl leading-7.5 text-gray-400 md:text-2xl md:leading-9">
               We&apos;re building an ecosystem that simplifies discovering,
               sharing, and engaging with events. It&apos;s a space where
               everyone has the power and tools to contribute to our shared
@@ -295,7 +295,7 @@ export default function Page() {
               ))}
             </dl>
           </div>
-          <div className="relative h-full min-h-[24rem] overflow-hidden rounded-xl sm:px-6 lg:px-0">
+          <div className="relative h-full min-h-[24rem] overflow-hidden rounded-xl md:px-6 lg:px-0">
             <Image
               src="https://upcdn.io/12a1yek/raw/uploads/2024/01/17/IMG_3960.png"
               alt=""
@@ -306,19 +306,19 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="relative isolate bg-white pb-32 pt-24 sm:pt-32">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
+      <div className="relative isolate bg-white pb-32 pt-24 md:pt-32">
+        <div className="mx-auto max-w-7xl px-6 md:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <p className="font-heading text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
               People are already excited
             </p>
           </div>
-          <div className="mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none">
-            <div className="-mt-8 sm:-mx-4 sm:columns-2 sm:text-[0] lg:columns-3">
+          <div className="mx-auto mt-16 flow-root max-w-2xl md:mt-20 lg:mx-0 lg:max-w-none">
+            <div className="-mt-8 md:-mx-4 md:columns-2 md:text-[0] lg:columns-3">
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.author.handle}
-                  className="pt-8 sm:inline-block sm:w-full sm:px-4"
+                  className="pt-8 md:inline-block md:w-full md:px-4"
                 >
                   <figure className="rounded-[10px] border-[0.85px] border-neutral-3 bg-accent-yellow p-6 shadow-sm">
                     <blockquote className="text-center font-heading text-2xl font-bold text-neutral-1">
