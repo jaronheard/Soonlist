@@ -311,18 +311,18 @@ const mainNav = [
   },
 ];
 
-const sideNav = [
+const sideNav = (username?: string | null) => [
   {
     title: "Events",
     items: [
       {
         title: "My Events",
-        href: "/events",
+        href: `/${username!}/events`,
         signedInOnly: true,
       },
       {
         title: "Following",
-        href: "/following",
+        href: `/${username!}/following`,
         signedInOnly: true,
       },
       {
@@ -341,7 +341,7 @@ const sideNav = [
     items: [
       {
         title: "Following",
-        href: "/following/users",
+        href: `${username!}/following/users`,
         signedInOnly: true,
       },
       // {
@@ -428,7 +428,7 @@ export function MobileNav() {
             )}
           </div>
           <div className="flex flex-col space-y-2">
-            {sideNav.map((item, index) => (
+            {sideNav(user?.username).map((item, index) => (
               <div key={index} className="flex flex-col space-y-3 pt-6">
                 <div className="text-lg font-medium text-neutral-2">
                   {item.title}
