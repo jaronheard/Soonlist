@@ -77,37 +77,37 @@ function SparkleArrow() {
       <path
         d="M49 52.5L46.132 61.2195C45.9852 61.6658 45.7357 62.0713 45.4035 62.4035C45.0713 62.7357 44.6658 62.9852 44.2195 63.132L35.5 66L44.2195 68.868C44.6658 69.0148 45.0713 69.2643 45.4035 69.5965C45.7357 69.9287 45.9852 70.3342 46.132 70.7805L49 79.5L51.868 70.7805C52.0148 70.3342 52.2643 69.9287 52.5965 69.5965C52.9287 69.2643 53.3342 69.0148 53.7805 68.868L62.5 66L53.7805 63.132C53.3342 62.9852 52.9287 62.7357 52.5965 62.4035C52.2643 62.0713 52.0148 61.6658 51.868 61.2195L49 52.5Z"
         stroke="#5A32FB"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M38.5 52.5V58.5"
         stroke="#5A32FB"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M59.5 73.5V79.5"
         stroke="#5A32FB"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M35.5 55.5H41.5"
         stroke="#5A32FB"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M56.5 76.5H62.5"
         stroke="#5A32FB"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
