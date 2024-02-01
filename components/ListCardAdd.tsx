@@ -11,7 +11,7 @@ export default function ListCardAdd() {
       <div
         className={clsx(
           "bg-primary group-hover:bg-primary/90",
-          "flex h-[5.375rem] w-[5.375rem] flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white h-full"
+          "flex h-[5.375rem] w-[5.375rem] flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
         )}
       >
         <PlusCircleIcon className="size-12" />

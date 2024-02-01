@@ -63,36 +63,37 @@ export default async function Page({ params }: Props) {
     user && list.listFollows.find((item) => item.userId === user.id);
 
   return (
-    <>
-      <div className="flex flex-col place-items-center gap-4 sm:flex-row">
-        <div className="flex place-items-center gap-4">
-          <div className="flex flex-col">
-            <div className="font-medium">{list.name}</div>
-            <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-              {list.description}
-            </p>
-          </div>
+    <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-40">
+      <div className="flex flex-col gap-4">
+        <p className="font-heading text-5xl font-bold leading-[3.5rem] tracking-tight text-neutral-1">
+          {list.name}
+        </p>
+        <div className="flex gap-6">
+          <p className="text-2xl font-bold leading-normal tracking-wide">
+            Curated by
+          </p>
           <UserInfo userId={list.user.id} />
         </div>
+        <div className="text-2xl text-neutral-2">{list.description}</div>
         <div className="flex place-items-center gap-4">
+          {!isOwner && (
+            <>
+              <FollowListButton
+                listId={params.listId}
+                following={!!following}
+              />
+            </>
+          )}
           <ListEditButton listId={params.listId} listUserId={list.user.id} />
           <ListDeleteButton listId={params.listId} listUserId={list.user.id} />
         </div>
       </div>
-      {!isOwner && (
-        <>
-          <div className="p-2"></div>
-          <FollowListButton listId={params.listId} following={!!following} />
-        </>
-      )}
-      <div className="p-2"></div>
       <EventList
         currentEvents={currentEvents}
         futureEvents={futureEvents}
         pastEvents={pastEvents}
         showPrivateEvents={!!isOwner}
       />
-      <div className="p-5"></div>
-    </>
+    </div>
   );
 }
