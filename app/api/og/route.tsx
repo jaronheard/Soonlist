@@ -5,6 +5,7 @@ import { ImageResponse } from "next/og";
 export const dynamic = "force-dynamic";
 
 export const runtime = "edge";
+export const preferredRegion = "pdx1";
 
 export async function GET() {
   // Make sure the font exists in the specified path:
