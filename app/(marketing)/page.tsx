@@ -170,7 +170,7 @@ function MakeAndShareListsOfEvents() {
             Let AI do the work of uncovering dates, times, locations, and more.
           </p>
           <div className="flex space-x-2 px-5 pt-12">
-            <div className="flex h-80 items-start justify-center rounded-full bg-interactive-3 text-base font-bold leading-5 text-interactive-1">
+            <div className="flex size-80 items-start justify-center rounded-full bg-interactive-3 text-base font-bold leading-5 text-interactive-1">
               <div className="">
                 <Sparkles className="mx-auto mb-6 mt-4 size-12 rounded-full bg-interactive-2 p-1.5" />
                 <div className="flex flex-col gap-2">
