@@ -1,5 +1,4 @@
 import { type Metadata, type ResolvingMetadata } from "next/types";
-import Image from "next/image";
 import { Event } from "@/components/Event";
 import { UserInfo } from "@/components/UserInfo";
 import {

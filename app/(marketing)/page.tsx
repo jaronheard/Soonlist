@@ -97,7 +97,7 @@ const testimonials = [
 
 const sampleEventId =
   process.env.NODE_ENV === "production"
-    ? "clrh2zo6p0001asmk0axrq55h"
+    ? "8q2evb8m92ht"
     : "clrh2zo6p0001asmk0axrq55h";
 const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
