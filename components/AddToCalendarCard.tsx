@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { atcb_action } from "add-to-calendar-button";
 import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
-import { CalendarPlus, Text } from "lucide-react";
+import { Text } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
 import { Label } from "./ui/label";
 import { Input, InputDescription } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Card, CardContent, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
 import { TimezoneSelect } from "./TimezoneSelect";
+import { CalendarButton } from "./CalendarButton";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useFormContext } from "@/context/FormContext";
 
@@ -29,6 +29,7 @@ export function AddToCalendarCard({
   ...initialProps
 }: AddToCalendarCardProps) {
   // get croppedImagesUrls from context
+  const { user } = useUser();
   const { croppedImagesUrls } = useCroppedImageContext();
   const { formData } = useFormContext();
   const { notes, visibility, lists } = formData;
@@ -88,9 +89,6 @@ export function AddToCalendarCard({
     timeZone,
     images,
   };
-
-  const eventForCalendar = { ...updatedProps };
-  eventForCalendar.description = `${updatedProps.description}[br][br]Collected with [url]${process.env.NEXT_PUBLIC_URL}|Soonlist[/url]`;
 
   return (
     <Card className="max-w-screen sm:max-w-xl">
@@ -227,13 +225,12 @@ export function AddToCalendarCard({
               event={updatedProps}
             />
           )}
-          <Button
-            variant="secondary"
-            onClick={() => atcb_action(eventForCalendar)}
-          >
-            <CalendarPlus className="mr-2 size-4" />
-            <span className="hidden sm:inline">Add to </span>Calendar
-          </Button>
+          <CalendarButton
+            event={updatedProps}
+            id={initialProps.updateId || undefined}
+            username={user?.username || undefined}
+            type="button"
+          />
         </div>
       </CardContent>
     </Card>

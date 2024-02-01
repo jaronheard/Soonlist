@@ -8,14 +8,18 @@ import { type AddToCalendarButtonPropsRestricted } from "@/types";
 
 type CalendarButtonProps = {
   event: AddToCalendarButtonPropsRestricted;
-  id: string;
-  username: string;
+  id?: string;
+  username?: string;
   type: "button" | "dropdown" | "icon";
 };
 
 export function CalendarButton(props: CalendarButtonProps) {
   const eventForCalendar = { ...props.event };
-  eventForCalendar.description = `${props.event.description}[br][br]Collected by [url]${process.env.NEXT_PUBLIC_URL}/${props.username}/events|@${props.username}[/url] on [url]${process.env.NEXT_PUBLIC_URL}/event/${props.id}|Soonlist[/url]`;
+  const additionalText =
+    props.username && props.id
+      ? `Collected by [url]${process.env.NEXT_PUBLIC_URL}/${props.username}/events|@${props.username}[/url] on [url]${process.env.NEXT_PUBLIC_URL}/event/${props.id}|Soonlist[/url]`
+      : `Collected on [url]${process.env.NEXT_PUBLIC_URL}|Soonlist[/url]`;
+  eventForCalendar.description = `${props.event.description}[br][br]${additionalText}`;
 
   if (props.type === "dropdown") {
     return (
@@ -34,7 +38,8 @@ export function CalendarButton(props: CalendarButtonProps) {
         variant={"secondary"}
       >
         <CalendarPlus className="mr-2 size-4" />
-        <span className="hidden sm:inline">Add to </span>Calendar
+        <span className="hidden sm:inline">Add to calendar</span>
+        <span className="inline sm:hidden">Calendar</span>
       </Button>
     );
   }
