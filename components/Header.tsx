@@ -307,7 +307,7 @@ const UserMenu = () => {
 const mainNav = [
   {
     title: "About",
-    href: "/about",
+    href: "/onboarding",
   },
 ];
 
