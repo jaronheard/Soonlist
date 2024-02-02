@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useContext } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, EyeOff } from "lucide-react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import { CalendarButton } from "./CalendarButton";
@@ -141,7 +141,7 @@ function EventDetails({
   }
 
   return (
-    <div className="flex flex-col items-start justify-center gap-2">
+    <div className="flex w-full flex-col items-start justify-center gap-2">
       {/* duplicated with Event */}
       <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
         {eventTimesAreDefined(startTime, endTime) && (
@@ -159,7 +159,7 @@ function EventDetails({
         )}
       </div>
       {/* end duplicated with Event */}
-      <div className="flex flex-col items-start gap-2">
+      <div className="flex w-full flex-col items-start gap-2">
         <Link
           href={`/event/${id}`}
           className={
@@ -190,7 +190,7 @@ function EventDetails({
         >
           Learn more <ArrowRight className="ml-1 size-4 text-interactive-2 " />
         </Link>
-        <div className="place-self-end">
+        <div className="w-full">
           {EventActionButtons && <>{EventActionButtons}</>}
         </div>
       </div>
@@ -221,19 +221,31 @@ function EventActionButtons({
   id,
   isOwner,
   isFollowing,
+  visibility,
 }: {
   user: User;
   event: AddToCalendarButtonPropsRestricted;
   id: string;
   isOwner: boolean;
   isFollowing?: boolean;
+  visibility: "public" | "private";
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div className="flex items-center gap-4">
-        <div className="text-lg font-medium leading-none text-neutral-2">
-          added by @{user.username}
-        </div>
+    <div className="flex w-full flex-wrap items-center gap-3">
+      <div className="flex grow items-center justify-between">
+        {visibility !== "private" && (
+          <Link
+            className="text-lg font-medium leading-none text-neutral-2"
+            href={`/${user.username}/events`}
+          >
+            @{user.username}
+          </Link>
+        )}
+        {visibility === "private" && (
+          <div className="text-lg font-medium leading-none text-neutral-1">
+            <EyeOff className="mr-2 inline" /> Unlisted event
+          </div>
+        )}
         <Link
           href={`/${user.username}/events`}
           className="box-content block size-[2.625rem] shrink-0 rounded-full border-4 border-accent-yellow"
@@ -315,7 +327,7 @@ export function EventListItem(props: EventListItemProps) {
             timezone={event.timeZone || "America/Los_Angeles"}
           />
         </div>
-        <div className="flex items-start gap-7">
+        <div className="flex w-full items-start gap-7">
           <EventDetails
             id={id}
             name={event.name!}
@@ -334,6 +346,7 @@ export function EventListItem(props: EventListItemProps) {
                 id={id}
                 isOwner={!!isOwner}
                 isFollowing={isFollowing}
+                visibility={props.visibility}
               />
             }
           />
