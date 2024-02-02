@@ -2,7 +2,6 @@ import React from "react";
 import { CheckCircleIcon, CurrencyDollarIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { CTAButton } from "@/components/CallToActions";
-import RainbowText from "@/components/RainbowText";
 import {
   Accordion,
   AccordionContent,
