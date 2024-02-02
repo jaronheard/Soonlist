@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <div className="prose mx-auto py-12 sm:prose-lg lg:prose-xl xl:prose-2xl 2xl:prose-2xl">
+    <div className="prose mx-auto px-8 py-12 sm:prose-lg lg:prose-xl xl:prose-2xl 2xl:prose-2xl">
       <h1 className="font-heading">Seeking Portland Event List Makers</h1>
       <h2 className="font-heading">Event Lists For Everybody</h2>
       <p>
@@ -114,31 +114,35 @@ export default function Page() {
         <h3 className="font-heading">Benefits</h3>
         <ul className="list-none">
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="new">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="new">
               🆕
             </span>{" "}
             Be a part of shaping something new
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="heart">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="heart">
               💖
             </span>{" "}
             Build community through sharing events
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="rainbow">
+            <span
+              role="img"
+              className="-ml-6 mr-2 sm:-ml-9"
+              aria-label="rainbow"
+            >
               🌈
             </span>{" "}
             Visibility to other users and curators
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="medal">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="medal">
               🏅
             </span>{" "}
             Supporter badge
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="party">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="party">
               🎉
             </span>{" "}
             Launch party! Meet other event list makers
@@ -150,55 +154,71 @@ export default function Page() {
         </p>
         <ul className="list-none">
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="watermelon">
+            <span
+              role="img"
+              className="-ml-6 mr-2 sm:-ml-9"
+              aria-label="watermelon"
+            >
               🍉
             </span>{" "}
             Activism & solidarity events
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="art">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="art">
               🖼️
             </span>{" "}
             Art openings & artist talks
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="yarn">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="yarn">
               🧶
             </span>{" "}
             Cozy crafting
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="music">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="music">
               🎶
             </span>{" "}
             Curated live music
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="food">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="food">
               🍛
             </span>{" "}
             Food pop ups
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="speaking head">
+            <span
+              role="img"
+              className="-ml-6 mr-2 sm:-ml-9"
+              aria-label="speaking head"
+            >
               🗣️
             </span>{" "}
             Live poetry and literature
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="recycle">
+            <span
+              role="img"
+              className="-ml-6 mr-2 sm:-ml-9"
+              aria-label="recycle"
+            >
               ♻️
             </span>{" "}
             Repair and reuse events
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="memo">
+            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="memo">
               📝
             </span>{" "}
             Workshops & learning
           </li>
           <li>
-            <span role="img" className="-ml-9 mr-2" aria-label="unicorn">
+            <span
+              role="img"
+              className="-ml-6 mr-2 sm:-ml-9"
+              aria-label="unicorn"
+            >
               🦄
             </span>{" "}
             Your unique mix
