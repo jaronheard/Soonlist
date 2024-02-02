@@ -238,7 +238,7 @@ function EventActionButtons({
             className="text-lg font-medium leading-none text-neutral-2"
             href={`/${user.username}/events`}
           >
-            @{user.username}
+            added by @{user.username}
           </Link>
         )}
         {visibility === "private" && (
