@@ -59,7 +59,7 @@ const userEvents: { title: string; href: string; description: string }[] = [
 
 const allEvents: { title: string; href: string; description: string }[] = [
   {
-    title: "Explore Events",
+    title: "Explore",
     href: "/explore",
     description: "Explore events from all users",
   },
@@ -73,7 +73,7 @@ const userFollowing: { title: string; href: string; description: string }[] = [
 ];
 const allUsers: { title: string; href: string; description: string }[] = [
   {
-    title: "Explore Users",
+    title: "Explore",
     href: "/users",
     description: "Explore all users",
   },

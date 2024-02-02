@@ -32,10 +32,9 @@ export async function generateMetadata(
 
 export default async function Page() {
   const users = await api.user.getAll.query();
-  console.log(users);
 
   return (
-    <>
+    <div className="mx-auto max-w-2xl">
       {/* <Card>
         <CardHeader>
           <CardTitle>Top Users</CardTitle>
@@ -49,7 +48,9 @@ export default async function Page() {
       </Card>
       <div className="p-4"></div> */}
       <div className="flex place-items-center">
-        <div className="font-medium">All users</div>
+        <p className="font-heading text-5xl font-bold leading-[3.5rem] tracking-tight text-neutral-1">
+          All users
+        </p>
       </div>
       <div className="p-4"></div>
       <div className="grid grid-cols-1 gap-4">
@@ -58,6 +59,6 @@ export default async function Page() {
         ))}
       </div>
       <div className="p-4"></div>
-    </>
+    </div>
   );
 }
