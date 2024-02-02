@@ -319,7 +319,11 @@ export function Event(props: EventProps) {
                 id={id}
                 username={user.username}
               />
-              <FollowEventButton eventId={id} following={isFollowing} />
+              {!isOwner && (
+                <FollowEventButton eventId={id} following={isFollowing} />
+              )}
+              {isOwner && <EditButton type="icon" userId={user.id} id={id} />}
+              {isOwner && <DeleteButton type="icon" userId={user.id} id={id} />}
             </div>
           </div>
         </div>

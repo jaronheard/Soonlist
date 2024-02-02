@@ -39,7 +39,7 @@ export function DeleteButton(props: DeleteButtonProps) {
   if (props.type === "icon") {
     return (
       <SignedIn>
-        <Button size={"icon"} asChild>
+        <Button size={"icon"} asChild variant={"destructive"}>
           <Link href={`/event/${props.id}/edit`}>
             <TrashIcon className="size-6" />
           </Link>
