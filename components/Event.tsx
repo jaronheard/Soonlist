@@ -249,7 +249,7 @@ export function Event(props: EventProps) {
           </Badge>
         </>
       )} */}
-      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-40">
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
         <div>
           <div className="flex flex-col gap-5">
             {/* duplicated with EventListItem */}

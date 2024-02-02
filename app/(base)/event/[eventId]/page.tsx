@@ -91,7 +91,7 @@ export default async function Page({ params }: Props) {
       />
       <div className="w-full border-b border-neutral-3 pt-16 sm:pt-24"></div>
       <div className="w-full pt-16 sm:pt-24"></div>
-      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-40">
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
         <UserInfo userId={event.userId} variant="description" />
         <EventList
           currentEvents={[]}

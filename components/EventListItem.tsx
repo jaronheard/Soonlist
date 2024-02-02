@@ -27,6 +27,7 @@ import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventListItemProps = {
+  variant?: "card";
   user: User;
   eventFollows: EventFollow[];
   comments: Comment[];
@@ -83,6 +84,99 @@ function EventDateDisplaySimple({
       </div>
       <div className="font-heading text-4xl font-bold leading-none tracking-tighter text-neutral-1">
         {startDateInfo?.day}
+      </div>
+    </div>
+  );
+}
+
+function EventDetailsCard({
+  id,
+  name,
+  startDate,
+  startTime,
+  endDate,
+  endTime,
+  timezone,
+  location,
+  description,
+}: {
+  id: string;
+  name: string;
+  image?: string;
+  startTime: string;
+  startDate: string;
+  endTime: string;
+  endDate: string;
+  timezone: string;
+  description?: string;
+  location?: string;
+  EventActionButtons?: React.ReactNode;
+}) {
+  const { timezone: userTimezone } = useContext(TimezoneContext);
+  if (!startDate || !endDate) {
+    console.error("startDate or endDate is missing");
+    return null;
+  }
+
+  if (!timezone) {
+    console.error("timezone is missing");
+    return null;
+  }
+
+  const startDateInfo = startTime
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(startDate);
+  const endDateInfo = endTime
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(endDate);
+
+  if (!startDateInfo || !endDateInfo) {
+    console.error("startDateInfo or endDateInfo is missing");
+    return null;
+  }
+
+  if (!description) {
+    description = "";
+  }
+
+  return (
+    <div className="flex w-full flex-col items-start justify-center gap-2">
+      {/* duplicated with Event */}
+      <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
+        {eventTimesAreDefined(startTime, endTime) && (
+          <>
+            <div className="flex-wrap text-neutral-2">
+              {startDateInfo?.dayOfWeek.substring(0, 3)}
+              {", "}
+              {startDateInfo?.month}/{startDateInfo?.day}/
+              {startDateInfo?.year.toString().substring(2, 4)}{" "}
+              <span className="text-neutral-3">{"//"}</span>{" "}
+              {timeFormatDateInfo(startDateInfo)}-
+              {timeFormatDateInfo(endDateInfo)}
+            </div>
+          </>
+        )}
+      </div>
+      {/* end duplicated with Event */}
+      <div className="flex w-full flex-col items-start gap-2">
+        <Link
+          href={`/event/${id}`}
+          className={
+            "line-clamp-2 pr-12 text-2xl font-bold leading-9 tracking-wide text-interactive-1"
+          }
+        >
+          {name}
+        </Link>
+        <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
+          {location && (
+            <Link
+              href={`https://www.google.com/maps/search/?api=1&query=${location}`}
+              className={"line-clamp-1 shrink break-all text-neutral-2"}
+            >
+              {location}
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -178,6 +272,17 @@ function EventDetails({
             </Link>
           )}
         </div>
+        {/* full width image with a max height, fill container to width */}
+        {image && (
+          <div className="relative h-32 w-full grow sm:h-56 lg:hidden">
+            <Image
+              className="rounded-xl object-cover"
+              src={image}
+              alt=""
+              fill
+            />
+          </div>
+        )}
         <div className="pt-2">
           <EventDescription description={description} />
         </div>
@@ -290,33 +395,93 @@ export function EventListItem(props: EventListItemProps) {
   // const showOtherCurators = !isSelf && props.showOtherCurators;
   // const showCurator = showOtherCurators || !props.hideCurator;
 
+  if (props.variant !== "card") {
+    return (
+      <div className="relative">
+        {image && (
+          <Link href={`/event/${id}`}>
+            <Image
+              className="absolute left-0 top-7 z-10 hidden size-20 -translate-x-1/2 rounded-xl lg:block"
+              src={image}
+              alt=""
+              width={375}
+              height={375}
+            />
+          </Link>
+        )}
+        <li
+          className={cn(
+            "relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm",
+            { "lg:pl-16": !!image }
+          )}
+        >
+          {/* {visibility === "private" && (
+          <>
+            <Badge className="max-w-fit" variant="destructive">
+              Unlisted Event
+            </Badge>
+            <div className="p-1"></div>
+          </>
+        )} */}
+          <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
+          <div className="absolute right-0 top-0 p-3">
+            <EventDateDisplaySimple
+              startDate={event.startDate}
+              startTime={event.startTime}
+              endDate={event.endDate}
+              endTime={event.endTime}
+              timezone={event.timeZone || "America/Los_Angeles"}
+            />
+          </div>
+          <div className="flex w-full items-start gap-7">
+            <EventDetails
+              id={id}
+              name={event.name!}
+              image={image}
+              startDate={event.startDate!}
+              endDate={event.endDate!}
+              startTime={event.startTime!}
+              endTime={event.endTime!}
+              timezone={event.timeZone || "America/Los_Angeles"}
+              location={event.location}
+              description={event.description}
+              EventActionButtons={
+                <EventActionButtons
+                  user={user}
+                  event={event}
+                  id={id}
+                  isOwner={!!isOwner}
+                  isFollowing={isFollowing}
+                  visibility={props.visibility}
+                />
+              }
+            />
+          </div>
+        </li>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative">
+    <li
+      className={cn(
+        "relative h-full overflow-hidden rounded-xl bg-white shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm"
+      )}
+    >
       {image && (
-        <Link href={`/event/${id}`}>
+        <div className="relative h-44 w-full grow">
           <Image
-            className="absolute left-0 top-7 z-10 hidden size-20 -translate-x-1/2 rounded-xl lg:block"
+            className="rounded-t-xl object-cover"
             src={image}
             alt=""
-            width={375}
-            height={375}
+            fill
           />
-        </Link>
+        </div>
       )}
-      <li
-        className={cn(
-          "relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm",
-          { "lg:pl-16": !!image }
-        )}
-      >
-        {/* {visibility === "private" && (
-        <>
-          <Badge className="max-w-fit" variant="destructive">
-            Unlisted Event
-          </Badge>
-          <div className="p-1"></div>
-        </>
-      )} */}
+      {!image && (
+        <div className="relative h-44 w-full grow bg-accent-yellow"></div>
+      )}
+      <div className="relative overflow-hidden">
         <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
         <div className="absolute right-0 top-0 p-3">
           <EventDateDisplaySimple
@@ -327,31 +492,23 @@ export function EventListItem(props: EventListItemProps) {
             timezone={event.timeZone || "America/Los_Angeles"}
           />
         </div>
-        <div className="flex w-full items-start gap-7">
-          <EventDetails
-            id={id}
-            name={event.name!}
-            image={image}
-            startDate={event.startDate!}
-            endDate={event.endDate!}
-            startTime={event.startTime!}
-            endTime={event.endTime!}
-            timezone={event.timeZone || "America/Los_Angeles"}
-            location={event.location}
-            description={event.description}
-            EventActionButtons={
-              <EventActionButtons
-                user={user}
-                event={event}
-                id={id}
-                isOwner={!!isOwner}
-                isFollowing={isFollowing}
-                visibility={props.visibility}
-              />
-            }
-          />
+        <div className="flex w-full items-start gap-7 p-5">
+          {props.variant === "card" && (
+            <EventDetailsCard
+              id={id}
+              name={event.name!}
+              image={image}
+              startDate={event.startDate!}
+              endDate={event.endDate!}
+              startTime={event.startTime!}
+              endTime={event.endTime!}
+              timezone={event.timeZone || "America/Los_Angeles"}
+              location={event.location}
+              description={event.description}
+            />
+          )}
         </div>
-      </li>
-    </div>
+      </div>
+    </li>
   );
 }

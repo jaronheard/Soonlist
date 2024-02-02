@@ -63,7 +63,7 @@ export default async function Page({ params }: Props) {
     user && list.listFollows.find((item) => item.userId === user.id);
 
   return (
-    <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-40">
+    <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
       <div className="flex flex-col gap-4">
         <p className="font-heading text-5xl font-bold leading-[3.5rem] tracking-tight text-neutral-1">
           {list.name}
