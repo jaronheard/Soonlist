@@ -21,10 +21,14 @@ interface Event {
 }
 
 export const extractJsonFromResponse = (response: string) => {
-  console.log("extractJsonFromResponse", response);
-  const res = JSON.parse(response) as Response;
-  console.log("res", res);
-  return res;
+  /// sometimes the response is not a JSON string, but a stringified JSON string
+  const start = response.indexOf("```json");
+  const end = response.lastIndexOf("```");
+  if (start === -1 || end === -1) {
+    return JSON.parse(response) as Response;;
+  }
+  const jsonString = response.slice(start + 7, end);
+  return JSON.parse(jsonString) as Response;
 };
 
 const blankEvent = {
