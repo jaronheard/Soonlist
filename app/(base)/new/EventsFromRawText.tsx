@@ -21,15 +21,10 @@ interface Event {
 }
 
 export const extractJsonFromResponse = (response: string) => {
-  console.log("response", response);
-  // OpenAI returns a JSON code block starting with ```json and ending with ```
-  const start = response.indexOf("```json");
-  const end = response.lastIndexOf("```");
-  if (start === -1 || end === -1) {
-    return null;
-  }
-  const jsonString = response.slice(start + 7, end);
-  return JSON.parse(jsonString) as Response;
+  console.log("extractJsonFromResponse", response);
+  const res = JSON.parse(response) as Response;
+  console.log("res", res);
+  return res;
 };
 
 const blankEvent = {
