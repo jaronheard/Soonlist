@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { toast } from "sonner";
-import { Textarea } from "./ui/textarea";
+import { ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
-import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -27,12 +26,6 @@ const formSchema = z.object({
   zipcode: z.string().min(5, {
     message: "Zipcode must be at least 5 characters.",
   }),
-  why: z
-    .string()
-    .max(1000, {
-      message: "Why must be less than 1000 characters.",
-    })
-    .optional(),
 });
 
 export function WaitlistSignup() {
@@ -42,7 +35,7 @@ export function WaitlistSignup() {
     defaultValues: {
       email: "",
       zipcode: "",
-      why: "",
+      // why: "",
     },
   });
 
@@ -52,7 +45,7 @@ export function WaitlistSignup() {
     },
     onSuccess: () => {
       form.reset();
-      toast.success("You've been added to the waitlist.");
+      toast.success("🎉 You're on the list!");
     },
   });
   // 2. Define a submit handler.
@@ -62,21 +55,25 @@ export function WaitlistSignup() {
 
   return (
     <>
-      <div className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+      <div className="text-center font-heading text-4xl font-bold leading-[1.0833] tracking-tight text-gray-900 sm:text-5xl">
         Get early access
       </div>
+      <p className="mx-auto mt-6 max-w-3xl text-center text-2xl leading-9 text-gray-400">
+        Soonlist is currently in preview. Be one of the first to know when we
+        launch in your area, and get free early supporter perks! 🎉
+      </p>
       <div className="py-4"></div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 md:flex-row md:gap-4"
+          className="flex flex-col justify-center gap-4 md:flex-row md:gap-4"
         >
-          <div className="flex w-56 shrink-0 flex-col gap-4 sm:w-96 sm:flex-row">
+          <div className="flex flex-col gap-4 sm:flex-row">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="max-w-48 sm:max-w-[36rem]">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="" {...field} />
@@ -101,29 +98,9 @@ export function WaitlistSignup() {
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="why"
-            render={({ field }) => (
-              <FormItem
-                className={cn("transition-all duration-150", {
-                  "w-full h-44 opacity-100": form.formState.isDirty,
-                  "w-0 h-0 md:h-44 opacity-0": !form.formState.isDirty,
-                })}
-              >
-                <FormLabel>Why (optional)</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} rows={2} />
-                </FormControl>
-                <FormDescription>
-                  Tell us what excites you about SoonList (optional).
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <Button className="max-w-min md:mt-8" type="submit">
-            Join Waitlist
+            <ClipboardList className="mr-2 size-4"></ClipboardList>
+            Get on the list
           </Button>
         </form>
       </Form>

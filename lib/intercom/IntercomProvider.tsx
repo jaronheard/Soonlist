@@ -23,7 +23,7 @@ export const IntercomProvider = ({ children }: IntercomProviderProps) => {
     loadIntercom();
   }
 
-  if (typeof window !== "undefined" && isLoaded) {
+  if (typeof window !== "undefined" && isLoaded && user) {
     const intercomOptions = user
       ? {
           user_id: user.id,

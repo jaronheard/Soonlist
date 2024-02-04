@@ -3,6 +3,7 @@
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { CardDescription } from "./ui/card";
 import { cn } from "@/lib/utils";
@@ -31,13 +32,7 @@ export default function ListUpdateButton(props: ListUpdateButtonProps) {
   return (
     <>
       <SignedIn>
-        <button
-          className={cn(
-            "hover:bg-black/80 mt-8 w-full rounded-xl bg-black px-4 py-2 font-medium text-white sm:mt-10",
-            {
-              "cursor-not-allowed opacity-60": updateList.isLoading,
-            }
-          )}
+        <Button
           onClick={() =>
             updateList.mutate({
               listId: props.id,
@@ -48,15 +43,14 @@ export default function ListUpdateButton(props: ListUpdateButtonProps) {
           disabled={updateList.isLoading}
         >
           {updateList.isLoading ? (
-            <span className="loading">
-              <span className="bg-white" />
-              <span className="bg-white" />
-              <span className="bg-white" />
-            </span>
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              Please wait
+            </>
           ) : (
             "Update"
           )}
-        </button>
+        </Button>
       </SignedIn>
       <SignedOut>
         {/* TODO: Redirect somewhere meaningful */}

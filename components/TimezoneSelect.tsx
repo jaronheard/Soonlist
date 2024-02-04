@@ -44,7 +44,7 @@ export function TimezoneSelect({
     timezones,
   });
   const currentTimezone = options.find((tz) => tz.value === timezone)?.label;
-  const widthClass = fullWidth ? "w-full" : "w-[200px]";
+  const widthClass = fullWidth ? "w-full" : "w-[240px]";
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -53,7 +53,7 @@ export function TimezoneSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`${widthClass} justify-between`}
+          className={`${widthClass} justify-between rounded-md text-sm`}
         >
           <span className="truncate">{currentTimezone}</span>
           <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />

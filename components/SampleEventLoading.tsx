@@ -29,7 +29,7 @@ export default async function SampleEventLoading({ limit = 5 } = {}) {
   return (
     <div className="grid place-items-center">
       <div className="mr-auto flex place-items-center gap-2.5 px-6 font-medium">
-        Portland area events happening soon
+        Events from early access users
       </div>
       <div className="grid w-full space-y-12 p-6">
         {Array<number>(limit).map((_, i) => (

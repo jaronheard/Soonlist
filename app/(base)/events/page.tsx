@@ -16,7 +16,9 @@ export default async function Page() {
   return (
     <>
       <div className="p-4"></div>
-      <h2 className="text-sm font-medium text-gray-500">All Events</h2>
+      <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 md:text-8xl md:leading-[0.875]">
+        All events
+      </h1>
       <EventList
         currentEvents={currentEvents}
         futureEvents={futureEvents}

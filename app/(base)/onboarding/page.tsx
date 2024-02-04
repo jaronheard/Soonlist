@@ -2,7 +2,6 @@ import React from "react";
 import { CheckCircleIcon, CurrencyDollarIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { CTAButton } from "@/components/CallToActions";
-import RainbowText from "@/components/RainbowText";
 import {
   Accordion,
   AccordionContent,
@@ -23,53 +22,37 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <div className="bg-white px-6 py-32 lg:px-8">
-      <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
-        <RainbowText className="text-base font-semibold leading-7">
-          Get Started
-        </RainbowText>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Welcome to Soonlist
-        </h1>
-        <h2 className="mt-16 text-2xl font-bold tracking-tight text-gray-900">
-          Our Vision
-        </h2>
-        <p className="mt-6 max-w-xl text-xl leading-8">
+    <div>
+      <div className="prose mx-auto sm:prose-lg lg:prose-xl xl:prose-2xl 2xl:prose-2xl">
+        <h1 className="font-heading">Welcome to Soonlist</h1>
+        <h2 className="font-heading">Our Vision</h2>
+        <p className="">
           To allow individuals and organizations to easily curate, collect and
           share events in a way that allows for more cross-pollination,
           community, and coalition building, through a transparent,
           community-owned platform … and seamlessly integrate with our digital
           calendars.
         </p>
-        <div className="bg-white pt-16">
-          <RainbowText className="text-base font-semibold leading-7">
-            Features
-          </RainbowText>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Using Soonlist
-          </h2>
-          <p className="mt-6 max-w-xl text-xl leading-8">
+        <div className="">
+          <h2 className="font-heading">Using Soonlist</h2>
+          <p className="">
             At the core, Soonlist is a way to collect, curate and share events,
             and seamlessly add them to your calendar.
           </p>
-          <h2 className="mt-16 text-2xl font-bold tracking-tight text-gray-900">
-            Adding events
-          </h2>
-          <ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600">
-            <li className="flex flex-col gap-4">
+          <h2 className="font-heading">Adding events</h2>
+          <ul role="list" className="">
+            <li className="">
               <div className="flex gap-x-3">
                 <CheckCircleIcon
-                  className="mt-1 size-5 flex-none text-gray-600"
+                  className="mt-1.5 size-6 flex-none text-neutral-1"
                   aria-hidden="true"
                 />
                 <span>
-                  <strong className="font-semibold text-gray-900">
-                    iOS/MacOS Shortcut:{" "}
-                  </strong>
+                  <strong className="">iOS/MacOS Shortcut: </strong>
                   Capture events from Instagram stories or anywhere else.{" "}
                   <a
                     href="https://www.icloud.com/shortcuts/a44e63d78fd44a08b22dcaaea2bfa7f6"
-                    className="text-blue-500 underline"
+                    className="text-interactive-1 underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -78,18 +61,16 @@ export default function Page() {
                   .
                 </span>
               </div>
-              <Accordion type="multiple" className="-mt-4 w-full">
-                <AccordionItem value="instructions" className="px-6 opacity-80">
-                  <AccordionTrigger>
-                    <div className="flex gap-1.5">Instructions</div>
-                  </AccordionTrigger>
-                  <AccordionContent className="mx-6">
-                    <ol className="flex list-outside list-decimal flex-col gap-4">
+              <Accordion type="multiple" className="-mt-6">
+                <AccordionItem value="instructions" className="">
+                  <AccordionTrigger>Instructions</AccordionTrigger>
+                  <AccordionContent className="">
+                    <ol className="">
                       <li>
                         Visit{" "}
                         <a
                           href="https://www.icloud.com/shortcuts/a44e63d78fd44a08b22dcaaea2bfa7f6"
-                          className="text-blue-500 underline"
+                          className="text-interactive-1 underline"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -118,25 +99,24 @@ export default function Page() {
 
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 size-5 flex-none text-gray-600"
+                className="mt-1.5 size-6 flex-none text-neutral-1"
                 aria-hidden="true"
               />
               <span>
                 <strong className="font-semibold text-gray-900">
-                  Paste Event Details:
+                  Add event from text or image
                 </strong>{" "}
-                Create editable calendar events by pasting event data in any
-                format from the home page.
+                Create a new event from text or an image. Soonlist will extract
+                the date, time, and location from the text or image and create a
+                draft event for you to edit and save.
               </span>
             </li>
           </ul>
-          <h2 className="mt-16 text-2xl font-bold tracking-tight text-gray-900">
-            Customize, Calendar, and Share
-          </h2>
-          <ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600">
+          <h2 className="font-heading">Customize, Calendar, and Share</h2>
+          <ul role="list" className="">
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 size-5 flex-none text-gray-600"
+                className="mt-1.5 size-6 flex-none text-neutral-1"
                 aria-hidden="true"
               />
               <span>
@@ -150,7 +130,7 @@ export default function Page() {
             </li>
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 size-5 flex-none text-gray-600"
+                className="mt-1.5 size-6 flex-none text-neutral-1"
                 aria-hidden="true"
               />
               <span>
@@ -162,7 +142,7 @@ export default function Page() {
             </li>
             <li className="flex gap-x-3">
               <CheckCircleIcon
-                className="mt-1 size-5 flex-none text-gray-600"
+                className="mt-1.5 size-6 flex-none text-neutral-1"
                 aria-hidden="true"
               />
               <span>
@@ -175,31 +155,24 @@ export default function Page() {
             </li>
           </ul>
         </div>
-        <div className="bg-white pt-16">
-          <div className="mx-auto max-w-xl text-base leading-7 text-gray-700">
-            <RainbowText className="text-base font-semibold leading-7">
-              Transparency
-            </RainbowText>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Building in Public
-            </h2>
-            <p className="mt-6 text-xl leading-8">
+        <div className="">
+          <div className="">
+            <h2 className="font-heading">Building in Public</h2>
+            <p className="">
               We believe in the power of transparency and community engagement.
               That&apos;s why we&apos;re building in public, open-source,
               towards community ownership.
             </p>
-            <h3 className="mt-12 text-2xl font-bold tracking-tight text-gray-900">
-              Business Model
-            </h3>
-            <p className="mt-6">
+            <h3 className="font-heading">Business Model</h3>
+            <p className="">
               We are exploring sources of revenue that support our goal of
               community ownership. Have an idea?{" "}
               <ContactUs>Let us know!</ContactUs> Our three best ideas:
             </p>
-            <ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600">
+            <ul role="list" className="">
               <li className="flex gap-x-3">
                 <CurrencyDollarIcon
-                  className="mt-1 size-5 flex-none text-gray-600"
+                  className="mt-1.5 size-6 flex-none text-neutral-1"
                   aria-hidden="true"
                 />
                 <span>
@@ -213,7 +186,7 @@ export default function Page() {
               </li>
               <li className="flex gap-x-3">
                 <CurrencyDollarIcon
-                  className="mt-1 size-5 flex-none text-gray-600"
+                  className="mt-1.5 size-6 flex-none text-neutral-1"
                   aria-hidden="true"
                 />
                 <span>
@@ -227,7 +200,7 @@ export default function Page() {
               </li>
               <li className="flex gap-x-3">
                 <CurrencyDollarIcon
-                  className="mt-1 size-5 flex-none text-gray-600"
+                  className="mt-1.5 size-6 flex-none text-neutral-1"
                   aria-hidden="true"
                 />
                 <span>
@@ -239,15 +212,13 @@ export default function Page() {
                 </span>
               </li>
             </ul>
-            <h3 className="mt-12 text-2xl font-bold tracking-tight text-gray-900">
-              Collaborative Open Source
-            </h3>
-            <p className="mt-6">
+            <h3 className="font-heading">Collaborative Open Source</h3>
+            <p className="">
               Soonlist is more than a platform; it&apos;s a collaborative
               endeavor. We&apos;re open-source, meaning{" "}
               <a
-                href="https://www.icloud.com/shortcuts/a44e63d78fd44a08b22dcaaea2bfa7f6"
-                className="text-blue-500 underline"
+                href="https://github.com/jaronheard/Soonlist"
+                className="text-interactive-1 underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -257,15 +228,14 @@ export default function Page() {
             </p>
           </div>
         </div>
-        <div className="p-6"></div>
-        <div className="flex items-center gap-x-6 lg:shrink-0">
-          <CTAButton />
-          <Button variant="link" asChild>
-            <Link href="/explore">
-              Explore <span aria-hidden="true">→</span>
-            </Link>
-          </Button>
-        </div>
+      </div>
+      <div className="mx-auto flex max-w-min gap-6">
+        <CTAButton />
+        <Button variant="link" asChild>
+          <Link href="/explore">
+            Explore <span aria-hidden="true">→</span>
+          </Link>
+        </Button>
       </div>
     </div>
   );

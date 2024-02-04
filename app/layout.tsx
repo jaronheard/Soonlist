@@ -7,8 +7,9 @@ import { PHProvider, Providers } from "./providers";
 import { TRPCReactProvider } from "@/trpc/react";
 
 // edge causes sigkill on vercel about 50% of the time
-// export const runtime = "edge";
-// export const preferredRegion = "pdx1";
+// workaround is to use VERCEL_FORCE_NO_BUILD_CACHE=1
+export const runtime = "edge";
+export const preferredRegion = "pdx1";
 
 const kalam = Kalam({
   subsets: ["latin"],
@@ -29,9 +30,9 @@ const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
 });
 
 const title = "Soonlist";
-const tagline = "Create, collect, curate & share events";
+const tagline = "Event lists for everybody";
 const description =
-  "Join a network of passionate curators and participants building community around events that matter.";
+  "Gather and share events that matter to you and your communities.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.soonlist.com/"),
@@ -39,15 +40,15 @@ export const metadata: Metadata = {
   description: tagline,
   openGraph: {
     siteName: "Soonlist",
-    title: "Create, collect, curate & share events",
+    title: "Event lists for everybody",
     description,
     locale: "en_US",
     type: "website",
     images: [
       {
         url: "/api/og",
-        width: 800,
-        height: 400,
+        width: 1200,
+        height: 630,
       },
     ],
   },

@@ -74,6 +74,7 @@ export function SaveButton(props: SaveButtonProps) {
         >
           <Button
             onClick={() => {
+              console.log("props", props);
               localStorage.setItem("updatedProps", JSON.stringify(props));
             }}
           >

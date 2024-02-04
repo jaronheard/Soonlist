@@ -1,36 +1,33 @@
-import { Suspense } from "react";
-// import AddEvent from "../AddEvent";
-// import Leaderboard from "@/components/Leaderboard";
-import LeaderboardSkeleton from "@/components/LeaderboardSkeleton";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-import NextEvents from "@/components/NextEvents";
+import EventList from "@/components/EventList";
+import { api } from "@/trpc/server";
 
-export default function Page() {
+export default async function Page() {
+  const events = await api.event.getAll.query();
+
+  const pastEvents = events.filter((item) => item.endDateTime < new Date());
+
+  const currentEvents = events.filter(
+    (item) => item.startDateTime < new Date() && item.endDateTime > new Date()
+  );
+  const futureEvents = events.filter(
+    (item) => item.startDateTime >= new Date()
+  );
   return (
     <>
-      <div className="max-w-xl">
-        <Suspense fallback={<LeaderboardSkeleton />}>
-          <NextEvents upcoming />
-        </Suspense>
-      </div>
+      <div className="p-4"></div>
+      <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 md:text-8xl md:leading-[0.875]">
+        Explore
+      </h1>
+      <p className="mt-6 max-w-[30rem] text-2xl leading-9 text-gray-400">
+        Explore events from early access users
+      </p>
+      <EventList
+        currentEvents={currentEvents}
+        futureEvents={futureEvents}
+        pastEvents={pastEvents}
+        variant="card"
+      />
       <div className="p-6"></div>
-      {/* <Card>
-        <CardHeader>
-          <CardTitle>Top Users</CardTitle>
-          <CardDescription>Most Upcoming Events</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Suspense fallback={<LeaderboardSkeleton />}>
-            <Leaderboard />
-          </Suspense>
-        </CardContent>
-      </Card> */}
     </>
   );
 }

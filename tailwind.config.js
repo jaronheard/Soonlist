@@ -80,8 +80,8 @@ module.exports = {
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "calc(var(--radius) - 1.25rem)",
+        sm: "calc(var(--radius) - 1.5rem)",
       },
       keyframes: {
         "accordion-down": {
@@ -103,6 +103,20 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-plex-sans)"],
         heading: ["var(--font-kalam)"],
+      },
+      letterSpacing: {
+        tight: "-0.09rem",
+        tighterish: "-0.18rem",
+      },
+      lineHeight: {
+        7.5: "1.875rem",
+      },
+      spacing: {
+        "2.5xl": "44.125rem",
+        "7xl": "87.5rem",
+      },
+      fontSize: {
+        "2.5xl": "1.75rem",
       },
     },
   },

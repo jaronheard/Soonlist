@@ -14,7 +14,31 @@ import {
 } from "@/components/Accordian";
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { collapseSimilarEvents } from "@/lib/similarEvents";
-import { cn } from "@/lib/utils";
+
+function ListContainer({
+  children,
+  variant,
+}: {
+  children: React.ReactNode;
+  variant?: "card";
+}) {
+  if (variant === "card") {
+    return (
+      <ul
+        role="list"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        {children}
+      </ul>
+    );
+  }
+
+  return (
+    <ul role="list" className="flex max-w-full flex-col gap-4">
+      {children}
+    </ul>
+  );
+}
 
 export type EventWithUser = Event & {
   user: User;
@@ -34,7 +58,8 @@ export default function EventList({
   currentEvents: EventWithUser[];
   futureEvents: EventWithUser[];
   pastEvents: EventWithUser[];
-  variant?: "future-minimal";
+  // variant is either "future-minimal" or "card" or undefined
+  variant?: "future-minimal" | "card";
   showOtherCurators?: boolean;
   hideCurator?: boolean;
   showPrivateEvents?: boolean;
@@ -55,6 +80,7 @@ export default function EventList({
   );
   const showPastEvents = variant !== "future-minimal";
   const showCurrentEvents = true;
+  const variantToUse = variant === "card" ? "card" : undefined;
 
   return (
     <Accordion
@@ -63,16 +89,11 @@ export default function EventList({
       defaultValue={["current-events", "future-events"]}
     >
       {showPastEvents && (
-        <AccordionItem
-          value="past-events"
-          className={clsx("px-6 opacity-80", {
-            "border-b-0": currentEventsToUse.length > 0,
-          })}
-        >
+        <AccordionItem value="past-events" className={clsx("px-6 opacity-80")}>
           <AccordionTrigger>
-            <div className="flex gap-1.5">
+            <div className="flex w-full items-center justify-between">
               Past events
-              <span className="mr-2 inline-flex items-center justify-center rounded-full bg-gray-600 px-2 py-1 text-xs font-bold leading-none text-slate-100">
+              <span className="inline-flex items-center justify-center rounded-full bg-interactive-1 px-2 py-1 text-lg font-semibold leading-none text-white">
                 {pastEventsToUse.length}
               </span>
             </div>
@@ -81,9 +102,10 @@ export default function EventList({
             {pastEventsToUse.length === 0 ? (
               <p className="mx-6 text-lg text-gray-500">No past events.</p>
             ) : (
-              <ul role="list" className="max-w-full divide-y divide-gray-100">
+              <ListContainer variant={variantToUse}>
                 {pastEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventListItem
+                    variant={variantToUse}
                     key={item.id}
                     user={item.user}
                     eventFollows={item.eventFollows}
@@ -97,20 +119,17 @@ export default function EventList({
                     similarEvents={similarEvents}
                   />
                 ))}
-              </ul>
+              </ListContainer>
             )}
           </AccordionContent>
         </AccordionItem>
       )}
       {showCurrentEvents && currentEventsToUse.length > 0 && (
-        <AccordionItem
-          value="current-events"
-          className="ring-black/10 relative border-b-0 bg-gradient-to-tr from-blue-500/10 via-indigo-500/10 to-purple-500/10 px-6 ring-1 sm:rounded-2xl"
-        >
-          <AccordionTrigger>
-            <div className="flex gap-1.5 font-semibold">
+        <AccordionItem value="current-events" className="px-6">
+          <AccordionTrigger className="-mx-6 px-6">
+            <div className="flex w-full items-center justify-between">
               Happening now
-              <span className="mr-2 inline-flex items-center justify-center rounded-full bg-gray-600 px-2 py-1 text-xs font-bold leading-none text-slate-100">
+              <span className="inline-flex items-center justify-center rounded-full bg-interactive-1 px-2 py-1 text-lg font-semibold leading-none text-white">
                 {currentEventsToUse.length}
               </span>
             </div>
@@ -119,12 +138,10 @@ export default function EventList({
             {currentEventsToUse.length === 0 ? (
               <p className="mx-6 text-lg text-gray-500">No future events.</p>
             ) : (
-              <ul
-                role="list"
-                className="max-w-full divide-y divide-gray-100 rounded-xl"
-              >
+              <ListContainer variant={variantToUse}>
                 {currentEventsToUse.map(({ event: item, similarEvents }) => (
                   <EventListItem
+                    variant={variantToUse}
                     key={item.id}
                     user={item.user}
                     eventFollows={item.eventFollows}
@@ -138,27 +155,21 @@ export default function EventList({
                     similarEvents={similarEvents}
                   />
                 ))}
-              </ul>
+              </ListContainer>
             )}
           </AccordionContent>
         </AccordionItem>
       )}
       <AccordionItem
         value="future-events"
-        className={clsx("px-6", {
-          "border-b-0": futureEventsToUse.length > 0,
-        })}
+        className={clsx("px-6")}
         disabled={variant === "future-minimal"}
       >
         {variant !== "future-minimal" && (
-          <AccordionTrigger
-            className={cn({
-              "hover:no-underline": variant === "future-minimal",
-            })}
-          >
-            <div className="flex gap-1.5">
+          <AccordionTrigger>
+            <div className="flex w-full items-center justify-between">
               Upcoming events
-              <span className="mr-2 inline-flex items-center justify-center rounded-full bg-gray-600 px-2 py-1 text-xs font-bold leading-none text-slate-100">
+              <span className="inline-flex items-center justify-center rounded-full bg-interactive-1 px-2 py-1 text-lg font-semibold leading-none text-white">
                 {futureEventsToUse.length}
               </span>
             </div>
@@ -168,12 +179,10 @@ export default function EventList({
           {futureEventsToUse.length === 0 ? (
             <p className="mx-6 text-lg text-gray-500">No future events.</p>
           ) : (
-            <ul
-              role="list"
-              className="max-w-full divide-y divide-gray-100 rounded-xl"
-            >
+            <ListContainer variant={variantToUse}>
               {futureEventsToUse.map(({ event: item, similarEvents }) => (
                 <EventListItem
+                  variant={variantToUse}
                   key={item.id}
                   user={item.user}
                   eventFollows={item.eventFollows}
@@ -187,7 +196,7 @@ export default function EventList({
                   similarEvents={similarEvents}
                 />
               ))}
-            </ul>
+            </ListContainer>
           )}
         </AccordionContent>
       </AccordionItem>

@@ -1,13 +1,16 @@
 import { Suspense, lazy } from "react";
 import { currentUser } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
 import AddEvent from "../AddEvent";
 import ImageUpload from "./ImageUpload";
-import EventsFromSaved from "./EventsFromSaved";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
 
+const EventsFromSaved = dynamic(() => import("./EventsFromSaved"), {
+  ssr: false,
+});
 const EventsFromRawText = lazy(() => import("./EventsFromRawText"));
 
 export const maxDuration = 60;
@@ -33,59 +36,53 @@ export default async function Page({ searchParams }: Props) {
 
   if (searchParams.saveIntent) {
     return (
-      <>
-        <YourDetails lists={lists || undefined} />
-        <div className="p-4"></div>
-        <ImageUpload filePath={searchParams.filePath} />
-        <div className="p-4"></div>
-        <Suspense fallback={<AddToCalendarCardSkeleton />}>
+      <Suspense>
+        <div className="flex w-full flex-col items-center gap-8">
+          <YourDetails lists={lists || undefined} />
+          <ImageUpload filePath={searchParams.filePath} />
           <EventsFromSaved />
-        </Suspense>
-      </>
+        </div>
+      </Suspense>
     );
   }
 
   if (searchParams.filePath && !searchParams.rawText) {
     return (
-      <>
+      <div className="flex w-full flex-col items-center gap-8">
         <YourDetails lists={lists || undefined} />
-        <div className="p-4"></div>
         <ImageUpload filePath={searchParams.filePath} />
-        <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromImage
             timezone={timezone}
             filePath={searchParams.filePath}
           />
         </Suspense>
-      </>
+      </div>
     );
   }
 
   if (!searchParams.rawText) {
     return (
-      <>
+      <div className="flex w-full flex-col items-center gap-8">
         <Suspense>
           <AddEvent lists={lists || undefined} />
         </Suspense>
-      </>
+      </div>
     );
   }
 
   if (searchParams.rawText) {
     return (
-      <>
+      <div className="flex w-full flex-col items-center gap-8">
         <YourDetails lists={lists || undefined} />
-        <div className="p-4"></div>
         <ImageUpload filePath={searchParams.filePath} />
-        <div className="p-4"></div>
         <Suspense fallback={<AddToCalendarCardSkeleton />}>
           <EventsFromRawText
             timezone={timezone}
             rawText={searchParams.rawText}
           />
         </Suspense>
-      </>
+      </div>
     );
   }
 }

@@ -69,7 +69,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={`group w-full justify-between ${
+            className={`group w-full justify-between rounded-md text-sm ${
               selected.length > 1 ? "h-full" : "h-10"
             }`}
             onClick={() => setOpen(!open)}
@@ -87,7 +87,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                     asChild
                     variant="outline"
                     size="icon"
-                    className="border-none"
+                    className="size-3 border-none"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         handleUnselect(item);
@@ -103,7 +103,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                       handleUnselect(item);
                     }}
                   >
-                    <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                    <X className="size-3 text-muted-foreground hover:text-foreground" />
                   </Button>
                 </Badge>
               ))}
@@ -111,7 +111,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                 <span>{props.placeholder ?? "Select ..."}</span>
               )}
             </div>
-            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">
@@ -133,7 +133,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                 >
                   <Check
                     className={cn(
-                      "mr-2 h-4 w-4",
+                      "mr-2 size-4",
                       selected.some((item) => item.value === option.value)
                         ? "opacity-100"
                         : "opacity-0"

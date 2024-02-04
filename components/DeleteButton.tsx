@@ -4,12 +4,15 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import { TrashIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 import { DropdownMenuItem } from "./DropdownMenu";
+import { Button } from "./ui/button";
 import { api } from "@/trpc/react";
 
 export type DeleteButtonProps = {
   userId: string;
   id: string;
+  type: "icon" | "button" | "dropdown";
 };
 
 export function DeleteButton(props: DeleteButtonProps) {
@@ -33,6 +36,18 @@ export function DeleteButton(props: DeleteButtonProps) {
     return null;
   }
 
+  if (props.type === "icon") {
+    return (
+      <SignedIn>
+        <Button size={"icon"} asChild variant={"destructive"}>
+          <Link href={`/event/${props.id}/edit`}>
+            <TrashIcon className="size-6" />
+          </Link>
+        </Button>
+      </SignedIn>
+    );
+  }
+
   return (
     <SignedIn>
       <DropdownMenuItem
@@ -42,7 +57,7 @@ export function DeleteButton(props: DeleteButtonProps) {
         disabled={deleteEvent.isLoading}
         className="text-red-600"
       >
-        <TrashIcon className="mr-2 h-4 w-4" />
+        <TrashIcon className="mr-2 size-4" />
         Delete
       </DropdownMenuItem>
     </SignedIn>

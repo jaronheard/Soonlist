@@ -59,7 +59,11 @@ const UserAnalytics = () => {
 };
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        variables: { colorPrimary: "rgb(90, 50, 251)", borderRadius: "16px" },
+      }}
+    >
       <IntercomProvider>
         <ContextProvider>
           {children}

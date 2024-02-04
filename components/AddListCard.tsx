@@ -63,6 +63,8 @@ export default function AddListCard({ ...initialProps }: AddListCardProps) {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+      </div>
+      <div className="col-span-full">
         {!initialProps.update && (
           <ListSaveButton
             afterSuccess={initialProps.afterSuccess}
