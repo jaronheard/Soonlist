@@ -46,7 +46,7 @@ const testimonials = [
     },
   },
   {
-    body: "Screenshotting an Instagram story and turning it into a calendar event on the open web in seconds feels like getting away with something!",
+    body: "Screenshotting a story and turning it into a calendar event in seconds feels like getting away with something!",
     author: {
       name: "Jaron Heard",
       handle: "jaronheard",
@@ -65,7 +65,7 @@ const testimonials = [
     },
   },
   {
-    body: "I love being able to save the shows I'm interested in and sharing my list with my friends.",
+    body: "I’m stoked that Soonlist helps me discover and share music events, especially those in non-conventional venues.",
     author: {
       name: "Josh Carr",
       handle: "joshcarr",
@@ -74,7 +74,7 @@ const testimonials = [
     },
   },
   {
-    body: "I love being able to see what's happening without having to scroll through social media.",
+    body: "I am so appreciative of a platform that allows me to connect with others and share events that is not based in social media.",
     author: {
       name: "Gina Roberti",
       handle: "ginabobina",
@@ -82,15 +82,15 @@ const testimonials = [
         "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWTBoWlBNUkxMc2FCazNEUDV5QkRDSThjZWkifQ&w=750&q=75",
     },
   },
-  {
-    body: "Even in these early stages, the vision for how this can benefit communities is clear and it's exciting to be part of.",
-    author: {
-      name: "Sarah Ashton",
-      handle: "sarah-a",
-      imageUrl:
-        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWUpwZnIyc25rM0JBOERmbUFPNXFMWlo0MXIifQ&w=750&q=75",
-    },
-  },
+  // {
+  //   body: "Even in these early stages, the vision for how this can benefit communities is clear and it's exciting to be part of.",
+  //   author: {
+  //     name: "Sarah Ashton",
+  //     handle: "sarah-a",
+  //     imageUrl:
+  //       "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWUpwZnIyc25rM0JBOERmbUFPNXFMWlo0MXIifQ&w=750&q=75",
+  //   },
+  // },
 ];
 
 const sampleEventId =
@@ -106,7 +106,7 @@ function EventDetails({ className }: { className?: string }) {
         7:30PM - 11:00PM // Turn Turn Turn
       </div>
       <div className="mt-1 text-lg font-semibold">
-        Dance Parpy: Sweat Out 2023
+        Dance Party: Sweat Out 2023
       </div>
       <p className="mt-1 text-sm text-gray-500">
         Let go! The entry fee ranges from $5 to $10. Arrive by 8:15 to be
@@ -175,7 +175,7 @@ function MakeAndShareListsOfEvents() {
                   <div className="">JAN 17 WEDS</div>
                   <div className="">4:00PM - 5:00PM</div>
                   <div className="text-balance">
-                    Dance Parpy: Sweat Out 2023 w/ PLNT DDJ
+                    Dance Party: Sweat Out 2023 w/ PLNT DDJ
                   </div>
                   <p className="text-balance px-3.5 font-medium">
                     Let go! The entry fee ranges from $5 to $10. Arrive by 8:15
