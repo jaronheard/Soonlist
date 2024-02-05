@@ -150,80 +150,18 @@ export default function Page() {
         </ul>
         <h3 className="font-heading">Event List Ideas</h3>
         <p>
-          <i>There are so many other possibilities!</i>
+          I'd love to see event lists in these areas, or your own special blend!
         </p>
-        <ul className="list-none">
-          <li>
-            <span
-              role="img"
-              className="-ml-6 mr-2 sm:-ml-9"
-              aria-label="watermelon"
-            >
-              🍉
-            </span>{" "}
-            Activism & solidarity events
-          </li>
-          <li>
-            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="art">
-              🖼️
-            </span>{" "}
-            Art openings & artist talks
-          </li>
-          <li>
-            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="yarn">
-              🧶
-            </span>{" "}
-            Cozy crafting
-          </li>
-          <li>
-            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="music">
-              🎶
-            </span>{" "}
-            Curated live music
-          </li>
-          <li>
-            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="food">
-              🍛
-            </span>{" "}
-            Food pop ups
-          </li>
-          <li>
-            <span
-              role="img"
-              className="-ml-6 mr-2 sm:-ml-9"
-              aria-label="speaking head"
-            >
-              🗣️
-            </span>{" "}
-            Live poetry and literature
-          </li>
-          <li>
-            <span
-              role="img"
-              className="-ml-6 mr-2 sm:-ml-9"
-              aria-label="recycle"
-            >
-              ♻️
-            </span>{" "}
-            Repair and reuse events
-          </li>
-          <li>
-            <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="memo">
-              📝
-            </span>{" "}
-            Workshops & learning
-          </li>
-          <li>
-            <span
-              role="img"
-              className="-ml-6 mr-2 sm:-ml-9"
-              aria-label="unicorn"
-            >
-              🦄
-            </span>{" "}
-            Your unique mix
-          </li>
-        </ul>
+        <p>
+          Activism 🍉, Adventure 🧗🏽, Art 🎨, Community 👥, Culture 🌍, Cycling
+          🚴🏻, Dance 💃🏿, Dating ❤️, Design 🖌, DIY 🔨, Education 📚, Fashion 👗,
+          Festivals 🎪, Fitness 🏋🏽, Food 🍲, Freelance 💼, Friends 👫🏾, Gaming
+          🎮, Gardening 🌱, History 📖, Innovation 💡, Kids 👶🏼, Languages 🌐,
+          Literature 📖, Markets 🛒, Music 🎵, Networking 🤝🏽, Outdoors 🌳,
+          Photography 📷, Poetry ✍🏽, Queer 🏳️‍🌈, Science 🔬, Spirituality 🕉,
+          Sustainability ♻️, Tech 💻, Theater 🎭, Travel ✈️, Volunteer 👐🏼,
+          Wellness 🧘🏽, Workshops 🛠, but especially your own special blend 🦄!
+        </p>
       </div>
       <Button asChild>
         <a
@@ -237,8 +175,8 @@ export default function Page() {
       </Button>
       <p>
         <em>
-          Apply by Friday, February 9 at Noon PST to be considered for the first
-          cohort of curators
+          Sign up by Friday, February 9 at Noon PST to be part of the first
+          cohort!
         </em>
       </p>
       <p>
