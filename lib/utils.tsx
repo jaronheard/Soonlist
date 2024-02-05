@@ -3,6 +3,38 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Temporal } from "@js-temporal/polyfill";
 import { customAlphabet } from "nanoid";
+import { type AddToCalendarButtonProps } from "@/types";
+
+export const blankEvent = {
+  options: [
+    "Apple",
+    "Google",
+    "iCal",
+    "Microsoft365",
+    "MicrosoftTeams",
+    "Outlook.com",
+    "Yahoo",
+  ] as
+    | (
+        | "Apple"
+        | "Google"
+        | "iCal"
+        | "Microsoft365"
+        | "MicrosoftTeams"
+        | "Outlook.com"
+        | "Yahoo"
+      )[]
+    | undefined,
+  buttonStyle: "text" as const,
+  name: "Manual entry" as const,
+  description: "" as const,
+  location: "" as const,
+  startDate: "today" as const,
+  endDate: "" as const,
+  startTime: "" as const,
+  endTime: "" as const,
+  timeZone: "" as const,
+} as AddToCalendarButtonProps;
 
 const daysOfWeek = [
   "Sunday",

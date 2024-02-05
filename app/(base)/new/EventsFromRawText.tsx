@@ -1,43 +1,12 @@
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
-import { type AddToCalendarButtonProps } from "@/types";
 import {
   addCommonAddToCalendarPropsFromResponse,
   getPrompt,
   getSystemMessage,
 } from "@/lib/prompts";
-
-const blankEvent = {
-  options: [
-    "Apple",
-    "Google",
-    "iCal",
-    "Microsoft365",
-    "MicrosoftTeams",
-    "Outlook.com",
-    "Yahoo",
-  ] as
-    | (
-        | "Apple"
-        | "Google"
-        | "iCal"
-        | "Microsoft365"
-        | "MicrosoftTeams"
-        | "Outlook.com"
-        | "Yahoo"
-      )[]
-    | undefined,
-  buttonStyle: "text" as const,
-  name: "Manual entry" as const,
-  description: "" as const,
-  location: "" as const,
-  startDate: "today" as const,
-  endDate: "" as const,
-  startTime: "" as const,
-  endTime: "" as const,
-  timeZone: "" as const,
-} as AddToCalendarButtonProps;
+import { blankEvent } from "@/lib/utils";
 
 // Create an OpenAI API client (that's edge friendly!)
 const config = {

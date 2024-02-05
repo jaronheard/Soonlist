@@ -2,6 +2,7 @@
 import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useEffect, useRef } from "react";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
+import { blankEvent } from "@/lib/utils";
 
 export function Output({
   events,
@@ -22,38 +23,7 @@ export function Output({
   }, [finished]);
 
   const eventsAreValid = finished && events && events.length > 0;
-  const blankEvents = [
-    {
-      options: [
-        "Apple",
-        "Google",
-        "iCal",
-        "Microsoft365",
-        "MicrosoftTeams",
-        "Outlook.com",
-        "Yahoo",
-      ] as
-        | (
-            | "Apple"
-            | "Google"
-            | "iCal"
-            | "Microsoft365"
-            | "MicrosoftTeams"
-            | "Outlook.com"
-            | "Yahoo"
-          )[]
-        | undefined,
-      buttonStyle: "text" as const,
-      name: "Manual entry" as const,
-      description: "" as const,
-      location: "" as const,
-      startDate: "today" as const,
-      endDate: "" as const,
-      startTime: "" as const,
-      endTime: "" as const,
-      timeZone: "" as const,
-    } as AddToCalendarButtonType,
-  ];
+  const blankEvents = [blankEvent];
 
   return (
     <output className="">
