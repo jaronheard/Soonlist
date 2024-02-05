@@ -2,40 +2,12 @@ import * as Bytescale from "@bytescale/sdk";
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
-import { generatedIcsArrayToEvents } from "@/lib/icalUtils";
-import { type AddToCalendarButtonProps } from "@/types";
-import { getPrompt } from "@/lib/prompts";
-
-const blankEvent = {
-  options: [
-    "Apple",
-    "Google",
-    "iCal",
-    "Microsoft365",
-    "MicrosoftTeams",
-    "Outlook.com",
-    "Yahoo",
-  ] as
-    | (
-        | "Apple"
-        | "Google"
-        | "iCal"
-        | "Microsoft365"
-        | "MicrosoftTeams"
-        | "Outlook.com"
-        | "Yahoo"
-      )[]
-    | undefined,
-  buttonStyle: "text" as const,
-  name: "Manual entry" as const,
-  description: "" as const,
-  location: "" as const,
-  startDate: "today" as const,
-  endDate: "" as const,
-  startTime: "" as const,
-  endTime: "" as const,
-  timeZone: "" as const,
-} as AddToCalendarButtonProps;
+import {
+  addCommonAddToCalendarPropsFromResponse,
+  getPrompt,
+  getSystemMessage,
+} from "@/lib/prompts";
+import { blankEvent } from "@/lib/utils";
 
 // Create an OpenAI API client (that's edge friendly!)
 const config = {
@@ -58,6 +30,7 @@ export default async function EventsFromImage({
   filePath: string;
   timezone: string;
 }) {
+  const system = getSystemMessage();
   const prompt = getPrompt(timezone);
   const imageUrl = buildDefaultUrl(filePath);
 
@@ -68,7 +41,7 @@ export default async function EventsFromImage({
     messages: [
       {
         role: "system",
-        content: prompt.text,
+        content: system.text,
       },
       {
         role: "user",
@@ -81,6 +54,7 @@ export default async function EventsFromImage({
           },
         ],
       },
+      { role: "system", content: prompt.text },
     ],
   });
 
@@ -93,15 +67,9 @@ export default async function EventsFromImage({
     return <EventsError rawText={imageUrl} />;
   }
 
-  let events = [] as AddToCalendarButtonProps[];
+  const events = addCommonAddToCalendarPropsFromResponse(response);
 
-  try {
-    events = generatedIcsArrayToEvents(response);
-  } catch (e: unknown) {
-    console.log(e);
-  }
-
-  if (events.length === 0) {
+  if (!events || events.length === 0) {
     return (
       <>
         <EventsError rawText={imageUrl} response={response || undefined} />

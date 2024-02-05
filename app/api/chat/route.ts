@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { z } from "zod";
 import { type RequestResponse } from "@/server/db/types";
-import { getPrompt } from "@/lib/prompts";
+import { getPrompt, getSystemMessage } from "@/lib/prompts";
 
 export const dynamic = "force-dynamic";
 export const runtime = "edge";
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
   const json = (await req.json()) as unknown;
   const { messages, source, timezone } = requestDataSchema.parse(json);
   const requestStart = new Date();
+  const system = getSystemMessage();
   const prompt = getPrompt(timezone);
 
   const userMessages = messages.filter(
@@ -52,18 +53,19 @@ export async function POST(req: Request) {
 
   // Ask OpenAI for a streaming completion given the prompt
   const response = await openai.createChatCompletion({
-    model: "gpt-4-1106-preview",
+    model: "gpt-3.5-turbo-0125",
     stream: true,
 
     messages: [
       {
         role: "system",
-        content: prompt.text,
+        content: system.text,
       },
       {
         role: "user",
         content: lastUserMessage,
       },
+      { role: "system", content: prompt.text },
     ],
   });
 

@@ -11,7 +11,6 @@ import { UploadImageForProcessingButton } from "./new/UploadImageForProcessingBu
 import { Form } from "@/components/Form";
 import { Output } from "@/components/Output";
 import { cn, getLastMessages } from "@/lib/utils";
-import { generatedIcsArrayToEvents } from "@/lib/icalUtils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,6 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
 import { type List } from "@/server/db/types";
+import { addCommonAddToCalendarPropsFromResponse } from "@/lib/prompts";
 
 function Code({
   children,
@@ -80,9 +80,10 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   // Effects
   useEffect(() => {
     if (finished) {
-      const events = generatedIcsArrayToEvents(lastAssistantMessage);
-      setEvents(events);
-      if (events.length === 0) {
+      const updatedEvents =
+        addCommonAddToCalendarPropsFromResponse(lastAssistantMessage);
+      updatedEvents && setEvents(updatedEvents);
+      if (!(events && events.length > 0)) {
         toast.error(
           "Something went wrong. Add you event manually or try again."
         );

@@ -7,37 +7,7 @@ import { type List } from "@/server/db/types";
 import { type AddToCalendarButtonProps } from "@/types";
 import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
-
-const blankEvent = {
-  options: [
-    "Apple",
-    "Google",
-    "iCal",
-    "Microsoft365",
-    "MicrosoftTeams",
-    "Outlook.com",
-    "Yahoo",
-  ] as
-    | (
-        | "Apple"
-        | "Google"
-        | "iCal"
-        | "Microsoft365"
-        | "MicrosoftTeams"
-        | "Outlook.com"
-        | "Yahoo"
-      )[]
-    | undefined,
-  buttonStyle: "text" as const,
-  name: "Manual entry" as const,
-  description: "" as const,
-  location: "" as const,
-  startDate: "today" as const,
-  endDate: "" as const,
-  startTime: "" as const,
-  endTime: "" as const,
-  timeZone: "" as const,
-} as AddToCalendarButtonProps;
+import { blankEvent } from "@/lib/utils";
 
 export default function EventsFromSaved() {
   const [data, setData] = useState<AddToCalendarButtonProps>(blankEvent);
