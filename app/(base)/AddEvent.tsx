@@ -24,10 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
 import { type List } from "@/server/db/types";
-import {
-  addCommonAddToCalendarPropsFromResponse,
-  extractJsonFromResponse,
-} from "@/lib/prompts";
+import { addCommonAddToCalendarPropsFromResponse } from "@/lib/prompts";
 
 function Code({
   children,
@@ -86,9 +83,11 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
       const updatedEvents =
         addCommonAddToCalendarPropsFromResponse(lastAssistantMessage);
       updatedEvents && setEvents(updatedEvents);
-    }
-    if (!(events && events.length > 0)) {
-      toast.error("Something went wrong. Add you event manually or try again.");
+      if (!(events && events.length > 0)) {
+        toast.error(
+          "Something went wrong. Add you event manually or try again."
+        );
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
