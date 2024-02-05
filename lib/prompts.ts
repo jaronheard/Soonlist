@@ -1,6 +1,79 @@
 import { Temporal } from "@js-temporal/polyfill";
 import soft from "timezone-soft";
 
+// parse the response text into array of events. response format is:
+interface Response {
+  events: Event[]; // An array of events.
+}
+
+interface Event {
+  name: string; // The event's name.
+  description: string; // Short description of the event, its significance, and what attendees can expect.
+  startDate: string; // Start date in YYYY-MM-DD format.
+  startTime?: string; // Start time, if applicable (omit for all-day events).
+  endDate: string; // End date in YYYY-MM-DD format.
+  endTime?: string; // End time, if applicable (omit for all-day events).
+  timeZone: string; // Timezone in IANA format.
+  location: string; // Location of the event.
+}
+
+export const extractJsonFromResponse = (response: string) => {
+  try {
+    const start = response.indexOf("```json");
+    const end = response.lastIndexOf("```");
+    if (start === -1 || end === -1) {
+      return JSON.parse(response) as Response;
+    }
+    const jsonString = response.slice(start + 7, end);
+    return JSON.parse(jsonString) as Response;
+  } catch (error) {
+    console.error("An error occurred while parsing the JSON response:", error);
+    return undefined; // or handle the error in a way that is appropriate for your application
+  }
+};
+
+export const addCommonAddToCalendarProps = (events: Event[]) => {
+  return events.map((event) => {
+    return {
+      options: [
+        "Apple",
+        "Google",
+        "iCal",
+        "Microsoft365",
+        "MicrosoftTeams",
+        "Outlook.com",
+        "Yahoo",
+      ] as
+        | (
+            | "Apple"
+            | "Google"
+            | "iCal"
+            | "Microsoft365"
+            | "MicrosoftTeams"
+            | "Outlook.com"
+            | "Yahoo"
+          )[]
+        | undefined,
+      buttonStyle: "text" as const,
+      name: event.name,
+      description: event.description,
+      location: event.location,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      startTime: event.startTime || undefined,
+      endTime: event.endTime || undefined,
+      timeZone: event.timeZone,
+    };
+  });
+};
+
+export const addCommonAddToCalendarPropsFromResponse = (response: string) => {
+  const res = extractJsonFromResponse(response);
+  if (!res) return undefined;
+  const { events } = res;
+  return addCommonAddToCalendarProps(events);
+};
+
 export const systemMessage = () =>
   `You are a sophisticated AI capable of parsing text or images to extract calendar event details. Your outputs are structured, reliable, and candid, formatted in JSON according to a specific schema. You make assumptions when necessary but remain factual and direct. You admit uncertainties and avoid unfounded statements, ensuring every piece of information is backed up by the data provided or logical inference. Your responses are concise, prioritizing clarity and relevance to the task. You follow the JSON schema exactly.`;
 
@@ -68,8 +141,6 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
   const timezoneIANA = formatOffsetAsIANASoft(timezone);
   const now = Temporal.Now.instant().toZonedDateTimeISO(timezoneIANA);
   const date = now.toString();
-
-  console.log(timezoneIANA);
 
   return {
     text: getText(date, timezoneIANA),

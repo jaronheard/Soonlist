@@ -24,33 +24,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
 import { type List } from "@/server/db/types";
-
-// parse the response text into array of events. response format is:
-interface Response {
-  events: Event[]; // An array of events.
-}
-
-interface Event {
-  name: string; // The event's name.
-  description: string; // Short description of the event, its significance, and what attendees can expect.
-  startDate: string; // Start date in YYYY-MM-DD format.
-  startTime?: string; // Start time, if applicable (omit for all-day events).
-  endDate: string; // End date in YYYY-MM-DD format.
-  endTime?: string; // End time, if applicable (omit for all-day events).
-  timeZone: string; // Timezone in IANA format.
-  location: string; // Location of the event.
-}
-
-export const extractJsonFromResponse = (response: string) => {
-  /// sometimes the response is not a JSON string, but a stringified JSON string
-  const start = response.indexOf("```json");
-  const end = response.lastIndexOf("```");
-  if (start === -1 || end === -1) {
-    return JSON.parse(response) as Response;
-  }
-  const jsonString = response.slice(start + 7, end);
-  return JSON.parse(jsonString) as Response;
-};
+import {
+  addCommonAddToCalendarPropsFromResponse,
+  extractJsonFromResponse,
+} from "@/lib/prompts";
 
 function Code({
   children,
@@ -106,55 +83,12 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
   // Effects
   useEffect(() => {
     if (finished) {
-      try {
-        console.log("lastAssistantMessage", lastAssistantMessage);
-        const res = extractJsonFromResponse(lastAssistantMessage);
-        console.log("res", res);
-        if (!res) {
-          throw new Error("Failed to parse response");
-        }
-        const updatedEvents = res.events.map((event) => {
-          return {
-            options: [
-              "Apple",
-              "Google",
-              "iCal",
-              "Microsoft365",
-              "MicrosoftTeams",
-              "Outlook.com",
-              "Yahoo",
-            ] as
-              | (
-                  | "Apple"
-                  | "Google"
-                  | "iCal"
-                  | "Microsoft365"
-                  | "MicrosoftTeams"
-                  | "Outlook.com"
-                  | "Yahoo"
-                )[]
-              | undefined,
-            buttonStyle: "text" as const,
-            name: event.name,
-            description: event.description,
-            location: event.location,
-            startDate: event.startDate,
-            endDate: event.endDate,
-            startTime: event.startTime || undefined,
-            endTime: event.endTime || undefined,
-            timeZone: event.timeZone,
-          };
-        });
-        console.log("updatedEvents", updatedEvents);
-        setEvents(updatedEvents);
-      } catch (e: unknown) {
-        console.log(e);
-      }
-      if (!(events && events.length > 0)) {
-        toast.error(
-          "Something went wrong. Add you event manually or try again."
-        );
-      }
+      const updatedEvents =
+        addCommonAddToCalendarPropsFromResponse(lastAssistantMessage);
+      updatedEvents && setEvents(updatedEvents);
+    }
+    if (!(events && events.length > 0)) {
+      toast.error("Something went wrong. Add you event manually or try again.");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
