@@ -110,8 +110,11 @@ export default function Page() {
           <li>
             Share the event lists with your friends (social, text, however)
           </li>
+          <li>
+            Offer any feedback, ideas, or issues you have with the platform
+          </li>
         </ul>
-        <h3 className="font-heading">Benefits</h3>
+        <h3 className="font-heading">What you'll get</h3>
         <ul className="list-none">
           <li>
             <span role="img" className="-ml-6 mr-2 sm:-ml-9" aria-label="new">
@@ -153,7 +156,7 @@ export default function Page() {
           I'd love to see event lists in these areas, or your own special blend!
         </p>
         <p>
-          Activism 🍉, Adventure 🧗🏽, Art 🎨, Community 👥, Culture 🌍, Cycling
+          Activism 🕊️, Adventure 🧗🏽, Art 🎨, Community 👥, Culture 🌍, Cycling
           🚴🏻, Dance 💃🏿, Dating ❤️, Design 🖌, DIY 🔨, Education 📚, Fashion 👗,
           Festivals 🎪, Fitness 🏋🏽, Food 🍲, Freelance 💼, Friends 👫🏾, Gaming
           🎮, Gardening 🌱, History 📖, Innovation 💡, Kids 👶🏼, Languages 🌐,
