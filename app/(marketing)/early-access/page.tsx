@@ -106,7 +106,7 @@ export default function Page() {
             <a href="https://www.soonlist.com/">Soonlist</a> (I’ll help you get
             started and with any issues!)
           </li>
-          <li>Add events as you know about them for 1 month after we launch</li>
+          <li>Add events as you learn about them</li>
           <li>
             Share the event lists with your friends (social, text, however)
           </li>
