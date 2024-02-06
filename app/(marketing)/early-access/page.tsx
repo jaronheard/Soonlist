@@ -19,7 +19,7 @@ export default function Page() {
         platform to gather and share events that matter to you and your
         communities.
       </p>
-      <h3 className="font-heading">This Is For You If:</h3>
+      <h3 className="font-heading">This Is For You If You:</h3>
       <ul>
         <li>Know about events that are happening</li>
         <li>Want to contribute to more connection & community</li>
