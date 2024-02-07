@@ -63,6 +63,17 @@ export default function Page() {
           <a href="https://www.soonlist.com/">Soonlist</a>, event lists for
           everybody.
         </p>
+        {/* youtube embed */}
+        <p className="aspect-video">
+          <iframe
+            src="https://www.youtube.com/embed/TVLFPATSrok"
+            title="YouTube video player"
+            frameBorder={0}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="size-full"
+          />
+        </p>
         <p>
           I want to make it easy for anyone to make and share lists of events!
           I’m inspired by Portland’s community calendars like{" "}
@@ -103,16 +114,13 @@ export default function Page() {
         <ul>
           <li>
             Make an event list on{" "}
-            <a href="https://www.soonlist.com/">Soonlist</a> (I’ll help you get
-            started and with any issues!)
+            <a href="https://www.soonlist.com/">Soonlist</a>
           </li>
           <li>Add events as you learn about them</li>
           <li>
             Share the event lists with your friends (social, text, however)
           </li>
-          <li>
-            Offer any feedback, ideas, or issues you have with the platform
-          </li>
+          <li>Offer any feedback, ideas, or issues</li>
         </ul>
         <h3 className="font-heading">What you'll get</h3>
         <ul className="list-none">
@@ -159,7 +167,7 @@ export default function Page() {
           Activism 🕊️, Adventure 🧗🏽, Art 🎨, Community 👥, Culture 🌍, Cycling
           🚴🏻, Dance 💃🏿, Dating ❤️, Design 🖌, DIY 🔨, Education 📚, Fashion 👗,
           Festivals 🎪, Fitness 🏋🏽, Food 🍲, Freelance 💼, Friends 👫🏾, Gaming
-          🎮, Gardening 🌱, History 📖, Innovation 💡, Kids 👶🏼, Languages 🌐,
+          🎮, Gardening 🌱, History ⏳, Innovation 💡, Kids 👶🏼, Languages 🌐,
           Literature 📖, Markets 🛒, Music 🎵, Networking 🤝🏽, Outdoors 🌳,
           Photography 📷, Poetry ✍🏽, Queer 🏳️‍🌈, Science 🔬, Spirituality 🕉,
           Sustainability ♻️, Tech 💻, Theater 🎭, Travel ✈️, Volunteer 👐🏼,
