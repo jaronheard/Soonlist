@@ -60,7 +60,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${kalam.variable} ${plex_sans.variable}`}>
+    <html
+      lang="en"
+      className={`!overflow-x-hidden ${kalam.variable} ${plex_sans.variable}`}
+    >
       <PHProvider>
         <body>
           <PostHogPageView />
