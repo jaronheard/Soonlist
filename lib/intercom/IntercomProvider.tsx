@@ -19,11 +19,9 @@ export const IntercomProvider = ({ children }: IntercomProviderProps) => {
   const searchParams = useSearchParams();
   const { user, isLoaded } = useUser();
 
-  if (typeof window !== "undefined") {
-    loadIntercom();
-  }
-
   if (typeof window !== "undefined" && isLoaded && user) {
+    loadIntercom();
+
     const intercomOptions = user
       ? {
           user_id: user.id,
