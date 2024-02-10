@@ -66,7 +66,9 @@ export function AddToCalendarCard({
   const [startTime, setStartTime] = useState(initialProps.startTime);
   const [endDate, setEndDate] = useState(initialProps.endDate);
   const [endTime, setEndTime] = useState(initialProps.endTime);
-  const [timeZone, setTimeZone] = useState(initialProps.timeZone);
+  const [timeZone, setTimeZone] = useState(
+    initialProps.timeZone || "America/Los_Angeles"
+  );
   const [link, setLink] = useState("");
 
   const { listStyle, ...filteredProps } = initialProps;
