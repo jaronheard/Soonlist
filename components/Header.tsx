@@ -332,7 +332,7 @@ const sideNav = (username?: string | null) => [
       // { title: "All", href: "/events", signedInOnly: true },
       {
         title: "Add",
-        href: "/events/new",
+        href: "/new",
       },
     ],
   },

@@ -107,7 +107,7 @@ export default function Footer() {
 
 const navigation = {
   events: [
-    { name: "New", href: "/events/new" },
+    { name: "New", href: "/new" },
     { name: "All", href: "/events" },
     { name: "Explore", href: "/explore" },
   ],
