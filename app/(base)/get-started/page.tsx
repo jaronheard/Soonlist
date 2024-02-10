@@ -34,9 +34,9 @@ function Component() {
       <TabsContent value="profile">
         <Card className="w-full max-w-3xl">
           <CardHeader className="space-y-1">
-            <CardTitle>Your Profile</CardTitle>
+            <CardTitle>Profile</CardTitle>
             <CardDescription>
-              Add your bio and contact information.
+              Tell people about yourself and how to connect!
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -45,48 +45,49 @@ function Component() {
               <Textarea
                 className="h-[200px] min-h-[200px] resize-none"
                 id="bio"
-                placeholder="Enter your bio"
+                placeholder="Enter your bio (max 150 characters)"
               />
+              <CardDescription>
+                Example: I love ambient music, creative community building, and
+                vegan pop-ups.
+              </CardDescription>
             </div>
             <div>
               <Card className="space-y-4">
-                <CardContent className="p-0">
+                <CardHeader>
+                  <CardTitle>How to connect</CardTitle>
+                  <CardDescription>
+                    Share any contact info you want to make public.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="">
                   <table className="w-full border-collapse text-sm">
                     <tbody>
-                      <tr className="border-t">
-                        <td className="border-l p-2">
+                      <tr className="">
+                        <td className="p-2">
                           <Mail className="mr-2 inline-block size-4" />
                           Email
                         </td>
-                        <td className="border-l p-2">
-                          <Input placeholder="Enter your email" />
-                        </td>
-                        <td className="border-l p-2">
-                          <Toggle className="ml-auto" defaultChecked />
+                        <td className="p-2">
+                          <Input placeholder="email@example.com" />
                         </td>
                       </tr>
-                      <tr className="border-t">
-                        <td className="border-l p-2">
+                      <tr className="">
+                        <td className="p-2">
                           <Phone className="mr-2 inline-block size-4" />
                           Phone
                         </td>
-                        <td className="border-l p-2">
-                          <Input placeholder="Enter your phone" />
-                        </td>
-                        <td className="border-l p-2">
-                          <Toggle className="ml-auto" defaultChecked />
+                        <td className="p-2">
+                          <Input placeholder="1234567890" />
                         </td>
                       </tr>
-                      <tr className="border-t">
-                        <td className="border-l p-2">
+                      <tr className="">
+                        <td className="p-2">
                           <Instagram className="mr-2 inline-block size-4" />
-                          Instagram
+                          Insta
                         </td>
-                        <td className="border-l p-2">
-                          <Input placeholder="Enter your LinkedIn" />
-                        </td>
-                        <td className="border-l p-2">
-                          <Toggle className="ml-auto" defaultChecked />
+                        <td className="p-2">
+                          <Input placeholder="@username" />
                         </td>
                       </tr>
                     </tbody>
@@ -102,8 +103,144 @@ function Component() {
           </CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="list" />
-      <TabsContent value="event" />
+      <TabsContent value="list">
+        <CardHeader className="space-y-1">
+          <CardTitle>Your List</CardTitle>
+          <CardDescription>
+            Add your bio and contact information.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio</Label>
+            <Textarea
+              className="h-[200px] min-h-[200px] resize-none"
+              id="bio"
+              placeholder="Enter your bio"
+            />
+          </div>
+          <div>
+            <Card className="space-y-4">
+              <CardContent className="p-0">
+                <table className="w-full border-collapse text-sm">
+                  <tbody>
+                    <tr className="border-t">
+                      <td className="border-l p-2">
+                        <Mail className="mr-2 inline-block size-4" />
+                        Email
+                      </td>
+                      <td className="border-l p-2">
+                        <Input placeholder="Enter your email" />
+                      </td>
+                      <td className="border-l p-2">
+                        <Toggle className="ml-auto" defaultChecked />
+                      </td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="border-l p-2">
+                        <Phone className="mr-2 inline-block size-4" />
+                        Phone
+                      </td>
+                      <td className="border-l p-2">
+                        <Input placeholder="Enter your phone" />
+                      </td>
+                      <td className="border-l p-2">
+                        <Toggle className="ml-auto" defaultChecked />
+                      </td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="border-l p-2">
+                        <Instagram className="mr-2 inline-block size-4" />
+                        Instagram
+                      </td>
+                      <td className="border-l p-2">
+                        <Input placeholder="Enter your LinkedIn" />
+                      </td>
+                      <td className="border-l p-2">
+                        <Toggle className="ml-auto" defaultChecked />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button className="ml-auto" size="sm">
+            Next
+          </Button>
+        </CardFooter>
+      </TabsContent>
+      <TabsContent value="event">
+        <CardHeader className="space-y-1">
+          <CardTitle>Add your first event</CardTitle>
+          <CardDescription>
+            Add your bio and contact information.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio</Label>
+            <Textarea
+              className="h-[200px] min-h-[200px] resize-none"
+              id="bio"
+              placeholder="Enter your bio"
+            />
+          </div>
+          <div>
+            <Card className="space-y-4">
+              <CardContent className="p-0">
+                <table className="w-full border-collapse text-sm">
+                  <tbody>
+                    <tr className="border-t">
+                      <td className="border-l p-2">
+                        <Mail className="mr-2 inline-block size-4" />
+                        Email
+                      </td>
+                      <td className="border-l p-2">
+                        <Input placeholder="Enter your email" />
+                      </td>
+                      <td className="border-l p-2">
+                        <Toggle className="ml-auto" defaultChecked />
+                      </td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="border-l p-2">
+                        <Phone className="mr-2 inline-block size-4" />
+                        Phone
+                      </td>
+                      <td className="border-l p-2">
+                        <Input placeholder="Enter your phone" />
+                      </td>
+                      <td className="border-l p-2">
+                        <Toggle className="ml-auto" defaultChecked />
+                      </td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="border-l p-2">
+                        <Instagram className="mr-2 inline-block size-4" />
+                        Instagram
+                      </td>
+                      <td className="border-l p-2">
+                        <Input placeholder="Enter your LinkedIn" />
+                      </td>
+                      <td className="border-l p-2">
+                        <Toggle className="ml-auto" defaultChecked />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button className="ml-auto" size="sm">
+            Next
+          </Button>
+        </CardFooter>
+      </TabsContent>
     </Tabs>
   );
 }
