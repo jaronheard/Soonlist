@@ -129,7 +129,16 @@ export const userRouter = createTRPCRouter({
           message: "No user id found in session",
         });
       }
-      return ctx.db.update(users).set(input).where(eq(users.id, userId));
+      return ctx.db
+        .update(users)
+        .set({
+          bio: input.bio || null,
+          publicEmail: input.publicEmail || null,
+          publicPhone: input.publicPhone || null,
+          publicInsta: input.publicInsta || null,
+          publicWebsite: input.publicWebsite || null,
+        })
+        .where(eq(users.id, userId));
     }),
 
   // getTopUsersByUpcomingEvents: publicProcedure
