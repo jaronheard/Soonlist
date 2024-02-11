@@ -198,7 +198,8 @@ export default function UserProfileForm({
           <CardHeader>
             <CardTitle>How to connect</CardTitle>
             <CardDescription>
-              Share any contact info you want to make public.
+              Share any contact info you&apos;d like visible publicly so others
+              can connect with you.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -208,7 +209,10 @@ export default function UserProfileForm({
                 name="publicEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="flex items-center gap-1">
+                      <Mail className="size-4" />
+                      Email
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="email@example.com" {...field} />
                     </FormControl>
@@ -221,7 +225,10 @@ export default function UserProfileForm({
                 name="publicPhone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel className="flex items-center gap-1">
+                      <Phone className="size-4" />
+                      Phone
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="1234567890" {...field} />
                     </FormControl>
@@ -234,7 +241,10 @@ export default function UserProfileForm({
                 name="publicInsta"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Insta</FormLabel>
+                    <FormLabel className="flex items-center gap-1">
+                      <Instagram className="size-4" />
+                      Instagram
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="username" {...field} />
                     </FormControl>
