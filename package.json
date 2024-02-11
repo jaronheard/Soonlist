@@ -8,7 +8,8 @@
     "lint": "next lint --fix",
     "sync-users": "node scripts/sync-users.mjs",
     "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:dr": "pscale dr create timetime dev"
   },
   "dependencies": {
     "@bytescale/sdk": "^3.26.0",
