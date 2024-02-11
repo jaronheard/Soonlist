@@ -4,8 +4,9 @@ import { Instagram, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { type z } from "zod";
 import { ProgressIcon } from "./page";
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import {
@@ -14,7 +15,6 @@ import {
   CardHeader,
   CardContent,
   Card,
-  CardFooter,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { api } from "@/trpc/react";
+import { userAdditionalInfoSchema } from "@/lib/schemas";
 
 export function OnboardingTabs() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -141,35 +143,29 @@ export function OnboardingTabs() {
   );
 }
 
-const userAdditionalInfoSchema = z.object({
-  bio: z.string().max(150, "Bio must be 150 characters or less").optional(),
-  publicEmail: z.string().email("Enter a valid email address").optional(),
-  publicPhone: z
-    .string()
-    .max(20, "Phone number must be 20 digits or less")
-    .optional(),
-  publicInsta: z
-    .string()
-    .max(31, "Instagram username must be 31 characters or less")
-    .optional(),
-});
-
 export default function UserProfileForm({
   onSubmitSuccess,
 }: {
   onSubmitSuccess: () => void;
 }) {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(userAdditionalInfoSchema),
   });
 
+  const updateAdditionalInfo = api.user.updateAdditionalInfo.useMutation({
+    onError: () => {
+      toast.error("Bio and public contact info not saved. Please try again.");
+    },
+    onSuccess: () => {
+      toast.success("Bio and public contact info saved.");
+      router.refresh();
+      onSubmitSuccess();
+    },
+  });
+
   function onSubmit(values: z.infer<typeof userAdditionalInfoSchema>) {
-    toast(
-      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-      </pre>
-    );
-    onSubmitSuccess();
+    updateAdditionalInfo.mutate(values);
   }
 
   return (
