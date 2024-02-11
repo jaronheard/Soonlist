@@ -2,6 +2,10 @@
 
 import { Instagram, Mail, Phone } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
 import { ProgressIcon } from "./page";
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import {
@@ -12,10 +16,18 @@ import {
   Card,
   CardFooter,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export function OnboardingTabs() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -50,74 +62,13 @@ export function OnboardingTabs() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                className="h-[200px] min-h-[200px] resize-none"
-                id="bio"
-                placeholder="Enter your bio (max 150 characters)"
-              />
-              <CardDescription>
-                Example: I love ambient music, creative community building, and
-                vegan pop-ups.
-              </CardDescription>
-            </div>
-            <div>
-              <Card className="space-y-4">
-                <CardHeader>
-                  <CardTitle>How to connect</CardTitle>
-                  <CardDescription>
-                    Share any contact info you want to make public.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="">
-                  <table className="w-full border-collapse text-sm">
-                    <tbody>
-                      <tr className="">
-                        <td className="p-2">
-                          <Mail className="mr-2 inline-block size-4" />
-                          Email
-                        </td>
-                        <td className="p-2">
-                          <Input placeholder="email@example.com" />
-                        </td>
-                      </tr>
-                      <tr className="">
-                        <td className="p-2">
-                          <Phone className="mr-2 inline-block size-4" />
-                          Phone
-                        </td>
-                        <td className="p-2">
-                          <Input placeholder="1234567890" />
-                        </td>
-                      </tr>
-                      <tr className="">
-                        <td className="p-2">
-                          <Instagram className="mr-2 inline-block size-4" />
-                          Insta
-                        </td>
-                        <td className="p-2">
-                          <Input placeholder="@username" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </CardContent>
-              </Card>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button
-              className="ml-auto"
-              size="sm"
-              onClick={() => {
+            <UserProfileForm
+              onSubmitSuccess={() => {
                 scrollTo(0, 0);
                 handleTabChange("setup");
               }}
-            >
-              Next
-            </Button>
-          </CardFooter>
+            />
+          </CardContent>
         </Card>
       </TabsContent>
       <TabsContent value="setup">
@@ -187,5 +138,119 @@ export function OnboardingTabs() {
         </Card>
       </TabsContent>
     </Tabs>
+  );
+}
+
+const userAdditionalInfoSchema = z.object({
+  bio: z.string().max(150, "Bio must be 150 characters or less").optional(),
+  publicEmail: z.string().email("Enter a valid email address").optional(),
+  publicPhone: z
+    .string()
+    .max(20, "Phone number must be 20 digits or less")
+    .optional(),
+  publicInsta: z
+    .string()
+    .max(31, "Instagram username must be 31 characters or less")
+    .optional(),
+});
+
+export default function UserProfileForm({
+  onSubmitSuccess,
+}: {
+  onSubmitSuccess: () => void;
+}) {
+  const form = useForm({
+    resolver: zodResolver(userAdditionalInfoSchema),
+  });
+
+  function onSubmit(values: z.infer<typeof userAdditionalInfoSchema>) {
+    toast(
+      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+      </pre>
+    );
+    onSubmitSuccess();
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="space-y-2">
+          <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Bio</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Enter your bio (max 150 characters)"
+                    className="h-[200px] min-h-[200px] resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Example: I love ambient music, creative community building,
+                  and vegan pop-ups.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <Card className="my-4">
+          <CardHeader>
+            <CardTitle>How to connect</CardTitle>
+            <CardDescription>
+              Share any contact info you want to make public.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="publicEmail"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="email@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="publicPhone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="1234567890" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="publicInsta"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Insta</FormLabel>
+                    <FormControl>
+                      <Input placeholder="username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </CardContent>
+        </Card>
+        <Button type="submit">Next</Button>
+      </form>
+    </Form>
   );
 }
