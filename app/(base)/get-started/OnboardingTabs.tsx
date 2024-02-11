@@ -1,6 +1,6 @@
 "use client";
 
-import { Instagram, Mail, Phone } from "lucide-react";
+import { Globe, Instagram, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -247,6 +247,22 @@ export default function UserProfileForm({
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="publicWebsite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-1">
+                      <Globe className="size-4" />
+                      Website
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="www.example.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -226,6 +226,7 @@ export const users = mysqlTable(
     publicEmail: varchar("publicEmail", { length: 254 }), // per RFC 5321
     publicPhone: varchar("publicPhone", { length: 20 }), // per E.123
     publicInsta: varchar("publicInsta", { length: 31 }), // per instagram
+    publicWebsite: varchar("publicWebsite", { length: 2083 }), // per internet explorer max url length
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

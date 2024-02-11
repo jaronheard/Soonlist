@@ -11,4 +11,8 @@ export const userAdditionalInfoSchema = z.object({
     .string()
     .max(31, "Instagram username must be 31 characters or less")
     .optional(),
+  publicWebsite: z
+    .string()
+    .max(1083, "Website url must be 2083 characters or less")
+    .optional(),
 });
