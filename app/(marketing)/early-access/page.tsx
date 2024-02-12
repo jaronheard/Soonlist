@@ -36,12 +36,6 @@ export default function Page() {
         </a>
       </Button>
       <p>
-        <em>
-          Apply by Friday, February 9 at Noon PST to be considered for the first
-          cohort of curators
-        </em>
-      </p>
-      <p>
         {" "}
         <span role="img" aria-label="pray">
           🙏
@@ -184,12 +178,6 @@ export default function Page() {
           I want to make an event list!
         </a>
       </Button>
-      <p>
-        <em>
-          Sign up by Friday, February 9 at Noon PST to be part of the first
-          cohort!
-        </em>
-      </p>
       <p>
         {" "}
         <span role="img" aria-label="pray">
