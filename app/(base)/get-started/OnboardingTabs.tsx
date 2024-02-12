@@ -1,13 +1,21 @@
 "use client";
 
-import { Globe, Instagram, Mail, Phone } from "lucide-react";
+import {
+  Globe,
+  Instagram,
+  Mail,
+  Phone,
+  CheckCircle2,
+  CircleDashed,
+  Pen,
+} from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { type z } from "zod";
-import { ProgressIcon } from "./page";
+import { ProgressIcon } from "./OnboardingTabs";
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import {
   CardTitle,
@@ -30,8 +38,13 @@ import {
 } from "@/components/ui/form";
 import { api } from "@/trpc/react";
 import { userAdditionalInfoSchema } from "@/lib/schemas";
+import { cn } from "@/lib/utils";
 
-export function OnboardingTabs() {
+export function OnboardingTabs({
+  additionalInfo,
+}: {
+  additionalInfo: z.infer<typeof userAdditionalInfoSchema>;
+}) {
   const [activeTab, setActiveTab] = useState("profile");
 
   const handleTabChange = (value: string) => {
@@ -65,6 +78,7 @@ export function OnboardingTabs() {
           </CardHeader>
           <CardContent className="space-y-6">
             <UserProfileForm
+              defaultValues={additionalInfo}
               onSubmitSuccess={() => {
                 scrollTo(0, 0);
                 handleTabChange("setup");
@@ -144,12 +158,15 @@ export function OnboardingTabs() {
 }
 
 export default function UserProfileForm({
+  defaultValues,
   onSubmitSuccess,
 }: {
   onSubmitSuccess: () => void;
+  defaultValues: z.infer<typeof userAdditionalInfoSchema>;
 }) {
   const router = useRouter();
   const form = useForm({
+    defaultValues: defaultValues,
     resolver: zodResolver(userAdditionalInfoSchema),
   });
 
@@ -275,4 +292,24 @@ export default function UserProfileForm({
       </form>
     </Form>
   );
+}
+export function ProgressIcon({
+  status,
+  className,
+}: {
+  status: "complete" | "active" | "incomplete";
+  className?: string;
+}) {
+  const commonClasses = "mr-2 size-4";
+
+  if (status === "complete") {
+    return <CheckCircle2 className={cn(commonClasses, className)} />;
+  }
+  if (status === "active") {
+    return <Pen className={cn(commonClasses, className)} />;
+  }
+  if (status === "incomplete") {
+    return <CircleDashed className={cn(commonClasses, className)} />;
+  }
+  return null;
 }
