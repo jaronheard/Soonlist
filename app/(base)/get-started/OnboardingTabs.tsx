@@ -15,7 +15,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { type z } from "zod";
-import { ProgressIcon } from "./OnboardingTabs";
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import {
   CardTitle,
