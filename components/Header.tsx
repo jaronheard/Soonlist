@@ -189,7 +189,7 @@ export function Nav() {
         <SignedOut>
           <NavigationMenuItem className="hidden lg:block">
             <SignInButton
-              afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/getting-started`}
+              afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/get-started`}
             >
               <Button variant="secondary">Log In</Button>
             </SignInButton>
@@ -453,7 +453,7 @@ export function MobileNav() {
           <Separator className="my-3" />
           <SignedOut>
             <SignInButton
-              afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/getting-started`}
+              afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/get-started`}
             >
               <Button variant="secondary" className="w-full">
                 Log In

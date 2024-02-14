@@ -15,7 +15,7 @@ export default function OnboardingContinueButton() {
     : `/${user?.username}/events`;
   const signedOutUrl = saveIntent
     ? `${process.env.NEXT_PUBLIC_URL}/new?saveIntent=true&filePath=${filePath}`
-    : `${process.env.NEXT_PUBLIC_URL}/getting-started`;
+    : `${process.env.NEXT_PUBLIC_URL}/get-started`;
 
   return (
     <>

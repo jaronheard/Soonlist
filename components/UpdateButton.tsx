@@ -70,7 +70,7 @@ export function UpdateButton(props: UpdateButtonProps) {
         {/* TODO: Does this show up anywhere? */}
         <SignInButton
           afterSignInUrl={`${process.env.NEXT_PUBLIC_URL}/`}
-          afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/getting-started`}
+          afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/get-started`}
         >
           <Button>Sign in to update</Button>
         </SignInButton>
