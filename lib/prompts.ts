@@ -81,7 +81,7 @@ export const getText = (date: string, timezone: string) => `# CONTEXT
 The current date is ${date}, and the default timezone is ${timezone} unless specified otherwise.
 
 ## YOUR JOB
-Above, I pasted a text or image from which to extract calendar event details.
+Above, I pasted a text or image from which to extract calendar event details for upcoming events.
 
 You will
 1. Identify the event details that need to be captured.
@@ -124,7 +124,7 @@ interface Event {
   description: string; // Short description of the event, its significance, and what attendees can expect.
   startDate: string; // Start date in YYYY-MM-DD format.
   startTime?: string; // Start time. ALWAYS include if known. Omit ONLY if known to be an all-day event.
-  endDate: string; // End date in YYYY-MM-DD format. 
+  endDate: string; // End date in YYYY-MM-DD format.
   endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
@@ -144,7 +144,7 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 
   return {
     text: getText(date, timezoneIANA),
-    version: "v2024.02.04.1",
+    version: "v2024.02.14.1",
   };
 };
 
