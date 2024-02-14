@@ -56,7 +56,7 @@ export default function ListUpdateButton(props: ListUpdateButtonProps) {
         {/* TODO: Redirect somewhere meaningful */}
         <SignInButton
           afterSignInUrl={`${process.env.NEXT_PUBLIC_URL}/`}
-          afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/`}
+          afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/getting-started`}
         >
           <Button>Sign in to update</Button>
         </SignInButton>

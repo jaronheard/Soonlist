@@ -53,7 +53,7 @@ export default function ListSaveButton(props: ListSaveButtonProps) {
         {/* TODO: Redirect somewhere meaningful */}
         <SignInButton
           afterSignInUrl={`${process.env.NEXT_PUBLIC_URL}/`}
-          afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/`}
+          afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/getting-started`}
         >
           <Button>Sign in to save</Button>
         </SignInButton>
