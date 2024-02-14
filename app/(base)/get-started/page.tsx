@@ -1,0 +1,39 @@
+import { currentUser } from "@clerk/nextjs";
+import { OnboardingTabs } from "./OnboardingTabs";
+import { api } from "@/trpc/server";
+
+export const metadata = {
+  title: "Get Started | Soonlist",
+  openGraph: {
+    title: "Get Started | Soonlist",
+  },
+};
+
+// TODO: this page needs an overhaul. Also a lot of the content is duplicated on the about page
+
+export default async function Page() {
+  const activeUser = await currentUser();
+  if (!activeUser) {
+    return null;
+  }
+  console.log("activeUser", activeUser);
+  const user = await api.user.getByUsername.query({
+    userName: activeUser.username || "",
+  });
+  if (!user) {
+    return null;
+  }
+  console.log("user", user);
+
+  return (
+    <OnboardingTabs
+      additionalInfo={{
+        bio: user.bio || "",
+        publicEmail: user.publicEmail || "",
+        publicPhone: user.publicPhone || "",
+        publicInsta: user.publicInsta || "",
+        publicWebsite: user?.publicWebsite || "",
+      }}
+    />
+  );
+}

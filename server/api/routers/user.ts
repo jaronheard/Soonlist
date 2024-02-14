@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eq, lt, gte, ne, asc, and, inArray } from "drizzle-orm";
+import { eq, asc, and, inArray } from "drizzle-orm";
 
 import { TRPCError } from "@trpc/server";
 import {
@@ -8,6 +8,7 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { userFollows, users } from "@/server/db/schema";
+import { userAdditionalInfoSchema } from "@/lib/schemas";
 
 export const userRouter = createTRPCRouter({
   getById: publicProcedure
@@ -118,6 +119,28 @@ export const userRouter = createTRPCRouter({
           )
         );
     }),
+  updateAdditionalInfo: protectedProcedure
+    .input(userAdditionalInfoSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db
+        .update(users)
+        .set({
+          bio: input.bio || null,
+          publicEmail: input.publicEmail || null,
+          publicPhone: input.publicPhone || null,
+          publicInsta: input.publicInsta || null,
+          publicWebsite: input.publicWebsite || null,
+        })
+        .where(eq(users.id, userId));
+    }),
+
   // getTopUsersByUpcomingEvents: publicProcedure
   //   .input(z.object({ limit: z.number() }))
   //   .query(async ({ ctx, input }) => {
