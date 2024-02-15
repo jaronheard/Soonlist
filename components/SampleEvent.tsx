@@ -22,7 +22,13 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
     <div className="flex flex-row gap-8 lg:flex-row">
       <div className="hidden flex-col items-center lg:flex">
         <div className="relative size-24 overflow-hidden rounded-xl border-[6px] border-accent-yellow lg:size-44">
-          <Image src={fullImageUrl!} fill alt="" objectFit="cover" />
+          <Image
+            src={fullImageUrl!}
+            fill
+            alt=""
+            className="object-cover"
+            sizes="(min-width: 1024px) 176px, 96px"
+          />
         </div>
         <div className="ml-6 rotate-[270deg] -scale-x-100 lg:ml-0 lg:rotate-0 lg:scale-100">
           <SparkleArrow />
@@ -37,7 +43,13 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
         <div className="pt-6 lg:hidden"></div>
         <div className="flex items-center lg:hidden">
           <div className="relative size-24 overflow-hidden rounded-xl border-[6px] border-accent-yellow lg:size-44">
-            <Image src={fullImageUrl!} fill alt="" objectFit="cover" />
+            <Image
+              src={fullImageUrl!}
+              fill
+              alt=""
+              className="object-cover"
+              sizes="(min-width: 1024px) 176px, 96px"
+            />
           </div>
           <div className="ml-6 rotate-[270deg] -scale-x-100">
             <SparkleArrow />

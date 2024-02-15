@@ -280,6 +280,7 @@ function EventDetails({
               src={image}
               alt=""
               fill
+              sizes="(max-width: 1023px) 100vw"
             />
           </div>
         )}
@@ -475,6 +476,7 @@ export function EventListItem(props: EventListItemProps) {
             src={image}
             alt=""
             fill
+            sizes="100vw"
           />
         </div>
       )}
