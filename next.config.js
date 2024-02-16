@@ -75,6 +75,9 @@ const nextConfig = {
     }
     return headers;
   },
+  experimental: {
+    ppr: true,
+  },
 };
 
 const withVercelToolbar = require("@vercel/toolbar/plugins/next")();
