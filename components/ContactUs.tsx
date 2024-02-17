@@ -12,9 +12,9 @@ export const ContactUs = ({
   return (
     <a
       href={`mailto:${email}?subject=${title}`}
-      className="inline text-blue-500 underline"
+      className="inline text-interactive-1 underline"
     >
-      🌈 {children}
+      {children}
     </a>
   );
 };
