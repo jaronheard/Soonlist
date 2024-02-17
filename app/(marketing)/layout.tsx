@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div>
       <Header />
       <Toaster />
-      {children}
+      <main className="min-h-screen">{children}</main>
       <Footer />
     </div>
   );
