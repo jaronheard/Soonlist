@@ -1,5 +1,4 @@
 import React from "react";
-import RainbowText from "@/components/RainbowText";
 import { ContactUs } from "@/components/ContactUs";
 
 export const metadata = {
