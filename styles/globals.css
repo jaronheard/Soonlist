@@ -2,63 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.loading {
-  display: inline-flex;
-  align-items: center;
-}
-
-.loading .spacer {
-  margin-right: 2px;
-}
-
-.loading span {
-  animation-name: blink, colorChange;
-  animation-duration: 1.4s;
-  animation-iteration-count: infinite;
-  animation-fill-mode: both;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0 1px;
-}
-
-.large span {
-  width: 10px !important;
-  height: 10px !important;
-  margin: 0 2px !important;
-}
-
-.loading span:nth-of-type(2) {
-  animation-delay: 0.2s;
-}
-
-.loading span:nth-of-type(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes blink {
-  0% {
-    opacity: 0.2;
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.2;
-  }
-}
-
-@keyframes colorChange {
-  0% { background-color: rgb(239 68 68);}
-  16% { background-color: rgb(249 115 22);}
-  32% { background-color: rgb(234 179 8);}
-  48% { background-color: rgb(34 197 94);}
-  64% { background-color: rgb(59 130 246);}
-  80% { background-color: rgb(99 102 241);}
-  100% { background-color: rgb(168 85 247);}
-}
-
 @layer base {
   :root {
     --accent-1: #FEEA9F;
@@ -134,15 +77,4 @@
     --input: 215 27.9% 16.9%;
     --ring: 263.4 70% 50.4%;
   }
-}
- 
-@layer base {
-
-
-  /* * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  } */
 }
