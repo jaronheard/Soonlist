@@ -7,11 +7,11 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/terms",
+    "/contact",
     "/privacy",
     "/early-access",
     "/new",
     "/explore",
-    "/old-new",
     "/onboarding",
     "/events",
     "/users",
