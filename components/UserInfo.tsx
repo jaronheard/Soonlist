@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs";
+import { Instagram, LinkIcon, Mail, MessageSquare } from "lucide-react";
 import { FollowUserButton } from "./FollowButtons";
+import { buttonVariants } from "./ui/button";
 import { api } from "@/trpc/server";
+
+const SAMPLE_BIO = `I haven't written a bio yet... you'll have to find me at one of my events!`;
 
 type UserInfoProps = {
   userId?: string;
@@ -74,11 +78,41 @@ export async function UserInfo(props: UserInfoProps) {
             </Link>
           </div>
         </div>
-        <div className="text-2xl text-neutral-2">
-          {/* {user.description} */}A short bio will go here. Something like:
-          I&apos;m a Taurus, I like coffee and staying up late. Also links to
-          whatever contact methods people want to provide.
+        <div className="flex gap-4">
+          {user.publicInsta && (
+            <a
+              href={`https://instagram.com/${user.publicInsta}`}
+              className={buttonVariants({ size: "icon", variant: "secondary" })}
+            >
+              <Instagram className="size-6" />
+            </a>
+          )}
+          {user.publicPhone && (
+            <a
+              href={`sms:${user.publicPhone}`}
+              className={buttonVariants({ size: "icon", variant: "secondary" })}
+            >
+              <MessageSquare className="size-6" />
+            </a>
+          )}
+          {user.publicEmail && (
+            <a
+              href={`mailto:${user.publicEmail}`}
+              className={buttonVariants({ size: "icon", variant: "secondary" })}
+            >
+              <Mail className="size-6" />
+            </a>
+          )}
+          {user.publicWebsite && (
+            <a
+              href={user.publicWebsite}
+              className={buttonVariants({ size: "icon", variant: "secondary" })}
+            >
+              <LinkIcon className="size-6" />
+            </a>
+          )}
         </div>
+        <div className="text-2xl text-neutral-2">{user.bio || SAMPLE_BIO}</div>
       </div>
     );
   }
