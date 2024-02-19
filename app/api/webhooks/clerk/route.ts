@@ -10,10 +10,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   // different for each environment
-  const WEBHOOK_SECRET =
-    process.env.NODE_ENV === "production"
-      ? process.env.CLERK_WEBHOOK_SECRET
-      : process.env.CLERK_WEBHOOK_SECRET_TEST;
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
