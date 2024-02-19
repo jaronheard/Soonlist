@@ -58,7 +58,7 @@ export default async function Page({ params }: Props) {
     (item) => item.startDateTime >= new Date()
   );
 
-  const isOwner = user && user.id === list.user.id;
+  const self = user?.username === list.user.username;
   const following =
     user && list.listFollows.find((item) => item.userId === user.id);
 
@@ -76,7 +76,7 @@ export default async function Page({ params }: Props) {
         </div>
         <div className="text-2xl text-neutral-2">{list.description}</div>
         <div className="flex place-items-center gap-4">
-          {!isOwner && (
+          {!self && (
             <>
               <FollowListButton
                 listId={params.listId}
@@ -92,7 +92,7 @@ export default async function Page({ params }: Props) {
         currentEvents={currentEvents}
         futureEvents={futureEvents}
         pastEvents={pastEvents}
-        showPrivateEvents={!!isOwner}
+        showPrivateEvents={!!self}
       />
     </div>
   );

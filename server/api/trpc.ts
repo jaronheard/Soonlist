@@ -10,10 +10,17 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   const user = await currentUser();
   // const session = getAuth(opts)
 
+  const externalId = session.sessionClaims?.externalId;
+  const authToUse = externalId ? { ...session, userId: externalId } : session;
+  let userToUse = user;
+  if (user && externalId) {
+    userToUse = { ...user, id: externalId };
+  }
+
   return {
     db,
-    auth: session,
-    currentUser: user,
+    auth: authToUse,
+    currentUser: userToUse,
     ...opts,
   };
 };

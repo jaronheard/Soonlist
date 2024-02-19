@@ -26,15 +26,19 @@ export function ListDeleteButton(props: ListDeleteButtonProps) {
     },
   });
 
-  const show = user && user.id === props.listUserId;
+  const roles = user?.unsafeMetadata.roles as string[] | undefined;
+  const isOwner =
+    user?.id === props.listUserId ||
+    user?.externalId === props.listUserId ||
+    roles?.includes("admin");
 
-  if (!show) return null;
+  if (!isOwner) return null;
 
   return (
     <SignedIn>
       {deleteList.isLoading && (
         <Button variant={"destructive"} disabled>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <Loader2 className="mr-2 size-4 animate-spin" />
           Please wait
         </Button>
       )}
@@ -47,7 +51,7 @@ export function ListDeleteButton(props: ListDeleteButtonProps) {
             })
           }
         >
-          <Trash className="mr-2 h-4 w-4" /> Delete
+          <Trash className="mr-2 size-4" /> Delete
         </Button>
       )}
     </SignedIn>

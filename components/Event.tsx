@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import { SignedIn, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useContext } from "react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
@@ -199,7 +199,7 @@ export function Event(props: EventProps) {
   const { user, eventFollows, id, event, image, singleEvent, visibility } =
     props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
-  const isSelf = clerkUser?.id === user.id;
+  const isSelf = clerkUser?.id === user.id || clerkUser?.externalId === user.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find(
     (item) => item.userId === clerkUser?.id
@@ -319,7 +319,7 @@ export function Event(props: EventProps) {
                 id={id}
                 username={user.username}
               />
-              {!isOwner && (
+              {!isSelf && (
                 <FollowEventButton eventId={id} following={isFollowing} />
               )}
               {isOwner && <EditButton type="icon" userId={user.id} id={id} />}
