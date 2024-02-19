@@ -14,6 +14,12 @@ import { buttonVariants } from "@/components/ui/button";
 import SampleEvent from "@/components/SampleEvent";
 import SampleList from "@/components/SampleList";
 
+const sampleEventId =
+  process.env.NODE_ENV === "production"
+    ? "nonrnmqanado"
+    : "clrh2zo6p0001asmk0axrq55h";
+const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
+
 const advancedFeatures = [
   {
     name: "Community First",
@@ -92,12 +98,6 @@ const testimonials = [
   //   },
   // },
 ];
-
-const sampleEventId =
-  process.env.NODE_ENV === "production"
-    ? "8q2evb8m92ht"
-    : "clrh2zo6p0001asmk0axrq55h";
-const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
 function EventDetails({ className }: { className?: string }) {
   return (
