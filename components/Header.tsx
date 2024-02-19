@@ -59,9 +59,9 @@ const userEvents: { title: string; href: string; description: string }[] = [
 
 const allEvents: { title: string; href: string; description: string }[] = [
   {
-    title: "Explore",
+    title: "Discover",
     href: "/explore",
-    description: "Explore events from all users",
+    description: "Discover events from all users",
   },
 ];
 const userFollowing: { title: string; href: string; description: string }[] = [
@@ -328,7 +328,7 @@ const sideNav = (username?: string | null) => [
         signedInOnly: true,
       },
       {
-        title: "Explore",
+        title: "Discover",
         href: "/explore",
       },
       // { title: "All", href: "/events", signedInOnly: true },

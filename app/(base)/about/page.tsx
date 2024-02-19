@@ -120,7 +120,7 @@ export default function Page() {
           <CTAButton />
           <Button variant="link" asChild>
             <Link href="/explore">
-              Explore <span aria-hidden="true">→</span>
+              Discover <span aria-hidden="true">→</span>
             </Link>
           </Button>
         </div>
