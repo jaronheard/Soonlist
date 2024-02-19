@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "concurrently \"npm run tunnel\" \"next dev --turbo\"",
     "debug": "NODE_OPTIONS='--inspect' next dev --turbo",
     "build": "next build",
     "start": "next start",
@@ -9,7 +9,8 @@
     "sync-users": "node scripts/sync-users.mjs",
     "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
     "db:studio": "drizzle-kit studio",
-    "db:dr": "pscale dr create timetime dev"
+    "db:dr": "pscale dr create timetime dev",
+    "tunnel": "lt --port 3000 --subdomain soonlist"
   },
   "dependencies": {
     "@bytescale/sdk": "^3.26.0",
@@ -49,6 +50,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
+    "dotenv": "^16.4.4",
     "dotenv-expand": "^10.0.0",
     "drizzle-orm": "^0.29.3",
     "drizzle-zod": "^0.5.1",
