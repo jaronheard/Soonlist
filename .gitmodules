@@ -1,3 +1,0 @@
-[submodule "scripts/migration-script"]
-	path = scripts/migration-script
-	url = https://www.github.com/clerk/migration-script
