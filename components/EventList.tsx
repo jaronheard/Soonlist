@@ -78,7 +78,8 @@ export default function EventList({
   const futureEventsToUse = collapseSimilarEvents(
     getVisibleEvents(futureEvents)
   );
-  const showPastEvents = variant !== "future-minimal";
+  const showPastEvents =
+    variant !== "future-minimal" && pastEventsToUse.length > 0;
   const showCurrentEvents = true;
   const variantToUse = variant === "card" ? "card" : undefined;
 
