@@ -136,7 +136,7 @@ export function OnboardingTabs({
                 <p className="font-bold">Test the iOS/MacOS Shortcut</p>
                 <Button size="sm" asChild>
                   <a
-                    href="shortcuts://run-shortcut?name=Add%20to%20Soonlist&input=Soonlist%20launch%20party%20on%20at%20the%20School%20of%20Art%20and%20Time%203340%20SE%20Morrison%20on%20Saturday%20February%2017%20from%206pm%20to%209pm%20Text%20Jaron%20at%209719987180%20for%20access%20instructions"
+                    href="shortcuts://run-shortcut?name=Add%20to%20Soonlist&input=Test%20event%20that%20proves%20your%20shortcut%20is%20working%20at%20the%20School%20of%20Art%20and%20Time%203340%20SE%20Morrison%20on%20Saturday%20February%2017%20from%206pm%20to%209pm%20Text%20Jaron%20at%209719987180%20for%20access%20instructions"
                     className="no-underline"
                   >
                     Test shortcut
