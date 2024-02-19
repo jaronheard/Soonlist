@@ -111,7 +111,7 @@ const navigation = {
   events: [
     { name: "New", href: "/new" },
     { name: "All", href: "/events" },
-    { name: "Explore", href: "/explore" },
+    { name: "Discover", href: "/explore" },
   ],
   support: [
     { name: "Contact Us", href: "/contact" },

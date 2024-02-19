@@ -283,7 +283,7 @@ export const eventRouter = createTRPCRouter({
       });
     }
 
-    const roles = (sessionClaims?.roles || []) as string[];
+    const roles = sessionClaims?.roles || [];
     const isAdmin = roles?.includes("admin");
 
     return ctx.db.query.events
@@ -317,7 +317,7 @@ export const eventRouter = createTRPCRouter({
         });
       }
 
-      const roles = (sessionClaims?.roles || []) as string[];
+      const roles = sessionClaims?.roles || [];
       const isAdmin = roles?.includes("admin");
 
       const { event } = input;
