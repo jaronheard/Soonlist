@@ -13,9 +13,12 @@ type ListEditButtonProps = {
 export function ListEditButton(props: ListEditButtonProps) {
   const { user } = useUser();
 
-  const show = user && user.id === props.listUserId;
-
-  if (!show) return null;
+  const roles = user?.unsafeMetadata.roles as string[] | undefined;
+  const isOwner =
+    user?.id === props.listUserId ||
+    user?.externalId === props.listUserId ||
+    roles?.includes("admin");
+  if (!isOwner) return null;
 
   return (
     <SignedIn>

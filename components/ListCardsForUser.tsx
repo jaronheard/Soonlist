@@ -17,10 +17,10 @@ ListCardsForUserProps) {
   });
 
   const user = await currentUser();
-  const isOwner = user && user.username === userName;
-  const hideAll = !isOwner && lists.length === 0;
+  const self = user?.username === userName;
+  const hideAll = !self && lists.length === 0;
   const listsToShow = lists.filter((list) => list.eventToLists.length > 0);
-  const listsToUse = isOwner ? lists : listsToShow;
+  const listsToUse = self ? lists : listsToShow;
 
   if (!lists || hideAll) {
     return <> </>;
@@ -29,7 +29,7 @@ ListCardsForUserProps) {
   return (
     <>
       <ul role="list" className="flex flex-wrap gap-5">
-        {isOwner && <ListCardAdd />}
+        {self && <ListCardAdd />}
         {listsToUse.map((list) => (
           <ListCard
             key={list.name}

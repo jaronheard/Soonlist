@@ -31,7 +31,7 @@ export async function UserInfo(props: UserInfoProps) {
     return null;
   }
 
-  const self = activeUser?.id === user.id || activeUser?.externalId === user.id;
+  const self = activeUser?.username == user.username;
 
   const following =
     activeUser?.id &&

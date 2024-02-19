@@ -387,7 +387,7 @@ export function EventListItem(props: EventListItemProps) {
   const { user: clerkUser } = useUser();
   const { user, eventFollows, id, event } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
-  const isSelf = clerkUser?.id === user.id;
+  const isSelf = clerkUser?.id === user.id || clerkUser?.externalId === user.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
   const image = event.images?.[3];

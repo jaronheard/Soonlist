@@ -16,14 +16,12 @@ export default async function Page() {
   if (!activeUser) {
     return null;
   }
-  console.log("activeUser", activeUser);
   const user = await api.user.getByUsername.query({
     userName: activeUser.username || "",
   });
   if (!user) {
     return null;
   }
-  console.log("user", user);
 
   return (
     <OnboardingTabs
