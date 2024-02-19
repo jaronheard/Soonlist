@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs";
-import { Instagram, LinkIcon, Mail, MessageSquare } from "lucide-react";
+import { Instagram, LinkIcon, Mail, MessageSquare, Pencil } from "lucide-react";
 import { FollowUserButton } from "./FollowButtons";
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { api } from "@/trpc/server";
 
 const SAMPLE_BIO = `I haven't written a bio yet... you'll have to find me at one of my events!`;
@@ -31,7 +31,7 @@ export async function UserInfo(props: UserInfoProps) {
     return null;
   }
 
-  const self = activeUser?.id === user.id;
+  const self = activeUser?.id === user.id || activeUser?.externalId === user.id;
 
   const following =
     activeUser?.id &&
@@ -113,6 +113,11 @@ export async function UserInfo(props: UserInfoProps) {
           )}
         </div>
         <div className="text-2xl text-neutral-2">{user.bio || SAMPLE_BIO}</div>
+        {self && (
+          <Button size={"sm"} asChild>
+            <Link href={`/get-started`}>Edit Profile</Link>
+          </Button>
+        )}
       </div>
     );
   }

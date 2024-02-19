@@ -28,11 +28,11 @@ export default async function Page() {
   return (
     <OnboardingTabs
       additionalInfo={{
-        bio: user.bio || "",
-        publicEmail: user.publicEmail || "",
-        publicPhone: user.publicPhone || "",
-        publicInsta: user.publicInsta || "",
-        publicWebsite: user?.publicWebsite || "",
+        bio: user.bio || undefined,
+        publicEmail: user.publicEmail || undefined,
+        publicPhone: user.publicPhone || undefined,
+        publicInsta: user.publicInsta || undefined,
+        publicWebsite: user?.publicWebsite || undefined,
       }}
     />
   );
