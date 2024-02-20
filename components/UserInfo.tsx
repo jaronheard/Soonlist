@@ -14,6 +14,13 @@ type UserInfoProps = {
   variant?: "default" | "icon" | "description";
 };
 
+function formatUserWebsiteForLink(website: string) {
+  if (website.startsWith("http")) {
+    return website;
+  }
+  return `https://${website}`;
+}
+
 export async function UserInfo(props: UserInfoProps) {
   const activeUser = await currentUser();
   if (!props.userId && !props.userName) {
@@ -105,7 +112,7 @@ export async function UserInfo(props: UserInfoProps) {
           )}
           {user.publicWebsite && (
             <a
-              href={user.publicWebsite}
+              href={formatUserWebsiteForLink(user.publicWebsite)}
               className={buttonVariants({ size: "icon", variant: "secondary" })}
             >
               <LinkIcon className="size-6" />
