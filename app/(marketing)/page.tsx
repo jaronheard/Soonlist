@@ -188,7 +188,7 @@ function MakeAndShareListsOfEvents() {
         </div>
         <div>
           <h2 className="text-2.5xl font-bold leading-9 tracking-wide">
-            Share & Sync
+            Organize & Share
           </h2>
           <div className="py-2"></div>
           <p className="mt-2 text-lg leading-7 text-gray-500">
@@ -220,11 +220,11 @@ export default function Page() {
           <div className="mx-auto">
             <div className="mx-auto">
               <h1 className="font-heading text-6xl font-bold leading-[0.875] tracking-tighterish text-gray-700 md:text-8xl md:leading-[0.875]">
-                Event lists for{" "}
-                <span className="text-interactive-1">everybody</span>
+                Events for <span className="text-interactive-1">everybody</span>
               </h1>
               <p className="mt-6 max-w-[30rem] text-2xl leading-9 text-gray-400">
-                Gather and share events that matter to you and your communities
+                Gather, organize, and share events that matter to you and your
+                communities
               </p>
             </div>
             <div className="mt-10 flex items-center gap-x-6">
