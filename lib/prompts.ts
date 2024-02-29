@@ -92,7 +92,7 @@ You will
 
 Your answer should be fact-filled and SPECIFIC, providing information like ticket prices, main attractions, performers/speakers, registration link, contact information, official hashtags age restrictions, dress code, amenities available, sponsors.
 Stylistically write as though a Professor or The Economist would, in short, approachable, and professional language.
-No new adjectives, stick to the facts, and be concise.
+No new adjectives, stick to the facts, and be concise. Use proper capitalization for all fields.
 
 ## JSON Schema
 
@@ -121,7 +121,7 @@ enum Platform {
 
 interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
-  description: string; // Short description of the event, its significance, and what attendees can expect.
+  description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
   startTime?: string; // Start time. ALWAYS include if known. Omit ONLY if known to be an all-day event.
   endDate: string; // End date in YYYY-MM-DD format.
@@ -151,6 +151,6 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 export const getSystemMessage = () => {
   return {
     text: systemMessage(),
-    version: "v2024.02.04.1",
+    version: "v2024.02.28.1",
   };
 };
