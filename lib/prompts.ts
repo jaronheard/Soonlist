@@ -63,6 +63,7 @@ export const addCommonAddToCalendarProps = (events: Event[]) => {
       startTime: event.startTime || undefined,
       endTime: event.endTime || undefined,
       timeZone: event.timeZone,
+      metadata: event.metadata || undefined,
     };
   });
 };
@@ -86,7 +87,7 @@ Above, I pasted a text or image from which to extract calendar event details for
 You will
 1. Identify the event details that need to be captured.
 2. Identify the platform from which the input text was extracted, and extract all usernames @-mentioned.
-3. Extract and format these details into a JSON response, strictly following the schema below.
+3. Extract and format these details into a JSON response, strictly following the schema below. JSON comments are not allowed.
 4. Infer any missing information based on event context, type, or general conventions.
 5. Write your JSON response by summarizing the event details from the provided data or your own inferred knowledge. Your response must be detailed, specific, and directly relevant to the JSON schema requirements.
 
@@ -98,9 +99,6 @@ No new adjectives, stick to the facts, and be concise. Use proper capitalization
 
 interface Response {
   events: Event[]; // An array of events.
-  // metadata
-  platform: Platform; // The platform where the input text was extracted from.
-  mentions?: string[]; // An array of any relevant mentions or references in the input text. 
 }
 
 interface Mention {
@@ -119,6 +117,55 @@ enum Platform {
   "unknown",
 }
 
+enum AgeRestriction {
+  "all-ages",
+  "18+",
+  "21+",
+  "unknown",
+}
+
+enum PriceType {
+  "free",
+  "notaflof", // no one turned away for lack of funds
+  "donation",
+  "paid",
+  "unknown",
+}
+
+enum EventCategory {
+  "music",
+  "art",
+  "food",
+  "sports",
+  "business",
+  "tech",
+  "education",
+  "entertainment",
+  "health",
+  "lifestyle",
+  "literature",
+  "science",
+  "religion",
+  "unknown",
+}
+
+enum EventType {
+  "concert",
+  "festival",
+  "conference",
+  "seminar",
+  "workshop",
+  "webinar",
+  "meeting",
+  "party",
+  "show",
+  "performance",
+  "exhibition",
+  "competition",
+  "game",
+  "tournament",
+}
+
 interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
@@ -128,6 +175,17 @@ interface Event {
   endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
+  metadata: {
+    mentions?: Mention[]; // An array of mentions in the source text. Include the username and the type of mention.
+    source?: Platform; // The source platform from which the input text was extracted.
+    type: string; // The type of event for use in a tagging system. Infer if not explicitly stated.
+    price?: number; // The cost of the event in dollars, if known. Infer if not explicitly stated.
+    priceType: PriceType;
+    ageRestriction: AgeRestriction;
+    category: EventCategory;
+    type: EventType;
+    performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
+  };
 }
 
 Below, your report, following the JSON schema exactly:`;

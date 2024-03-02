@@ -92,6 +92,8 @@ export function AddToCalendarCard({
     images,
   };
 
+  console.log("updatedProps", updatedProps);
+
   return (
     <Card className="max-w-screen sm:max-w-xl">
       <CardContent className="grid grid-cols-1 gap-6 rounded-md py-6 shadow-md sm:grid-cols-6">
@@ -198,6 +200,11 @@ export function AddToCalendarCard({
               More info
             </a>
           </InputDescription>
+        </div>
+        <div className="col-span-full">
+          {/* display metadata for testing in a pre */}
+          Metadata
+          <pre>{JSON.stringify(updatedProps?.metadata, null, 2)}</pre>
         </div>
         <div className="col-span-full">
           <Label htmlFor="location">Source Link (optional)</Label>
