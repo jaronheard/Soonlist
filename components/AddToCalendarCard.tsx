@@ -14,6 +14,7 @@ import { TimezoneSelect } from "./TimezoneSelect";
 import { CalendarButton } from "./CalendarButton";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useFormContext } from "@/context/FormContext";
+import { type Metadata } from "@/lib/prompts";
 
 type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
@@ -22,6 +23,7 @@ type AddToCalendarCardProps = AddToCalendarButtonType & {
   children?: React.ReactNode;
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
+  metadata?: Metadata;
 };
 
 export function AddToCalendarCard({

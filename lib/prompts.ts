@@ -6,15 +6,80 @@ interface Response {
   events: Event[]; // An array of events.
 }
 
+enum Platform {
+  "instagram",
+  "unknown",
+}
+
+enum AgeRestriction {
+  "all-ages",
+  "18+",
+  "21+",
+  "unknown",
+}
+
+enum PriceType {
+  "free",
+  "notaflof", // no one turned away for lack of funds
+  "donation",
+  "paid",
+  "unknown",
+}
+
+enum EventCategory {
+  "music",
+  "art",
+  "food",
+  "sports",
+  "business",
+  "tech",
+  "education",
+  "entertainment",
+  "health",
+  "lifestyle",
+  "literature",
+  "science",
+  "religion",
+  "unknown",
+}
+
+enum EventType {
+  "concert",
+  "festival",
+  "conference",
+  "seminar",
+  "workshop",
+  "webinar",
+  "meeting",
+  "party",
+  "show",
+  "performance",
+  "exhibition",
+  "competition",
+  "game",
+  "tournament",
+}
+
+export interface Metadata {
+  mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
+  source?: Platform; // The source platform from which the input text was extracted.
+  price?: number; // The cost of the event in dollars.
+  priceType: PriceType;
+  ageRestriction: AgeRestriction;
+  category: EventCategory;
+  type: EventType;
+  performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
+}
 interface Event {
-  name: string; // The event's name.
-  description: string; // Short description of the event, its significance, and what attendees can expect.
+  name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
+  description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
-  startTime?: string; // Start time, if applicable (omit for all-day events).
+  startTime?: string; // Start time. ALWAYS include if known. Omit ONLY if known to be an all-day event.
   endDate: string; // End date in YYYY-MM-DD format.
-  endTime?: string; // End time, if applicable (omit for all-day events).
+  endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
+  metadata: Metadata;
 }
 
 export const extractJsonFromResponse = (response: string) => {
@@ -101,17 +166,6 @@ interface Response {
   events: Event[]; // An array of events.
 }
 
-interface Mention {
-  username: string; // The username of the mentioned person.
-}
-
-enum MentionType {
-  author,
-  tag,
-  host,
-  unknown,
-}
-
 enum Platform {
   "instagram",
   "unknown",
@@ -166,6 +220,17 @@ enum EventType {
   "tournament",
 }
 
+interface Metadata {
+  mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
+  source?: Platform; // The source platform from which the input text was extracted.
+  price?: number; // The cost of the event in dollars.
+  priceType: PriceType;
+  ageRestriction: AgeRestriction;
+  category: EventCategory;
+  type: EventType;
+  performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
+}
+
 interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
@@ -175,17 +240,7 @@ interface Event {
   endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
-  metadata: {
-    mentions?: Mention[]; // An array of mentions in the source text. Include the username and the type of mention.
-    source?: Platform; // The source platform from which the input text was extracted.
-    type: string; // The type of event for use in a tagging system. Infer if not explicitly stated.
-    price?: number; // The cost of the event in dollars, if known. Infer if not explicitly stated.
-    priceType: PriceType;
-    ageRestriction: AgeRestriction;
-    category: EventCategory;
-    type: EventType;
-    performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
-  };
+  metadata: Metadata;
 }
 
 Below, your report, following the JSON schema exactly:`;
