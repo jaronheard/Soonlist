@@ -1,7 +1,5 @@
 "use client";
-
 import React, { useState } from "react";
-import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { Text } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { SaveButton } from "./SaveButton";
@@ -12,6 +10,8 @@ import { Textarea } from "./ui/textarea";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { TimezoneSelect } from "./TimezoneSelect";
 import { CalendarButton } from "./CalendarButton";
+import { useCroppedImageContext } from "@/context/CroppedImageContext";
+import { useFormContext } from "@/context/FormContext";
 import {
   Select,
   SelectContent,
@@ -19,19 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { useFormContext } from "@/context/FormContext";
-import { Platform, type Metadata } from "@/lib/prompts";
-
-type AddToCalendarCardProps = AddToCalendarButtonType & {
-  update?: boolean;
-  updateId?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  children?: React.ReactNode;
-  firstInputRef?: React.RefObject<HTMLInputElement>;
-  setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
-  metadata?: Metadata;
-};
+import { AddToCalendarCardProps } from "./AddToCalendarCard";
 
 export function AddToCalendarCard({
   firstInputRef,
@@ -82,9 +70,7 @@ export function AddToCalendarCard({
   const [mentions, setMentions] = useState(
     initialProps?.metadata?.mentions || []
   );
-  const [source, setSource] = useState(
-    initialProps?.metadata?.source || "unknown"
-  );
+  const [source, setSource] = useState(initialProps?.metadata?.source || []);
   const [price, setPrice] = useState(initialProps?.metadata?.price || 0);
   const [priceType, setPriceType] = useState(
     initialProps.metadata?.priceType || "unknown"
@@ -93,7 +79,7 @@ export function AddToCalendarCard({
     initialProps.metadata?.ageRestriction || "none"
   );
   const [category, setCategory] = useState(
-    initialProps?.metadata?.category || "unknown"
+    initialProps?.metadata?.category || []
   );
   const [type, setType] = useState(initialProps?.metadata?.type || "event");
   const [performers, setPerformers] = useState(
@@ -249,27 +235,19 @@ export function AddToCalendarCard({
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="source">Source</Label>
-                <Select defaultValue={source} id="source">
+                <Select defaultValue="Instagram" id="source">
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Instagram" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="instagram">Instagram</SelectItem>
-                    <SelectItem value="unknown">Unknown</SelectItem>
+                    <SelectItem value="Instagram">Instagram</SelectItem>
+                    <SelectItem value="Unknown">Unknown</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="type">Tyoe</Label>
-                <Select defaultValue="instagram" id="type">
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Instagram" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="instagram">Instagram</SelectItem>
-                    <SelectItem value="unknown">Unknown</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="type">Type</Label>
+                <Input id="type" placeholder="e.g. Concert, Festival" />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="price">Price</Label>

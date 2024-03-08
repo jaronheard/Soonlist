@@ -1,5 +1,5 @@
 import { UserInfo } from "@/components/UserInfo";
-import { AddToCalendarCard } from "@/components/AddToCalendarCard";
+import { AddToCalendarCard } from "@/components/AddToCalendarCard.1";
 import { type AddToCalendarButtonProps } from "@/types";
 import ImageUpload from "@/app/(base)/new/ImageUpload";
 import { YourDetails } from "@/app/(base)/new/YourDetails";
@@ -34,7 +34,7 @@ export default async function Page({
           <ImageUpload images={eventData.images as string[]} />
           <div className="p-4"></div>
           <AddToCalendarCard
-            {...(eventData )}
+            {...eventData}
             key={event.id}
             update
             updateId={params.eventId}

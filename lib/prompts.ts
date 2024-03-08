@@ -6,19 +6,19 @@ interface Response {
   events: Event[]; // An array of events.
 }
 
-enum Platform {
+export enum Platform {
   "instagram",
   "unknown",
 }
 
-enum AgeRestriction {
+export enum AgeRestriction {
   "all-ages",
   "18+",
   "21+",
   "unknown",
 }
 
-enum PriceType {
+export enum PriceType {
   "free",
   "notaflof", // no one turned away for lack of funds
   "donation",
@@ -26,7 +26,7 @@ enum PriceType {
   "unknown",
 }
 
-enum EventCategory {
+export enum EventCategory {
   "music",
   "art",
   "food",
@@ -43,7 +43,7 @@ enum EventCategory {
   "unknown",
 }
 
-enum EventType {
+export enum EventType {
   "concert",
   "festival",
   "conference",
@@ -58,6 +58,7 @@ enum EventType {
   "competition",
   "game",
   "tournament",
+  "unknown",
 }
 
 export interface Metadata {
@@ -70,7 +71,7 @@ export interface Metadata {
   type: EventType;
   performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
 }
-interface Event {
+export interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
@@ -218,6 +219,7 @@ enum EventType {
   "competition",
   "game",
   "tournament",
+  "unknown",
 }
 
 interface Metadata {
