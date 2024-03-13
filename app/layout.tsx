@@ -52,6 +52,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+    date: false,
+  },
 };
 
 export default function RootLayout({
