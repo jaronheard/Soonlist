@@ -204,7 +204,7 @@ export function Event(props: EventProps) {
   const isFollowing = !!eventFollows.find(
     (item) => item.userId === clerkUser?.id
   );
-  const comment = props.comments.findLast(
+  const comment = props.comments?.findLast(
     (item) => item.userId === clerkUser?.id
   );
 

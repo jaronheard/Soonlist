@@ -17,7 +17,7 @@ export default async function Page({
   }
 
   const eventData = event.event as AddToCalendarButtonProps;
-  const mostRecentComment = event.comments.findLast(
+  const mostRecentComment = event.comments?.findLast(
     (comment) => comment.content
   )?.content;
   return (
@@ -34,7 +34,7 @@ export default async function Page({
           <ImageUpload images={eventData.images as string[]} />
           <div className="p-4"></div>
           <AddToCalendarCard
-            {...(eventData )}
+            {...eventData}
             key={event.id}
             update
             updateId={params.eventId}

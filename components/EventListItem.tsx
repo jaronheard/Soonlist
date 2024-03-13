@@ -391,7 +391,7 @@ export function EventListItem(props: EventListItemProps) {
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
   const image = event.images?.[3];
-  // const comment = props.comments.findLast((item) => item.userId === user?.id);
+  // const comment = props.comments?.findLast((item) => item.userId === user?.id);
   // always show curator if !isSelf
   // const showOtherCurators = !isSelf && props.showOtherCurators;
   // const showCurator = showOtherCurators || !props.hideCurator;
