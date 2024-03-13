@@ -1,15 +1,14 @@
 "use client";
-
 import React, { useState } from "react";
-import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
-import { Text } from "lucide-react";
+import { Shapes, Text } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
 import { Label } from "./ui/label";
 import { Input, InputDescription } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Card, CardContent, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { TimezoneSelect } from "./TimezoneSelect";
 import { CalendarButton } from "./CalendarButton";
 import {
@@ -19,9 +18,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { InputTags } from "./ui/input-tags";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useFormContext } from "@/context/FormContext";
-import { Platform, type Metadata } from "@/lib/prompts";
+import {
+  EVENT_CATEGORIES,
+  EVENT_TYPES,
+  type Metadata,
+  PLATFORMS,
+  PRICE_TYPE,
+} from "@/lib/prompts";
 
 type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
@@ -80,20 +86,20 @@ export function AddToCalendarCard({
   );
   const [link, setLink] = useState("");
   const [mentions, setMentions] = useState(
-    initialProps?.metadata?.mentions || []
+    initialProps?.metadata?.mentions || ([] as string[])
   );
   const [source, setSource] = useState(
-    initialProps?.metadata?.source || "unknown"
+    (initialProps?.metadata?.source || "unknown") as string
   );
   const [price, setPrice] = useState(initialProps?.metadata?.price || 0);
   const [priceType, setPriceType] = useState(
-    initialProps.metadata?.priceType || "unknown"
+    (initialProps.metadata?.priceType || "unknown") as string
   );
   const [ageRestriction, setAgeRestriction] = useState(
-    initialProps.metadata?.ageRestriction || "none"
+    (initialProps.metadata?.ageRestriction || "none") as string
   );
   const [category, setCategory] = useState(
-    initialProps?.metadata?.category || "unknown"
+    (initialProps?.metadata?.category || "unknown") as string
   );
   const [type, setType] = useState(initialProps?.metadata?.type || "event");
   const [performers, setPerformers] = useState(
@@ -242,113 +248,125 @@ export function AddToCalendarCard({
         </div>
         <div className="col-span-full">
           <Card className="w-full max-w-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Shapes className="mr-2 size-6" />
+                  Event Metadata
+                </div>
+              </CardTitle>
+            </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="mentions">Mentions</Label>
-                <Input id="mentions" placeholder="e.g. @shad, @vercel" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="source">Source</Label>
-                <Select defaultValue={source} id="source">
+                <Label htmlFor="type">Event Type</Label>
+                <Select name="type" value={type} onValueChange={setType}>
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Instagram" />
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="instagram">Instagram</SelectItem>
-                    <SelectItem value="unknown">Unknown</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="type">Tyoe</Label>
-                <Select defaultValue="instagram" id="type">
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Instagram" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="instagram">Instagram</SelectItem>
-                    <SelectItem value="unknown">Unknown</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="price">Price</Label>
-                <Input id="price" placeholder="Enter price" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="price-type">Price Type</Label>
-                <Select defaultValue="Free" id="price-type">
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Free" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Free">Free</SelectItem>
-                    <SelectItem value="Not A Flof">Not A Flof</SelectItem>
-                    <SelectItem value="Donation">Donation</SelectItem>
-                    <SelectItem value="Paid">Paid</SelectItem>
-                    <SelectItem value="Unknown">Unknown</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="age-restriction">Age Restriction</Label>
-                <Select defaultValue="All Ages" id="age-restriction">
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="All Ages" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="All Ages">All Ages</SelectItem>
-                    <SelectItem value="18+">18+</SelectItem>
-                    <SelectItem value="21+">21+</SelectItem>
-                    <SelectItem value="Unknown">Unknown</SelectItem>
+                    {EVENT_TYPES.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        <span className="capitalize">{type}</span>
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="category">Category</Label>
-                <Select defaultValue="Music" id="category">
+                <Select defaultValue="unknown" name="category" value={category}>
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Music" />
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Music">Music</SelectItem>
-                    <SelectItem value="Food & Drink">Food & Drink</SelectItem>
-                    <SelectItem value="Arts & Culture">
-                      Arts & Culture
-                    </SelectItem>
-                    <SelectItem value="Health & Wellness">
-                      Health & Wellness
-                    </SelectItem>
-                    <SelectItem value="Community">Community</SelectItem>
-                    <SelectItem value="Science & Tech">
-                      Science & Tech
-                    </SelectItem>
-                    <SelectItem value="Fitness">Fitness</SelectItem>
-                    <SelectItem value="Fashion">Fashion</SelectItem>
-                    <SelectItem value="Charity & Causes">
-                      Charity & Causes
-                    </SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
+                    {EVENT_CATEGORIES.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        <span className="capitalize">{category}</span>
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="event-type">Event Type</Label>
-                <Select id="event-type" multiple>
+                <Label htmlFor="price-type">Payment</Label>
+                <Select
+                  defaultValue="unknown"
+                  name="price-type"
+                  value={priceType}
+                >
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Event Type" />
+                    <SelectValue placeholder="Free" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Virtual">Virtual</SelectItem>
-                    <SelectItem value="In Person">In Person</SelectItem>
+                    {PRICE_TYPE.map((priceType) => (
+                      <SelectItem key={priceType} value={priceType}>
+                        <span className="capitalize">{priceType}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="price">Price ($)</Label>
+                <Input
+                  id="price"
+                  placeholder="Enter price"
+                  value={price}
+                  type="number"
+                  onChange={(e) => setPrice(Number(e.target.value))}
+                  className="w-[180px]"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="age-restriction">Ages</Label>
+                <Select
+                  defaultValue="All Ages"
+                  name="age-restriction"
+                  value={ageRestriction}
+                  onValueChange={setAgeRestriction}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="All Ages" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all-ages">All Ages</SelectItem>
+                    <SelectItem value="18+">18+</SelectItem>
+                    <SelectItem value="21+">21+</SelectItem>
+                    <SelectItem value="unknown">Unknown</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="performers">Performers</Label>
-                <Input
+                <InputTags
                   id="performers"
                   placeholder="e.g. @sza, @tylerthecreator"
+                  value={performers}
+                  onChange={setPerformers}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="source">Social Platform</Label>
+                <Select name="source" value={source} onValueChange={setSource}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PLATFORMS.map((platform) => (
+                      <SelectItem key={platform} value={platform}>
+                        <span className="capitalize">{platform}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="mentions">Social Mentions</Label>
+                <InputTags
+                  id="mentions"
+                  placeholder="e.g. @shad, @vercel"
+                  value={mentions}
+                  onChange={setMentions}
                 />
               </div>
             </CardContent>
@@ -375,7 +393,7 @@ export function AddToCalendarCard({
           )}
           {initialProps.update && (
             <UpdateButton
-              id={initialProps.updateId!}
+              id={initialProps.updateId}
               notes={notes}
               visibility={visibility}
               lists={lists}

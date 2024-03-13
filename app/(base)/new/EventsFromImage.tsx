@@ -1,7 +1,7 @@
 import * as Bytescale from "@bytescale/sdk";
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
-import { AddToCalendarCard } from "@/components/AddToCalendarCard.1";
+import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import {
   addCommonAddToCalendarPropsFromResponse,
   getPrompt,

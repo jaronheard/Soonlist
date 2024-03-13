@@ -1,5 +1,5 @@
 import { UserInfo } from "@/components/UserInfo";
-import { AddToCalendarCard } from "@/components/AddToCalendarCard.1";
+import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { type AddToCalendarButtonProps } from "@/types";
 import ImageUpload from "@/app/(base)/new/ImageUpload";
 import { YourDetails } from "@/app/(base)/new/YourDetails";

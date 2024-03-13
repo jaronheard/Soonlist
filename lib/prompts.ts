@@ -6,27 +6,22 @@ interface Response {
   events: Event[]; // An array of events.
 }
 
-export enum Platform {
-  "instagram",
-  "unknown",
-}
+export const PLATFORMS = ["instagram", "unknown"] as const;
+export type Platform = (typeof PLATFORMS)[number];
 
-export enum AgeRestriction {
-  "all-ages",
-  "18+",
-  "21+",
-  "unknown",
-}
+export const AGE_RESTRICTIONS = ["all-ages", "18+", "21+", "unknown"] as const;
+export type AgeRestriction = (typeof AGE_RESTRICTIONS)[number];
 
-export enum PriceType {
+export const PRICE_TYPE = [
   "free",
-  "notaflof", // no one turned away for lack of funds
+  "notaflof",
   "donation",
   "paid",
   "unknown",
-}
+] as const;
+export type PriceType = (typeof PRICE_TYPE)[number];
 
-export enum EventCategory {
+export const EVENT_CATEGORIES = [
   "music",
   "art",
   "food",
@@ -41,9 +36,10 @@ export enum EventCategory {
   "science",
   "religion",
   "unknown",
-}
+] as const;
+export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 
-export enum EventType {
+export const EVENT_TYPES = [
   "concert",
   "festival",
   "conference",
@@ -59,8 +55,8 @@ export enum EventType {
   "game",
   "tournament",
   "unknown",
-}
-
+] as const;
+export type EventType = (typeof EVENT_TYPES)[number];
 export interface Metadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.

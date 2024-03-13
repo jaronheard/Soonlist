@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
-import { AddToCalendarCard } from "@/components/AddToCalendarCard.1";
+import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { type List } from "@/server/db/types";
 import { type AddToCalendarButtonProps } from "@/types";
 import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
