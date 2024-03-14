@@ -238,7 +238,7 @@ export default function Page() {
             </div>
           </div>
           <div className="mx-auto">
-            {/* <SampleEvent eventId={sampleEventId} /> */}
+            <SampleEvent eventId={sampleEventId} />
           </div>
         </div>
       </div>
