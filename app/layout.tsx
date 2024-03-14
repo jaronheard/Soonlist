@@ -25,9 +25,9 @@ const plex_sans = IBM_Plex_Sans({
   variable: "--font-plex-sans",
 });
 
-// const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
-//   ssr: false,
-// });
+const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
+  ssr: false,
+});
 
 const title = "Soonlist";
 const tagline = "Events for everybody";
@@ -72,7 +72,7 @@ export default function RootLayout({
     >
       <PHProvider>
         <body>
-          {/* <PostHogPageView /> */}
+          <PostHogPageView />
           <TRPCReactProvider cookies={cookies().toString()}>
             <Providers>{children}</Providers>
           </TRPCReactProvider>
