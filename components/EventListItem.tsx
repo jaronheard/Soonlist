@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ArrowRight, EyeOff } from "lucide-react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
@@ -208,6 +208,12 @@ function EventDetails({
   EventActionButtons?: React.ReactNode;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   if (!startDate || !endDate) {
     console.error("startDate or endDate is missing");
     return null;
@@ -238,7 +244,7 @@ function EventDetails({
     <div className="flex w-full flex-col items-start justify-center gap-2">
       {/* duplicated with Event */}
       <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
-        {eventTimesAreDefined(startTime, endTime) && (
+        {isClient && eventTimesAreDefined(startTime, endTime) && (
           <>
             <div className="flex-wrap text-neutral-2">
               {startDateInfo?.dayOfWeek.substring(0, 3)}
@@ -311,13 +317,13 @@ function EventDescription({
   singleEvent?: boolean;
 }) {
   return (
-    <p className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
+    <div className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
       <span
         dangerouslySetInnerHTML={{
           __html: translateToHtml(description),
         }}
       ></span>
-    </p>
+    </div>
   );
 }
 
