@@ -56,7 +56,7 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
           </div>
         </div>
         <div className="pt-6"></div>
-        {/* <EventListItem
+        <EventListItem
           user={event.user}
           eventFollows={event.eventFollows}
           comments={event.comments}
@@ -65,7 +65,7 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
           event={eventDataNoImage}
           createdAt={event.createdAt}
           visibility={event.visibility}
-        /> */}
+        />
       </div>
     </div>
   );

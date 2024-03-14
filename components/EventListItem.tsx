@@ -67,11 +67,13 @@ function EventDateDisplaySimple({
     return null;
   }
 
+  const userTimezoneString = userTimezone.toString() || "America/Los_Angeles";
+
   const startDateInfo = startTime
-    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezoneString)
     : getDateInfoUTC(startDate);
   const endDateInfo = endTime
-    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezoneString)
     : getDateInfoUTC(endDate);
   const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
   // const showNightIcon =
@@ -123,11 +125,13 @@ function EventDetailsCard({
     return null;
   }
 
+  const userTimezoneString = userTimezone.toString() || "America/Los_Angeles";
+
   const startDateInfo = startTime
-    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezoneString)
     : getDateInfoUTC(startDate);
   const endDateInfo = endTime
-    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezoneString)
     : getDateInfoUTC(endDate);
 
   if (!startDateInfo || !endDateInfo) {
@@ -218,11 +222,13 @@ function EventDetails({
     return null;
   }
 
+  const userTimezoneString = userTimezone.toString() || "America/Los_Angeles";
+
   const startDateInfo = startTime
-    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezoneString)
     : getDateInfoUTC(startDate);
   const endDateInfo = endTime
-    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezoneString)
     : getDateInfoUTC(endDate);
 
   if (!startDateInfo || !endDateInfo) {
