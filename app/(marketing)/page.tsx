@@ -238,12 +238,12 @@ export default function Page() {
             </div>
           </div>
           <div className="mx-auto">
-            <SampleEvent eventId={sampleEventId} />
+            {/* <SampleEvent eventId={sampleEventId} /> */}
           </div>
         </div>
       </div>
       <div className="isolate mx-auto -mt-24 max-w-7xl bg-white md:rounded-lg">
-        <MakeAndShareListsOfEvents />
+        {/* <MakeAndShareListsOfEvents /> */}
       </div>
       <div className="relative isolate bg-white px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 grid-rows-1 gap-y-16 py-16 md:grid-cols-2 md:gap-x-16 md:pt-24">
@@ -259,7 +259,7 @@ export default function Page() {
               </p>
             </div>
           </div>
-          <SampleList listId={sampleEventListId} />
+          {/* <SampleList listId={sampleEventListId} /> */}
         </div>
       </div>
       <div className="relative isolate bg-white px-6 lg:px-8">
