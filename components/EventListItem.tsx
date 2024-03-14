@@ -237,7 +237,7 @@ function EventDetails({
   return (
     <div className="flex w-full flex-col items-start justify-center gap-2">
       {/* duplicated with Event */}
-      <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
+      {/* <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
         {eventTimesAreDefined(startTime, endTime) && (
           <>
             <div className="flex-wrap text-neutral-2">
@@ -251,7 +251,7 @@ function EventDetails({
             </div>
           </>
         )}
-      </div>
+      </div> */}
       {/* end duplicated with Event */}
       <div className="flex w-full flex-col items-start gap-2">
         <Link
