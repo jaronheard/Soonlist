@@ -436,7 +436,7 @@ export function EventListItem(props: EventListItemProps) {
             />
           </div>
           <div className="flex w-full items-start gap-7">
-            {/* <EventDetails
+            <EventDetails
               id={id}
               name={event.name!}
               image={image}
@@ -457,7 +457,7 @@ export function EventListItem(props: EventListItemProps) {
                   visibility={props.visibility}
                 />
               }
-            /> */}
+            />
           </div>
         </li>
       </div>
