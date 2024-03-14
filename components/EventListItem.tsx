@@ -113,6 +113,12 @@ function EventDetailsCard({
   EventActionButtons?: React.ReactNode;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   if (!startDate || !endDate) {
     console.error("startDate or endDate is missing");
     return null;
@@ -143,7 +149,7 @@ function EventDetailsCard({
     <div className="flex w-full flex-col items-start justify-center gap-2">
       {/* duplicated with Event */}
       <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
-        {eventTimesAreDefined(startTime, endTime) && (
+        {isClient && eventTimesAreDefined(startTime, endTime) && (
           <>
             <div className="flex-wrap text-neutral-2">
               {startDateInfo?.dayOfWeek.substring(0, 3)}
