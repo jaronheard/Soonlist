@@ -311,13 +311,13 @@ function EventDescription({
   singleEvent?: boolean;
 }) {
   return (
-    <p className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
+    <div className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
       <span
         dangerouslySetInnerHTML={{
           __html: translateToHtml(description),
         }}
       ></span>
-    </p>
+    </div>
   );
 }
 

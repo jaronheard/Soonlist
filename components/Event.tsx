@@ -59,13 +59,13 @@ function EventDescription({
   singleEvent?: boolean;
 }) {
   return (
-    <p className={"text-lg leading-7 text-neutral-1"}>
+    <div className={"text-lg leading-7 text-neutral-1"}>
       <span
         dangerouslySetInnerHTML={{
           __html: translateToHtml(description),
         }}
       ></span>
-    </p>
+    </div>
   );
 }
 
