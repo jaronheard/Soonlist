@@ -8,9 +8,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       {/* <Header />
-      <Toaster />
+      <Toaster /> */}
       <main className="min-h-screen">{children}</main>
-      <Footer /> */}
+      {/* <Footer /> */}
     </div>
   );
 }
