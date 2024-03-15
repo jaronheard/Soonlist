@@ -1,5 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import soft from "timezone-soft";
+import logger from "./logger";
 
 // parse the response text into array of events. response format is:
 interface Response {
@@ -27,7 +28,7 @@ export const extractJsonFromResponse = (response: string) => {
     const jsonString = response.slice(start + 7, end);
     return JSON.parse(jsonString) as Response;
   } catch (error) {
-    console.error("An error occurred while parsing the JSON response:", error);
+    logger.error("An error occurred while parsing the JSON response:", error);
     return undefined; // or handle the error in a way that is appropriate for your application
   }
 };

@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn, extractFilePath } from "@/lib/utils";
+import logger from "@/lib/logger";
 
 function buildDefaultUrl(filePath: string) {
   return Bytescale.UrlBuilder.url({
@@ -39,7 +40,7 @@ const buildCroppedUrl = (
   const validOptions =
     naturalHeight > 0 && naturalWidth > 0 && targetAspect > 0;
   if (!validOptions) {
-    console.error("buildAllCropUrls was called with invalid options:", opts);
+    logger.error("buildAllCropUrls was called with invalid options:", opts);
     return "";
   }
   // Convert crop percentages to pixels
@@ -99,7 +100,7 @@ const buildAllCropUrls = (
 
   const validOptions = naturalHeight > 0 && naturalWidth > 0;
   if (!validOptions) {
-    console.error("buildAllCropUrls was called with invalid options:", opts);
+    logger.error("buildAllCropUrls was called with invalid options:", opts);
     return newCroppedImagesUrls;
   }
 
@@ -230,7 +231,7 @@ export default function ImageUpload({
 
   const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
     if (!hasNaturalDimensions) {
-      console.error(
+      logger.error(
         "onCropComplete was called before natural dimensions were set."
       );
       return;

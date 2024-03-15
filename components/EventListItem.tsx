@@ -25,6 +25,7 @@ import {
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
+import logger from "@/lib/logger";
 
 type EventListItemProps = {
   variant?: "card";
@@ -58,12 +59,12 @@ function EventDateDisplaySimple({
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   if (!startDate || !endDate) {
-    console.error("startDate or endDate is missing");
+    logger.error("startDate or endDate is missing");
     return null;
   }
 
   if (!timezone) {
-    console.error("timezone is missing");
+    logger.error("timezone is missing");
     return null;
   }
 
@@ -120,12 +121,12 @@ function EventDetailsCard({
   }, []);
 
   if (!startDate || !endDate) {
-    console.error("startDate or endDate is missing");
+    logger.error("startDate or endDate is missing");
     return null;
   }
 
   if (!timezone) {
-    console.error("timezone is missing");
+    logger.error("timezone is missing");
     return null;
   }
 
@@ -137,7 +138,7 @@ function EventDetailsCard({
     : getDateInfoUTC(endDate);
 
   if (!startDateInfo || !endDateInfo) {
-    console.error("startDateInfo or endDateInfo is missing");
+    logger.error("startDateInfo or endDateInfo is missing");
     return null;
   }
 
@@ -221,12 +222,12 @@ function EventDetails({
   }, []);
 
   if (!startDate || !endDate) {
-    console.error("startDate or endDate is missing");
+    logger.error("startDate or endDate is missing");
     return null;
   }
 
   if (!timezone) {
-    console.error("timezone is missing");
+    logger.error("timezone is missing");
     return null;
   }
 
@@ -238,7 +239,7 @@ function EventDetails({
     : getDateInfoUTC(endDate);
 
   if (!startDateInfo || !endDateInfo) {
-    console.error("startDateInfo or endDateInfo is missing");
+    logger.error("startDateInfo or endDateInfo is missing");
     return null;
   }
 

@@ -16,6 +16,7 @@ import {
 } from "@/components/DropdownMenu";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
+import logger from "@/lib/logger";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 type EventListsButtonProps = {
@@ -70,7 +71,7 @@ export default function EventListsButton({
     const toAdd = updatedSelectedLists[index];
     const listId = userLists[index]?.id;
     if (!listId) {
-      console.error("No listId");
+      logger.error("No listId");
       return;
     }
     setSelectedLists(updatedSelectedLists);
