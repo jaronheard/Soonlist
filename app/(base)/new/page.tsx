@@ -34,6 +34,7 @@ export default async function Page({ searchParams }: Props) {
     }));
   const timezone = searchParams.timezone || "America/Los_Angeles";
 
+  // saved event
   if (searchParams.saveIntent) {
     return (
       <Suspense>
@@ -46,6 +47,7 @@ export default async function Page({ searchParams }: Props) {
     );
   }
 
+  // image only
   if (searchParams.filePath && !searchParams.rawText) {
     return (
       <div className="flex w-full flex-col items-center gap-8">
@@ -61,16 +63,7 @@ export default async function Page({ searchParams }: Props) {
     );
   }
 
-  if (!searchParams.rawText) {
-    return (
-      <div className="flex w-full flex-col items-center gap-8">
-        <Suspense>
-          <AddEvent lists={lists || undefined} />
-        </Suspense>
-      </div>
-    );
-  }
-
+  // text (with or without image)
   if (searchParams.rawText) {
     return (
       <div className="flex w-full flex-col items-center gap-8">
@@ -85,4 +78,12 @@ export default async function Page({ searchParams }: Props) {
       </div>
     );
   }
+
+  // default
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <YourDetails lists={lists || undefined} />
+      <AddEvent />
+    </div>
+  );
 }
