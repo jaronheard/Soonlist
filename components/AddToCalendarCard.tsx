@@ -81,19 +81,21 @@ export function AddToCalendarCard({
   const [startTime, setStartTime] = useState(initialProps.startTime);
   const [endDate, setEndDate] = useState(initialProps.endDate);
   const [endTime, setEndTime] = useState(initialProps.endTime);
-  const [timeZone, setTimeZone] = useState(
+  const [timeZone, setTimeZone] = useState<string>(
     initialProps.timeZone || "America/Los_Angeles"
   );
-  const [link, setLink] = useState("");
-  const [mentions, setMentions] = useState(
-    initialProps?.metadata?.mentions || ([] as string[])
+  const [link, setLink] = useState<string>("");
+  const [mentions, setMentions] = useState<string[]>(
+    initialProps?.metadata?.mentions || []
   );
-  const [source, setSource] = useState(
-    (initialProps?.metadata?.source || "unknown") as string
+  const [source, setSource] = useState<string>(
+    initialProps?.metadata?.source || "unknown"
   );
-  const [price, setPrice] = useState(initialProps?.metadata?.price || 0);
-  const [priceType, setPriceType] = useState(
-    (initialProps.metadata?.priceType || "unknown") as string
+  const [price, setPrice] = useState<number>(
+    initialProps?.metadata?.price || 0
+  );
+  const [priceType, setPriceType] = useState<string>(
+    initialProps.metadata?.priceType || "unknown"
   );
   const [ageRestriction, setAgeRestriction] = useState(
     (initialProps.metadata?.ageRestriction || "none") as string
@@ -274,7 +276,12 @@ export function AddToCalendarCard({
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="category">Category</Label>
-                <Select defaultValue="unknown" name="category" value={category}>
+                <Select
+                  defaultValue="unknown"
+                  name="category"
+                  value={category}
+                  onValueChange={setCategory}
+                >
                   <SelectTrigger className="w-[180px]">
                     <SelectValue />
                   </SelectTrigger>
@@ -293,6 +300,7 @@ export function AddToCalendarCard({
                   defaultValue="unknown"
                   name="price-type"
                   value={priceType}
+                  onValueChange={setPriceType}
                 >
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Free" />
@@ -391,7 +399,7 @@ export function AddToCalendarCard({
               event={updatedProps}
             />
           )}
-          {initialProps.update && (
+          {initialProps.update && initialProps.updateId && (
             <UpdateButton
               id={initialProps.updateId}
               notes={notes}

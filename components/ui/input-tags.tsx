@@ -9,7 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input, type InputProps } from "@/components/ui/input";
 
-type InputTagsProps = InputProps & {
+type OverrideInputProps = Omit<InputProps, "onChange">;
+// initial source: https://github.com/JaleelB/shadcn-tag-input
+type InputTagsProps = OverrideInputProps & {
   value: string[];
   onChange: Dispatch<SetStateAction<string[]>>;
 };
