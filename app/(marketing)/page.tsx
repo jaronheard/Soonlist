@@ -16,7 +16,7 @@ import SampleList from "@/components/SampleList";
 
 const sampleEventId =
   process.env.NODE_ENV === "production"
-    ? "glltntxdyujt"
+    ? "1daofxgw3hqm"
     : "clrh2zo6p0001asmk0axrq55h";
 const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
 
@@ -57,7 +57,7 @@ const testimonials = [
       name: "Jaron Heard",
       handle: "jaronheard",
       imageUrl:
-        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWERpc3hISWJyWkZFOUFJV3VrZ21vRkJNcnAifQ&w=750&q=75",
+        "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJaRmFCY2VkQ2RrZ1VUM3BUWFJmU2tLM3B2eCJ9",
     },
   },
   // More testimonials...
@@ -76,7 +76,7 @@ const testimonials = [
       name: "Josh Carr",
       handle: "joshcarr",
       imageUrl:
-        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWEJJUDFzTW9JWmN4eURvU3JISERnTDFpbTQifQ&w=750&q=75",
+        "https://upcdn.io/12a1yek/raw/uploads/Soonlist/josh_google_profile.webp",
     },
   },
   {
@@ -85,7 +85,7 @@ const testimonials = [
       name: "Gina Roberti",
       handle: "ginabobina",
       imageUrl:
-        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWTBoWlBNUkxMc2FCazNEUDV5QkRDSThjZWkifQ&w=750&q=75",
+        "https://upcdn.io/12a1yek/raw/uploads/Soonlist/gina_google_profile.webp",
     },
   },
   // {

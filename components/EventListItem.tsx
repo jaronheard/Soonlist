@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ArrowRight, EyeOff } from "lucide-react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
@@ -113,6 +113,12 @@ function EventDetailsCard({
   EventActionButtons?: React.ReactNode;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   if (!startDate || !endDate) {
     console.error("startDate or endDate is missing");
     return null;
@@ -143,7 +149,7 @@ function EventDetailsCard({
     <div className="flex w-full flex-col items-start justify-center gap-2">
       {/* duplicated with Event */}
       <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
-        {eventTimesAreDefined(startTime, endTime) && (
+        {isClient && eventTimesAreDefined(startTime, endTime) && (
           <>
             <div className="flex-wrap text-neutral-2">
               {startDateInfo?.dayOfWeek.substring(0, 3)}
@@ -208,6 +214,12 @@ function EventDetails({
   EventActionButtons?: React.ReactNode;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   if (!startDate || !endDate) {
     console.error("startDate or endDate is missing");
     return null;
@@ -238,7 +250,7 @@ function EventDetails({
     <div className="flex w-full flex-col items-start justify-center gap-2">
       {/* duplicated with Event */}
       <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
-        {eventTimesAreDefined(startTime, endTime) && (
+        {isClient && eventTimesAreDefined(startTime, endTime) && (
           <>
             <div className="flex-wrap text-neutral-2">
               {startDateInfo?.dayOfWeek.substring(0, 3)}
@@ -311,13 +323,13 @@ function EventDescription({
   singleEvent?: boolean;
 }) {
   return (
-    <p className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
+    <div className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
       <span
         dangerouslySetInnerHTML={{
           __html: translateToHtml(description),
         }}
       ></span>
-    </p>
+    </div>
   );
 }
 
@@ -387,11 +399,12 @@ export function EventListItem(props: EventListItemProps) {
   const { user: clerkUser } = useUser();
   const { user, eventFollows, id, event } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
-  const isSelf = clerkUser?.id === user.id || clerkUser?.externalId === user.id;
+  const isSelf =
+    clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
   const image = event.images?.[3];
-  // const comment = props.comments.findLast((item) => item.userId === user?.id);
+  // const comment = props.comments?.findLast((item) => item.userId === user?.id);
   // always show curator if !isSelf
   // const showOtherCurators = !isSelf && props.showOtherCurators;
   // const showCurator = showOtherCurators || !props.hideCurator;

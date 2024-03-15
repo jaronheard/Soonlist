@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/nextjs";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import {
@@ -59,13 +59,13 @@ function EventDescription({
   singleEvent?: boolean;
 }) {
   return (
-    <p className={"text-lg leading-7 text-neutral-1"}>
+    <div className={"text-lg leading-7 text-neutral-1"}>
       <span
         dangerouslySetInnerHTML={{
           __html: translateToHtml(description),
         }}
       ></span>
-    </p>
+    </div>
   );
 }
 
@@ -196,6 +196,12 @@ function SimilarEventsSummary({
 
 export function Event(props: EventProps) {
   const { user: clerkUser } = useUser();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const { user, eventFollows, id, event, image, singleEvent, visibility } =
     props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
@@ -204,7 +210,7 @@ export function Event(props: EventProps) {
   const isFollowing = !!eventFollows.find(
     (item) => item.userId === clerkUser?.id
   );
-  const comment = props.comments.findLast(
+  const comment = props.comments?.findLast(
     (item) => item.userId === clerkUser?.id
   );
 
@@ -254,7 +260,7 @@ export function Event(props: EventProps) {
           <div className="flex flex-col gap-5">
             {/* duplicated with EventListItem */}
             <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
-              {eventTimesAreDefined(startTime, endTime) && (
+              {isClient && eventTimesAreDefined(startTime, endTime) && (
                 <>
                   <div className="shrink-0 text-neutral-2">
                     {startDateInfo?.dayOfWeek.substring(0, 3)}

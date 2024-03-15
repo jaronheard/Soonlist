@@ -52,6 +52,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+    date: false,
+  },
 };
 
 export default function RootLayout({
@@ -64,14 +70,14 @@ export default function RootLayout({
       lang="en"
       className={`!overflow-x-hidden ${kalam.variable} ${plex_sans.variable}`}
     >
-      <PHProvider>
-        <body>
-          <PostHogPageView />
-          <TRPCReactProvider cookies={cookies().toString()}>
-            <Providers>{children}</Providers>
-          </TRPCReactProvider>
-        </body>
-      </PHProvider>
+      {/* <PHProvider> */}
+      <body>
+        {/* <PostHogPageView /> */}
+        <TRPCReactProvider cookies={cookies().toString()}>
+          <Providers>{children}</Providers>
+        </TRPCReactProvider>
+      </body>
+      {/* </PHProvider> */}
     </html>
   );
 }

@@ -17,7 +17,7 @@ export default async function Page({
   }
 
   const eventData = event.event as AddToCalendarButtonProps;
-  const mostRecentComment = event.comments.findLast(
+  const mostRecentComment = event.comments?.findLast(
     (comment) => comment.content
   )?.content;
   return (
