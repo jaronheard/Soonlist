@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { currentUser } from "@clerk/nextjs";
 import { OnboardingTabs } from "./OnboardingTabs";
 import { api } from "@/trpc/server";
@@ -21,8 +22,8 @@ export default async function Page() {
     userName: activeUser.username || "",
   });
   if (!user) {
+    Sentry.captureMessage("No user found in get-started/page.tsx");
     console.error("No user found in get-started/page.tsx");
-    return null;
   }
 
   return (
