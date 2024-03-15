@@ -16,7 +16,7 @@ async function getClerkUsersProd() {
     console.log(`Fetched ${users.length} users from Clerk prod instance.`);
     return users;
   } catch (error) {
-    console.error("Failed to fetch users from production:", error);
+    logger.error("Failed to fetch users from production:", error);
     throw error; // Rethrow the error if you want to handle it further up the chain.
   }
 }
@@ -35,7 +35,7 @@ async function deleteAllClerkUsersDev() {
     }
     console.log(`Deleted ${deletedUsersCount} users from Clerk dev instance.`);
   } catch (error) {
-    console.error("Failed to delete users from development:", error);
+    logger.error("Failed to delete users from development:", error);
     throw error; // Rethrow the error if you want to handle it further up the chain.
   }
 }
@@ -46,7 +46,7 @@ async function saveUsersToFile(users) {
     fs.writeFileSync("users.json", usersJson);
     console.log(`Saved ${users.length} users to users.json`);
   } catch (error) {
-    console.error("Failed to save users to file:", error);
+    logger.error("Failed to save users to file:", error);
     throw error; // Rethrow the error if you want to handle it further up the chain.
   }
 }
@@ -82,7 +82,7 @@ async function addUsersDev(users) {
     }
     console.log(`Added ${addedUserCount} users to Clerk.`);
   } catch (error) {
-    console.error("Failed to add users to development:", error);
+    logger.error("Failed to add users to development:", error);
     throw error; // Rethrow the error if you want to handle it further up the chain.
   }
 }
@@ -98,7 +98,7 @@ async function main() {
     await addUsersDev(users);
     console.log("Added users to development complete.");
   } catch (error) {
-    console.error("An error occurred during the sync process:", error);
+    logger.error("An error occurred during the sync process:", error);
   }
 }
 

@@ -4,6 +4,7 @@ import { type WebhookEvent } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
+import logger from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +49,7 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature,
     }) as WebhookEvent;
   } catch (err) {
-    console.error("Error verifying webhook:", err);
+    logger.error("Error verifying webhook:", err);
     return new Response("Error occured", {
       status: 400,
     });
@@ -90,7 +91,7 @@ export async function POST(req: Request) {
 
       return new Response("", { status: 201 });
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       return new Response("Error occured -- processing webhook data", {
         status: 500,
       });
