@@ -20,8 +20,13 @@ export default async function Page() {
   const user = await api.user.getByUsername.query({
     userName: activeUser.username || "",
   });
-  if (!user) {
-    console.error("No user found in get-started/page.tsx");
+
+  try {
+    if (!user) {
+      throw new Error("No user found in get-started/page.tsx");
+    }
+  } catch (e) {
+    console.error(e);
   }
 
   return (
