@@ -1,5 +1,4 @@
 import { type NextRequest } from "next/server";
-import logger from "@/lib/logger";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -29,7 +28,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    logger.error("Error proxying image:", error);
+    console.error("Error proxying image:", error);
     return new Response("Error proxying image", {
       status: 500,
     });

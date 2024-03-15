@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { DropdownMenuItem } from "./DropdownMenu";
 import { Button } from "./ui/button";
 import { type AddToCalendarButtonProps } from "@/types";
-import logger from "@/lib/logger";
 
 export type ShareButtonProps = {
   id: string;
@@ -30,7 +29,7 @@ export function ShareButton(props: ShareButtonProps) {
         });
         console.log("Event shared successfully");
       } catch (error) {
-        logger.error("Error sharing:", error);
+        console.error("Error sharing:", error);
       }
     } else {
       // Fallback for browsers that do not support the Share API

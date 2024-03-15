@@ -3,7 +3,6 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Temporal } from "@js-temporal/polyfill";
 import { customAlphabet } from "nanoid";
-import logger from "./logger";
 import { type AddToCalendarButtonProps } from "@/types";
 
 export const blankEvent = {
@@ -97,12 +96,12 @@ export function getDateTimeInfo(
 
   const dayOfWeek = daysOfWeekTemporal[userZonedDateTime.dayOfWeek - 1];
   if (!dayOfWeek) {
-    logger.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
+    console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
     return null;
   }
   const monthName = monthNames[userZonedDateTime.month - 1];
   if (!monthName) {
-    logger.error("Invalid monthName / date format. Use YYYY-MM-DD.");
+    console.error("Invalid monthName / date format. Use YYYY-MM-DD.");
     return null;
   }
   const dateInfo = {
@@ -122,7 +121,7 @@ export function getDateInfo(dateString: string): DateInfo | null {
   // Validate input
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
   if (!datePattern.test(dateString)) {
-    logger.error("Invalid date format. Use YYYY-MM-DD.");
+    console.error("Invalid date format. Use YYYY-MM-DD.");
     return null;
   }
 
@@ -131,7 +130,7 @@ export function getDateInfo(dateString: string): DateInfo | null {
 
   // Check if date is valid
   if (isNaN(date.getTime())) {
-    logger.error("Invalid date.");
+    console.error("Invalid date.");
     return null;
   }
 
@@ -144,13 +143,13 @@ export function getDateInfo(dateString: string): DateInfo | null {
 
   const dayOfWeek = daysOfWeek[date.getDay()];
   if (!dayOfWeek) {
-    logger.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
+    console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
     return null;
   }
 
   const monthName = monthNames[date.getMonth()];
   if (!monthName) {
-    logger.error("Invalid monthName / date format. Use YYYY-MM-DD.");
+    console.error("Invalid monthName / date format. Use YYYY-MM-DD.");
     return null;
   }
 
@@ -160,7 +159,7 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
   // Validate input
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
   if (!datePattern.test(dateString)) {
-    logger.error("Invalid date format. Use YYYY-MM-DD.");
+    console.error("Invalid date format. Use YYYY-MM-DD.");
     return null;
   }
 
@@ -169,7 +168,7 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
 
   // Check if date is valid
   if (isNaN(date.getTime())) {
-    logger.error("Invalid date.");
+    console.error("Invalid date.");
     return null;
   }
 
@@ -183,13 +182,13 @@ export function getDateInfoUTC(dateString: string): DateInfo | null {
   // Get day of the week
   const dayOfWeek = daysOfWeek[date.getUTCDay()];
   if (!dayOfWeek) {
-    logger.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
+    console.error("Invalid dayOfWeek / date format. Use YYYY-MM-DD.");
     return null;
   }
 
   const monthName = monthNames[date.getUTCMonth()];
   if (!monthName) {
-    logger.error("Invalid monthName / date format. Use YYYY-MM-DD.");
+    console.error("Invalid monthName / date format. Use YYYY-MM-DD.");
     return null;
   }
 

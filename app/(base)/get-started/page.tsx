@@ -1,7 +1,6 @@
 import { currentUser } from "@clerk/nextjs";
 import { OnboardingTabs } from "./OnboardingTabs";
 import { api } from "@/trpc/server";
-import logger from "@/lib/logger";
 
 export const metadata = {
   title: "Get Started | Soonlist",
@@ -15,14 +14,15 @@ export const metadata = {
 export default async function Page() {
   const activeUser = await currentUser();
   if (!activeUser) {
-    logger.error("No currentUser found in get-started/page.tsx");
+    console.error("No currentUser found in get-started/page.tsx");
     return null;
   }
   const user = await api.user.getByUsername.query({
     userName: activeUser.username || "",
   });
   if (!user) {
-    logger.error("No user found in get-started/page.tsx");
+    console.error("No user found in get-started/page.tsx");
+    return null;
   }
 
   return (
