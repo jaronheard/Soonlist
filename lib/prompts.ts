@@ -233,9 +233,9 @@ interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
-  startTime?: string; // Start time. ALWAYS include if known. Omit ONLY if known to be an all-day event.
+  startTime?: string; // Start time. ALWAYS INCLUDE. Only omit if known to be an all day event.
   endDate: string; // End date in YYYY-MM-DD format.
-  endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
+  endTime?: string; // End time. ALWAYS INCLUDE, GUESS IF NEEDED. Only omit if known to be an all day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
   metadata: Metadata;

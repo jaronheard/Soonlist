@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
 import { ArrowRight, EyeOff } from "lucide-react";
+import * as Bytescale from "@bytescale/sdk";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import { CalendarButton } from "./CalendarButton";
@@ -26,13 +27,21 @@ import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
+function buildDefaultUrl(filePath: string) {
+  return Bytescale.UrlBuilder.url({
+    accountId: "12a1yek",
+    filePath: filePath,
+    options: {},
+  });
+}
+
 type EventListItemProps = {
   variant?: "card";
-  user: User;
+  user?: User;
   eventFollows: EventFollow[];
   comments: Comment[];
   id: string;
-  createdAt: Date;
+  createdAt?: Date;
   event: AddToCalendarButtonPropsRestricted;
   visibility: "public" | "private";
   hideCurator?: boolean;
@@ -41,6 +50,7 @@ type EventListItemProps = {
     event: EventWithUser;
     similarityDetails: SimilarityDetails;
   }[];
+  filePath?: string;
 };
 
 function EventDateDisplaySimple({
@@ -73,7 +83,7 @@ function EventDateDisplaySimple({
   const endDateInfo = endTime
     ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
     : getDateInfoUTC(endDate);
-  const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
+  // const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
   // const showNightIcon =
   //   endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
 
@@ -338,16 +348,20 @@ function EventActionButtons({
   event,
   id,
   isOwner,
-  isFollowing,
+  // isFollowing,
   visibility,
 }: {
-  user: User;
+  user?: User;
   event: AddToCalendarButtonPropsRestricted;
   id: string;
   isOwner: boolean;
   isFollowing?: boolean;
   visibility: "public" | "private";
 }) {
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="flex w-full flex-wrap items-center gap-3">
       <div className="flex grow items-center justify-between">
@@ -397,13 +411,15 @@ function EventActionButtons({
 
 export function EventListItem(props: EventListItemProps) {
   const { user: clerkUser } = useUser();
-  const { user, eventFollows, id, event } = props;
+  const { user, eventFollows, id, event, filePath } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf =
     clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
-  const image = event.images?.[3];
+  const image =
+    event.images?.[3] ||
+    (filePath ? buildDefaultUrl(props.filePath || "") : undefined);
   // const comment = props.comments?.findLast((item) => item.userId === user?.id);
   // always show curator if !isSelf
   // const showOtherCurators = !isSelf && props.showOtherCurators;
@@ -525,5 +541,41 @@ export function EventListItem(props: EventListItemProps) {
         </div>
       </div>
     </li>
+  );
+}
+
+export function EventPreview(props: EventListItemProps) {
+  const { id, event } = props;
+
+  return (
+    <div
+      className={cn(
+        "relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm"
+      )}
+    >
+      <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
+      <div className="absolute right-0 top-0 p-3">
+        <EventDateDisplaySimple
+          startDate={event.startDate}
+          startTime={event.startTime}
+          endDate={event.endDate}
+          endTime={event.endTime}
+          timezone={event.timeZone || "America/Los_Angeles"}
+        />
+      </div>
+      <div className="flex w-full items-start gap-7">
+        <EventDetails
+          id={id}
+          name={event.name!}
+          startDate={event.startDate!}
+          endDate={event.endDate!}
+          startTime={event.startTime!}
+          endTime={event.endTime!}
+          timezone={event.timeZone || "America/Los_Angeles"}
+          location={event.location}
+          description={event.description}
+        />
+      </div>
+    </div>
   );
 }

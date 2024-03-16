@@ -1,8 +1,13 @@
 "use client";
 
-import React, { createContext, useState, useContext, ReactNode } from "react";
-import * as z from "zod";
-import { formSchema } from "@/app/(base)/new/YourDetails";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  type ReactNode,
+} from "react";
+import type * as z from "zod";
+import { type formSchema } from "@/app/(minimal)/new/YourDetails";
 
 // Define the type of the context state
 interface FormContextState {

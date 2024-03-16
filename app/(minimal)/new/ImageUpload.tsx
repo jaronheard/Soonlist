@@ -254,141 +254,132 @@ export default function ImageUpload({
     croppedImagesMatchFilePath && croppedImagesUrls?.cropped;
 
   return (
-    <Card className="max-w-screen w-full sm:max-w-xl">
-      <CardContent className="grid grid-cols-1 place-items-center gap-0 rounded-md py-4 shadow-md">
-        <CardTitle>Event Image</CardTitle>
-        <p className="mx-auto block text-sm font-medium leading-6 text-gray-900">
-          <span className="text-gray-500">(Optional)</span>
-        </p>
-        <>
-          {imageUrl && (
-            <>
-              <div className="p-1"></div>
-              <img
-                src={imageUrl}
-                alt="Full Image Preview"
-                className={cn(
-                  "mx-auto block h-36 overflow-hidden object-cover",
-                  {
-                    hidden: showCroppedImage,
-                  }
-                )}
-                ref={fullImageRef}
-              />
-              {showCroppedImage && (
-                <div className="text-center text-sm text-gray-500">
-                  <span className="font-medium">Cropped Preview</span>
-                </div>
+    <div>
+      <>
+        {imageUrl && (
+          <>
+            <div className="p-1"></div>
+            <img
+              src={imageUrl}
+              alt="Full Image Preview"
+              className={cn(
+                "mx-auto block h-auto max-h-96 w-full object-contain",
+                {
+                  hidden: showCroppedImage,
+                }
               )}
-              <img
-                src={croppedImagesUrls?.cropped}
-                alt="Cropped Preview"
-                className={cn(
-                  "mx-auto block h-36 overflow-hidden object-cover",
-                  {
-                    hidden: !showCroppedImage || isModalOpen,
-                  }
-                )}
-              />
-              <div className="p-1"></div>
-
-              <Dialog
-                open={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                className="fixed inset-0 z-10 mx-auto max-h-[90vh] max-w-[90vw] overflow-y-auto"
-              >
-                <div className="flex min-h-screen items-center justify-center">
-                  <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
-                  <div className="relative mx-auto max-h-[90vh] max-w-[90vw] rounded bg-white p-4 sm:max-w-sm">
-                    <Dialog.Title className="text-lg font-medium leading-6 text-gray-900">
-                      Crop Image
-                    </Dialog.Title>
-                    <div className="p-2"></div>
-                    <ReactCrop
-                      crop={crop}
-                      onComplete={onCropComplete}
-                      onChange={onCropChange}
-                      className="max-h-[75vh] max-w-[90vw]"
-                    >
-                      <img src={imageUrl} alt="Cropper img" />
-                    </ReactCrop>
-                    <div className="p-2"></div>
-                    <Button
-                      onClick={() => {
-                        setIsModalOpen(false);
-                      }}
-                      className="absolute right-2 top-2"
-                      variant="destructive"
-                    >
-                      Close
-                    </Button>
-                  </div>
-                </div>
-              </Dialog>
-              <div className="p-2"></div>
-            </>
-          )}
-        </>
-        <div className="p-2"></div>
-        <div className="mx-auto flex flex-wrap justify-center gap-4">
-          {imageUrl && (
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              size="sm"
-              variant="outline"
-            >
-              <Scissors className="mr-2 size-4" />
-              Crop
-            </Button>
-          )}
-          <UploadButton
-            options={{
-              apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
-              editor: {
-                images: {
-                  crop: true,
-                  preview: true,
-                },
-              },
-            }}
-            onComplete={(files) => {
-              if (files.length > 0) {
-                // push the file path to the search params
-                const filePath = files[0]!.filePath;
-                const fileUrl = files[0]!.fileUrl;
-                setFilePath(filePath);
-                setImageUrl(fileUrl);
-              }
-            }}
-          >
-            {({ onClick }) => (
-              <Button onClick={onClick} variant="secondary" size="sm">
-                {imageUrl ? (
-                  <SwitchCamera className="mr-2 size-4" />
-                ) : (
-                  <Upload className="mr-2 size-4" />
-                )}
-                {imageUrl ? "Replace" : "Upload"}
-              </Button>
+              ref={fullImageRef}
+            />
+            {showCroppedImage && (
+              <div className="text-center text-sm text-gray-500">
+                <span className="font-medium">Cropped Preview</span>
+              </div>
             )}
-          </UploadButton>
-          {imageUrl && (
-            <Button
-              variant="destructive"
-              onClick={() => {
-                setFilePath("");
-                setImageUrl("");
-                setCroppedImagesUrls({ deleted: "true" });
-              }}
-              size="sm"
+            <img
+              src={croppedImagesUrls?.cropped}
+              alt="Cropped Preview"
+              className={cn("mx-auto block h-36 overflow-hidden object-cover", {
+                hidden: !showCroppedImage || isModalOpen,
+              })}
+            />
+            <div className="p-1"></div>
+
+            <Dialog
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              className="fixed inset-0 z-10 mx-auto max-h-[90vh] max-w-[90vw] overflow-y-auto"
             >
-              <Trash className="mr-2 size-4" />
-              Delete
+              <div className="flex min-h-screen items-center justify-center">
+                <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+
+                <div className="relative mx-auto max-h-[90vh] max-w-[90vw] rounded bg-white p-4 sm:max-w-sm">
+                  <Dialog.Title className="text-lg font-medium leading-6 text-gray-900">
+                    Crop Image
+                  </Dialog.Title>
+                  <div className="p-2"></div>
+                  <ReactCrop
+                    crop={crop}
+                    onComplete={onCropComplete}
+                    onChange={onCropChange}
+                    className="max-h-[75vh] max-w-[90vw]"
+                  >
+                    <img src={imageUrl} alt="Cropper img" />
+                  </ReactCrop>
+                  <div className="p-2"></div>
+                  <Button
+                    onClick={() => {
+                      setIsModalOpen(false);
+                    }}
+                    className="absolute right-2 top-2"
+                    variant="destructive"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+            <div className="p-2"></div>
+          </>
+        )}
+      </>
+      <div className="p-2"></div>
+      <div className="mx-auto flex flex-wrap justify-center gap-4">
+        {imageUrl && (
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            size="sm"
+            variant="outline"
+          >
+            <Scissors className="mr-2 size-4" />
+            Crop
+          </Button>
+        )}
+        <UploadButton
+          options={{
+            apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
+            editor: {
+              images: {
+                crop: true,
+                preview: true,
+              },
+            },
+          }}
+          onComplete={(files) => {
+            if (files.length > 0) {
+              // push the file path to the search params
+              const filePath = files[0]!.filePath;
+              const fileUrl = files[0]!.fileUrl;
+              setFilePath(filePath);
+              setImageUrl(fileUrl);
+            }
+          }}
+        >
+          {({ onClick }) => (
+            <Button onClick={onClick} variant="secondary" size="sm">
+              {imageUrl ? (
+                <SwitchCamera className="mr-2 size-4" />
+              ) : (
+                <Upload className="mr-2 size-4" />
+              )}
+              {imageUrl ? "Replace" : "Upload"}
             </Button>
           )}
-        </div>
-      </CardContent>
-    </Card>
+        </UploadButton>
+        {imageUrl && (
+          <Button
+            variant="destructive"
+            onClick={() => {
+              setFilePath("");
+              setImageUrl("");
+              setCroppedImagesUrls({ deleted: "true" });
+            }}
+            size="sm"
+          >
+            <Trash className="mr-2 size-4" />
+            Delete
+          </Button>
+        )}
+      </div>
+    </div>
   );
 }
