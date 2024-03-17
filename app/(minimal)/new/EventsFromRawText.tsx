@@ -32,6 +32,7 @@ export default async function EventsFromRawText({
   // Ask OpenAI for a streaming completion given the prompt
   const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-0125",
+    response_format: { type: "json_object" },
 
     messages: [
       {

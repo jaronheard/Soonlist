@@ -233,9 +233,9 @@ interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
-  startTime?: string; // Start time. ALWAYS INCLUDE. Only omit if known to be an all day event.
+  startTime?: string; // ISO 8601 FORMAT ONLY. Only omit if known to be an all-day event.
   endDate: string; // End date in YYYY-MM-DD format.
-  endTime?: string; // End time. ALWAYS INCLUDE, GUESS IF NEEDED. Only omit if known to be an all day event.
+  endTime?: string; // ISO 8601 FORMAT ONLY. Infer based on start time and event type if not specified. Only omit if known to be an all-day event. CANNOT BE UNKNOWN.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
   metadata: Metadata;
@@ -262,6 +262,6 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 export const getSystemMessage = () => {
   return {
     text: systemMessage(),
-    version: "v2024.02.28.1",
+    version: "v2024.03.16.1",
   };
 };

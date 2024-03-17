@@ -77,6 +77,8 @@ function EventDateDisplaySimple({
     return null;
   }
 
+  console.log("startTime", startTime);
+  console.log("endTime", endTime);
   const startDateInfo = startTime
     ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
     : getDateInfoUTC(startDate);
