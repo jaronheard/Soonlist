@@ -38,6 +38,7 @@ export default async function EventsFromImage({
   const res = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
     max_tokens: 1000,
+    seed: 42069,
     messages: [
       {
         role: "system",

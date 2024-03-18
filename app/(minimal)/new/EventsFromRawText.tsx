@@ -33,6 +33,7 @@ export default async function EventsFromRawText({
   const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-0125",
     response_format: { type: "json_object" },
+    seed: 42069,
 
     messages: [
       {
