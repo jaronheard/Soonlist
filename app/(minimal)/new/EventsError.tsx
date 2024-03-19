@@ -18,7 +18,7 @@ export default function EventsError({
     <Accordion type="single" collapsible className="max-w-full">
       <AccordionItem value="item-1" className="border-b-0">
         <AccordionTrigger className="flex gap-2 rounded-md bg-red-50 p-4">
-          <div>Magic event didn&apos;t work 🥲</div>
+          <div>Error adding event automatically 🥲</div>
         </AccordionTrigger>
         <AccordionContent>
           {/* display raw text in code style */}
@@ -30,8 +30,7 @@ export default function EventsError({
               <>
                 <div className="p-1"></div>
                 <p className="text-sm text-gray-700">
-                  <span className="font-semibold">Magic response:</span>{" "}
-                  {response}
+                  <span className="font-semibold">Response:</span> {response}
                 </p>
               </>
             )}
