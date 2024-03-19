@@ -211,6 +211,7 @@ function EventDetails({
   timezone,
   location,
   description,
+  preview,
   EventActionButtons,
 }: {
   id: string;
@@ -224,6 +225,7 @@ function EventDetails({
   description?: string;
   location?: string;
   EventActionButtons?: React.ReactNode;
+  preview?: boolean;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   const [isClient, setIsClient] = useState(false);
@@ -279,7 +281,7 @@ function EventDetails({
       {/* end duplicated with Event */}
       <div className="flex w-full flex-col items-start gap-2">
         <Link
-          href={`/event/${id}`}
+          href={preview ? "" : `/event/${id}`}
           className={
             "line-clamp-2 pr-12 text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
           }
@@ -311,15 +313,18 @@ function EventDetails({
         <div className="pt-2">
           <EventDescription description={description} />
         </div>
-        <Link
-          href={`/event/${id}`}
-          className={cn(
-            buttonVariants({ variant: "link" }),
-            "group h-full p-0"
-          )}
-        >
-          Learn more <ArrowRight className="ml-1 size-4 text-interactive-2 " />
-        </Link>
+        {!preview && (
+          <Link
+            href={`/event/${id}`}
+            className={cn(
+              buttonVariants({ variant: "link" }),
+              "group h-full p-0"
+            )}
+          >
+            Learn more{" "}
+            <ArrowRight className="ml-1 size-4 text-interactive-2 " />
+          </Link>
+        )}
         <div className="w-full">
           {EventActionButtons && <>{EventActionButtons}</>}
         </div>
@@ -567,6 +572,7 @@ export function EventPreview(props: EventListItemProps) {
       </div>
       <div className="flex w-full items-start gap-7">
         <EventDetails
+          preview
           id={id}
           name={event.name!}
           startDate={event.startDate!}
