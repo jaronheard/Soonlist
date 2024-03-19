@@ -6,10 +6,10 @@ import ImageUpload from "./ImageUpload";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
 import EventsFromRawText from "./EventsFromRawText";
+import EventLoadingText from "./EventLoadingText";
 import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
-import FullPageLoadingSpinner from "@/components/FullPageLoadingSpinner";
 import { Button } from "@/components/ui/button";
 
 const EventsFromSaved = dynamic(() => import("./EventsFromSaved"), {
@@ -26,6 +26,19 @@ type Props = {
     timezone?: string;
   };
 };
+
+// this is a simple loading spinner component that takes a className prop for sizing
+
+function EventPreviewLoadingSpinner({ className }: { className?: string }) {
+  return (
+    <div
+      className={`flex items-center justify-center ${className} flex-col gap-4 pt-2`}
+    >
+      <EventLoadingText />
+      <div className="size-10 animate-spin rounded-full border-b-2 border-gray-400"></div>
+    </div>
+  );
+}
 
 export default async function Page({ searchParams }: Props) {
   const user = await currentUser();
@@ -75,7 +88,9 @@ export default async function Page({ searchParams }: Props) {
         <header className="fixed inset-x-0 top-2 flex items-center justify-center">
           <ImagePreview filePath={searchParams.filePath} />
         </header>
-        <Suspense fallback={<FullPageLoadingSpinner />}>
+        <Suspense
+          fallback={<EventPreviewLoadingSpinner className="size-screen" />}
+        >
           <EventsFromRawText
             timezone={timezone}
             rawText={searchParams.rawText}
