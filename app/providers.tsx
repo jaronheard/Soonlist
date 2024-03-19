@@ -64,14 +64,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
         variables: { colorPrimary: "rgb(90, 50, 251)", borderRadius: "16px" },
       }}
     >
-      {/* <IntercomProvider> */}
-      {/* <ContextProvider> */}
-      {children}
-      {/* {process.env.NODE_ENV === "production" ? <SpeedInsights /> : <></>} */}
-      {/* {process.env.NODE_ENV === "production" ? <UserAnalytics /> : <></>} */}
-      {/* <VercelToolbar /> */}
-      {/* </ContextProvider> */}
-      {/* </IntercomProvider> */}
+      <IntercomProvider>
+        <ContextProvider>
+          {children}
+          {process.env.NODE_ENV === "production" ? <SpeedInsights /> : <></>}
+          {process.env.NODE_ENV === "production" ? <UserAnalytics /> : <></>}
+          <VercelToolbar />
+        </ContextProvider>
+      </IntercomProvider>
     </ClerkProvider>
   );
 }
