@@ -7,7 +7,8 @@ import { posthog } from "posthog-js";
 
 Sentry.init({
   dsn: "https://35d541c34f3a87134429ac75e6513a16@o4503934125998080.ingest.sentry.io/4506458761396224",
-  tracesSampleRate: 1.0,
+  // Set the sample rate to 0 to disable tracing
+  tracesSampleRate: 0,
   // Set the session sample rate to 0 to disable capturing entire sessions
   replaysSessionSampleRate: 0,
 
