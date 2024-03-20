@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
 import {
+  AccessibilityIcon,
   ArrowRight,
   CalendarIcon,
   CreditCardIcon,
@@ -14,8 +15,14 @@ import {
   LockIcon,
   Mic,
   PersonStanding,
+  ShieldPlus,
+  Speech,
   TagIcon,
   TextIcon,
+  VenetianMask,
+  EarOff,
+  Ear,
+  Accessibility,
 } from "lucide-react";
 import * as Bytescale from "@bytescale/sdk";
 import { DeleteButton } from "./DeleteButton";
@@ -214,6 +221,67 @@ function EventDetailsCard({
   );
 }
 
+function EventAccessibility({ metadata }: { metadata?: Metadata }) {
+  return (
+    <div className="col-span-full flex flex-col gap-0.5">
+      <Label className="flex items-center" htmlFor="accessibility">
+        <GlobeIcon className="mr-1.5 size-4" />
+        Accessibility
+      </Label>
+      <div
+        className="flex gap-1 text-sm capitalize text-neutral-1"
+        id="accessibility"
+      >
+        {(metadata?.accessibility?.length === 0 ||
+          !metadata?.accessibility?.length) &&
+          "Unknown"}
+        {metadata?.accessibility?.map((item) => {
+          // icon for each accessibility type
+          switch (item) {
+            case "masksRequired":
+              return (
+                <div className="flex items-center">
+                  <ShieldPlus className="mr-0.5 inline-block size-4"></ShieldPlus>
+                  Masks Required
+                </div>
+              );
+            case "masksSuggested":
+              return (
+                <div className="flex items-center">
+                  <ShieldPlus className="mr-0.5 inline-block size-4"></ShieldPlus>
+                  Masks Suggested
+                </div>
+              );
+            case "wheelchairAccessible":
+              return (
+                <div className="flex items-center">
+                  <Accessibility className="mr-0.5 inline-block size-4"></Accessibility>
+                  Wheelchair Accessible
+                </div>
+              );
+            case "signLanguageInterpretation":
+              return (
+                <div className="flex items-center">
+                  <Ear className="mr-0.5 inline-block size-4"></Ear>
+                  Sign Language Interpretation
+                </div>
+              );
+            case "closedCaptioning":
+              return (
+                <div className="flex items-center">
+                  <Ear className="mr-0.5 inline-block size-4"></Ear>
+                  Closed Captioning
+                </div>
+              );
+            default:
+              return null;
+          }
+        })}
+      </div>
+    </div>
+  );
+}
+
 function EventDetails({
   id,
   name,
@@ -396,6 +464,7 @@ function EventDetails({
                 {metadata?.performers?.join(", ")}
               </p>
             </div>
+            <EventAccessibility metadata={metadata} />
             {/* <div className="flex flex-col gap-0.5">
               <Label className="flex items-center" htmlFor="source">
                 <GlobeIcon className="mr-1.5 size-4" />

@@ -57,6 +57,16 @@ export const EVENT_TYPES = [
   "unknown",
 ] as const;
 export type EventType = (typeof EVENT_TYPES)[number];
+
+export const ACCESSIBILITY_TYPES = [
+  "masksRequired",
+  "masksSuggested",
+  "wheelchairAccessible",
+  "signLanguageInterpretation",
+  "closedCaptioning",
+] as const;
+export type AccessibilityType = (typeof ACCESSIBILITY_TYPES)[number];
+
 export interface Metadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.
@@ -66,6 +76,8 @@ export interface Metadata {
   category: EventCategory;
   type: EventType;
   performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
+  accessibility?: AccessibilityType[]; // An array of known accessibility features available at the event.
+  accessibilityNotes?: string; // Any additional notes about the event's accessibility.
 }
 export interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
@@ -169,14 +181,14 @@ enum Platform {
 }
 
 enum AgeRestriction {
-  "all-ages",
+  "all-ages", // default assumption
   "18+",
   "21+",
   "unknown",
 }
 
 enum PriceType {
-  "free",
+  "free", // default assumption
   "notaflof", // no one turned away for lack of funds
   "donation",
   "paid",
@@ -218,6 +230,14 @@ enum EventType {
   "unknown",
 }
 
+enum AccessibilityTypes {
+  "masksRequired",
+  "masksSuggested",
+  "wheelchairAccessible",
+  "signLanguageInterpretation",
+  "closedCaptioning",
+}
+  
 interface Metadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.
@@ -226,7 +246,9 @@ interface Metadata {
   ageRestriction: AgeRestriction;
   category: EventCategory;
   type: EventType;
-  performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
+  performers?: string[]; // An array of all performers or speakers at the event, if known. Infer if not explicitly stated.
+  accessibility?: AccessibilityTypes[]; // An array of known accessibility features available at the event.
+  accessibilityNotes?: string; // Any additional notes about the event's accessibility.
 }
 
 interface Event {
