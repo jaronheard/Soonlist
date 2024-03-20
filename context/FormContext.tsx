@@ -18,7 +18,7 @@ interface FormContextState {
 // Create a context with an empty object and a dummy function
 const FormContext = createContext<FormContextState>({
   formData: { notes: "", visibility: "public", lists: [] },
-  setFormData: () => {},
+  setFormData: () => null,
 });
 
 export const useFormContext = () => useContext(FormContext);

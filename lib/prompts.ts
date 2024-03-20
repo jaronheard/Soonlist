@@ -64,7 +64,7 @@ export const ACCESSIBILITY_TYPES = [
   "wheelchairAccessible",
   "signLanguageInterpretation",
   "closedCaptioning",
-] as const;
+];
 export type AccessibilityType = (typeof ACCESSIBILITY_TYPES)[number];
 
 export interface Metadata {

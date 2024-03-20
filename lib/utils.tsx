@@ -371,3 +371,17 @@ export function generatePublicId() {
 export function filterDuplicates<T extends { id: unknown }>(objects: T[]): T[] {
   return Array.from(new Map(objects.map((obj) => [obj.id, obj])).values());
 }
+
+export function valueToOption(value: string): { value: string; label: string } {
+  return { value, label: value };
+}
+
+export function valuesToOptions(
+  values: string[]
+): { value: string; label: string }[] {
+  return values.map((value) => valueToOption(value));
+}
+
+export function optionsToValues(options: { value: string; label: string }[]) {
+  return options.map((option) => option.value);
+}

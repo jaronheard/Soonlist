@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Shapes, Text } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
+import type * as z from "zod";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
 import { Label } from "./ui/label";
@@ -19,15 +20,20 @@ import {
   SelectValue,
 } from "./ui/select";
 import { InputTags } from "./ui/input-tags";
+import { MultiSelect } from "./ui/multiselect";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useFormContext } from "@/context/FormContext";
+
 import {
   EVENT_CATEGORIES,
   EVENT_TYPES,
   type Metadata,
-  PLATFORMS,
+  // PLATFORMS,
   PRICE_TYPE,
+  ACCESSIBILITY_TYPES,
 } from "@/lib/prompts";
+import { valuesToOptions } from "@/lib/utils";
+import { type formSchema } from "@/app/(minimal)/new/YourDetails";
 
 type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
@@ -44,9 +50,8 @@ export function AddToCalendarCard({
   ...initialProps
 }: AddToCalendarCardProps) {
   // get croppedImagesUrls from context
-  const { user } = useUser();
-  const { croppedImagesUrls } = useCroppedImageContext();
-  const { formData } = useFormContext();
+  const { formData }: { formData: z.infer<typeof formSchema> } =
+    useFormContext();
   const { notes, visibility, lists } = formData;
 
   // TODO: only use croppedImagesUrls if query param is set and same image
@@ -107,6 +112,14 @@ export function AddToCalendarCard({
   const [performers, setPerformers] = useState(
     initialProps?.metadata?.performers || []
   );
+  const [accessibility, setAccessibility] = useState<
+    Record<"value" | "label", string>[]
+  >(
+    initialProps?.metadata?.accessibility
+      ? valuesToOptions(initialProps.metadata.accessibility)
+      : []
+  );
+  const [accessibilityNotes, setAccessibilityNotes] = useState<string>("");
 
   const { listStyle, ...filteredProps } = initialProps;
   const acceptableListStyle = ["overlay", "modal"].includes(listStyle || "")
@@ -354,6 +367,24 @@ export function AddToCalendarCard({
                 />
               </div>
               <div className="grid gap-2">
+                <Label htmlFor="performers">Accessibility</Label>
+                <MultiSelect
+                  options={valuesToOptions(ACCESSIBILITY_TYPES)}
+                  selected={accessibility}
+                  onChange={setAccessibility}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="accessibility-notes">Accessibility Notes</Label>
+                <Textarea
+                  id="accessibility-notes"
+                  name="accessibility-notes"
+                  rows={3}
+                  value={accessibilityNotes}
+                  onChange={(e) => setAccessibilityNotes(e.target.value)}
+                />
+              </div>
+              {/* <div className="grid gap-2">
                 <Label htmlFor="source">Social Platform</Label>
                 <Select name="source" value={source} onValueChange={setSource}>
                   <SelectTrigger className="w-[180px]">
@@ -376,7 +407,7 @@ export function AddToCalendarCard({
                   value={mentions}
                   onChange={setMentions}
                 />
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         </div>
