@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Shapes, Text } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
-import type * as z from "zod";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
 import { Label } from "./ui/label";
@@ -33,7 +32,6 @@ import {
   ACCESSIBILITY_TYPES,
 } from "@/lib/prompts";
 import { valuesToOptions } from "@/lib/utils";
-import { type formSchema } from "@/app/(minimal)/new/YourDetails";
 
 type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
@@ -49,9 +47,9 @@ export function AddToCalendarCard({
   firstInputRef,
   ...initialProps
 }: AddToCalendarCardProps) {
-  // get croppedImagesUrls from context
-  const { formData }: { formData: z.infer<typeof formSchema> } =
-    useFormContext();
+  const { user } = useUser();
+  const { croppedImagesUrls } = useCroppedImageContext();
+  const { formData } = useFormContext();
   const { notes, visibility, lists } = formData;
 
   // TODO: only use croppedImagesUrls if query param is set and same image
@@ -149,6 +147,8 @@ export function AddToCalendarCard({
       category,
       type,
       performers,
+      accessibility: accessibility.map((a) => a.value),
+      accessibilityNotes,
     },
   };
 
