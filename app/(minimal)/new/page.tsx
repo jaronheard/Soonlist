@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import * as Bytescale from "@bytescale/sdk";

@@ -1,6 +1,5 @@
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
-import ImageUpload from "./ImageUpload";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import {
   addCommonAddToCalendarPropsFromResponse,
@@ -8,8 +7,7 @@ import {
   getSystemMessage,
 } from "@/lib/prompts";
 import { blankEvent } from "@/lib/utils";
-import { Event } from "@/components/Event";
-import { EventListItem, EventPreview } from "@/components/EventListItem";
+import { EventPreview } from "@/components/EventListItem";
 
 // Create an OpenAI API client (that's edge friendly!)
 const config = {
