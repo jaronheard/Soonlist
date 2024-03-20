@@ -4,7 +4,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
-import { ArrowRight, EyeOff } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarIcon,
+  CreditCardIcon,
+  EyeOff,
+  GlobeIcon,
+  GroupIcon,
+  LockIcon,
+  Mic,
+  PersonStanding,
+  TagIcon,
+  TextIcon,
+} from "lucide-react";
 import * as Bytescale from "@bytescale/sdk";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
@@ -12,6 +24,7 @@ import { CalendarButton } from "./CalendarButton";
 import { ShareButton } from "./ShareButton";
 import { type EventWithUser } from "./EventList";
 import { buttonVariants } from "./ui/button";
+import { Label } from "./ui/label";
 import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
@@ -26,6 +39,7 @@ import {
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
+import { type Metadata } from "@/lib/prompts";
 
 function buildDefaultUrl(filePath: string) {
   return Bytescale.UrlBuilder.url({
@@ -42,7 +56,7 @@ type EventListItemProps = {
   comments: Comment[];
   id: string;
   createdAt?: Date;
-  event: AddToCalendarButtonPropsRestricted;
+  event: AddToCalendarButtonPropsRestricted & { metadata?: Metadata };
   visibility: "public" | "private";
   hideCurator?: boolean;
   showOtherCurators?: boolean;
@@ -213,6 +227,7 @@ function EventDetails({
   description,
   preview,
   EventActionButtons,
+  metadata,
 }: {
   id: string;
   name: string;
@@ -226,6 +241,7 @@ function EventDetails({
   location?: string;
   EventActionButtons?: React.ReactNode;
   preview?: boolean;
+  metadata?: Metadata;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   const [isClient, setIsClient] = useState(false);
@@ -324,6 +340,81 @@ function EventDetails({
             Learn more{" "}
             <ArrowRight className="ml-1 size-4 text-interactive-2 " />
           </Link>
+        )}
+        {preview && (
+          <div className="mt-3 grid grid-cols-2 gap-x-1 gap-y-3 text-neutral-2">
+            <div className="flex flex-col gap-0.5">
+              <Label className="flex items-center" htmlFor="category">
+                <CalendarIcon className="mr-1.5 size-4" />
+                Category
+              </Label>
+              <p className="text-sm capitalize text-neutral-1" id="category">
+                {metadata?.category}
+              </p>
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <Label className="flex items-center" htmlFor="type">
+                <GlobeIcon className="mr-1.5 size-4" />
+                Type
+              </Label>
+              <p className="text-sm capitalize text-neutral-1" id="type">
+                {metadata?.type}
+              </p>
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <Label className="flex items-center" htmlFor="price">
+                <TagIcon className="mr-1.5 size-4" />
+                Price
+              </Label>
+              <p className="text-sm capitalize text-neutral-1" id="price">
+                {metadata?.priceType === "paid" && "$"}
+                {metadata?.price}
+                <span className="capitalize">{metadata?.priceType && " "}</span>
+                {metadata?.priceType !== "paid" && (
+                  <span className="capitalize">{metadata?.priceType}</span>
+                )}
+              </p>
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <Label className="flex items-center" htmlFor="age-restriction">
+                <PersonStanding className="mr-1.5 size-4" />
+                Ages
+              </Label>
+              <p
+                className="text-sm capitalize text-neutral-1"
+                id="age-restriction"
+              >
+                {metadata?.ageRestriction}
+              </p>
+            </div>
+            <div className="col-span-full flex flex-col gap-0.5">
+              <Label className="flex items-center" htmlFor="performers">
+                <Mic className="mr-1.5 size-4" />
+                Performers
+              </Label>
+              <p className="text-sm text-neutral-1" id="performers">
+                {metadata?.performers?.join(", ")}
+              </p>
+            </div>
+            {/* <div className="flex flex-col gap-0.5">
+              <Label className="flex items-center" htmlFor="source">
+                <GlobeIcon className="mr-1.5 size-4" />
+                Source
+              </Label>
+              <p className="text-sm capitalize text-neutral-1" id="source">
+                {metadata?.source}
+              </p>
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <Label className="flex items-center" htmlFor="mentions">
+                <TextIcon className="mr-1.5 size-4" />
+                Mentions
+              </Label>
+              <p className="text-sm text-neutral-1" id="mentions">
+                {metadata?.mentions}
+              </p>
+            </div> */}
+          </div>
         )}
         <div className="w-full">
           {EventActionButtons && <>{EventActionButtons}</>}
@@ -582,6 +673,7 @@ export function EventPreview(props: EventListItemProps) {
           timezone={event.timeZone || "America/Los_Angeles"}
           location={event.location}
           description={event.description}
+          metadata={event.metadata}
         />
       </div>
     </div>
