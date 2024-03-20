@@ -223,7 +223,7 @@ function EventDetailsCard({
 
 function EventAccessibility({ metadata }: { metadata?: Metadata }) {
   return (
-    <div className="col-span-full flex flex-col gap-0.5">
+    <div className="col-span-2 flex flex-col gap-0.5">
       <Label className="flex items-center" htmlFor="accessibility">
         <GlobeIcon className="mr-1.5 size-4" />
         Accessibility
@@ -278,6 +278,82 @@ function EventAccessibility({ metadata }: { metadata?: Metadata }) {
           }
         })}
       </div>
+    </div>
+  );
+}
+
+function EventMetadata({ metadata }: { metadata?: Metadata }) {
+  return (
+    <div className="mt-3 grid grid-cols-2 gap-x-1 gap-y-3 text-neutral-2 md:grid-cols-4">
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="category">
+          <CalendarIcon className="mr-1.5 size-4" />
+          Category
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="category">
+          {metadata?.category}
+        </p>
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="type">
+          <GlobeIcon className="mr-1.5 size-4" />
+          Type
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="type">
+          {metadata?.type}
+        </p>
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="price">
+          <TagIcon className="mr-1.5 size-4" />
+          Price
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="price">
+          {metadata?.priceType === "paid" && "$"}
+          {metadata?.price}
+          <span className="capitalize">{metadata?.priceType && " "}</span>
+          {metadata?.priceType !== "paid" && (
+            <span className="capitalize">{metadata?.priceType}</span>
+          )}
+        </p>
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="age-restriction">
+          <PersonStanding className="mr-1.5 size-4" />
+          Ages
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="age-restriction">
+          {metadata?.ageRestriction}
+        </p>
+      </div>
+      <div className="col-span-2 flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="performers">
+          <Mic className="mr-1.5 size-4" />
+          Performers
+        </Label>
+        <p className="text-sm text-neutral-1" id="performers">
+          {metadata?.performers?.join(", ")}
+        </p>
+      </div>
+      <EventAccessibility metadata={metadata} />
+      {/* <div className="flex flex-col gap-0.5">
+      <Label className="flex items-center" htmlFor="source">
+        <GlobeIcon className="mr-1.5 size-4" />
+        Source
+      </Label>
+      <p className="text-sm capitalize text-neutral-1" id="source">
+        {metadata?.source}
+      </p>
+    </div>
+    <div className="flex flex-col gap-0.5">
+      <Label className="flex items-center" htmlFor="mentions">
+        <TextIcon className="mr-1.5 size-4" />
+        Mentions
+      </Label>
+      <p className="text-sm text-neutral-1" id="mentions">
+        {metadata?.mentions}
+      </p>
+    </div> */}
     </div>
   );
 }
@@ -410,79 +486,8 @@ function EventDetails({
           </Link>
         )}
         {preview && (
-          <div className="mt-3 grid grid-cols-2 gap-x-1 gap-y-3 text-neutral-2">
-            <div className="flex flex-col gap-0.5">
-              <Label className="flex items-center" htmlFor="category">
-                <CalendarIcon className="mr-1.5 size-4" />
-                Category
-              </Label>
-              <p className="text-sm capitalize text-neutral-1" id="category">
-                {metadata?.category}
-              </p>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <Label className="flex items-center" htmlFor="type">
-                <GlobeIcon className="mr-1.5 size-4" />
-                Type
-              </Label>
-              <p className="text-sm capitalize text-neutral-1" id="type">
-                {metadata?.type}
-              </p>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <Label className="flex items-center" htmlFor="price">
-                <TagIcon className="mr-1.5 size-4" />
-                Price
-              </Label>
-              <p className="text-sm capitalize text-neutral-1" id="price">
-                {metadata?.priceType === "paid" && "$"}
-                {metadata?.price}
-                <span className="capitalize">{metadata?.priceType && " "}</span>
-                {metadata?.priceType !== "paid" && (
-                  <span className="capitalize">{metadata?.priceType}</span>
-                )}
-              </p>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <Label className="flex items-center" htmlFor="age-restriction">
-                <PersonStanding className="mr-1.5 size-4" />
-                Ages
-              </Label>
-              <p
-                className="text-sm capitalize text-neutral-1"
-                id="age-restriction"
-              >
-                {metadata?.ageRestriction}
-              </p>
-            </div>
-            <div className="col-span-full flex flex-col gap-0.5">
-              <Label className="flex items-center" htmlFor="performers">
-                <Mic className="mr-1.5 size-4" />
-                Performers
-              </Label>
-              <p className="text-sm text-neutral-1" id="performers">
-                {metadata?.performers?.join(", ")}
-              </p>
-            </div>
-            <EventAccessibility metadata={metadata} />
-            {/* <div className="flex flex-col gap-0.5">
-              <Label className="flex items-center" htmlFor="source">
-                <GlobeIcon className="mr-1.5 size-4" />
-                Source
-              </Label>
-              <p className="text-sm capitalize text-neutral-1" id="source">
-                {metadata?.source}
-              </p>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <Label className="flex items-center" htmlFor="mentions">
-                <TextIcon className="mr-1.5 size-4" />
-                Mentions
-              </Label>
-              <p className="text-sm text-neutral-1" id="mentions">
-                {metadata?.mentions}
-              </p>
-            </div> */}
+          <div className="w-full">
+            <EventMetadata metadata={metadata} />
           </div>
         )}
         <div className="w-full">
@@ -717,7 +722,7 @@ export function EventPreview(props: EventListItemProps) {
   return (
     <div
       className={cn(
-        "relative grid overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm"
+        "relative grid max-w-xl overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm"
       )}
     >
       <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
