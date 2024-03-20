@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import { cookies } from "next/headers";
 import dynamic from "next/dynamic";
 import { Kalam, IBM_Plex_Sans } from "next/font/google";
-import { Providers } from "./providers";
+import { PHProvider, Providers } from "./providers";
 import { TRPCReactProvider } from "@/trpc/react";
 
 // edge causes sigkill on vercel about 50% of the time
@@ -70,14 +70,14 @@ export default function RootLayout({
       lang="en"
       className={`!overflow-x-hidden ${kalam.variable} ${plex_sans.variable}`}
     >
-      {/* <PHProvider> */}
-      <body>
-        {/* <PostHogPageView /> */}
-        <TRPCReactProvider cookies={cookies().toString()}>
-          <Providers>{children}</Providers>
-        </TRPCReactProvider>
-      </body>
-      {/* </PHProvider> */}
+      <PHProvider>
+        <body>
+          <PostHogPageView />
+          <TRPCReactProvider cookies={cookies().toString()}>
+            <Providers>{children}</Providers>
+          </TRPCReactProvider>
+        </body>
+      </PHProvider>
     </html>
   );
 }
