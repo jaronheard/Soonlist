@@ -19,10 +19,12 @@ export default async function EventsFromRawText({
   rawText,
   timezone,
   filePath,
+  edit,
 }: {
   rawText: string;
   timezone: string;
   filePath?: string;
+  edit?: boolean;
 }) {
   const system = getSystemMessage();
   const prompt = getPrompt(timezone);
@@ -71,7 +73,7 @@ export default async function EventsFromRawText({
     return (
       <div className="flex flex-wrap items-center gap-8">
         {events.length > 0 &&
-          events?.map((props) => (
+          events?.map((props) =>
             // <Event
             //   visibility="public"
             //   key={props.name}
@@ -90,17 +92,21 @@ export default async function EventsFromRawText({
             //     <div></div>
             //   )}
             // </Event>
-            <EventPreview
-              key={props.name}
-              user={undefined}
-              eventFollows={[]}
-              comments={[]}
-              id={""}
-              createdAt={undefined}
-              event={props}
-              visibility="public"
-            />
-          ))}
+            edit ? (
+              <AddToCalendarCard key={props.name} {...props} />
+            ) : (
+              <EventPreview
+                key={props.name}
+                user={undefined}
+                eventFollows={[]}
+                comments={[]}
+                id={""}
+                createdAt={undefined}
+                event={props}
+                visibility="public"
+              />
+            )
+          )}
         {events.length === 0 && <></>}
       </div>
     );

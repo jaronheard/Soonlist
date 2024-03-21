@@ -24,6 +24,7 @@ type Props = {
     saveIntent?: boolean;
     filePath?: string;
     timezone?: string;
+    edit?: boolean;
   };
 };
 
@@ -95,13 +96,12 @@ export default async function Page({ searchParams }: Props) {
             timezone={timezone}
             rawText={searchParams.rawText}
             filePath={searchParams.filePath}
+            edit={searchParams.edit}
           />
         </Suspense>
         <footer className="fixed inset-x-0 bottom-0 flex items-center justify-center gap-4 p-4">
           <Button size="lg">Continue</Button>
-          <Button size="lg" variant="secondary">
-            Edit
-          </Button>
+          {/* Edit button adds edit search param */}
         </footer>
       </div>
     );
