@@ -1,5 +1,6 @@
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
+import { ConditionalEventDisplay } from "./ConditionalEventDisplay";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import {
   addCommonAddToCalendarPropsFromResponse,
@@ -7,7 +8,6 @@ import {
   getSystemMessage,
 } from "@/lib/prompts";
 import { blankEvent } from "@/lib/utils";
-import { EventPreview } from "@/components/EventListItem";
 
 // Create an OpenAI API client (that's edge friendly!)
 const config = {
@@ -73,40 +73,9 @@ export default async function EventsFromRawText({
     return (
       <div className="flex flex-wrap items-center gap-8">
         {events.length > 0 &&
-          events?.map((props) =>
-            // <Event
-            //   visibility="public"
-            //   key={props.name}
-            //   user={undefined}
-            //   eventFollows={[]}
-            //   comments={[]}
-            //   id={""}
-            //   createdAt={undefined}
-            //   event={props}
-            // >
-            //   {filePath ? (
-            //     <div className="flex items-center justify-center">
-            //       <ImageUpload filePath={filePath} />
-            //     </div>
-            //   ) : (
-            //     <div></div>
-            //   )}
-            // </Event>
-            edit ? (
-              <AddToCalendarCard key={props.name} {...props} />
-            ) : (
-              <EventPreview
-                key={props.name}
-                user={undefined}
-                eventFollows={[]}
-                comments={[]}
-                id={""}
-                createdAt={undefined}
-                event={props}
-                visibility="public"
-              />
-            )
-          )}
+          events?.map((props) => (
+            <ConditionalEventDisplay key={props.name} {...props} />
+          ))}
         {events.length === 0 && <></>}
       </div>
     );

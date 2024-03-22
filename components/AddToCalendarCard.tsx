@@ -33,7 +33,7 @@ import {
 } from "@/lib/prompts";
 import { valuesToOptions } from "@/lib/utils";
 
-type AddToCalendarCardProps = AddToCalendarButtonType & {
+export type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
   updateId?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -41,6 +41,7 @@ type AddToCalendarCardProps = AddToCalendarButtonType & {
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
   metadata?: Metadata;
+  hideButtons?: boolean;
 };
 
 export function AddToCalendarCard({
@@ -421,31 +422,33 @@ export function AddToCalendarCard({
             onChange={(e) => setLink(e.target.value)}
           />
         </div>
-        <div className="flex gap-3">
-          {!initialProps.update && (
-            <SaveButton
-              notes={notes}
-              visibility={visibility}
-              lists={lists}
+        {!initialProps.hideButtons && (
+          <div className="flex gap-3">
+            {!initialProps.update && (
+              <SaveButton
+                notes={notes}
+                visibility={visibility}
+                lists={lists}
+                event={updatedProps}
+              />
+            )}
+            {initialProps.update && initialProps.updateId && (
+              <UpdateButton
+                id={initialProps.updateId}
+                notes={notes}
+                visibility={visibility}
+                lists={lists}
+                event={updatedProps}
+              />
+            )}
+            <CalendarButton
               event={updatedProps}
+              id={initialProps.updateId || undefined}
+              username={user?.username || undefined}
+              type="button"
             />
-          )}
-          {initialProps.update && initialProps.updateId && (
-            <UpdateButton
-              id={initialProps.updateId}
-              notes={notes}
-              visibility={visibility}
-              lists={lists}
-              event={updatedProps}
-            />
-          )}
-          <CalendarButton
-            event={updatedProps}
-            id={initialProps.updateId || undefined}
-            username={user?.username || undefined}
-            type="button"
-          />
-        </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

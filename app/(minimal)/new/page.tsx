@@ -2,15 +2,16 @@ import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import * as Bytescale from "@bytescale/sdk";
+import Link from "next/link";
 import ImageUpload from "./ImageUpload";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
 import EventsFromRawText from "./EventsFromRawText";
 import EventLoadingText from "./EventLoadingText";
+import { NewEventFooterButtons } from "./NewEventFooterButtons";
 import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
-import { Button } from "@/components/ui/button";
 
 const EventsFromSaved = dynamic(() => import("./EventsFromSaved"), {
   ssr: false,
@@ -99,10 +100,7 @@ export default async function Page({ searchParams }: Props) {
             edit={searchParams.edit}
           />
         </Suspense>
-        <footer className="fixed inset-x-0 bottom-0 flex items-center justify-center gap-4 p-4">
-          <Button size="lg">Continue</Button>
-          {/* Edit button adds edit search param */}
-        </footer>
+        <NewEventFooterButtons />
       </div>
     );
   }

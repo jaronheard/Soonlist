@@ -32,6 +32,7 @@ import { ShareButton } from "./ShareButton";
 import { type EventWithUser } from "./EventList";
 import { buttonVariants } from "./ui/button";
 import { Label } from "./ui/label";
+import { type AddToCalendarCardProps } from "./AddToCalendarCard";
 import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
@@ -63,7 +64,7 @@ type EventListItemProps = {
   comments: Comment[];
   id: string;
   createdAt?: Date;
-  event: AddToCalendarButtonPropsRestricted & { metadata?: Metadata };
+  event: AddToCalendarCardProps;
   visibility: "public" | "private";
   hideCurator?: boolean;
   showOtherCurators?: boolean;
@@ -716,7 +717,9 @@ export function EventListItem(props: EventListItemProps) {
   );
 }
 
-export function EventPreview(props: EventListItemProps) {
+export function EventPreview(
+  props: EventListItemProps & { event: AddToCalendarCardProps }
+) {
   const { id, event } = props;
 
   return (

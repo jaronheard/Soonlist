@@ -1,5 +1,6 @@
 import { CroppedImageProvider } from "./CroppedImageContext";
 import { FormProvider } from "./FormContext";
+import { ModeProvider } from "./ModeContext";
 import { TimezoneProvider } from "./TimezoneContext";
 
 export default function ContextProvider({
@@ -8,10 +9,12 @@ export default function ContextProvider({
   children: React.ReactNode;
 }) {
   return (
-    <TimezoneProvider>
-      <FormProvider>
-        <CroppedImageProvider>{children} </CroppedImageProvider>
-      </FormProvider>
-    </TimezoneProvider>
+    <ModeProvider>
+      <TimezoneProvider>
+        <FormProvider>
+          <CroppedImageProvider>{children} </CroppedImageProvider>
+        </FormProvider>
+      </TimezoneProvider>
+    </ModeProvider>
   );
 }
