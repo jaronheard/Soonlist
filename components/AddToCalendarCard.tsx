@@ -41,7 +41,7 @@ export type AddToCalendarCardProps = AddToCalendarButtonType & {
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
   metadata?: Metadata;
-  hideButtons?: boolean;
+  onUpdate?: (props: AddToCalendarButtonType) => void;
 };
 
 export function AddToCalendarCard({
@@ -153,7 +153,13 @@ export function AddToCalendarCard({
     },
   };
 
-  console.log("updatedProps", updatedProps);
+  if (initialProps.onUpdate) {
+    // TODO: determine if this is a hack or not
+    // do not update unless props are different
+    if (JSON.stringify(initialProps) !== JSON.stringify(updatedProps)) {
+      initialProps.onUpdate(updatedProps);
+    }
+  }
 
   return (
     <Card className="max-w-screen sm:max-w-xl">
@@ -422,7 +428,7 @@ export function AddToCalendarCard({
             onChange={(e) => setLink(e.target.value)}
           />
         </div>
-        {!initialProps.hideButtons && (
+        {!initialProps.onUpdate && (
           <div className="flex gap-3">
             {!initialProps.update && (
               <SaveButton

@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   AddToCalendarCard,
   type AddToCalendarCardProps,
@@ -8,12 +8,14 @@ import {
 import { EventPreview } from "@/components/EventListItem";
 import { ModeContext } from "@/context/ModeContext";
 
-export function ConditionalEventDisplay(props: AddToCalendarCardProps) {
+export function ConditionalEventDisplay(initialProps: AddToCalendarCardProps) {
+  const [event, setEvent] = useState(initialProps);
   const { mode } = useContext(ModeContext);
+
   if (mode === "edit") {
     return (
       <div className="pb-4">
-        <AddToCalendarCard {...props} hideButtons />
+        <AddToCalendarCard {...event} onUpdate={setEvent} />
       </div>
     );
   }
@@ -24,7 +26,7 @@ export function ConditionalEventDisplay(props: AddToCalendarCardProps) {
       comments={[]}
       id={""}
       createdAt={undefined}
-      event={props}
+      event={event}
       visibility="public"
     />
   );
