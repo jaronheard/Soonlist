@@ -6,13 +6,21 @@ import {
   type AddToCalendarCardProps,
 } from "@/components/AddToCalendarCard";
 import { EventPreview } from "@/components/EventListItem";
-import { ModeContext } from "@/context/ModeContext";
+import { Mode, ModeContext, Status } from "@/context/ModeContext";
 
 export function ConditionalEventDisplay(initialProps: AddToCalendarCardProps) {
   const [event, setEvent] = useState(initialProps);
-  const { mode } = useContext(ModeContext);
+  const { mode, status } = useContext(ModeContext);
 
-  if (mode === "edit") {
+  if (status === Status.Publish) {
+    return <>Publish: final step</>;
+  }
+  if (status === Status.Organize) {
+    return <>Oraganize: middle step</>;
+  }
+
+  // Status.Preview
+  if (mode === Mode.Edit) {
     return (
       <div className="pb-4">
         <AddToCalendarCard {...event} onUpdate={setEvent} />
