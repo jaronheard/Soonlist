@@ -6,9 +6,10 @@ import React, { useState, createContext, type ReactNode } from "react";
 // Provider component
 export const ModeProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState("view");
+  const [status, setStatus] = useState("preview");
 
   return (
-    <ModeContext.Provider value={{ mode, setMode }}>
+    <ModeContext.Provider value={{ mode, setMode, status, setStatus }}>
       {children}
     </ModeContext.Provider>
   );
@@ -18,4 +19,6 @@ export const ModeProvider = ({ children }: { children: ReactNode }) => {
 export const ModeContext = createContext({
   mode: "view",
   setMode: (mode: string) => console.warn("no mode provider"),
+  status: "preview",
+  setStatus: (status: string) => console.warn("no status provider"),
 });
