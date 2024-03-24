@@ -9,15 +9,15 @@ export enum Mode {
 }
 
 export enum Status {
-  Preview = "preview",
   Organize = "organize",
+  Preview = "preview",
   Publish = "publish",
 }
 
 // Provider component
 export const ModeProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState(Mode.View);
-  const [status, setStatus] = useState(Status.Preview);
+  const [status, setStatus] = useState(Status.Organize);
 
   function setNextStatus() {
     const allStatuses = Object.values(Status);

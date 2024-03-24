@@ -9,9 +9,9 @@ export function Stages({ children }: { children: React.ReactNode }) {
   if (status === Status.Publish) {
     return <>Publish: final step</>;
   }
-  if (status === Status.Organize) {
+  if (status === Status.Preview) {
     return <>{children}</>;
   }
 
-  return <>First step: preview</>;
+  return <>First step: Organize</>;
 }
