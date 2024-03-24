@@ -45,6 +45,7 @@ export function Organize({
   visibility?: "public" | "private";
   eventLists?: List[];
 }) {
+  const { setFormData } = useFormContext(); // Use the context
   const listOptions = lists?.map((list) => ({
     label: list.name,
     value: list.id,
@@ -63,8 +64,6 @@ export function Organize({
       lists: eventListOptions || [],
     },
   });
-
-  const { setFormData } = useFormContext(); // Use the context
 
   // set initial form state in context
   React.useEffect(() => {
