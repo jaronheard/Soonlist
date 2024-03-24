@@ -34,7 +34,7 @@ export const formSchema = z.object({
   lists: z.array(z.record(z.string().trim())),
 });
 
-export function YourDetails({
+export function Organize({
   lists,
   comment,
   visibility,

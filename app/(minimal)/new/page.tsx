@@ -1,3 +1,4 @@
+import { error } from "console";
 import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
@@ -90,18 +91,22 @@ export default async function Page({ searchParams }: Props) {
         <header className="fixed inset-x-0 top-2 flex items-center justify-center">
           <ImagePreview filePath={searchParams.filePath} />
         </header>
-        <Stages>
-          <Suspense
-            fallback={<EventPreviewLoadingSpinner className="size-screen" />}
-          >
-            <EventsFromRawText
-              timezone={timezone}
-              rawText={searchParams.rawText}
-              filePath={searchParams.filePath}
-              edit={searchParams.edit}
-            />
-          </Suspense>
-        </Stages>
+        <Stages
+          Organize={<YourDetails lists={lists || []} />}
+          Preview={
+            <Suspense
+              fallback={<EventPreviewLoadingSpinner className="size-screen" />}
+            >
+              <EventsFromRawText
+                timezone={timezone}
+                rawText={searchParams.rawText}
+                filePath={searchParams.filePath}
+                edit={searchParams.edit}
+              />
+            </Suspense>
+          }
+          Publish={<>Publish</>}
+        ></Stages>
         <NewEventFooterButtons />
       </div>
     );
