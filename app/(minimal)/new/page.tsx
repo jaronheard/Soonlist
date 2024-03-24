@@ -2,13 +2,13 @@ import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import * as Bytescale from "@bytescale/sdk";
-import Link from "next/link";
 import ImageUpload from "./ImageUpload";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
 import EventsFromRawText from "./EventsFromRawText";
 import EventLoadingText from "./EventLoadingText";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
+import { Stages } from "./Stages";
 import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
@@ -90,16 +90,18 @@ export default async function Page({ searchParams }: Props) {
         <header className="fixed inset-x-0 top-2 flex items-center justify-center">
           <ImagePreview filePath={searchParams.filePath} />
         </header>
-        <Suspense
-          fallback={<EventPreviewLoadingSpinner className="size-screen" />}
-        >
-          <EventsFromRawText
-            timezone={timezone}
-            rawText={searchParams.rawText}
-            filePath={searchParams.filePath}
-            edit={searchParams.edit}
-          />
-        </Suspense>
+        <Stages>
+          <Suspense
+            fallback={<EventPreviewLoadingSpinner className="size-screen" />}
+          >
+            <EventsFromRawText
+              timezone={timezone}
+              rawText={searchParams.rawText}
+              filePath={searchParams.filePath}
+              edit={searchParams.edit}
+            />
+          </Suspense>
+        </Stages>
         <NewEventFooterButtons />
       </div>
     );
