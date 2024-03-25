@@ -641,7 +641,7 @@ export function EventListItem(props: EventListItemProps) {
               EventActionButtons={
                 <EventActionButtons
                   user={user}
-                  event={event}
+                  event={event as AddToCalendarButtonPropsRestricted}
                   id={id}
                   isOwner={!!isOwner}
                   isFollowing={isFollowing}
