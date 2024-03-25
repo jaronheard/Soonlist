@@ -13,19 +13,9 @@ export function NewEventFooterButtons({
   onClickNextOrganize?: () => void;
   onClickNextPublish?: () => void;
 }) {
-  const { mode, setMode, status, setNextStatus } = useContext(ModeContext);
+  const { mode, setMode, status } = useContext(ModeContext);
   const { formData, eventData } = useFormContext();
   const otherMode = mode === Mode.Edit ? Mode.View : Mode.Edit;
-
-  const onClickNext = () => {
-    if (status === Status.Organize && onClickNextOrganize) {
-      onClickNextOrganize();
-    } else if (status === Status.Publish && onClickNextPublish) {
-      onClickNextPublish();
-    } else {
-      setNextStatus();
-    }
-  };
 
   return (
     <footer className="fixed inset-x-0 bottom-0 flex items-center justify-center gap-4 p-4">
@@ -50,7 +40,9 @@ export function NewEventFooterButtons({
         </>
       )}
       {status === Status.Organize && (
-        <Button size="lg" onClick={onClickNextPublish}></Button>
+        <Button size="lg" onClick={onClickNextOrganize}>
+          Next
+        </Button>
       )}
     </footer>
   );

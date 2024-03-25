@@ -15,7 +15,7 @@ interface FormContextState {
   formData: z.infer<typeof formSchema>;
   setFormData: (data: z.infer<typeof formSchema>) => void;
   eventData?: AddToCalendarCardProps;
-  setEventData: (data: AddToCalendarCardProps) => void;
+  setEventData: (data?: AddToCalendarCardProps) => void;
 }
 
 // Create a context with an empty object and a dummy function
