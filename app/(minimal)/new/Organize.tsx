@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { type useForm } from "react-hook-form";
 import { SignedIn } from "@clerk/nextjs";
 import { PenSquare } from "lucide-react";
+import { type z } from "zod";
+import { type formSchema } from "./Stages";
 import { type List } from "@/server/db/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -25,60 +25,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useFormContext } from "@/context/FormContext";
 import { MultiSelect } from "@/components/ui/multiselect";
 
-export const formSchema = z.object({
-  notes: z.string().optional(),
-  visibility: z.enum(["public", "private"]),
-  lists: z.array(z.record(z.string().trim())),
-});
-
 export function Organize({
+  form,
   lists,
-  comment,
-  visibility,
-  eventLists,
 }: {
+  form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
   lists?: List[];
-  comment?: string;
-  visibility?: "public" | "private";
-  eventLists?: List[];
 }) {
-  const { setFormData } = useFormContext(); // Use the context
   const listOptions = lists?.map((list) => ({
     label: list.name,
     value: list.id,
   }));
-  const eventListOptions = eventLists?.map((list) => ({
-    label: list.name,
-    value: list.id,
-  }));
-
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      notes: comment || "",
-      visibility: visibility || "public",
-      lists: eventListOptions || [],
-    },
-  });
-
-  // set initial form state in context
-  React.useEffect(() => {
-    setFormData(form.getValues());
-  }, [form, setFormData]);
-
-  // Watch for changes in the form
-  React.useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name) {
-        setFormData(form.getValues());
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form, setFormData]);
 
   return (
     <SignedIn>

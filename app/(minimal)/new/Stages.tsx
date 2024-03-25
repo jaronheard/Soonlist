@@ -2,10 +2,14 @@
 
 import { useContext } from "react";
 import * as Bytescale from "@bytescale/sdk";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
 import { ModeContext, Status } from "@/context/ModeContext";
 import { type List } from "@/server/db/types";
+import { useFormContext } from "@/context/FormContext";
 
 function ImagePreview({ filePath }: { filePath?: string }) {
   if (!filePath) return null;
@@ -53,6 +57,12 @@ function StagesWrapper({
   );
 }
 
+export const formSchema = z.object({
+  notes: z.string().optional(),
+  visibility: z.enum(["public", "private"]),
+  lists: z.array(z.record(z.string().trim())),
+});
+
 export function Stages({
   filePath,
   lists,
@@ -63,11 +73,22 @@ export function Stages({
   Preview: JSX.Element;
 }) {
   const { status } = useContext(ModeContext);
+  const { formData } = useFormContext();
+  const { notes, visibility, lists: eventLists } = formData;
 
-  if (status === Status.Publish) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      notes: notes || "",
+      visibility: visibility || "public",
+      lists: eventLists,
+    },
+  });
+
+  if (status === Status.Organize) {
     return (
       <StagesWrapper filePath={filePath}>
-        <>Publish</>
+        <Organize lists={lists || []} form={form} />
       </StagesWrapper>
     );
   }
@@ -76,10 +97,10 @@ export function Stages({
     return <StagesWrapper filePath={filePath}>{Preview}</StagesWrapper>;
   }
 
-  if (status === Status.Organize) {
+  if (status === Status.Publish) {
     return (
       <StagesWrapper filePath={filePath}>
-        <Organize lists={lists || []} />
+        <>Publish</>
       </StagesWrapper>
     );
   }
