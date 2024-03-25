@@ -111,7 +111,10 @@ export function Stages({
         filePath={filePath}
         onClickNextOrganize={form.handleSubmit(onSubmit)}
       >
-        <Organize lists={lists || []} form={form} />
+        <>
+          <Organize lists={lists || []} form={form} />
+          <div className="hidden">{Preview}</div>
+        </>
       </StagesWrapper>
     );
   }

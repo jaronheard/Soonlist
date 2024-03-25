@@ -1,16 +1,15 @@
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import ImageUpload from "./ImageUpload";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
-import EventLoadingText from "./EventLoadingText";
 import { Stages } from "./Stages";
 import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
 
-const EventsFromRawText = dynamic(() => import("./EventsFromRawText"), {
+const EventFromRawText = dynamic(() => import("./EventFromRawText"), {
   ssr: false,
 });
 
@@ -29,19 +28,6 @@ type Props = {
     edit?: boolean;
   };
 };
-
-// this is a simple loading spinner component that takes a className prop for sizing
-
-function EventPreviewLoadingSpinner({ className }: { className?: string }) {
-  return (
-    <div
-      className={`flex items-center justify-center ${className} flex-col gap-4 pt-2`}
-    >
-      <EventLoadingText />
-      <div className="size-10 animate-spin rounded-full border-b-2 border-gray-400"></div>
-    </div>
-  );
-}
 
 export default async function Page({ searchParams }: Props) {
   const user = await currentUser();
@@ -89,16 +75,10 @@ export default async function Page({ searchParams }: Props) {
         filePath={searchParams.filePath}
         lists={lists || undefined}
         Preview={
-          <Suspense
-            fallback={<EventPreviewLoadingSpinner className="size-screen" />}
-          >
-            <EventsFromRawText
-              timezone={timezone}
-              rawText={searchParams.rawText}
-              filePath={searchParams.filePath}
-              edit={searchParams.edit}
-            />
-          </Suspense>
+          <EventFromRawText
+            timezone={timezone}
+            rawText={searchParams.rawText}
+          />
         }
       ></Stages>
     );
