@@ -5,22 +5,14 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
 import {
-  AccessibilityIcon,
   ArrowRight,
   CalendarIcon,
-  CreditCardIcon,
   EyeOff,
   GlobeIcon,
-  GroupIcon,
-  LockIcon,
   Mic,
   PersonStanding,
   ShieldPlus,
-  Speech,
   TagIcon,
-  TextIcon,
-  VenetianMask,
-  EarOff,
   Ear,
   Accessibility,
 } from "lucide-react";
@@ -38,7 +30,7 @@ import {
   translateToHtml,
   getDateInfoUTC,
   cn,
-  showMultipleDays,
+  // showMultipleDays,
   // endsNextDayBeforeMorning,
   eventTimesAreDefined,
   getDateTimeInfo,
@@ -99,8 +91,6 @@ function EventDateDisplaySimple({
     return null;
   }
 
-  console.log("startTime", startTime);
-  console.log("endTime", endTime);
   const startDateInfo = startTime
     ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
     : getDateInfoUTC(startDate);

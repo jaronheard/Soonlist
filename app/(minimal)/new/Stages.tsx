@@ -5,11 +5,13 @@ import * as Bytescale from "@bytescale/sdk";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { ArrowBigLeft, ChevronLeft, StepBackIcon } from "lucide-react";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
 import { ModeContext, Status } from "@/context/ModeContext";
 import { type List } from "@/server/db/types";
 import { useFormContext } from "@/context/FormContext";
+import { Button } from "@/components/ui/button";
 
 function ImagePreview({ filePath }: { filePath?: string }) {
   if (!filePath) return null;
@@ -46,11 +48,22 @@ function StagesWrapper({
   children: JSX.Element;
   onClickNextOrganize?: () => void;
 }) {
+  const { status, setPreviousStatus } = useContext(ModeContext);
   return (
     <div className="flex w-full flex-col items-center">
       {/* <YourDetails lists={lists || undefined} /> */}
       {/* <ImageUpload filePath={searchParams.filePath} /> */}
       <header className="fixed inset-x-0 top-2 flex items-center justify-center">
+        {status !== Status.Organize && (
+          <Button
+            onClick={setPreviousStatus}
+            className="absolute left-2"
+            variant={"ghost"}
+            size={"icon"}
+          >
+            <ChevronLeft />
+          </Button>
+        )}
         <ImagePreview filePath={filePath} />
       </header>
       {children}
@@ -75,7 +88,7 @@ export function Stages({
   Preview: JSX.Element;
 }) {
   const { status, setNextStatus } = useContext(ModeContext);
-  const { formData, setFormData } = useFormContext();
+  const { formData, setFormData, eventData, setEventData } = useFormContext();
   const { notes, visibility, lists: eventLists } = formData;
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -110,7 +123,10 @@ export function Stages({
   if (status === Status.Publish) {
     return (
       <StagesWrapper filePath={filePath}>
-        <>{JSON.stringify(formData, null, 2)}</>
+        <>
+          <>{JSON.stringify(eventData, null, 2)}</>
+          <>{JSON.stringify(formData, null, 2)}</>
+        </>
       </StagesWrapper>
     );
   }

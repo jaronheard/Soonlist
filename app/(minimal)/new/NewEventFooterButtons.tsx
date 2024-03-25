@@ -3,43 +3,54 @@
 import { useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Mode, ModeContext, Status } from "@/context/ModeContext";
+import { useFormContext } from "@/context/FormContext";
+import { SaveButton } from "@/components/SaveButton";
 
 export function NewEventFooterButtons({
-  onClickNextOrganize: onClickNextOrganize,
+  onClickNextOrganize,
+  onClickNextPublish,
 }: {
   onClickNextOrganize?: () => void;
+  onClickNextPublish?: () => void;
 }) {
-  const { mode, setMode, status, setNextStatus, setPreviousStatus } =
-    useContext(ModeContext);
+  const { mode, setMode, status, setNextStatus } = useContext(ModeContext);
+  const { formData, eventData } = useFormContext();
   const otherMode = mode === Mode.Edit ? Mode.View : Mode.Edit;
+
+  const onClickNext = () => {
+    if (status === Status.Organize && onClickNextOrganize) {
+      onClickNextOrganize();
+    } else if (status === Status.Publish && onClickNextPublish) {
+      onClickNextPublish();
+    } else {
+      setNextStatus();
+    }
+  };
 
   return (
     <footer className="fixed inset-x-0 bottom-0 flex items-center justify-center gap-4 p-4">
-      {/* Back button only shown in Preview mode */}
-      {status !== Status.Organize && (
-        <Button size="lg" variant="outline" onClick={setPreviousStatus}>
-          Back
-        </Button>
-      )}
-      <Button
-        size="lg"
-        onClick={() => {
-          status === Status.Organize && onClickNextOrganize
-            ? onClickNextOrganize()
-            : setNextStatus();
-        }}
-      >
-        Next
-      </Button>
       {status === Status.Preview && (
-        <Button
-          size="lg"
-          variant="secondary"
-          onClick={() => setMode(otherMode)}
-          className="capitalize"
-        >
-          {otherMode}
-        </Button>
+        <>
+          <Button
+            size="lg"
+            variant="secondary"
+            onClick={() => setMode(otherMode)}
+            className="capitalize"
+          >
+            {otherMode}
+          </Button>
+          {eventData && (
+            <SaveButton
+              event={eventData}
+              notes={formData.notes}
+              visibility={formData.visibility}
+              lists={formData.lists}
+            />
+          )}
+        </>
+      )}
+      {status === Status.Organize && (
+        <Button size="lg" onClick={onClickNextPublish}></Button>
       )}
     </footer>
   );

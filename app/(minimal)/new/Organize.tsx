@@ -3,7 +3,7 @@
 import * as React from "react";
 import { type useForm } from "react-hook-form";
 import { SignedIn } from "@clerk/nextjs";
-import { PenSquare } from "lucide-react";
+import { ListIcon } from "lucide-react";
 import { type z } from "zod";
 import { type formSchema } from "./Stages";
 import { type List } from "@/server/db/types";
@@ -44,18 +44,18 @@ export function Organize({
       <Card className="max-w-screen w-full sm:max-w-xl">
         <CardHeader>
           <CardTitle className="flex items-center">
-            <PenSquare className="mr-2 size-6" />
-            My Details
+            <ListIcon className="mr-2 size-6" />
+            Save to List
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form className="space-y-4">
+            <form>
               <FormField
                 control={form.control}
                 name="visibility"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="hidden">
                     <FormLabel>Visibility</FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -76,44 +76,47 @@ export function Organize({
                   </FormItem>
                 )}
               />
-
-              {listOptions?.length && listOptions.length > 0 ? (
+              <div className="space-y-4">
+                {listOptions?.length && listOptions.length > 0 ? (
+                  <FormField
+                    control={form.control}
+                    name="lists"
+                    render={({ field: { ...field } }) => (
+                      <FormItem>
+                        <FormLabel>Choose a list</FormLabel>
+                        <MultiSelect
+                          selected={field.value}
+                          options={listOptions}
+                          placeholder="All Events"
+                          {...field}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : null}
                 <FormField
                   control={form.control}
-                  name="lists"
-                  render={({ field: { ...field } }) => (
+                  name="notes"
+                  render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Lists</FormLabel>
-                      <MultiSelect
-                        selected={field.value}
-                        options={listOptions}
-                        {...field}
-                      />
+                      <FormLabel>Your Note (Optional)</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Example: My friend Sarah hosts this dance party every year and its so fun!"
+                          defaultValue={field.value}
+                          onChange={field.onChange}
+                          rows={5}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Write something personal about this event
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              ) : null}
-              <FormField
-                control={form.control}
-                name="notes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Your Note</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Example: My friend Sarah hosts this dance party every year and its so fun!"
-                        defaultValue={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Add a personal note about this event for others to see.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              </div>
             </form>
           </Form>
         </CardContent>
