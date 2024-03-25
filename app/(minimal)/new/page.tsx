@@ -88,6 +88,7 @@ export default async function Page({ searchParams }: Props) {
   if (searchParams.rawText) {
     return (
       <Stages
+        filePath={searchParams.filePath}
         lists={lists || undefined}
         Preview={
           <Suspense

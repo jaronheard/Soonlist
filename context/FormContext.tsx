@@ -17,7 +17,9 @@ interface FormContextState {
 
 // Create a context with an empty object and a dummy function
 const FormContext = createContext<FormContextState>({
-  formData: { notes: "", visibility: "public", lists: [] },
+  formData: { notes: "", visibility: "public", lists: [] } as z.infer<
+    typeof formSchema
+  >,
   setFormData: () => null,
 });
 

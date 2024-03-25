@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import * as Bytescale from "@bytescale/sdk";
-import { useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Organize } from "./Organize";
@@ -40,9 +40,11 @@ function ImagePreview({ filePath }: { filePath?: string }) {
 function StagesWrapper({
   filePath,
   children,
+  onClickNextOrganize,
 }: {
   filePath?: string;
   children: JSX.Element;
+  onClickNextOrganize?: () => void;
 }) {
   return (
     <div className="flex w-full flex-col items-center">
@@ -52,7 +54,7 @@ function StagesWrapper({
         <ImagePreview filePath={filePath} />
       </header>
       {children}
-      <NewEventFooterButtons />
+      <NewEventFooterButtons onClickNextOrganize={onClickNextOrganize} />
     </div>
   );
 }
@@ -72,8 +74,8 @@ export function Stages({
   lists?: List[];
   Preview: JSX.Element;
 }) {
-  const { status } = useContext(ModeContext);
-  const { formData } = useFormContext();
+  const { status, setNextStatus } = useContext(ModeContext);
+  const { formData, setFormData } = useFormContext();
   const { notes, visibility, lists: eventLists } = formData;
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -85,9 +87,17 @@ export function Stages({
     },
   });
 
+  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
+    setFormData(data);
+    setNextStatus();
+  };
+
   if (status === Status.Organize) {
     return (
-      <StagesWrapper filePath={filePath}>
+      <StagesWrapper
+        filePath={filePath}
+        onClickNextOrganize={form.handleSubmit(onSubmit)}
+      >
         <Organize lists={lists || []} form={form} />
       </StagesWrapper>
     );
@@ -100,7 +110,7 @@ export function Stages({
   if (status === Status.Publish) {
     return (
       <StagesWrapper filePath={filePath}>
-        <>Publish</>
+        <>{JSON.stringify(formData, null, 2)}</>
       </StagesWrapper>
     );
   }
