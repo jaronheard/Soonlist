@@ -10,7 +10,9 @@ import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
 
-const EventsFromRawText = lazy(() => import("./EventsFromRawText"));
+const EventsFromRawText = dynamic(() => import("./EventsFromRawText"), {
+  ssr: false,
+});
 
 const EventsFromSaved = dynamic(() => import("./EventsFromSaved"), {
   ssr: false,
