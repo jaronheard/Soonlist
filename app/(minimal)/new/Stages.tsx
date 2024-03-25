@@ -1,27 +1,27 @@
 "use client";
 
 import { useContext } from "react";
+import { Organize } from "./Organize";
 import { ModeContext, Status } from "@/context/ModeContext";
+import { type List } from "@/server/db/types";
 
 export function Stages({
-  Organize,
+  lists,
   Preview,
-  Publish,
 }: {
-  Organize: JSX.Element;
+  lists?: List[];
   Preview: JSX.Element;
-  Publish: JSX.Element;
 }) {
   const { status } = useContext(ModeContext);
 
   if (status === Status.Publish) {
-    return <>{Publish}</>;
+    return <>Publish</>;
   }
   if (status === Status.Preview) {
     return <>{Preview}</>;
   }
 
   if (status === Status.Organize) {
-    return <>{Organize}</>;
+    return <>{<Organize lists={lists || []} />}</>;
   }
 }

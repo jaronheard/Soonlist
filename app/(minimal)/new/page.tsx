@@ -94,7 +94,7 @@ export default async function Page({ searchParams }: Props) {
           <ImagePreview filePath={searchParams.filePath} />
         </header>
         <Stages
-          Organize={<Organize lists={lists || []} />}
+          lists={lists || undefined}
           Preview={
             <Suspense
               fallback={<EventPreviewLoadingSpinner className="size-screen" />}
@@ -107,7 +107,6 @@ export default async function Page({ searchParams }: Props) {
               />
             </Suspense>
           }
-          Publish={<>Publish</>}
         ></Stages>
         <NewEventFooterButtons />
       </div>
