@@ -87,17 +87,16 @@ export default async function Page({ searchParams }: Props) {
         filePath={searchParams.filePath}
         lists={lists || undefined}
         Preview={
-          <></>
-          // <Suspense
-          //   fallback={<EventPreviewLoadingSpinner className="size-screen" />}
-          // >
-          //   <EventsFromRawText
-          //     timezone={timezone}
-          //     rawText={searchParams.rawText}
-          //     filePath={searchParams.filePath}
-          //     edit={searchParams.edit}
-          //   />
-          // </Suspense>
+          <Suspense
+            fallback={<EventPreviewLoadingSpinner className="size-screen" />}
+          >
+            <EventsFromRawText
+              timezone={timezone}
+              rawText={searchParams.rawText}
+              filePath={searchParams.filePath}
+              edit={searchParams.edit}
+            />
+          </Suspense>
         }
       ></Stages>
     );
