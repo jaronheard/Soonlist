@@ -1,17 +1,24 @@
-import { Suspense, lazy } from "react";
+import { error } from "console";
+import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
-import AddEvent from "../AddEvent";
+import * as Bytescale from "@bytescale/sdk";
+import { list } from "postcss";
 import ImageUpload from "./ImageUpload";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
+import EventsFromRawText from "./EventsFromRawText";
+import EventLoadingText from "./EventLoadingText";
+import { NewEventFooterButtons } from "./NewEventFooterButtons";
+import { Stages } from "./Stages";
+import { Organize } from "./Organize";
+import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
 
 const EventsFromSaved = dynamic(() => import("./EventsFromSaved"), {
   ssr: false,
 });
-const EventsFromRawText = lazy(() => import("./EventsFromRawText"));
 
 export const maxDuration = 60;
 
@@ -21,8 +28,22 @@ type Props = {
     saveIntent?: boolean;
     filePath?: string;
     timezone?: string;
+    edit?: boolean;
   };
 };
+
+// this is a simple loading spinner component that takes a className prop for sizing
+
+function EventPreviewLoadingSpinner({ className }: { className?: string }) {
+  return (
+    <div
+      className={`flex items-center justify-center ${className} flex-col gap-4 pt-2`}
+    >
+      <EventLoadingText />
+      <div className="size-10 animate-spin rounded-full border-b-2 border-gray-400"></div>
+    </div>
+  );
+}
 
 export default async function Page({ searchParams }: Props) {
   const user = await currentUser();
@@ -34,6 +55,7 @@ export default async function Page({ searchParams }: Props) {
     }));
   const timezone = searchParams.timezone || "America/Los_Angeles";
 
+  // saved event
   if (searchParams.saveIntent) {
     return (
       <Suspense>
@@ -46,6 +68,7 @@ export default async function Page({ searchParams }: Props) {
     );
   }
 
+  // image only
   if (searchParams.filePath && !searchParams.rawText) {
     return (
       <div className="flex w-full flex-col items-center gap-8">
@@ -61,28 +84,33 @@ export default async function Page({ searchParams }: Props) {
     );
   }
 
-  if (!searchParams.rawText) {
+  // text (with or without image)
+  if (searchParams.rawText) {
     return (
-      <div className="flex w-full flex-col items-center gap-8">
-        <Suspense>
-          <AddEvent lists={lists || undefined} />
-        </Suspense>
-      </div>
+      <Stages
+        filePath={searchParams.filePath}
+        lists={lists || undefined}
+        Preview={
+          <Suspense
+            fallback={<EventPreviewLoadingSpinner className="size-screen" />}
+          >
+            <EventsFromRawText
+              timezone={timezone}
+              rawText={searchParams.rawText}
+              filePath={searchParams.filePath}
+              edit={searchParams.edit}
+            />
+          </Suspense>
+        }
+      ></Stages>
     );
   }
 
-  if (searchParams.rawText) {
-    return (
-      <div className="flex w-full flex-col items-center gap-8">
-        <YourDetails lists={lists || undefined} />
-        <ImageUpload filePath={searchParams.filePath} />
-        <Suspense fallback={<AddToCalendarCardSkeleton />}>
-          <EventsFromRawText
-            timezone={timezone}
-            rawText={searchParams.rawText}
-          />
-        </Suspense>
-      </div>
-    );
-  }
+  // default
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <YourDetails lists={lists || undefined} />
+      <AddEvent />
+    </div>
+  );
 }

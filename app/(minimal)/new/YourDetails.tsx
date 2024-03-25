@@ -82,42 +82,43 @@ export function YourDetails({
   }, [form, setFormData]);
 
   return (
-    <Card className="max-w-screen w-full sm:max-w-xl">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <PenSquare className="mr-2 size-6" />
-          My Details
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form className="space-y-4">
-            <FormField
-              control={form.control}
-              name="visibility"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Visibility</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Public" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="public">Public</SelectItem>
-                      <SelectItem value="private">Private</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <SignedIn>
+    <SignedIn>
+      <Card className="max-w-screen w-full sm:max-w-xl">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <PenSquare className="mr-2 size-6" />
+            My Details
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form className="space-y-4">
+              <FormField
+                control={form.control}
+                name="visibility"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Visibility</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Public" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="public">Public</SelectItem>
+                        <SelectItem value="private">Private</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {listOptions?.length && listOptions.length > 0 ? (
                 <FormField
                   control={form.control}
@@ -135,30 +136,30 @@ export function YourDetails({
                   )}
                 />
               ) : null}
-            </SignedIn>
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Your Note</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Example: My friend Sarah hosts this dance party every year and its so fun!"
-                      defaultValue={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Add a personal note about this event for others to see.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Your Note</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Example: My friend Sarah hosts this dance party every year and its so fun!"
+                        defaultValue={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Add a personal note about this event for others to see.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </SignedIn>
   );
 }
