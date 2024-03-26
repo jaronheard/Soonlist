@@ -353,12 +353,6 @@ export function extractFilePath(url: string) {
   return match ? match[0] : "";
 }
 
-export const devLog = (message: string, ...optionalParams: unknown[]) => {
-  // if (process.env.NODE_ENV === "development") {
-  console.log(message, ...optionalParams);
-  // }
-};
-
 const alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 const length = 12;
 
