@@ -25,6 +25,7 @@ import { type EventWithUser } from "./EventList";
 import { buttonVariants } from "./ui/button";
 import { Label } from "./ui/label";
 import { type AddToCalendarCardProps } from "./AddToCalendarCard";
+import { Badge } from "./ui/badge";
 import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
@@ -275,7 +276,10 @@ function EventAccessibility({ metadata }: { metadata?: Metadata }) {
 
 function EventMetadata({ metadata }: { metadata?: Metadata }) {
   return (
-    <div className="mt-3 grid grid-cols-2 gap-x-1 gap-y-3 text-neutral-2 md:grid-cols-4">
+    <div className="relative -m-2 mt-3 grid grid-cols-2 gap-x-1 gap-y-3 rounded-2xl border border-interactive-2 p-2 text-neutral-2 md:grid-cols-4">
+      <Badge className="absolute bottom-2 right-2" variant={"secondary"}>
+        Experimental
+      </Badge>
       <div className="flex flex-col gap-0.5">
         <Label className="flex items-center" htmlFor="category">
           <CalendarIcon className="mr-1.5 size-4" />
