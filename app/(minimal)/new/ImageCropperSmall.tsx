@@ -280,6 +280,12 @@ export default function ImageCropperSmall({
                 hidden: !showCroppedImage || isModalOpen || isImageLoading,
               })}
             />
+            {/* placeholder only shown when other images are not shown */}
+            <div
+              className={cn("mx-auto block size-40 bg-gray-200", {
+                hidden: showCroppedImage || isModalOpen || isImageLoading,
+              })}
+            />
 
             <Dialog
               open={isModalOpen}
