@@ -21,7 +21,7 @@ import {
 import { InputTags } from "./ui/input-tags";
 import { MultiSelect } from "./ui/multiselect";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 
 import {
   EVENT_CATEGORIES,
@@ -50,7 +50,7 @@ export function AddToCalendarCard({
 }: AddToCalendarCardProps) {
   const { user } = useUser();
   const { croppedImagesUrls } = useCroppedImageContext();
-  const { formData } = useFormContext();
+  const { formData } = useNewEventContext();
   const { notes, visibility, lists } = formData;
 
   // TODO: only use croppedImagesUrls if query param is set and same image

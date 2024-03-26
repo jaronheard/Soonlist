@@ -8,7 +8,7 @@ import { Loader2, UploadCloud } from "lucide-react";
 import { useContext } from "react";
 import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 import { api } from "@/trpc/react";
 import { Mode, ModeContext, Status } from "@/context/ModeContext";
 

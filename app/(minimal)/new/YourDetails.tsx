@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 import { MultiSelect } from "@/components/ui/multiselect";
 
 export const formSchema = z.object({
@@ -64,7 +64,7 @@ export function YourDetails({
     },
   });
 
-  const { setFormData } = useFormContext(); // Use the context
+  const { setFormData } = useNewEventContext(); // Use the context
 
   // set initial form state in context
   React.useEffect(() => {

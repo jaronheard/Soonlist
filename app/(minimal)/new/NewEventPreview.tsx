@@ -7,12 +7,12 @@ import {
 } from "@/components/AddToCalendarCard";
 import { EventPreview } from "@/components/EventListItem";
 import { Mode, ModeContext } from "@/context/ModeContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 
 export function NewEventPreview(initialProps: AddToCalendarCardProps) {
   const [event, setEvent] = useState(initialProps);
   const { mode } = useContext(ModeContext);
-  const { eventData, setEventData } = useFormContext();
+  const { eventData, setEventData } = useNewEventContext();
 
   useEffect(() => {
     setEventData(event);

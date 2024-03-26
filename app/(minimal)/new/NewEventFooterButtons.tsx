@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Mode, ModeContext, Status } from "@/context/ModeContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 import { SaveButton } from "@/components/SaveButton";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 
@@ -14,7 +14,7 @@ export function NewEventFooterButtons({
   onClickNextPublish?: () => void;
 }) {
   const { mode, setMode, status } = useContext(ModeContext);
-  const { formData, eventData } = useFormContext();
+  const { formData, eventData } = useNewEventContext();
   const { croppedImagesUrls } = useCroppedImageContext();
   const otherMode = mode === Mode.Edit ? Mode.View : Mode.Edit;
 

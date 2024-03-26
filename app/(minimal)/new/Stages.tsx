@@ -10,7 +10,7 @@ import { NewEventFooterButtons } from "./NewEventFooterButtons";
 import ImageCropperSmall from "./ImageCropperSmall";
 import { ModeContext, Status } from "@/context/ModeContext";
 import { type List } from "@/server/db/types";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -88,7 +88,8 @@ export function Stages({
   Preview: JSX.Element;
 }) {
   const { status, setNextStatus } = useContext(ModeContext);
-  const { formData, setFormData, eventData, setEventData } = useFormContext();
+  const { formData, setFormData, eventData, setEventData } =
+    useNewEventContext();
   const { notes, visibility, lists: eventLists } = formData;
 
   const form = useForm<z.infer<typeof formSchema>>({

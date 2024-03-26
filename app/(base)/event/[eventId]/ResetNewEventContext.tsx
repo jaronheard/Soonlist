@@ -4,12 +4,12 @@ import { useContext, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { ModeContext, Mode, Status } from "@/context/ModeContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 
 export default function ResetNewEventContext() {
   const pathName = usePathname();
   const { setCroppedImagesUrls } = useCroppedImageContext();
-  const { setFormData, setEventData } = useFormContext();
+  const { setFormData, setEventData } = useNewEventContext();
   const { setStatus, setMode } = useContext(ModeContext);
 
   useEffect(() => {

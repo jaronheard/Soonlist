@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Loader2, Save } from "lucide-react";
 import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 import { api } from "@/trpc/react";
 
 type UpdateButtonProps = {
@@ -22,7 +22,7 @@ type UpdateButtonProps = {
 export function UpdateButton(props: UpdateButtonProps) {
   const router = useRouter();
   const { setCroppedImagesUrls } = useCroppedImageContext();
-  const { setFormData } = useFormContext();
+  const { setFormData } = useNewEventContext();
   const updateEvent = api.event.update.useMutation({
     onError: () => {
       toast.error("Your event was not saved. Please try again.");
