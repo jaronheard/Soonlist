@@ -23,27 +23,15 @@ export function SaveButton(props: SaveButtonProps) {
   const router = useRouter();
   const params = useSearchParams();
   const filePath = params.get("filePath") || "";
-  const { setCroppedImagesUrls } = useCroppedImageContext();
-  const { setFormData, setEventData } = useFormContext();
-  const { setStatus, setMode } = useContext(ModeContext);
   const updateEvent = api.event.create.useMutation({
     onError: () => {
       toast.error("Your event was not saved. Please try again.");
     },
     onSuccess: ({ id }) => {
       toast.success("Event saved.");
-      // Clear context state
-      setCroppedImagesUrls({});
-      setFormData({
-        notes: "",
-        visibility: "public",
-        lists: [],
-      });
-      setEventData(undefined);
-      setMode(Mode.View);
-      setStatus(Status.Organize);
-      router.refresh();
+      // router.refresh();
       router.push(`/event/${id}`);
+      // context needs to be reset after saving, but done on next page
     },
   });
 
