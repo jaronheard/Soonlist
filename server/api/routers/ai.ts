@@ -26,43 +26,34 @@ export const aiRouter = createTRPCRouter({
       const system = getSystemMessage();
       const prompt = getPrompt(input.timezone);
       // Ask OpenAI for a streaming completion given the prompt
+      const res = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo-0125",
+        response_format: { type: "json_object" },
+        seed: 42069,
 
-      try {
-        const res = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo-0125",
-          response_format: { type: "json_object" },
-          seed: 42069,
+        messages: [
+          {
+            role: "system",
+            content: system.text,
+          },
+          {
+            role: "user",
+            content: input.rawText,
+          },
+          { role: "system", content: prompt.text },
+        ],
+      });
 
-          messages: [
-            {
-              role: "system",
-              content: system.text,
-            },
-            {
-              role: "user",
-              content: input.rawText,
-            },
-            { role: "system", content: prompt.text },
-          ],
-        });
-
-        const choice = res.choices[0];
-        if (!choice) {
-          throw new Error("No response from OpenAI (choices[0])");
-        }
-        const response = choice.message.content;
-        if (!response) {
-          throw new Error("No response from OpenAI (choice.message.content)");
-        }
-
-        const events = addCommonAddToCalendarPropsFromResponse(response);
-        return { events, response };
-      } catch (error) {
-        console.error("Error in eventFromRawText", error);
-        return {
-          events: [],
-          response: "Sorry, I'm having trouble understanding that.",
-        };
+      const choice = res.choices[0];
+      if (!choice) {
+        throw new Error("No response from OpenAI (choices[0])");
       }
+      const response = choice.message.content;
+      if (!response) {
+        throw new Error("No response from OpenAI (choice.message.content)");
+      }
+
+      const events = addCommonAddToCalendarPropsFromResponse(response);
+      return { events, response };
     }),
 });
