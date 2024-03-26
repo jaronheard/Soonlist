@@ -1,16 +1,20 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { ModeContext, Mode, Status } from "@/context/ModeContext";
+import {
+  Mode,
+  Status,
+  useNewEventProgressContext,
+} from "@/context/NewEventProgressContext";
 import { useNewEventContext } from "@/context/NewEventContext";
 
 export default function ResetNewEventContext() {
   const pathName = usePathname();
   const { setCroppedImagesUrls } = useCroppedImageContext();
   const { setOrganizeData, setEventData } = useNewEventContext();
-  const { setStatus, setMode } = useContext(ModeContext);
+  const { setStatus, setMode } = useNewEventProgressContext();
 
   useEffect(() => {
     setCroppedImagesUrls({});

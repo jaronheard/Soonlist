@@ -1,16 +1,20 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   AddToCalendarCard,
   type AddToCalendarCardProps,
 } from "@/components/AddToCalendarCard";
 import { EventPreview } from "@/components/EventListItem";
-import { Mode, ModeContext, Status } from "@/context/ModeContext";
+import {
+  Mode,
+  Status,
+  useNewEventProgressContext,
+} from "@/context/NewEventProgressContext";
 
 export function ConditionalEventDisplay(initialProps: AddToCalendarCardProps) {
   const [event, setEvent] = useState(initialProps);
-  const { mode, status } = useContext(ModeContext);
+  const { mode, status } = useNewEventProgressContext();
 
   if (status === Status.Publish) {
     return <>Publish: final step</>;

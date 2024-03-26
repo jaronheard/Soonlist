@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useState, createContext, type ReactNode } from "react";
+import React, {
+  useState,
+  createContext,
+  type ReactNode,
+  useContext,
+} from "react";
 
+// Define the type of the context state
 export enum Mode {
   Edit = "edit",
   View = "view",
@@ -14,12 +20,29 @@ export enum Status {
   Publish = "publish",
 }
 
+// Create a context with empty objects and dummy functions
+export const NewEventProgressContext = createContext({
+  mode: Mode.View,
+  setMode: (mode: Mode) => console.warn("no mode provider"),
+  status: Status.Preview,
+  setStatus: (status: Status) => console.warn("no status provider"),
+  goToNextStatus: () => console.warn("no status provider"),
+  goToPreviousStatus: () => console.warn("no status provider"),
+});
+
+export const useNewEventProgressContext = () =>
+  useContext(NewEventProgressContext);
+
 // Provider component
-export const ModeProvider = ({ children }: { children: ReactNode }) => {
+export const NewEventProgressProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [mode, setMode] = useState(Mode.View);
   const [status, setStatus] = useState(Status.Organize);
 
-  function setNextStatus() {
+  function goToNextStatus() {
     const allStatuses = Object.values(Status);
     const nextIndex = allStatuses.indexOf(status) + 1;
     if (nextIndex >= 0) {
@@ -28,7 +51,7 @@ export const ModeProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  function setPreviousStatus() {
+  function goToPreviousStatus() {
     const allStatuses = Object.values(Status);
     const prevIndex = allStatuses.indexOf(status) - 1;
     if (prevIndex >= 0) {
@@ -38,27 +61,17 @@ export const ModeProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <ModeContext.Provider
+    <NewEventProgressContext.Provider
       value={{
         mode,
         setMode,
         status,
         setStatus,
-        setNextStatus,
-        setPreviousStatus,
+        goToNextStatus,
+        goToPreviousStatus,
       }}
     >
       {children}
-    </ModeContext.Provider>
+    </NewEventProgressContext.Provider>
   );
 };
-
-// Create a Context for the mode (edit or view)
-export const ModeContext = createContext({
-  mode: Mode.View,
-  setMode: (mode: Mode) => console.warn("no mode provider"),
-  status: Status.Preview,
-  setStatus: (status: Status) => console.warn("no status provider"),
-  setNextStatus: () => console.warn("no status provider"),
-  setPreviousStatus: () => console.warn("no status provider"),
-});

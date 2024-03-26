@@ -1,20 +1,24 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { type z } from "zod";
 import { ChevronLeft, PencilIcon } from "lucide-react";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
 import ImageCropperSmall from "./ImageCropperSmall";
-import { ModeContext, Status } from "@/context/ModeContext";
+import { organizeFormSchema } from "./YourDetails";
+import {
+  Status,
+  useNewEventProgressContext,
+} from "@/context/NewEventProgressContext";
 import { type List } from "@/server/db/types";
 import { useNewEventContext } from "@/context/NewEventContext";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-function StagesWrapper({
+function ProgressStagesWrapper({
   filePath,
   children,
   onClickNextOrganize,
@@ -23,7 +27,7 @@ function StagesWrapper({
   children: JSX.Element;
   onClickNextOrganize?: () => void;
 }) {
-  const { status, setPreviousStatus } = useContext(ModeContext);
+  const { status, goToPreviousStatus } = useNewEventProgressContext();
   const [showCropActions, setShowCropActions] = useState(false);
   return (
     <div className="flex w-full flex-col items-center">
@@ -32,7 +36,7 @@ function StagesWrapper({
       <header className="fixed inset-x-0 top-2 flex items-center justify-center">
         {status !== Status.Organize && (
           <Button
-            onClick={setPreviousStatus}
+            onClick={goToPreviousStatus}
             className="absolute left-0 top-0"
             variant={"ghost"}
             size={"icon"}
@@ -72,13 +76,7 @@ function StagesWrapper({
   );
 }
 
-export const formSchema = z.object({
-  notes: z.string().optional(),
-  visibility: z.enum(["public", "private"]),
-  lists: z.array(z.record(z.string().trim())),
-});
-
-export function Stages({
+export function ProgressStages({
   filePath,
   lists,
   Preview,
@@ -87,13 +85,12 @@ export function Stages({
   lists?: List[];
   Preview: JSX.Element;
 }) {
-  const { status, setNextStatus } = useContext(ModeContext);
-  const { organizeData, setOrganizeData, eventData, setEventData } =
-    useNewEventContext();
+  const { status, goToNextStatus } = useNewEventProgressContext();
+  const { organizeData, setOrganizeData, eventData } = useNewEventContext();
   const { notes, visibility, lists: eventLists } = organizeData;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof organizeFormSchema>>({
+    resolver: zodResolver(organizeFormSchema),
     defaultValues: {
       notes: notes || "",
       visibility: visibility || "public",
@@ -101,37 +98,44 @@ export function Stages({
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof organizeFormSchema>> = (
+    data
+  ) => {
     setOrganizeData(data);
-    setNextStatus();
+    goToNextStatus();
   };
 
   if (status === Status.Organize) {
     return (
-      <StagesWrapper
+      <ProgressStagesWrapper
         filePath={filePath}
         onClickNextOrganize={form.handleSubmit(onSubmit)}
       >
         <>
           <Organize lists={lists || []} form={form} />
+          {/* This ensures that the event starts being processed by the LLM immediately */}
           <div className="hidden">{Preview}</div>
         </>
-      </StagesWrapper>
+      </ProgressStagesWrapper>
     );
   }
 
   if (status === Status.Preview) {
-    return <StagesWrapper filePath={filePath}>{Preview}</StagesWrapper>;
+    return (
+      <ProgressStagesWrapper filePath={filePath}>
+        {Preview}
+      </ProgressStagesWrapper>
+    );
   }
 
   if (status === Status.Publish) {
     return (
-      <StagesWrapper filePath={filePath}>
+      <ProgressStagesWrapper filePath={filePath}>
         <>
           <>{JSON.stringify(eventData, null, 2)}</>
           <>{JSON.stringify(organizeData, null, 2)}</>
         </>
-      </StagesWrapper>
+      </ProgressStagesWrapper>
     );
   }
 }

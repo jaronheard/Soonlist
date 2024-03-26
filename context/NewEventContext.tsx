@@ -18,7 +18,7 @@ interface NewEventContextState {
   setEventData: (data?: AddToCalendarCardProps) => void;
 }
 
-// Create a context with an empty object and a dummy function
+// Create a context with empty objects and dummy functions
 const NewEventContext = createContext<NewEventContextState>({
   organizeData: { notes: "", visibility: "public", lists: [] } as z.infer<
     typeof organizeFormSchema

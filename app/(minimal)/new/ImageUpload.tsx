@@ -15,7 +15,6 @@ import {
 } from "react-image-crop";
 import { Button } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn, extractFilePath } from "@/lib/utils";
 
 function buildDefaultUrl(filePath: string) {

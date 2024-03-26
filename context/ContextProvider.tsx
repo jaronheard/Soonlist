@@ -1,6 +1,6 @@
 import { CroppedImageProvider } from "./CroppedImageContext";
 import { NewEventProvider } from "./NewEventContext";
-import { ModeProvider } from "./ModeContext";
+import { NewEventProgressProvider } from "./NewEventProgressContext";
 import { TimezoneProvider } from "./TimezoneContext";
 
 export default function ContextProvider({
@@ -9,12 +9,12 @@ export default function ContextProvider({
   children: React.ReactNode;
 }) {
   return (
-    <ModeProvider>
-      <TimezoneProvider>
+    <TimezoneProvider>
+      <NewEventProgressProvider>
         <NewEventProvider>
           <CroppedImageProvider>{children} </CroppedImageProvider>
         </NewEventProvider>
-      </TimezoneProvider>
-    </ModeProvider>
+      </NewEventProgressProvider>
+    </TimezoneProvider>
   );
 }

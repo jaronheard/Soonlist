@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import ImageUpload from "./ImageUpload";
 import { YourDetails } from "./YourDetails";
 import EventsFromImage from "./EventsFromImage";
-import { Stages } from "./Stages";
+import { ProgressStages } from "./ProgressStages";
 import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
@@ -71,7 +71,7 @@ export default async function Page({ searchParams }: Props) {
   // text (with or without image)
   if (searchParams.rawText) {
     return (
-      <Stages
+      <ProgressStages
         filePath={searchParams.filePath}
         lists={lists || undefined}
         Preview={
@@ -80,7 +80,7 @@ export default async function Page({ searchParams }: Props) {
             rawText={searchParams.rawText}
           />
         }
-      ></Stages>
+      ></ProgressStages>
     );
   }
 

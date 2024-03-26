@@ -10,7 +10,11 @@ import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useNewEventContext } from "@/context/NewEventContext";
 import { api } from "@/trpc/react";
-import { Mode, ModeContext, Status } from "@/context/ModeContext";
+import {
+  Mode,
+  NewEventProgressProvider,
+  Status,
+} from "@/context/NewEventProgressContext";
 
 type SaveButtonProps = {
   event: AddToCalendarButtonType;

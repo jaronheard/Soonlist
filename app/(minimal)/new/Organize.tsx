@@ -5,7 +5,7 @@ import { type useForm } from "react-hook-form";
 import { SignedIn } from "@clerk/nextjs";
 import { ListIcon } from "lucide-react";
 import { type z } from "zod";
-import { type formSchema } from "./Stages";
+import { type organizeFormSchema } from "./YourDetails";
 import { type List } from "@/server/db/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -31,7 +31,7 @@ export function Organize({
   form,
   lists,
 }: {
-  form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
+  form: ReturnType<typeof useForm<z.infer<typeof organizeFormSchema>>>;
   lists?: List[];
 }) {
   const listOptions = lists?.map((list) => ({

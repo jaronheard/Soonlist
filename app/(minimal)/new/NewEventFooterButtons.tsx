@@ -1,8 +1,11 @@
 "use client";
 
-import { useContext } from "react";
 import { Button } from "@/components/ui/button";
-import { Mode, ModeContext, Status } from "@/context/ModeContext";
+import {
+  Mode,
+  Status,
+  useNewEventProgressContext,
+} from "@/context/NewEventProgressContext";
 import { useNewEventContext } from "@/context/NewEventContext";
 import { SaveButton } from "@/components/SaveButton";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
@@ -13,7 +16,7 @@ export function NewEventFooterButtons({
   onClickNextOrganize?: () => void;
   onClickNextPublish?: () => void;
 }) {
-  const { mode, setMode, status } = useContext(ModeContext);
+  const { mode, setMode, status } = useNewEventProgressContext();
   const { organizeData, eventData } = useNewEventContext();
   const { croppedImagesUrls } = useCroppedImageContext();
   const otherMode = mode === Mode.Edit ? Mode.View : Mode.Edit;
