@@ -5,7 +5,7 @@ import * as Bytescale from "@bytescale/sdk";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowBigLeft, ChevronLeft, StepBackIcon } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
 import { ModeContext, Status } from "@/context/ModeContext";
