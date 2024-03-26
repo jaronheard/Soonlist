@@ -183,25 +183,25 @@ export default function ImageCropperSmall({
   const hasNaturalDimensions =
     naturalHeight && naturalWidth && naturalHeight > 0 && naturalWidth > 0;
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const prevImageUrlRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
-    // Reset the imageLoaded state whenever imageUrl changes
-    setImageLoaded(false);
-
     const imageElement = fullImageRef.current;
 
     if (imageElement && imageUrl) {
       const handleLoad = () => {
-        // Set imageLoaded to true when the image is loaded
-        setImageLoaded(true);
+        setIsImageLoading(false);
       };
 
-      // Add event listener to the image element
-      imageElement.addEventListener("load", handleLoad);
+      if (prevImageUrlRef.current !== imageUrl) {
+        setIsImageLoading(true);
+        imageElement.addEventListener("load", handleLoad);
+      }
 
       // Check if image is already loaded (cached images)
       if (imageElement.complete && imageElement.naturalWidth) {
-        setImageLoaded(true);
+        setIsImageLoading(false);
       }
 
       // Clean up
@@ -212,7 +212,11 @@ export default function ImageCropperSmall({
   }, [imageUrl]);
 
   useEffect(() => {
-    if (imageLoaded && hasNaturalDimensions) {
+    prevImageUrlRef.current = imageUrl;
+  }, [imageUrl]);
+
+  useEffect(() => {
+    if (!isImageLoading && hasNaturalDimensions) {
       if (imageUrl === croppedImageUrlFromProps) {
         return;
       }
@@ -229,7 +233,7 @@ export default function ImageCropperSmall({
       setCroppedImagesUrls(cropUrls);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageLoaded]);
+  }, [isImageLoading]);
 
   const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
     if (!hasNaturalDimensions) {
@@ -265,7 +269,7 @@ export default function ImageCropperSmall({
               src={imageUrl}
               alt="Full Image Preview"
               className={cn("mx-auto block h-40 overflow-hidden object-cover", {
-                hidden: showCroppedImage,
+                hidden: showCroppedImage || isImageLoading,
               })}
               ref={fullImageRef}
             />
@@ -273,7 +277,7 @@ export default function ImageCropperSmall({
               src={croppedImagesUrls?.cropped}
               alt="Cropped Preview"
               className={cn("mx-auto block h-40 overflow-hidden object-cover", {
-                hidden: !showCroppedImage || isModalOpen,
+                hidden: !showCroppedImage || isModalOpen || isImageLoading,
               })}
             />
 
