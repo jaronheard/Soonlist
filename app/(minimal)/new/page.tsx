@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
-import ImageUpload from "../../../components/ImageUpload";
-import { YourDetails } from "../../../components/YourDetails";
 import EventsFromImage from "./EventsFromImage";
 import { ProgressStages } from "./ProgressStages";
+import ImageUpload from "@/components/ImageUpload";
+import { YourDetails } from "@/components/YourDetails";
 import AddEvent from "@/app/(base)/AddEvent";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
