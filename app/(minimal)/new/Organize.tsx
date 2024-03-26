@@ -5,7 +5,7 @@ import { type useForm } from "react-hook-form";
 import { SignedIn } from "@clerk/nextjs";
 import { ListIcon } from "lucide-react";
 import { type z } from "zod";
-import { type organizeFormSchema } from "./YourDetails";
+import { type organizeFormSchema } from "@/components/YourDetails";
 import { type List } from "@/server/db/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {

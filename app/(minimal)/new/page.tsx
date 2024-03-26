@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
-import ImageUpload from "./ImageUpload";
-import { YourDetails } from "./YourDetails";
+import ImageUpload from "../../../components/ImageUpload";
+import { YourDetails } from "../../../components/YourDetails";
 import EventsFromImage from "./EventsFromImage";
 import { ProgressStages } from "./ProgressStages";
 import AddEvent from "@/app/(base)/AddEvent";

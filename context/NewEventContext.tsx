@@ -7,7 +7,7 @@ import React, {
   type ReactNode,
 } from "react";
 import type * as z from "zod";
-import { type organizeFormSchema } from "@/app/(minimal)/new/YourDetails";
+import { type organizeFormSchema } from "@/components/YourDetails";
 import { type AddToCalendarCardProps } from "@/components/AddToCalendarCard";
 
 // Define the type of the context state

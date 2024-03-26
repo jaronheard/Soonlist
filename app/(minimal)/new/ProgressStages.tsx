@@ -4,11 +4,12 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { ChevronLeft, PencilIcon } from "lucide-react";
+import { ChevronLeft, PencilIcon, X } from "lucide-react";
+import Link from "next/link";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
 import ImageCropperSmall from "./ImageCropperSmall";
-import { organizeFormSchema } from "./YourDetails";
+import { organizeFormSchema } from "@/components/YourDetails";
 import {
   Status,
   useNewEventProgressContext,
@@ -17,6 +18,7 @@ import { type List } from "@/server/db/types";
 import { useNewEventContext } from "@/context/NewEventContext";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Logo from "@/components/Logo";
 
 function ProgressStagesWrapper({
   filePath,
@@ -33,11 +35,21 @@ function ProgressStagesWrapper({
     <div className="flex w-full flex-col items-center">
       {/* <YourDetails lists={lists || undefined} /> */}
       {/* <ImageUpload filePath={searchParams.filePath} /> */}
-      <header className="fixed inset-x-0 top-2 flex items-center justify-center">
+      <header className="fixed inset-x-0 top-2 z-50 flex flex-col items-center justify-center">
+        <Button
+          asChild
+          className="absolute -top-2 right-0"
+          variant={"ghost"}
+          size={"icon"}
+        >
+          <Link href="/">
+            <X />
+          </Link>
+        </Button>
         {status !== Status.Organize && (
           <Button
             onClick={goToPreviousStatus}
-            className="absolute left-0 top-0"
+            className="absolute -top-2 left-0"
             variant={"ghost"}
             size={"icon"}
           >
@@ -47,6 +59,7 @@ function ProgressStagesWrapper({
         <button
           className={cn("relative origin-top", {
             "scale-50 hover:opacity-60": !showCropActions,
+            "bg-secondary -mt-2 pt-2 px-4 pb-4 rounded-b-2xl": showCropActions,
           })}
           onClick={() => {
             !showCropActions && setShowCropActions(true);
@@ -68,8 +81,11 @@ function ProgressStagesWrapper({
             </div>
           )}
         </button>
+        <div className="absolute top-24 flex gap-4">
+          <Logo className="origin-top scale-50" />
+        </div>
       </header>
-      <div className="p-12"></div>
+      <div className="p-14"></div>
       {children}
       <NewEventFooterButtons onClickNextOrganize={onClickNextOrganize} />
     </div>
