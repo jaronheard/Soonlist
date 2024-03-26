@@ -7,23 +7,23 @@ import React, {
   type ReactNode,
 } from "react";
 import type * as z from "zod";
-import { type formSchema } from "@/app/(minimal)/new/YourDetails";
+import { type organizeFormSchema } from "@/app/(minimal)/new/YourDetails";
 import { type AddToCalendarCardProps } from "@/components/AddToCalendarCard";
 
 // Define the type of the context state
 interface NewEventContextState {
-  formData: z.infer<typeof formSchema>;
-  setFormData: (data: z.infer<typeof formSchema>) => void;
+  organizeData: z.infer<typeof organizeFormSchema>;
+  setOrganizeData: (data: z.infer<typeof organizeFormSchema>) => void;
   eventData?: AddToCalendarCardProps;
   setEventData: (data?: AddToCalendarCardProps) => void;
 }
 
 // Create a context with an empty object and a dummy function
 const NewEventContext = createContext<NewEventContextState>({
-  formData: { notes: "", visibility: "public", lists: [] } as z.infer<
-    typeof formSchema
+  organizeData: { notes: "", visibility: "public", lists: [] } as z.infer<
+    typeof organizeFormSchema
   >,
-  setFormData: () => null,
+  setOrganizeData: () => null,
   eventData: undefined,
   setEventData: () => null,
 });
@@ -31,7 +31,9 @@ const NewEventContext = createContext<NewEventContextState>({
 export const useNewEventContext = () => useContext(NewEventContext);
 
 export const NewEventProvider = ({ children }: { children: ReactNode }) => {
-  const [formData, setFormData] = useState<NewEventContextState["formData"]>({
+  const [organizeData, setOrganizeData] = useState<
+    NewEventContextState["organizeData"]
+  >({
     notes: "",
     visibility: "public",
     lists: [],
@@ -41,7 +43,12 @@ export const NewEventProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <NewEventContext.Provider
-      value={{ formData, setFormData, eventData, setEventData }}
+      value={{
+        organizeData,
+        setOrganizeData,
+        eventData,
+        setEventData,
+      }}
     >
       {children}
     </NewEventContext.Provider>

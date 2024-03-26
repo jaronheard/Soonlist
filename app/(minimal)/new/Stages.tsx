@@ -88,9 +88,9 @@ export function Stages({
   Preview: JSX.Element;
 }) {
   const { status, setNextStatus } = useContext(ModeContext);
-  const { formData, setFormData, eventData, setEventData } =
+  const { organizeData, setOrganizeData, eventData, setEventData } =
     useNewEventContext();
-  const { notes, visibility, lists: eventLists } = formData;
+  const { notes, visibility, lists: eventLists } = organizeData;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,7 +102,7 @@ export function Stages({
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-    setFormData(data);
+    setOrganizeData(data);
     setNextStatus();
   };
 
@@ -129,7 +129,7 @@ export function Stages({
       <StagesWrapper filePath={filePath}>
         <>
           <>{JSON.stringify(eventData, null, 2)}</>
-          <>{JSON.stringify(formData, null, 2)}</>
+          <>{JSON.stringify(organizeData, null, 2)}</>
         </>
       </StagesWrapper>
     );

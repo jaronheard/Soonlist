@@ -50,8 +50,8 @@ export function AddToCalendarCard({
 }: AddToCalendarCardProps) {
   const { user } = useUser();
   const { croppedImagesUrls } = useCroppedImageContext();
-  const { formData } = useNewEventContext();
-  const { notes, visibility, lists } = formData;
+  const { organizeData } = useNewEventContext();
+  const { notes, visibility, lists } = organizeData;
 
   // TODO: only use croppedImagesUrls if query param is set and same image
   const hasFilePath = croppedImagesUrls.filePath;

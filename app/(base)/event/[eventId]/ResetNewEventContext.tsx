@@ -9,12 +9,12 @@ import { useNewEventContext } from "@/context/NewEventContext";
 export default function ResetNewEventContext() {
   const pathName = usePathname();
   const { setCroppedImagesUrls } = useCroppedImageContext();
-  const { setFormData, setEventData } = useNewEventContext();
+  const { setOrganizeData, setEventData } = useNewEventContext();
   const { setStatus, setMode } = useContext(ModeContext);
 
   useEffect(() => {
     setCroppedImagesUrls({});
-    setFormData({
+    setOrganizeData({
       notes: "",
       visibility: "public",
       lists: [],
@@ -25,7 +25,7 @@ export default function ResetNewEventContext() {
   }, [
     pathName,
     setCroppedImagesUrls,
-    setFormData,
+    setOrganizeData,
     setEventData,
     setMode,
     setStatus,

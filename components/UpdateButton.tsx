@@ -22,7 +22,7 @@ type UpdateButtonProps = {
 export function UpdateButton(props: UpdateButtonProps) {
   const router = useRouter();
   const { setCroppedImagesUrls } = useCroppedImageContext();
-  const { setFormData } = useNewEventContext();
+  const { setOrganizeData } = useNewEventContext();
   const updateEvent = api.event.update.useMutation({
     onError: () => {
       toast.error("Your event was not saved. Please try again.");
@@ -31,7 +31,7 @@ export function UpdateButton(props: UpdateButtonProps) {
       toast.success("Event updated.");
       // Clear context state
       setCroppedImagesUrls({});
-      setFormData({
+      setOrganizeData({
         notes: "",
         visibility: "public",
         lists: [],

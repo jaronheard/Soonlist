@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNewEventContext } from "@/context/NewEventContext";
 import { MultiSelect } from "@/components/ui/multiselect";
 
-export const formSchema = z.object({
+export const organizeFormSchema = z.object({
   notes: z.string().optional(),
   visibility: z.enum(["public", "private"]),
   lists: z.array(z.record(z.string().trim())),
@@ -55,8 +55,8 @@ export function YourDetails({
   }));
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof organizeFormSchema>>({
+    resolver: zodResolver(organizeFormSchema),
     defaultValues: {
       notes: comment || "",
       visibility: visibility || "public",
@@ -64,22 +64,22 @@ export function YourDetails({
     },
   });
 
-  const { setFormData } = useNewEventContext(); // Use the context
+  const { setOrganizeData } = useNewEventContext(); // Use the context
 
   // set initial form state in context
   React.useEffect(() => {
-    setFormData(form.getValues());
-  }, [form, setFormData]);
+    setOrganizeData(form.getValues());
+  }, [form, setOrganizeData]);
 
   // Watch for changes in the form
   React.useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name) {
-        setFormData(form.getValues());
+        setOrganizeData(form.getValues());
       }
     });
     return () => subscription.unsubscribe();
-  }, [form, setFormData]);
+  }, [form, setOrganizeData]);
 
   return (
     <SignedIn>

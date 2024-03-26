@@ -14,7 +14,7 @@ export function NewEventFooterButtons({
   onClickNextPublish?: () => void;
 }) {
   const { mode, setMode, status } = useContext(ModeContext);
-  const { formData, eventData } = useNewEventContext();
+  const { organizeData, eventData } = useNewEventContext();
   const { croppedImagesUrls } = useCroppedImageContext();
   const otherMode = mode === Mode.Edit ? Mode.View : Mode.Edit;
 
@@ -58,9 +58,9 @@ export function NewEventFooterButtons({
           {eventData && (
             <SaveButton
               event={{ ...eventData, images }}
-              notes={formData.notes}
-              visibility={formData.visibility}
-              lists={formData.lists}
+              notes={organizeData.notes}
+              visibility={organizeData.visibility}
+              lists={organizeData.lists}
             />
           )}
         </>
