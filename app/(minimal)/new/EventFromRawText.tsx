@@ -8,7 +8,6 @@ import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { blankEvent } from "@/lib/utils";
 
 // this is a simple loading spinner component that takes a className prop for sizing
-
 function EventPreviewLoadingSpinner({ className }: { className?: string }) {
   return (
     <div
@@ -27,10 +26,20 @@ export default function NewEventFromRawText({
   rawText: string;
   timezone: string;
 }) {
-  const fromRawText = api.ai.eventFromRawText.useQuery({
-    rawText,
-    timezone,
-  });
+  const fromRawText = api.ai.eventFromRawText.useQuery(
+    {
+      rawText,
+      timezone,
+    },
+    {
+      // don't refetch on mount, window focus, or reconnect
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      // stale time of 1 day
+      staleTime: 1000 * 60 * 60 * 24,
+    }
+  );
 
   const { events, response } = fromRawText.data ?? {};
 
