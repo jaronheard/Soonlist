@@ -1,43 +1,18 @@
 "use client";
 
-import { useContext } from "react";
-import * as Bytescale from "@bytescale/sdk";
+import { useContext, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, PencilIcon } from "lucide-react";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
+import ImageCropperSmall from "./ImageCropperSmall";
 import { ModeContext, Status } from "@/context/ModeContext";
 import { type List } from "@/server/db/types";
 import { useFormContext } from "@/context/FormContext";
-import { Button } from "@/components/ui/button";
-
-function ImagePreview({ filePath }: { filePath?: string }) {
-  if (!filePath) return null;
-  const croppedImageUrl = Bytescale.UrlBuilder.url({
-    accountId: "12a1yek",
-    filePath: filePath, // Ensure filePath is defined and contains the path to the image
-    options: {
-      transformation: "image",
-      transformationParams: {
-        w: 48,
-        h: 48,
-        fit: "min",
-        q: 70,
-        f: "jpg",
-      },
-    },
-  });
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={croppedImageUrl}
-      alt="Image preview"
-      className="size-12 rounded-full object-cover"
-    />
-  );
-}
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 function StagesWrapper({
   filePath,
@@ -49,6 +24,7 @@ function StagesWrapper({
   onClickNextOrganize?: () => void;
 }) {
   const { status, setPreviousStatus } = useContext(ModeContext);
+  const [showCropActions, setShowCropActions] = useState(false);
   return (
     <div className="flex w-full flex-col items-center">
       {/* <YourDetails lists={lists || undefined} /> */}
@@ -57,15 +33,39 @@ function StagesWrapper({
         {status !== Status.Organize && (
           <Button
             onClick={setPreviousStatus}
-            className="absolute left-2"
+            className="absolute left-0 top-0"
             variant={"ghost"}
             size={"icon"}
           >
             <ChevronLeft />
           </Button>
         )}
-        <ImagePreview filePath={filePath} />
+        <button
+          className={cn("relative origin-top", {
+            "scale-50 hover:opacity-60": !showCropActions,
+          })}
+          onClick={() => {
+            !showCropActions && setShowCropActions(true);
+          }}
+        >
+          <ImageCropperSmall
+            filePath={filePath}
+            showActions={showCropActions}
+            setShowActions={setShowCropActions}
+          />
+          {!showCropActions && (
+            <div
+              className={cn(
+                buttonVariants({ size: "icon", variant: "secondary" }),
+                "absolute -bottom-2 -right-2 scale-150 hover:bg-secondary"
+              )}
+            >
+              <PencilIcon className="size-6" />
+            </div>
+          )}
+        </button>
       </header>
+      <div className="p-12"></div>
       {children}
       <NewEventFooterButtons onClickNextOrganize={onClickNextOrganize} />
     </div>
