@@ -26,6 +26,8 @@ export default function NewEventFromRawText({
       refetchOnReconnect: false,
       // stale time of 1 day
       staleTime: 1000 * 60 * 60 * 24,
+      // slow response, wait longer to retry
+      retryDelay: (attemptIndex) => Math.min(8000 * 2 ** attemptIndex, 30000),
     }
   );
 

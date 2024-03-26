@@ -35,7 +35,7 @@ function ProgressStagesWrapper({
     <div className="flex w-full flex-col items-center">
       {/* <YourDetails lists={lists || undefined} /> */}
       {/* <ImageUpload filePath={searchParams.filePath} /> */}
-      <header className="fixed inset-x-0 top-2 z-50 flex flex-col items-center justify-center">
+      <header className="fixed inset-x-0 top-2 z-10 flex flex-col items-center justify-center">
         <Button
           asChild
           className="absolute -top-2 right-0"
@@ -57,7 +57,7 @@ function ProgressStagesWrapper({
           </Button>
         )}
         <button
-          className={cn("relative origin-top", {
+          className={cn("relative z-30 origin-top", {
             "scale-50 hover:opacity-60": !showCropActions,
             "bg-secondary -mt-2 pt-2 px-4 pb-4 rounded-b-2xl": showCropActions,
           })}
@@ -81,7 +81,7 @@ function ProgressStagesWrapper({
             </div>
           )}
         </button>
-        <div className="absolute top-24 flex gap-4">
+        <div className="absolute top-24 z-20 flex gap-4">
           <Logo className="origin-top scale-50" />
         </div>
       </header>
