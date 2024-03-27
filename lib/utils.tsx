@@ -353,12 +353,6 @@ export function extractFilePath(url: string) {
   return match ? match[0] : "";
 }
 
-export const devLog = (message: string, ...optionalParams: unknown[]) => {
-  // if (process.env.NODE_ENV === "development") {
-  console.log(message, ...optionalParams);
-  // }
-};
-
 const alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 const length = 12;
 
@@ -370,4 +364,18 @@ export function generatePublicId() {
 
 export function filterDuplicates<T extends { id: unknown }>(objects: T[]): T[] {
   return Array.from(new Map(objects.map((obj) => [obj.id, obj])).values());
+}
+
+export function valueToOption(value: string): { value: string; label: string } {
+  return { value, label: value };
+}
+
+export function valuesToOptions(
+  values: string[]
+): { value: string; label: string }[] {
+  return values.map((value) => valueToOption(value));
+}
+
+export function optionsToValues(options: { value: string; label: string }[]) {
+  return options.map((option) => option.value);
 }

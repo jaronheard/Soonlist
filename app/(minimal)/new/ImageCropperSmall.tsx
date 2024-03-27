@@ -4,7 +4,7 @@
 import * as Bytescale from "@bytescale/sdk";
 import React, { useState, useRef, useEffect } from "react";
 import "react-image-crop/dist/ReactCrop.css";
-import { SwitchCamera, Trash, Upload, Scissors } from "lucide-react";
+import { SwitchCamera, Upload, Scissors, PencilIcon } from "lucide-react";
 import { UploadButton } from "@bytescale/upload-widget-react";
 import { Dialog } from "@headlessui/react";
 import {
@@ -13,9 +13,8 @@ import {
   centerCrop,
   makeAspectCrop,
 } from "react-image-crop";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn, extractFilePath } from "@/lib/utils";
 
 function buildDefaultUrl(filePath: string) {
@@ -155,12 +154,16 @@ const defaultCrop = (opts: { naturalWidth: number; naturalHeight: number }) => {
   );
 };
 
-export default function ImageUpload({
+export default function ImageCropperSmall({
   images,
   filePath: filePathFromSearchParam,
+  showActions,
+  setShowActions,
 }: {
   images?: string[];
   filePath?: string;
+  showActions?: boolean;
+  setShowActions?: (show: boolean) => void;
 }) {
   const croppedImageUrlFromProps = images?.[3];
   const filePathFromImages = croppedImageUrlFromProps
@@ -180,25 +183,25 @@ export default function ImageUpload({
   const hasNaturalDimensions =
     naturalHeight && naturalWidth && naturalHeight > 0 && naturalWidth > 0;
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const prevImageUrlRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
-    // Reset the imageLoaded state whenever imageUrl changes
-    setImageLoaded(false);
-
     const imageElement = fullImageRef.current;
 
     if (imageElement && imageUrl) {
       const handleLoad = () => {
-        // Set imageLoaded to true when the image is loaded
-        setImageLoaded(true);
+        setIsImageLoading(false);
       };
 
-      // Add event listener to the image element
-      imageElement.addEventListener("load", handleLoad);
+      if (prevImageUrlRef.current !== imageUrl) {
+        setIsImageLoading(true);
+        imageElement.addEventListener("load", handleLoad);
+      }
 
       // Check if image is already loaded (cached images)
       if (imageElement.complete && imageElement.naturalWidth) {
-        setImageLoaded(true);
+        setIsImageLoading(false);
       }
 
       // Clean up
@@ -209,7 +212,11 @@ export default function ImageUpload({
   }, [imageUrl]);
 
   useEffect(() => {
-    if (imageLoaded && hasNaturalDimensions) {
+    prevImageUrlRef.current = imageUrl;
+  }, [imageUrl]);
+
+  useEffect(() => {
+    if (!isImageLoading && hasNaturalDimensions) {
       if (imageUrl === croppedImageUrlFromProps) {
         return;
       }
@@ -226,7 +233,7 @@ export default function ImageUpload({
       setCroppedImagesUrls(cropUrls);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageLoaded]);
+  }, [isImageLoading]);
 
   const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
     if (!hasNaturalDimensions) {
@@ -254,84 +261,96 @@ export default function ImageUpload({
     croppedImagesMatchFilePath && croppedImagesUrls?.cropped;
 
   return (
-    <Card className="max-w-screen w-full sm:max-w-xl">
-      <CardContent className="grid grid-cols-1 place-items-center gap-0 rounded-md py-4 shadow-md">
-        <CardTitle>Event Image</CardTitle>
-        <p className="mx-auto block text-sm font-medium leading-6 text-gray-900">
-          <span className="text-gray-500">(Optional)</span>
-        </p>
-        <>
-          {imageUrl && (
-            <>
-              <div className="p-1"></div>
+    <div className="flex items-center justify-center gap-4">
+      <div className="">
+        {imageUrl && (
+          <>
+            <div className="relative h-40">
+              <div
+                className={cn(
+                  "mx-auto block size-40 animate-pulse rounded-2xl border-2 bg-gray-50",
+                  {
+                    hidden: showCroppedImage || isModalOpen || !isImageLoading,
+                  }
+                )}
+              />
+
               <img
                 src={imageUrl}
                 alt="Full Image Preview"
                 className={cn(
-                  "mx-auto block h-36 overflow-hidden object-cover",
+                  "mx-auto block h-40 overflow-hidden object-cover",
                   {
-                    hidden: showCroppedImage,
+                    hidden: showCroppedImage || isImageLoading,
                   }
                 )}
                 ref={fullImageRef}
               />
-              {showCroppedImage && (
-                <div className="text-center text-sm text-gray-500">
-                  <span className="font-medium">Cropped Preview</span>
-                </div>
-              )}
+
               <img
                 src={croppedImagesUrls?.cropped}
                 alt="Cropped Preview"
                 className={cn(
-                  "mx-auto block h-36 overflow-hidden object-cover",
+                  "mx-auto block h-40 overflow-hidden object-cover",
                   {
-                    hidden: !showCroppedImage || isModalOpen,
+                    hidden: !showCroppedImage || isModalOpen || isImageLoading,
                   }
                 )}
               />
-              <div className="p-1"></div>
+              {!showActions && (
+                <div
+                  className={cn(
+                    buttonVariants({ size: "icon", variant: "secondary" }),
+                    "absolute -bottom-2 left-1/2 -translate-x-1/2 scale-150 hover:bg-secondary"
+                  )}
+                >
+                  <PencilIcon className="size-6" />
+                </div>
+              )}
+            </div>
 
-              <Dialog
-                open={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                className="fixed inset-0 z-10 mx-auto max-h-[90vh] max-w-[90vw] overflow-y-auto"
-              >
-                <div className="flex min-h-screen items-center justify-center">
-                  <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+            <Dialog
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              className="fixed inset-0 z-10 mx-auto overflow-y-hidden"
+            >
+              <div className="flex min-h-screen justify-center">
+                <Dialog.Overlay className="fixed inset-0 bg-black opacity-70" />
 
-                  <div className="relative mx-auto max-h-[90vh] max-w-[90vw] rounded bg-white p-4 sm:max-w-sm">
-                    <Dialog.Title className="text-lg font-medium leading-6 text-gray-900">
-                      Crop Image
-                    </Dialog.Title>
-                    <div className="p-2"></div>
+                <div className="relative flex size-full flex-col items-center rounded bg-white p-4 sm:max-w-sm">
+                  <Dialog.Title className="text-lg font-medium leading-6 text-gray-900">
+                    Crop Image
+                  </Dialog.Title>
+                  <div className="p-2"></div>
+                  <div className="p-4">
                     <ReactCrop
                       crop={crop}
                       onComplete={onCropComplete}
                       onChange={onCropChange}
-                      className="max-h-[75vh] max-w-[90vw]"
+                      className="max-h-[80svh]"
                     >
                       <img src={imageUrl} alt="Cropper img" />
                     </ReactCrop>
-                    <div className="p-2"></div>
-                    <Button
-                      onClick={() => {
-                        setIsModalOpen(false);
-                      }}
-                      className="absolute right-2 top-2"
-                      variant="destructive"
-                    >
-                      Close
-                    </Button>
                   </div>
+
+                  <div className="p-2"></div>
+                  <Button
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      setShowActions && setShowActions(false);
+                    }}
+                    className="absolute right-2 top-2"
+                  >
+                    Done
+                  </Button>
                 </div>
-              </Dialog>
-              <div className="p-2"></div>
-            </>
-          )}
-        </>
-        <div className="p-2"></div>
-        <div className="mx-auto flex flex-wrap justify-center gap-4">
+              </div>
+            </Dialog>
+          </>
+        )}
+      </div>
+      {showActions && !isModalOpen && (
+        <div className="mx-auto flex flex-col flex-wrap justify-center gap-4">
           {imageUrl && (
             <Button
               onClick={() => setIsModalOpen(true)}
@@ -369,11 +388,18 @@ export default function ImageUpload({
                 ) : (
                   <Upload className="mr-2 size-4" />
                 )}
-                {imageUrl ? "Replace" : "Upload"}
+                {imageUrl ? "Swap" : "Add"}
               </Button>
             )}
           </UploadButton>
-          {imageUrl && (
+          <Button
+            onClick={() => {
+              setShowActions && setShowActions(false);
+            }}
+          >
+            Done
+          </Button>
+          {/* {imageUrl && (
             <Button
               variant="destructive"
               onClick={() => {
@@ -386,9 +412,9 @@ export default function ImageUpload({
               <Trash className="mr-2 size-4" />
               Delete
             </Button>
-          )}
+          )} */}
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 }

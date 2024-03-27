@@ -1,38 +1,57 @@
 "use client";
-
 import React, { useState } from "react";
-import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
-import { Text } from "lucide-react";
+import { Shapes, Text } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { SaveButton } from "./SaveButton";
 import { UpdateButton } from "./UpdateButton";
 import { Label } from "./ui/label";
 import { Input, InputDescription } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Card, CardContent, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { TimezoneSelect } from "./TimezoneSelect";
 import { CalendarButton } from "./CalendarButton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { InputTags } from "./ui/input-tags";
+import { MultiSelect } from "./ui/multiselect";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 
-type AddToCalendarCardProps = AddToCalendarButtonType & {
+import {
+  EVENT_CATEGORIES,
+  EVENT_TYPES,
+  type Metadata,
+  // PLATFORMS,
+  PRICE_TYPE,
+  ACCESSIBILITY_TYPES,
+} from "@/lib/prompts";
+import { valuesToOptions } from "@/lib/utils";
+
+export type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
   updateId?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   children?: React.ReactNode;
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
+  metadata?: Metadata;
+  onUpdate?: (props: AddToCalendarButtonType) => void;
 };
 
 export function AddToCalendarCard({
   firstInputRef,
   ...initialProps
 }: AddToCalendarCardProps) {
-  // get croppedImagesUrls from context
   const { user } = useUser();
   const { croppedImagesUrls } = useCroppedImageContext();
-  const { formData } = useFormContext();
-  const { notes, visibility, lists } = formData;
+  const { organizeData } = useNewEventContext();
+  const { notes, visibility, lists } = organizeData;
 
   // TODO: only use croppedImagesUrls if query param is set and same image
   const hasFilePath = croppedImagesUrls.filePath;
@@ -66,10 +85,40 @@ export function AddToCalendarCard({
   const [startTime, setStartTime] = useState(initialProps.startTime);
   const [endDate, setEndDate] = useState(initialProps.endDate);
   const [endTime, setEndTime] = useState(initialProps.endTime);
-  const [timeZone, setTimeZone] = useState(
+  const [timeZone, setTimeZone] = useState<string>(
     initialProps.timeZone || "America/Los_Angeles"
   );
-  const [link, setLink] = useState("");
+  const [link, setLink] = useState<string>("");
+  const [mentions, setMentions] = useState<string[]>(
+    initialProps?.metadata?.mentions || []
+  );
+  const [source, setSource] = useState<string>(
+    initialProps?.metadata?.source || "unknown"
+  );
+  const [price, setPrice] = useState<number>(
+    initialProps?.metadata?.price || 0
+  );
+  const [priceType, setPriceType] = useState<string>(
+    initialProps.metadata?.priceType || "unknown"
+  );
+  const [ageRestriction, setAgeRestriction] = useState(
+    (initialProps.metadata?.ageRestriction || "none") as string
+  );
+  const [category, setCategory] = useState(
+    (initialProps?.metadata?.category || "unknown") as string
+  );
+  const [type, setType] = useState(initialProps?.metadata?.type || "event");
+  const [performers, setPerformers] = useState(
+    initialProps?.metadata?.performers || []
+  );
+  const [accessibility, setAccessibility] = useState<
+    Record<"value" | "label", string>[]
+  >(
+    initialProps?.metadata?.accessibility
+      ? valuesToOptions(initialProps.metadata.accessibility)
+      : []
+  );
+  const [accessibilityNotes, setAccessibilityNotes] = useState<string>("");
 
   const { listStyle, ...filteredProps } = initialProps;
   const acceptableListStyle = ["overlay", "modal"].includes(listStyle || "")
@@ -90,7 +139,27 @@ export function AddToCalendarCard({
     endTime,
     timeZone,
     images,
+    metadata: {
+      mentions,
+      source,
+      price,
+      priceType,
+      ageRestriction,
+      category,
+      type,
+      performers,
+      accessibility: accessibility.map((a) => a.value),
+      accessibilityNotes,
+    },
   };
+
+  if (initialProps.onUpdate) {
+    // TODO: determine if this is a hack or not
+    // do not update unless props are different
+    if (JSON.stringify(initialProps) !== JSON.stringify(updatedProps)) {
+      initialProps.onUpdate(updatedProps);
+    }
+  }
 
   return (
     <Card className="max-w-screen sm:max-w-xl">
@@ -200,6 +269,156 @@ export function AddToCalendarCard({
           </InputDescription>
         </div>
         <div className="col-span-full">
+          <Card className="w-full max-w-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Shapes className="mr-2 size-6" />
+                  Event Metadata
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="type">Event Type</Label>
+                <Select name="type" value={type} onValueChange={setType}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EVENT_TYPES.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        <span className="capitalize">{type}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="category">Category</Label>
+                <Select
+                  defaultValue="unknown"
+                  name="category"
+                  value={category}
+                  onValueChange={setCategory}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EVENT_CATEGORIES.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        <span className="capitalize">{category}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="price-type">Payment</Label>
+                <Select
+                  defaultValue="unknown"
+                  name="price-type"
+                  value={priceType}
+                  onValueChange={setPriceType}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Free" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PRICE_TYPE.map((priceType) => (
+                      <SelectItem key={priceType} value={priceType}>
+                        <span className="capitalize">{priceType}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="price">Price ($)</Label>
+                <Input
+                  id="price"
+                  placeholder="Enter price"
+                  value={price}
+                  type="number"
+                  onChange={(e) => setPrice(Number(e.target.value))}
+                  className="w-[180px]"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="age-restriction">Ages</Label>
+                <Select
+                  defaultValue="All Ages"
+                  name="age-restriction"
+                  value={ageRestriction}
+                  onValueChange={setAgeRestriction}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="All Ages" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all-ages">All Ages</SelectItem>
+                    <SelectItem value="18+">18+</SelectItem>
+                    <SelectItem value="21+">21+</SelectItem>
+                    <SelectItem value="unknown">Unknown</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="performers">Performers</Label>
+                <InputTags
+                  id="performers"
+                  placeholder="e.g. @sza, @tylerthecreator"
+                  value={performers}
+                  onChange={setPerformers}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="performers">Accessibility</Label>
+                <MultiSelect
+                  options={valuesToOptions(ACCESSIBILITY_TYPES)}
+                  selected={accessibility}
+                  onChange={setAccessibility}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="accessibility-notes">Accessibility Notes</Label>
+                <Textarea
+                  id="accessibility-notes"
+                  name="accessibility-notes"
+                  rows={3}
+                  value={accessibilityNotes}
+                  onChange={(e) => setAccessibilityNotes(e.target.value)}
+                />
+              </div>
+              {/* <div className="grid gap-2">
+                <Label htmlFor="source">Social Platform</Label>
+                <Select name="source" value={source} onValueChange={setSource}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PLATFORMS.map((platform) => (
+                      <SelectItem key={platform} value={platform}>
+                        <span className="capitalize">{platform}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="mentions">Social Mentions</Label>
+                <InputTags
+                  id="mentions"
+                  placeholder="e.g. @shad, @vercel"
+                  value={mentions}
+                  onChange={setMentions}
+                />
+              </div> */}
+            </CardContent>
+          </Card>
+        </div>
+        <div className="col-span-full">
           <Label htmlFor="location">Source Link (optional)</Label>
           <Input
             type="url"
@@ -209,31 +428,33 @@ export function AddToCalendarCard({
             onChange={(e) => setLink(e.target.value)}
           />
         </div>
-        <div className="flex gap-3">
-          {!initialProps.update && (
-            <SaveButton
-              notes={notes}
-              visibility={visibility}
-              lists={lists}
+        {!initialProps.onUpdate && (
+          <div className="flex gap-3">
+            {!initialProps.update && (
+              <SaveButton
+                notes={notes}
+                visibility={visibility}
+                lists={lists}
+                event={updatedProps}
+              />
+            )}
+            {initialProps.update && initialProps.updateId && (
+              <UpdateButton
+                id={initialProps.updateId}
+                notes={notes}
+                visibility={visibility}
+                lists={lists}
+                event={updatedProps}
+              />
+            )}
+            <CalendarButton
               event={updatedProps}
+              id={initialProps.updateId || undefined}
+              username={user?.username || undefined}
+              type="button"
             />
-          )}
-          {initialProps.update && (
-            <UpdateButton
-              id={initialProps.updateId!}
-              notes={notes}
-              visibility={visibility}
-              lists={lists}
-              event={updatedProps}
-            />
-          )}
-          <CalendarButton
-            event={updatedProps}
-            id={initialProps.updateId || undefined}
-            username={user?.username || undefined}
-            type="button"
-          />
-        </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

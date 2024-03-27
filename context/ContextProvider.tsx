@@ -1,5 +1,6 @@
 import { CroppedImageProvider } from "./CroppedImageContext";
-import { FormProvider } from "./FormContext";
+import { NewEventProvider } from "./NewEventContext";
+import { NewEventProgressProvider } from "./NewEventProgressContext";
 import { TimezoneProvider } from "./TimezoneContext";
 
 export default function ContextProvider({
@@ -9,9 +10,11 @@ export default function ContextProvider({
 }) {
   return (
     <TimezoneProvider>
-      <FormProvider>
-        <CroppedImageProvider>{children} </CroppedImageProvider>
-      </FormProvider>
+      <NewEventProgressProvider>
+        <NewEventProvider>
+          <CroppedImageProvider>{children} </CroppedImageProvider>
+        </NewEventProvider>
+      </NewEventProgressProvider>
     </TimezoneProvider>
   );
 }

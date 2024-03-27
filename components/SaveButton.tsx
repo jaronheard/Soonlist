@@ -5,10 +5,16 @@ import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2, UploadCloud } from "lucide-react";
+import { useContext } from "react";
 import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { useFormContext } from "@/context/FormContext";
+import { useNewEventContext } from "@/context/NewEventContext";
 import { api } from "@/trpc/react";
+import {
+  Mode,
+  NewEventProgressProvider,
+  Status,
+} from "@/context/NewEventProgressContext";
 
 type SaveButtonProps = {
   event: AddToCalendarButtonType;
@@ -21,23 +27,15 @@ export function SaveButton(props: SaveButtonProps) {
   const router = useRouter();
   const params = useSearchParams();
   const filePath = params.get("filePath") || "";
-  const { setCroppedImagesUrls } = useCroppedImageContext();
-  const { setFormData } = useFormContext();
   const updateEvent = api.event.create.useMutation({
     onError: () => {
       toast.error("Your event was not saved. Please try again.");
     },
     onSuccess: ({ id }) => {
       toast.success("Event saved.");
-      // Clear context state
-      setCroppedImagesUrls({});
-      setFormData({
-        notes: "",
-        visibility: "public",
-        lists: [],
-      });
-      router.refresh();
+      // router.refresh();
       router.push(`/event/${id}`);
+      // context needs to be reset after saving, but done on next page
     },
   });
 

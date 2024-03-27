@@ -14,7 +14,7 @@ export default function EventsFromSaved() {
   const [loadedSavedData, setLoadedSavedData] = useState(false);
 
   // Utilize the hook
-  const [savedData, setSavedData] = useLocalStorage<{
+  const [savedData] = useLocalStorage<{
     event: AddToCalendarButtonProps;
     lists: List[];
     notes: string;

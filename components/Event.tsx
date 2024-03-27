@@ -34,11 +34,11 @@ import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
 type EventProps = {
-  user: User;
+  user?: User;
   eventFollows: EventFollow[];
   comments: Comment[];
   id: string;
-  createdAt: Date;
+  createdAt?: Date;
   event: AddToCalendarButtonPropsRestricted;
   image?: string;
   visibility: "public" | "private";
@@ -49,6 +49,7 @@ type EventProps = {
     event: EventWithUser;
     similarityDetails: SimilarityDetails;
   }[];
+  children?: React.ReactNode;
 };
 
 function EventDescription({
@@ -202,10 +203,19 @@ export function Event(props: EventProps) {
     setIsClient(true);
   }, []);
 
-  const { user, eventFollows, id, event, image, singleEvent, visibility } =
-    props;
+  const {
+    user,
+    eventFollows,
+    id,
+    event,
+    image,
+    singleEvent,
+    visibility,
+    children,
+  } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
-  const isSelf = clerkUser?.id === user.id || clerkUser?.externalId === user.id;
+  const isSelf =
+    clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find(
     (item) => item.userId === clerkUser?.id
@@ -288,49 +298,58 @@ export function Event(props: EventProps) {
                 </Link>
               )}
             </div>
-            <Link
-              href={`/${user.username}/events`}
-              className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2"
-            >
-              <Image
-                src={user.userImage}
-                width={375}
-                height={375}
-                alt=""
-                className="size-[5.375rem]"
-              />
-              <div className="flex flex-col gap-1 p-5">
-                <div className="text-xl font-bold leading-6 tracking-wide text-interactive-1">
-                  All Events
+            {user && (
+              <Link
+                href={`/${user.username}/events`}
+                className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2"
+              >
+                <Image
+                  src={user.userImage}
+                  width={375}
+                  height={375}
+                  alt=""
+                  className="size-[5.375rem]"
+                />
+                <div className="flex flex-col gap-1 p-5">
+                  <div className="text-xl font-bold leading-6 tracking-wide text-interactive-1">
+                    All Events
+                  </div>
+                  <div className="text-lg font-medium leading-none text-neutral-2">
+                    by{" "}
+                    <span className="font-semibold text-interactive-1">
+                      @{user.username}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-lg font-medium leading-none text-neutral-2">
-                  by{" "}
-                  <span className="font-semibold text-interactive-1">
-                    @{user.username}
-                  </span>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            )}
           </div>
           <div className="flex flex-col gap-8 pt-8">
             <EventDescription
               description={event.description!}
               singleEvent={singleEvent}
             />
-            <div className="flex flex-wrap gap-2">
-              <ShareButton type="button" event={event} id={id} />
-              <CalendarButton
-                type="button"
-                event={event}
-                id={id}
-                username={user.username}
-              />
-              {!isSelf && (
-                <FollowEventButton eventId={id} following={isFollowing} />
-              )}
-              {isOwner && <EditButton type="icon" userId={user.id} id={id} />}
-              {isOwner && <DeleteButton type="icon" userId={user.id} id={id} />}
-            </div>
+            {!children && (
+              <div className="flex flex-wrap gap-2">
+                <ShareButton type="button" event={event} id={id} />
+                <CalendarButton
+                  type="button"
+                  event={event}
+                  id={id}
+                  username={user?.username}
+                />
+
+                {user && !isSelf && (
+                  <FollowEventButton eventId={id} following={isFollowing} />
+                )}
+                {user && isOwner && (
+                  <EditButton type="icon" userId={user.id} id={id} />
+                )}
+                {user && isOwner && (
+                  <DeleteButton type="icon" userId={user.id} id={id} />
+                )}
+              </div>
+            )}
           </div>
         </div>
         {image && (
@@ -342,6 +361,7 @@ export function Event(props: EventProps) {
             height={480}
           />
         )}
+        {children}
       </div>
       {/* <div className="absolute right-2 top-6">
         {isOwner && (

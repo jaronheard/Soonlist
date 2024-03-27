@@ -6,15 +6,93 @@ interface Response {
   events: Event[]; // An array of events.
 }
 
-interface Event {
-  name: string; // The event's name.
-  description: string; // Short description of the event, its significance, and what attendees can expect.
+export const PLATFORMS = ["instagram", "unknown"] as const;
+export type Platform = (typeof PLATFORMS)[number];
+
+export const AGE_RESTRICTIONS = ["all-ages", "18+", "21+", "unknown"] as const;
+export type AgeRestriction = (typeof AGE_RESTRICTIONS)[number];
+
+export const PRICE_TYPE = [
+  "free",
+  "notaflof",
+  "donation",
+  "paid",
+  "unknown",
+] as const;
+export type PriceType = (typeof PRICE_TYPE)[number];
+
+export const EVENT_CATEGORIES = [
+  "music",
+  "arts",
+  "food",
+  "sports",
+  "business",
+  "tech",
+  "education",
+  "entertainment",
+  "health",
+  "lifestyle",
+  "literature",
+  "science",
+  "religion",
+  "community",
+  "civic",
+  "culture",
+  "unknown",
+] as const;
+export type EventCategory = (typeof EVENT_CATEGORIES)[number];
+
+export const EVENT_TYPES = [
+  "concert",
+  "festival",
+  "conference",
+  "seminar",
+  "workshop",
+  "webinar",
+  "meeting",
+  "party",
+  "show",
+  "performance",
+  "exhibition",
+  "competition",
+  "game",
+  "action",
+  "opening",
+  "unknown",
+] as const;
+export type EventType = (typeof EVENT_TYPES)[number];
+
+export const ACCESSIBILITY_TYPES = [
+  "masksRequired",
+  "masksSuggested",
+  "wheelchairAccessible",
+  "signLanguageInterpretation",
+  "closedCaptioning",
+];
+export type AccessibilityType = (typeof ACCESSIBILITY_TYPES)[number];
+
+export interface Metadata {
+  mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
+  source?: Platform; // The source platform from which the input text was extracted.
+  price?: number; // The cost of the event in dollars.
+  priceType: PriceType;
+  ageRestriction: AgeRestriction;
+  category: EventCategory;
+  type: EventType;
+  performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
+  accessibility?: AccessibilityType[]; // An array of known accessibility features available at the event.
+  accessibilityNotes?: string; // Any additional notes about the event's accessibility.
+}
+export interface Event {
+  name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
+  description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
-  startTime?: string; // Start time, if applicable (omit for all-day events).
+  startTime?: string; // Start time. ALWAYS include if known. Omit ONLY if known to be an all-day event.
   endDate: string; // End date in YYYY-MM-DD format.
-  endTime?: string; // End time, if applicable (omit for all-day events).
+  endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
+  metadata: Metadata;
 }
 
 export const extractJsonFromResponse = (response: string) => {
@@ -63,6 +141,7 @@ export const addCommonAddToCalendarProps = (events: Event[]) => {
       startTime: event.startTime || undefined,
       endTime: event.endTime || undefined,
       timeZone: event.timeZone,
+      metadata: event.metadata || undefined,
     };
   });
 };
@@ -86,7 +165,7 @@ Above, I pasted a text or image from which to extract calendar event details for
 You will
 1. Identify the event details that need to be captured.
 2. Identify the platform from which the input text was extracted, and extract all usernames @-mentioned.
-3. Extract and format these details into a JSON response, strictly following the schema below.
+3. Extract and format these details into a JSON response, strictly following the schema below. JSON comments are not allowed.
 4. Infer any missing information based on event context, type, or general conventions.
 5. Write your JSON response by summarizing the event details from the provided data or your own inferred knowledge. Your response must be detailed, specific, and directly relevant to the JSON schema requirements.
 
@@ -98,20 +177,6 @@ No new adjectives, stick to the facts, and be concise. Use proper capitalization
 
 interface Response {
   events: Event[]; // An array of events.
-  // metadata
-  platform: Platform; // The platform where the input text was extracted from.
-  mentions?: string[]; // An array of any relevant mentions or references in the input text. 
-}
-
-interface Mention {
-  username: string; // The username of the mentioned person.
-}
-
-enum MentionType {
-  author,
-  tag,
-  host,
-  unknown,
 }
 
 enum Platform {
@@ -119,15 +184,91 @@ enum Platform {
   "unknown",
 }
 
+enum AgeRestriction {
+  "all-ages", // default assumption
+  "18+",
+  "21+",
+  "unknown",
+}
+
+enum PriceType {
+  "free", // default assumption
+  "notaflof", // no one turned away for lack of funds
+  "donation",
+  "paid",
+  "unknown",
+}
+
+enum EventCategory {
+  "music",
+  "arts",
+  "food",
+  "sports",
+  "business",
+  "tech",
+  "education",
+  "entertainment",
+  "health",
+  "lifestyle",
+  "literature",
+  "science",
+  "religion",
+  "community",
+  "civic",
+  "culture",
+  "unknown",
+}
+
+enum EventType {
+  "concert",
+  "festival",
+  "conference",
+  "seminar",
+  "workshop",
+  "webinar",
+  "meeting",
+  "party",
+  "show",
+  "performance",
+  "exhibition",
+  "competition",
+  "game",
+  "action",
+  "opening",
+  "unknown",
+}
+
+enum AccessibilityTypes {
+  "masksRequired",
+  "masksSuggested",
+  "wheelchairAccessible",
+  "signLanguageInterpretation",
+  "closedCaptioning",
+}
+  
+interface Metadata {
+  mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
+  source?: Platform; // The source platform from which the input text was extracted.
+  price?: number; // The cost of the event in dollars.
+  priceType: PriceType;
+  ageRestriction: AgeRestriction;
+  category: EventCategory;
+  type: EventType;
+  performers?: string[]; // An array of all performers or speakers at the event, if known. Infer if not explicitly stated.
+  accessibility?: AccessibilityTypes[]; // An array of known accessibility features available at the event.
+  accessibilityNotes?: string; // Any additional notes about the event's accessibility.
+}
+
 interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
-  startTime?: string; // Start time. ALWAYS include if known. Omit ONLY if known to be an all-day event.
+  startTime?: string; // ISO 8601 FORMAT ONLY. Only omit if known to be an all-day event.
   endDate: string; // End date in YYYY-MM-DD format.
-  endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
+  endTime?: string; // ISO 8601 FORMAT ONLY. Infer based on start time and event type if not specified. Only omit if known to be an all-day event. CANNOT BE UNKNOWN.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
+  metadata: Metadata;
 }
 
 Below, your report, following the JSON schema exactly:`;
@@ -151,6 +292,6 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 export const getSystemMessage = () => {
   return {
     text: systemMessage(),
-    version: "v2024.02.28.1",
+    version: "v2024.03.16.1",
   };
 };

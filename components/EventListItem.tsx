@@ -4,19 +4,34 @@ import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
-import { ArrowRight, EyeOff } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarIcon,
+  EyeOff,
+  GlobeIcon,
+  Mic,
+  PersonStanding,
+  ShieldPlus,
+  TagIcon,
+  Ear,
+  Accessibility,
+} from "lucide-react";
+import * as Bytescale from "@bytescale/sdk";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import { CalendarButton } from "./CalendarButton";
 import { ShareButton } from "./ShareButton";
 import { type EventWithUser } from "./EventList";
 import { buttonVariants } from "./ui/button";
+import { Label } from "./ui/label";
+import { type AddToCalendarCardProps } from "./AddToCalendarCard";
+import { Badge } from "./ui/badge";
 import { type User, type EventFollow, type Comment } from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
   cn,
-  showMultipleDays,
+  // showMultipleDays,
   // endsNextDayBeforeMorning,
   eventTimesAreDefined,
   getDateTimeInfo,
@@ -25,15 +40,24 @@ import {
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
+import { type Metadata } from "@/lib/prompts";
+
+function buildDefaultUrl(filePath: string) {
+  return Bytescale.UrlBuilder.url({
+    accountId: "12a1yek",
+    filePath: filePath,
+    options: {},
+  });
+}
 
 type EventListItemProps = {
   variant?: "card";
-  user: User;
+  user?: User;
   eventFollows: EventFollow[];
   comments: Comment[];
   id: string;
-  createdAt: Date;
-  event: AddToCalendarButtonPropsRestricted;
+  createdAt?: Date;
+  event: AddToCalendarCardProps;
   visibility: "public" | "private";
   hideCurator?: boolean;
   showOtherCurators?: boolean;
@@ -41,6 +65,7 @@ type EventListItemProps = {
     event: EventWithUser;
     similarityDetails: SimilarityDetails;
   }[];
+  filePath?: string;
 };
 
 function EventDateDisplaySimple({
@@ -73,7 +98,7 @@ function EventDateDisplaySimple({
   const endDateInfo = endTime
     ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
     : getDateInfoUTC(endDate);
-  const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
+  // const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
   // const showNightIcon =
   //   endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;
 
@@ -188,6 +213,146 @@ function EventDetailsCard({
   );
 }
 
+function EventAccessibility({ metadata }: { metadata?: Metadata }) {
+  return (
+    <div className="col-span-2 flex flex-col gap-0.5">
+      <Label className="flex items-center" htmlFor="accessibility">
+        <GlobeIcon className="mr-1.5 size-4" />
+        Accessibility
+      </Label>
+      <div
+        className="flex gap-1 text-sm capitalize text-neutral-1"
+        id="accessibility"
+      >
+        {(metadata?.accessibility?.length === 0 ||
+          !metadata?.accessibility?.length) &&
+          "Unknown"}
+        {metadata?.accessibility?.map((item) => {
+          // icon for each accessibility type
+          switch (item) {
+            case "masksRequired":
+              return (
+                <div className="flex items-center">
+                  <ShieldPlus className="mr-0.5 inline-block size-4"></ShieldPlus>
+                  Masks Required
+                </div>
+              );
+            case "masksSuggested":
+              return (
+                <div className="flex items-center">
+                  <ShieldPlus className="mr-0.5 inline-block size-4"></ShieldPlus>
+                  Masks Suggested
+                </div>
+              );
+            case "wheelchairAccessible":
+              return (
+                <div className="flex items-center">
+                  <Accessibility className="mr-0.5 inline-block size-4"></Accessibility>
+                  Wheelchair Accessible
+                </div>
+              );
+            case "signLanguageInterpretation":
+              return (
+                <div className="flex items-center">
+                  <Ear className="mr-0.5 inline-block size-4"></Ear>
+                  Sign Language Interpretation
+                </div>
+              );
+            case "closedCaptioning":
+              return (
+                <div className="flex items-center">
+                  <Ear className="mr-0.5 inline-block size-4"></Ear>
+                  Closed Captioning
+                </div>
+              );
+            default:
+              return null;
+          }
+        })}
+      </div>
+    </div>
+  );
+}
+
+function EventMetadata({ metadata }: { metadata?: Metadata }) {
+  return (
+    <div className="relative -m-2 mt-3 grid grid-cols-2 gap-x-1 gap-y-3 rounded-2xl border border-interactive-2 p-2 text-neutral-2 md:grid-cols-4">
+      <Badge className="absolute bottom-2 right-2" variant={"secondary"}>
+        Experimental
+      </Badge>
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="category">
+          <CalendarIcon className="mr-1.5 size-4" />
+          Category
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="category">
+          {metadata?.category}
+        </p>
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="type">
+          <GlobeIcon className="mr-1.5 size-4" />
+          Type
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="type">
+          {metadata?.type}
+        </p>
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="price">
+          <TagIcon className="mr-1.5 size-4" />
+          Price
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="price">
+          {metadata?.priceType === "paid" && "$"}
+          {metadata?.price}
+          <span className="capitalize">{metadata?.priceType && " "}</span>
+          {metadata?.priceType !== "paid" && (
+            <span className="capitalize">{metadata?.priceType}</span>
+          )}
+        </p>
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="age-restriction">
+          <PersonStanding className="mr-1.5 size-4" />
+          Ages
+        </Label>
+        <p className="text-sm capitalize text-neutral-1" id="age-restriction">
+          {metadata?.ageRestriction}
+        </p>
+      </div>
+      <div className="col-span-2 flex flex-col gap-0.5">
+        <Label className="flex items-center" htmlFor="performers">
+          <Mic className="mr-1.5 size-4" />
+          Performers
+        </Label>
+        <p className="text-sm text-neutral-1" id="performers">
+          {metadata?.performers?.join(", ")}
+        </p>
+      </div>
+      <EventAccessibility metadata={metadata} />
+      {/* <div className="flex flex-col gap-0.5">
+      <Label className="flex items-center" htmlFor="source">
+        <GlobeIcon className="mr-1.5 size-4" />
+        Source
+      </Label>
+      <p className="text-sm capitalize text-neutral-1" id="source">
+        {metadata?.source}
+      </p>
+    </div>
+    <div className="flex flex-col gap-0.5">
+      <Label className="flex items-center" htmlFor="mentions">
+        <TextIcon className="mr-1.5 size-4" />
+        Mentions
+      </Label>
+      <p className="text-sm text-neutral-1" id="mentions">
+        {metadata?.mentions}
+      </p>
+    </div> */}
+    </div>
+  );
+}
+
 function EventDetails({
   id,
   name,
@@ -199,7 +364,9 @@ function EventDetails({
   timezone,
   location,
   description,
+  preview,
   EventActionButtons,
+  metadata,
 }: {
   id: string;
   name: string;
@@ -212,6 +379,8 @@ function EventDetails({
   description?: string;
   location?: string;
   EventActionButtons?: React.ReactNode;
+  preview?: boolean;
+  metadata?: Metadata;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   const [isClient, setIsClient] = useState(false);
@@ -267,7 +436,7 @@ function EventDetails({
       {/* end duplicated with Event */}
       <div className="flex w-full flex-col items-start gap-2">
         <Link
-          href={`/event/${id}`}
+          href={preview ? "" : `/event/${id}`}
           className={
             "line-clamp-2 pr-12 text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
           }
@@ -299,15 +468,23 @@ function EventDetails({
         <div className="pt-2">
           <EventDescription description={description} />
         </div>
-        <Link
-          href={`/event/${id}`}
-          className={cn(
-            buttonVariants({ variant: "link" }),
-            "group h-full p-0"
-          )}
-        >
-          Learn more <ArrowRight className="ml-1 size-4 text-interactive-2 " />
-        </Link>
+        {!preview && (
+          <Link
+            href={`/event/${id}`}
+            className={cn(
+              buttonVariants({ variant: "link" }),
+              "group h-full p-0"
+            )}
+          >
+            Learn more{" "}
+            <ArrowRight className="ml-1 size-4 text-interactive-2 " />
+          </Link>
+        )}
+        {preview && (
+          <div className="w-full">
+            <EventMetadata metadata={metadata} />
+          </div>
+        )}
         <div className="w-full">
           {EventActionButtons && <>{EventActionButtons}</>}
         </div>
@@ -338,16 +515,20 @@ function EventActionButtons({
   event,
   id,
   isOwner,
-  isFollowing,
+  // isFollowing,
   visibility,
 }: {
-  user: User;
+  user?: User;
   event: AddToCalendarButtonPropsRestricted;
   id: string;
   isOwner: boolean;
   isFollowing?: boolean;
   visibility: "public" | "private";
 }) {
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="flex w-full flex-wrap items-center gap-3">
       <div className="flex grow items-center justify-between">
@@ -397,13 +578,15 @@ function EventActionButtons({
 
 export function EventListItem(props: EventListItemProps) {
   const { user: clerkUser } = useUser();
-  const { user, eventFollows, id, event } = props;
+  const { user, eventFollows, id, event, filePath } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf =
     clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find((item) => item.userId === user?.id);
-  const image = event.images?.[3];
+  const image =
+    event.images?.[3] ||
+    (filePath ? buildDefaultUrl(props.filePath || "") : undefined);
   // const comment = props.comments?.findLast((item) => item.userId === user?.id);
   // always show curator if !isSelf
   // const showOtherCurators = !isSelf && props.showOtherCurators;
@@ -462,7 +645,7 @@ export function EventListItem(props: EventListItemProps) {
               EventActionButtons={
                 <EventActionButtons
                   user={user}
-                  event={event}
+                  event={event as AddToCalendarButtonPropsRestricted}
                   id={id}
                   isOwner={!!isOwner}
                   isFollowing={isFollowing}
@@ -525,5 +708,45 @@ export function EventListItem(props: EventListItemProps) {
         </div>
       </div>
     </li>
+  );
+}
+
+export function EventPreview(
+  props: EventListItemProps & { event: AddToCalendarCardProps }
+) {
+  const { id, event } = props;
+
+  return (
+    <div
+      className={cn(
+        "relative grid max-w-xl overflow-hidden rounded-xl bg-white p-7 shadow-sm after:pointer-events-none after:absolute after:left-0 after:top-0 after:size-full after:rounded-xl after:border after:border-neutral-3 after:shadow-sm"
+      )}
+    >
+      <div className="absolute -right-24 -top-20 size-44 overflow-hidden rounded-full bg-interactive-3"></div>
+      <div className="absolute right-0 top-0 p-3">
+        <EventDateDisplaySimple
+          startDate={event.startDate}
+          startTime={event.startTime}
+          endDate={event.endDate}
+          endTime={event.endTime}
+          timezone={event.timeZone || "America/Los_Angeles"}
+        />
+      </div>
+      <div className="flex w-full items-start gap-7">
+        <EventDetails
+          preview
+          id={id}
+          name={event.name!}
+          startDate={event.startDate!}
+          endDate={event.endDate!}
+          startTime={event.startTime!}
+          endTime={event.endTime!}
+          timezone={event.timeZone || "America/Los_Angeles"}
+          location={event.location}
+          description={event.description}
+          metadata={event.metadata}
+        />
+      </div>
+    </div>
   );
 }

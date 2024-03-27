@@ -1,3 +1,4 @@
+import * as Bytescale from "@bytescale/sdk";
 import { OpenAI } from "openai";
 import EventsError from "./EventsError";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
@@ -14,20 +15,30 @@ const config = {
 };
 const openai = new OpenAI(config);
 
-export default async function EventsFromRawText({
-  rawText,
+function buildDefaultUrl(filePath: string) {
+  return Bytescale.UrlBuilder.url({
+    accountId: "12a1yek",
+    filePath: filePath,
+    options: {},
+  });
+}
+
+export default async function EventsFromImage({
+  filePath,
   timezone,
 }: {
-  rawText: string;
+  filePath: string;
   timezone: string;
 }) {
   const system = getSystemMessage();
   const prompt = getPrompt(timezone);
+  const imageUrl = buildDefaultUrl(filePath);
 
   // Ask OpenAI for a streaming completion given the prompt
   const res = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo-0125",
-
+    model: "gpt-4-vision-preview",
+    max_tokens: 1000,
+    seed: 42069,
     messages: [
       {
         role: "system",
@@ -35,7 +46,14 @@ export default async function EventsFromRawText({
       },
       {
         role: "user",
-        content: rawText,
+        content: [
+          {
+            type: "image_url",
+            image_url: {
+              url: imageUrl,
+            },
+          },
+        ],
       },
       { role: "system", content: prompt.text },
     ],
@@ -43,11 +61,11 @@ export default async function EventsFromRawText({
 
   const choice = res.choices[0];
   if (!choice) {
-    return <EventsError rawText={rawText} />;
+    return <EventsError rawText={imageUrl} />;
   }
   const response = choice.message.content;
   if (!response) {
-    return <EventsError rawText={rawText} />;
+    return <EventsError rawText={imageUrl} />;
   }
 
   const events = addCommonAddToCalendarPropsFromResponse(response);
@@ -55,7 +73,7 @@ export default async function EventsFromRawText({
   if (!events || events.length === 0) {
     return (
       <>
-        <EventsError rawText={rawText} response={response || undefined} />
+        <EventsError rawText={imageUrl} response={response || undefined} />
         <div className="p-4"></div>
         <AddToCalendarCard {...blankEvent} />
       </>
@@ -75,7 +93,7 @@ export default async function EventsFromRawText({
         {process.env.NODE_ENV === "development" && (
           <>
             <div className="p-4"></div>
-            <EventsError rawText={rawText} response={response || undefined} />
+            <EventsError rawText={imageUrl} response={response || undefined} />
           </>
         )}
       </>

@@ -1,8 +1,8 @@
 import { UserInfo } from "@/components/UserInfo";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { type AddToCalendarButtonProps } from "@/types";
-import ImageUpload from "@/app/(base)/new/ImageUpload";
-import { YourDetails } from "@/app/(base)/new/YourDetails";
+import ImageUpload from "@/components/ImageUpload";
+import { YourDetails } from "@/components/YourDetails";
 import { api } from "@/trpc/server";
 
 export default async function Page({

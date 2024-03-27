@@ -10,7 +10,6 @@ export default authMiddleware({
     "/contact",
     "/privacy",
     "/early-access",
-    "/new",
     "/explore",
     "/onboarding",
     "/events",
