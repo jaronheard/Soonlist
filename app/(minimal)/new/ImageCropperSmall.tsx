@@ -308,12 +308,12 @@ export default function ImageCropperSmall({
             <Dialog
               open={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              className="fixed inset-0 z-10 mx-auto max-h-[90vh] max-w-[90vw] overflow-y-auto"
+              className="fixed inset-0 z-10 mx-auto max-h-[100dvh] max-w-[100dvw] overflow-y-auto"
             >
               <div className="flex min-h-screen items-center justify-center">
                 <Dialog.Overlay className="fixed inset-0 bg-black opacity-70" />
 
-                <div className="relative mx-auto max-h-[90vh] max-w-[90vw] rounded bg-white p-4 sm:max-w-sm">
+                <div className="relative mx-auto max-h-[90dvh] max-w-[90dvw] rounded bg-white p-4 sm:max-w-sm">
                   <Dialog.Title className="text-lg font-medium leading-6 text-gray-900">
                     Crop Image
                   </Dialog.Title>
@@ -322,7 +322,7 @@ export default function ImageCropperSmall({
                     crop={crop}
                     onComplete={onCropComplete}
                     onChange={onCropChange}
-                    className="max-h-[75vh] max-w-[90vw]"
+                    className="max-h-[75dvh] max-w-[75dvw]"
                   >
                     <img src={imageUrl} alt="Cropper img" />
                   </ReactCrop>
