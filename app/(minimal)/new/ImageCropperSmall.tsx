@@ -266,6 +266,12 @@ export default function ImageCropperSmall({
         {imageUrl && (
           <>
             <div className="relative h-40">
+              <div
+                className={cn("mx-auto block size-40 bg-gray-200", {
+                  hidden: showCroppedImage || isModalOpen || !isImageLoading,
+                })}
+              />
+
               <img
                 src={imageUrl}
                 alt="Full Image Preview"
@@ -277,6 +283,7 @@ export default function ImageCropperSmall({
                 )}
                 ref={fullImageRef}
               />
+
               <img
                 src={croppedImagesUrls?.cropped}
                 alt="Cropped Preview"
@@ -286,12 +293,6 @@ export default function ImageCropperSmall({
                     hidden: !showCroppedImage || isModalOpen || isImageLoading,
                   }
                 )}
-              />
-              {/* placeholder only shown when other images are not shown */}
-              <div
-                className={cn("mx-auto block size-40 bg-gray-200", {
-                  hidden: showCroppedImage || isModalOpen || isImageLoading,
-                })}
               />
               {!showActions && (
                 <div
