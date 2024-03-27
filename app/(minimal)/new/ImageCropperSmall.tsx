@@ -4,7 +4,7 @@
 import * as Bytescale from "@bytescale/sdk";
 import React, { useState, useRef, useEffect } from "react";
 import "react-image-crop/dist/ReactCrop.css";
-import { SwitchCamera, Upload, Scissors } from "lucide-react";
+import { SwitchCamera, Upload, Scissors, PencilIcon } from "lucide-react";
 import { UploadButton } from "@bytescale/upload-widget-react";
 import { Dialog } from "@headlessui/react";
 import {
@@ -13,7 +13,7 @@ import {
   centerCrop,
   makeAspectCrop,
 } from "react-image-crop";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { cn, extractFilePath } from "@/lib/utils";
 
@@ -265,27 +265,45 @@ export default function ImageCropperSmall({
       <div className="">
         {imageUrl && (
           <>
-            <img
-              src={imageUrl}
-              alt="Full Image Preview"
-              className={cn("mx-auto block h-40 overflow-hidden object-cover", {
-                hidden: showCroppedImage || isImageLoading,
-              })}
-              ref={fullImageRef}
-            />
-            <img
-              src={croppedImagesUrls?.cropped}
-              alt="Cropped Preview"
-              className={cn("mx-auto block h-40 overflow-hidden object-cover", {
-                hidden: !showCroppedImage || isModalOpen || isImageLoading,
-              })}
-            />
-            {/* placeholder only shown when other images are not shown */}
-            <div
-              className={cn("mx-auto block size-40 bg-gray-200", {
-                hidden: showCroppedImage || isModalOpen || isImageLoading,
-              })}
-            />
+            <div className="relative">
+              <img
+                src={imageUrl}
+                alt="Full Image Preview"
+                className={cn(
+                  "mx-auto block h-40 overflow-hidden object-cover",
+                  {
+                    hidden: showCroppedImage || isImageLoading,
+                  }
+                )}
+                ref={fullImageRef}
+              />
+              <img
+                src={croppedImagesUrls?.cropped}
+                alt="Cropped Preview"
+                className={cn(
+                  "mx-auto block h-40 overflow-hidden object-cover",
+                  {
+                    hidden: !showCroppedImage || isModalOpen || isImageLoading,
+                  }
+                )}
+              />
+              {/* placeholder only shown when other images are not shown */}
+              <div
+                className={cn("mx-auto block size-40 bg-gray-200", {
+                  hidden: showCroppedImage || isModalOpen || isImageLoading,
+                })}
+              />
+              {!showActions && (
+                <div
+                  className={cn(
+                    buttonVariants({ size: "icon", variant: "secondary" }),
+                    "absolute -bottom-2 left-1/2 -translate-x-1/2 scale-150 hover:bg-secondary"
+                  )}
+                >
+                  <PencilIcon className="size-6" />
+                </div>
+              )}
+            </div>
 
             <Dialog
               open={isModalOpen}

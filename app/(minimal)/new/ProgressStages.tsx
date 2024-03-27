@@ -70,16 +70,6 @@ function ProgressStagesWrapper({
             showActions={showCropActions}
             setShowActions={setShowCropActions}
           />
-          {!showCropActions && (
-            <div
-              className={cn(
-                buttonVariants({ size: "icon", variant: "secondary" }),
-                "absolute -bottom-2 -right-2 scale-150 hover:bg-secondary"
-              )}
-            >
-              <PencilIcon className="size-6" />
-            </div>
-          )}
         </button>
         <div className="absolute top-24 z-20 flex gap-4">
           <Logo className="origin-top scale-50" />
