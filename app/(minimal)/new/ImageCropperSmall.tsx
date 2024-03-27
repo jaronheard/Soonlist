@@ -265,7 +265,7 @@ export default function ImageCropperSmall({
       <div className="">
         {imageUrl && (
           <>
-            <div className="relative">
+            <div className="relative h-40">
               <img
                 src={imageUrl}
                 alt="Full Image Preview"
