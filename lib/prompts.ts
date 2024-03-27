@@ -23,7 +23,7 @@ export type PriceType = (typeof PRICE_TYPE)[number];
 
 export const EVENT_CATEGORIES = [
   "music",
-  "art",
+  "arts",
   "food",
   "sports",
   "business",
@@ -35,6 +35,9 @@ export const EVENT_CATEGORIES = [
   "literature",
   "science",
   "religion",
+  "community",
+  "civic",
+  "culture",
   "unknown",
 ] as const;
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
@@ -53,7 +56,8 @@ export const EVENT_TYPES = [
   "exhibition",
   "competition",
   "game",
-  "tournament",
+  "action",
+  "opening",
   "unknown",
 ] as const;
 export type EventType = (typeof EVENT_TYPES)[number];
@@ -197,7 +201,7 @@ enum PriceType {
 
 enum EventCategory {
   "music",
-  "art",
+  "arts",
   "food",
   "sports",
   "business",
@@ -209,6 +213,9 @@ enum EventCategory {
   "literature",
   "science",
   "religion",
+  "community",
+  "civic",
+  "culture",
   "unknown",
 }
 
@@ -226,7 +233,8 @@ enum EventType {
   "exhibition",
   "competition",
   "game",
-  "tournament",
+  "action",
+  "opening",
   "unknown",
 }
 
