@@ -267,9 +267,12 @@ export default function ImageCropperSmall({
           <>
             <div className="relative h-40">
               <div
-                className={cn("mx-auto block size-40 bg-gray-200", {
-                  hidden: showCroppedImage || isModalOpen || !isImageLoading,
-                })}
+                className={cn(
+                  "mx-auto block size-40 animate-pulse rounded-2xl border-2 bg-gray-50",
+                  {
+                    hidden: showCroppedImage || isModalOpen || !isImageLoading,
+                  }
+                )}
               />
 
               <img
