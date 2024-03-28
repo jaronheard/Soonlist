@@ -81,6 +81,8 @@ export function YourDetails({
     return () => subscription.unsubscribe();
   }, [form, setOrganizeData]);
 
+  console.log("eventListOptions", eventListOptions);
+
   return (
     <SignedIn>
       <Card className="max-w-screen w-full sm:max-w-xl">

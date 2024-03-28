@@ -20,13 +20,14 @@ export default async function Page({
   const mostRecentComment = event.comments?.findLast(
     (comment) => comment.content
   )?.content;
+  const eventLists = event.eventToLists?.map((eventToList) => eventToList.list);
   return (
-    <>
+    <div className="flex flex-col items-center">
       {event?.event ? (
         <>
           <YourDetails
             lists={event.user.lists || undefined}
-            eventLists={[]} // TODO: get event lists
+            eventLists={eventLists}
             comment={mostRecentComment}
             visibility={event.visibility}
           />
@@ -48,6 +49,6 @@ export default async function Page({
         <div className="font-medium">Collected by</div>
         <UserInfo userId={event.userId} />
       </div>
-    </>
+    </div>
   );
 }
