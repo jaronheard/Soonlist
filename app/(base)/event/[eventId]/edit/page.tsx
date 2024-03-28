@@ -21,7 +21,7 @@ export default async function Page({
     (comment) => comment.content
   )?.content;
   return (
-    <>
+    <div className="flex flex-col items-center">
       {event?.event ? (
         <>
           <YourDetails
@@ -48,6 +48,6 @@ export default async function Page({
         <div className="font-medium">Collected by</div>
         <UserInfo userId={event.userId} />
       </div>
-    </>
+    </div>
   );
 }
