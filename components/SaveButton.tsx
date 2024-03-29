@@ -5,16 +5,8 @@ import { type AddToCalendarButtonType } from "add-to-calendar-button-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2, UploadCloud } from "lucide-react";
-import { useContext } from "react";
 import { Button } from "./ui/button";
-import { useCroppedImageContext } from "@/context/CroppedImageContext";
-import { useNewEventContext } from "@/context/NewEventContext";
 import { api } from "@/trpc/react";
-import {
-  Mode,
-  NewEventProgressProvider,
-  Status,
-} from "@/context/NewEventProgressContext";
 
 type SaveButtonProps = {
   event: AddToCalendarButtonType;

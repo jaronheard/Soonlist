@@ -4,7 +4,7 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { ChevronLeft, PencilIcon, X } from "lucide-react";
+import { ChevronLeft, X } from "lucide-react";
 import Link from "next/link";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
@@ -16,7 +16,7 @@ import {
 } from "@/context/NewEventProgressContext";
 import { type List } from "@/server/db/types";
 import { useNewEventContext } from "@/context/NewEventContext";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Logo from "@/components/Logo";
 

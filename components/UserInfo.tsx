@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs";
-import { Instagram, LinkIcon, Mail, MessageSquare, Pencil } from "lucide-react";
+import { Instagram, LinkIcon, Mail, MessageSquare } from "lucide-react";
 import { FollowUserButton } from "./FollowButtons";
 import { Button, buttonVariants } from "./ui/button";
 import { api } from "@/trpc/server";
