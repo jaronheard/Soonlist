@@ -74,6 +74,8 @@ export default async function Page({ params }: Props) {
     (similarEvent) => similarEvent.event.id === event.id
   )?.similarEvents;
 
+  const lists = event.eventToLists.map((list) => list.list);
+
   return (
     <>
       <ResetNewEventContext />
@@ -90,6 +92,7 @@ export default async function Page({ params }: Props) {
         image={fullImageUrl}
         singleEvent
         hideCurator
+        lists={lists}
       />
       <div className="w-full border-b border-neutral-3 pt-16 sm:pt-24"></div>
       <div className="w-full pt-16 sm:pt-24"></div>
