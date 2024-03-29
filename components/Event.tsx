@@ -19,6 +19,7 @@ import { FollowEventButton, FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
 import { type EventWithUser } from "./EventList";
 import ListCard from "./ListCard";
+import UserAllEventsCard from "./UserAllEventsCard";
 import {
   type User,
   type EventFollow,
@@ -308,7 +309,10 @@ export function Event(props: EventProps) {
               )}
             </div>
             {!hasLists && user && (
-              <ListCard name="All Events" username={user.username} />
+              <UserAllEventsCard
+                username={user.username}
+                userImage={user.userImage}
+              ></UserAllEventsCard>
             )}
             {hasLists &&
               lists.map((list) => (
