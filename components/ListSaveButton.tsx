@@ -12,6 +12,7 @@ type ListSaveButtonProps = {
   name: string;
   description: string;
   afterSuccess?: string;
+  afterSuccessFunction?: () => void;
 };
 
 export default function ListSaveButton(props: ListSaveButtonProps) {
@@ -23,7 +24,9 @@ export default function ListSaveButton(props: ListSaveButtonProps) {
     onSuccess: ({ id }) => {
       toast.success("List saved.");
       router.refresh();
-      router.push(`/list/${id}`);
+      props.afterSuccessFunction
+        ? props.afterSuccessFunction()
+        : router.push(`/list/${id}`);
     },
   });
 

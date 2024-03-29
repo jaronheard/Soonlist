@@ -5,7 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SignedIn } from "@clerk/nextjs";
-import { PenSquare } from "lucide-react";
+import { PenSquare, Plus } from "lucide-react";
+import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import AddListCard from "./AddListCard";
 import { type List } from "@/server/db/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -131,6 +141,28 @@ export function YourDetails({
                       <MultiSelect
                         selected={field.value}
                         options={listOptions}
+                        AdditionalPopoverAction={() => (
+                          <Dialog>
+                            <DialogTrigger className="w-full p-1">
+                              <Button size="sm" className="w-full rounded-sm">
+                                <Plus className="-ml-2 mr-2 size-4" />
+                                New List
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Add a new list</DialogTitle>
+                                <DialogDescription>
+                                  <AddListCard
+                                    name=""
+                                    description=""
+                                    afterSuccessFunction={() => null}
+                                  />
+                                </DialogDescription>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                        )}
                         {...field}
                       />
                       <FormMessage />

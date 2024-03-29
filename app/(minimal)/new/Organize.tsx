@@ -3,7 +3,7 @@
 import * as React from "react";
 import { type useForm } from "react-hook-form";
 import { SignedIn } from "@clerk/nextjs";
-import { ListIcon } from "lucide-react";
+import { ListIcon, Plus } from "lucide-react";
 import { type z } from "zod";
 import { type organizeFormSchema } from "@/components/YourDetails";
 import { type List } from "@/server/db/types";
@@ -26,6 +26,16 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/ui/multiselect";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import AddListCard from "@/components/AddListCard";
 
 export function Organize({
   form,
@@ -85,6 +95,28 @@ export function Organize({
                       <FormItem>
                         <FormLabel>Choose a list</FormLabel>
                         <MultiSelect
+                          AdditionalPopoverAction={() => (
+                            <Dialog>
+                              <DialogTrigger className="w-full p-1">
+                                <Button size="sm" className="w-full rounded-sm">
+                                  <Plus className="-ml-2 mr-2 size-4" />
+                                  New List
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Add a new list</DialogTitle>
+                                  <DialogDescription>
+                                    <AddListCard
+                                      name=""
+                                      description=""
+                                      afterSuccessFunction={() => null}
+                                    />
+                                  </DialogDescription>
+                                </DialogHeader>
+                              </DialogContent>
+                            </Dialog>
+                          )}
                           selected={field.value}
                           options={listOptions}
                           placeholder="All Events"
