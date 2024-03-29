@@ -3,6 +3,8 @@
 import React, { useMemo, useState } from "react";
 import ListSaveButton from "./ListSaveButton";
 import ListUpdateButton from "./ListUpdateButton";
+import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
 
 type AddListCardProps = {
   name: string;
@@ -10,6 +12,7 @@ type AddListCardProps = {
   update?: boolean;
   updateId?: string;
   afterSuccess?: string;
+  afterSuccessFunction?: () => void;
 };
 
 export default function AddListCard({ ...initialProps }: AddListCardProps) {
@@ -31,17 +34,17 @@ export default function AddListCard({ ...initialProps }: AddListCardProps) {
           htmlFor="name"
           className="block text-sm font-medium leading-6 text-gray-900"
         >
-          List
+          Name your list
         </label>
         <div className="mt-2">
           <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-            <input
+            <Input
               type="text"
               name="name"
               id="name"
-              className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-lg font-bold text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Portland Art Openings, Poetry Readings, etc."
             />
           </div>
         </div>
@@ -54,13 +57,13 @@ export default function AddListCard({ ...initialProps }: AddListCardProps) {
           Description
         </label>
         <div className="mt-2">
-          <textarea
+          <Textarea
             id="description"
             name="description"
             rows={4}
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             defaultValue={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder="e.g. A list of art openings in Portland, Oregon, focusing on contemporary art and up and coming artist."
           />
         </div>
       </div>
@@ -68,6 +71,7 @@ export default function AddListCard({ ...initialProps }: AddListCardProps) {
         {!initialProps.update && (
           <ListSaveButton
             afterSuccess={initialProps.afterSuccess}
+            afterSuccessFunction={initialProps.afterSuccessFunction}
             {...updatedProps}
           />
         )}

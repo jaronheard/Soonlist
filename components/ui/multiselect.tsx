@@ -27,12 +27,23 @@ interface MultiSelectProps {
   onChange: React.Dispatch<
     React.SetStateAction<Record<"value" | "label", string>[]>
   >;
+  AdditionalPopoverAction?: React.FC;
   className?: string;
   placeholder?: string;
 }
 
 const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
-  ({ options, selected, onChange, className, ...props }, ref) => {
+  (
+    {
+      options,
+      selected,
+      onChange,
+      className,
+      AdditionalPopoverAction,
+      ...props
+    },
+    ref
+  ) => {
     const [open, setOpen] = React.useState(false);
 
     const handleUnselect = (item: Record<"value" | "label", string>) => {
@@ -144,6 +155,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
               ))}
             </CommandGroup>
           </Command>
+          {AdditionalPopoverAction && <AdditionalPopoverAction />}
         </PopoverContent>
       </Popover>
     );
