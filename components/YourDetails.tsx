@@ -91,8 +91,6 @@ export function YourDetails({
     return () => subscription.unsubscribe();
   }, [form, setOrganizeData]);
 
-  console.log("eventListOptions", eventListOptions);
-
   return (
     <SignedIn>
       <Card className="max-w-screen w-full sm:max-w-xl">
@@ -140,6 +138,7 @@ export function YourDetails({
                     <MultiSelect
                       selected={field.value}
                       options={listOptions || []}
+                      placeholder="All Events"
                       AdditionalPopoverAction={() => (
                         <Dialog>
                           <DialogTrigger className="w-full p-1">

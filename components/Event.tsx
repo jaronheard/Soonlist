@@ -18,7 +18,13 @@ import { ShareButton } from "./ShareButton";
 import { FollowEventButton, FollowEventDropdownButton } from "./FollowButtons";
 import { Badge } from "./ui/badge";
 import { type EventWithUser } from "./EventList";
-import { type User, type EventFollow, type Comment } from "@/server/db/types";
+import ListCard from "./ListCard";
+import {
+  type User,
+  type EventFollow,
+  type Comment,
+  type List,
+} from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -49,6 +55,7 @@ type EventProps = {
     event: EventWithUser;
     similarityDetails: SimilarityDetails;
   }[];
+  lists?: List[];
   children?: React.ReactNode;
 };
 
@@ -212,6 +219,7 @@ export function Event(props: EventProps) {
     singleEvent,
     visibility,
     children,
+    lists,
   } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf =
@@ -223,6 +231,7 @@ export function Event(props: EventProps) {
   const comment = props.comments?.findLast(
     (item) => item.userId === clerkUser?.id
   );
+  const hasLists = user && lists && lists.length > 0;
 
   const {
     startDate,
@@ -298,31 +307,18 @@ export function Event(props: EventProps) {
                 </Link>
               )}
             </div>
-            {user && (
-              <Link
-                href={`/${user.username}/events`}
-                className="item-center flex overflow-hidden rounded-xl border-[5px] border-accent-yellow bg-interactive-2"
-              >
-                <Image
-                  src={user.userImage}
-                  width={375}
-                  height={375}
-                  alt=""
-                  className="size-[5.375rem]"
-                />
-                <div className="flex flex-col gap-1 p-5">
-                  <div className="text-xl font-bold leading-6 tracking-wide text-interactive-1">
-                    All Events
-                  </div>
-                  <div className="text-lg font-medium leading-none text-neutral-2">
-                    by{" "}
-                    <span className="font-semibold text-interactive-1">
-                      @{user.username}
-                    </span>
-                  </div>
-                </div>
-              </Link>
+            {!hasLists && user && (
+              <ListCard name="All Events" username={user.username} />
             )}
+            {hasLists &&
+              lists.map((list) => (
+                <ListCard
+                  key={list.id}
+                  name={list.name}
+                  username={user?.username}
+                  id={list.id}
+                />
+              ))}
           </div>
           <div className="flex flex-col gap-8 pt-8">
             <EventDescription

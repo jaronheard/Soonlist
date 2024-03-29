@@ -36,8 +36,8 @@ export function UpdateButton(props: UpdateButtonProps) {
         visibility: "public",
         lists: [],
       });
-      router.refresh();
       router.push(`/event/${id}`);
+      router.refresh();
     },
   });
 

@@ -13,6 +13,7 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
   const fullImageUrl = eventData?.images?.[3];
   const eventDataNoImage = event?.event as AddToCalendarButtonPropsRestricted;
   eventDataNoImage.images = undefined;
+  const list = event?.eventToLists?.[0]?.list;
 
   if (!event || !eventData) {
     return null;
@@ -36,9 +37,10 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
       </div>
       <div className="flex flex-col items-center">
         <ListCard
-          name={"All Events"}
+          name={list?.name || "All Events"}
           username={event.user.username}
           className="w-full"
+          id={list?.id || undefined}
         />
         <div className="pt-6 lg:hidden"></div>
         <div className="flex items-center lg:hidden">
