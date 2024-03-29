@@ -87,46 +87,44 @@ export function Organize({
                 )}
               />
               <div className="space-y-4">
-                {listOptions?.length && listOptions.length > 0 ? (
-                  <FormField
-                    control={form.control}
-                    name="lists"
-                    render={({ field: { ...field } }) => (
-                      <FormItem>
-                        <FormLabel>Choose a list</FormLabel>
-                        <MultiSelect
-                          AdditionalPopoverAction={() => (
-                            <Dialog>
-                              <DialogTrigger className="w-full p-1">
-                                <Button size="sm" className="w-full rounded-sm">
-                                  <Plus className="-ml-2 mr-2 size-4" />
-                                  New List
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Add a new list</DialogTitle>
-                                  <DialogDescription>
-                                    <AddListCard
-                                      name=""
-                                      description=""
-                                      afterSuccessFunction={() => null}
-                                    />
-                                  </DialogDescription>
-                                </DialogHeader>
-                              </DialogContent>
-                            </Dialog>
-                          )}
-                          selected={field.value}
-                          options={listOptions}
-                          placeholder="All Events"
-                          {...field}
-                        />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ) : null}
+                <FormField
+                  control={form.control}
+                  name="lists"
+                  render={({ field: { ...field } }) => (
+                    <FormItem>
+                      <FormLabel>Choose a list</FormLabel>
+                      <MultiSelect
+                        AdditionalPopoverAction={() => (
+                          <Dialog>
+                            <DialogTrigger className="w-full p-1">
+                              <Button size="sm" className="w-full rounded-sm">
+                                <Plus className="-ml-2 mr-2 size-4" />
+                                New List
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Add a new list</DialogTitle>
+                                <DialogDescription>
+                                  <AddListCard
+                                    name=""
+                                    description=""
+                                    afterSuccessFunction={() => null}
+                                  />
+                                </DialogDescription>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                        )}
+                        selected={field.value}
+                        options={listOptions || []}
+                        placeholder="All Events"
+                        {...field}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="notes"

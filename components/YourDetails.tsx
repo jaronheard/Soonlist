@@ -131,45 +131,43 @@ export function YourDetails({
                 )}
               />
 
-              {listOptions?.length && listOptions.length > 0 ? (
-                <FormField
-                  control={form.control}
-                  name="lists"
-                  render={({ field: { ...field } }) => (
-                    <FormItem>
-                      <FormLabel>Lists</FormLabel>
-                      <MultiSelect
-                        selected={field.value}
-                        options={listOptions}
-                        AdditionalPopoverAction={() => (
-                          <Dialog>
-                            <DialogTrigger className="w-full p-1">
-                              <Button size="sm" className="w-full rounded-sm">
-                                <Plus className="-ml-2 mr-2 size-4" />
-                                New List
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Add a new list</DialogTitle>
-                                <DialogDescription>
-                                  <AddListCard
-                                    name=""
-                                    description=""
-                                    afterSuccessFunction={() => null}
-                                  />
-                                </DialogDescription>
-                              </DialogHeader>
-                            </DialogContent>
-                          </Dialog>
-                        )}
-                        {...field}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ) : null}
+              <FormField
+                control={form.control}
+                name="lists"
+                render={({ field: { ...field } }) => (
+                  <FormItem>
+                    <FormLabel>Lists</FormLabel>
+                    <MultiSelect
+                      selected={field.value}
+                      options={listOptions || []}
+                      AdditionalPopoverAction={() => (
+                        <Dialog>
+                          <DialogTrigger className="w-full p-1">
+                            <Button size="sm" className="w-full rounded-sm">
+                              <Plus className="-ml-2 mr-2 size-4" />
+                              New List
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Add a new list</DialogTitle>
+                              <DialogDescription>
+                                <AddListCard
+                                  name=""
+                                  description=""
+                                  afterSuccessFunction={() => null}
+                                />
+                              </DialogDescription>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                      {...field}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="notes"
