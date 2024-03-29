@@ -140,6 +140,7 @@ export function YourDetails({
                     <MultiSelect
                       selected={field.value}
                       options={listOptions || []}
+                      placeholder="All Events"
                       AdditionalPopoverAction={() => (
                         <Dialog>
                           <DialogTrigger className="w-full p-1">
