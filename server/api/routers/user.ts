@@ -8,7 +8,12 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { userFollows, users } from "@/server/db/schema";
-import { userAdditionalInfoSchema } from "@/lib/schemas";
+import {
+  Goals,
+  goalSchema,
+  userAdditionalInfoSchema,
+  userGoalsSchema,
+} from "@/lib/schemas";
 
 export const userRouter = createTRPCRouter({
   getById: publicProcedure
@@ -140,7 +145,53 @@ export const userRouter = createTRPCRouter({
         })
         .where(eq(users.id, userId));
     }),
-
+  updateGoals: protectedProcedure
+    .input(userGoalsSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      return ctx.db
+        .update(users)
+        .set({
+          goals: input,
+        })
+        .where(eq(users.id, userId));
+    }),
+  completeGoal: protectedProcedure
+    .input(z.object({ goal: goalSchema }))
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx.auth;
+      if (!userId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user id found in session",
+        });
+      }
+      const user = await ctx.db.query.users
+        .findMany({
+          where: eq(users.id, userId),
+        })
+        .then((users) => users[0] || null);
+      if (!user) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No user found",
+        });
+      }
+      const goals = user.goals || {};
+      goals[input.goal] = true;
+      return ctx.db
+        .update(users)
+        .set({
+          goals,
+        })
+        .where(eq(users.id, userId));
+    }),
   // getTopUsersByUpcomingEvents: publicProcedure
   //   .input(z.object({ limit: z.number() }))
   //   .query(async ({ ctx, input }) => {

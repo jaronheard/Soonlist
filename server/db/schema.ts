@@ -13,6 +13,7 @@ import {
   serial,
 } from "drizzle-orm/mysql-core";
 import { relations, sql } from "drizzle-orm";
+import { type Goals } from "@/lib/schemas";
 
 // note about the table names here -- they are all not pluralized because that's how i set them up AND
 // i'm running into a bug when i try to rename and push the changes to planetscale
@@ -231,18 +232,7 @@ export const users = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
-    goals: json("goals").$type<{
-      hasBio: boolean;
-      hasContact: boolean;
-      createdEvent: boolean;
-      createdList: boolean;
-      addedEventToList: boolean;
-      sharedEvent: boolean;
-      sharedList: boolean;
-      savedEvent: boolean;
-      savedList: boolean;
-      referredFriend: boolean;
-    }>(),
+    goals: json("goals").$type<Goals>(),
   },
   (table) => {
     return {
