@@ -4,10 +4,10 @@
 
 @layer base {
   :root {
-    --accent-1: #FEEA9F;
-    --accent-2: #FFD1BA;
-    --accent-3: #7ACEFC;
-    --accent-4: #C4DA9D;
+    --accent-1: 254 234 159;
+    --accent-2: 255 209 186;
+    --accent-3: 122 206 252;
+    --accent-4: 196 218 157;
     --interactive-1: #5A32FB;
     --interactive-2: #E0D9FF;
     --interactive-3: #F4F1FF;
