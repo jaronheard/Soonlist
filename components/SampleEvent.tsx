@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { EventListItem } from "./EventListItem";
 import ListCard from "./ListCard";
+import UserAllEventsCard from "./UserAllEventsCard";
 import { api } from "@/trpc/server";
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 
@@ -36,12 +37,20 @@ export default async function SampleEvent({ eventId }: { eventId: string }) {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <ListCard
-          name={list?.name || "All Events"}
-          username={event.user.username}
-          className="w-full"
-          id={list?.id || undefined}
-        />
+        {list?.name && (
+          <ListCard
+            name={list?.name}
+            username={event.user.username}
+            className="w-full"
+            id={list?.id}
+          />
+        )}
+        {!list?.name && (
+          <UserAllEventsCard
+            username={event.user.username}
+            userImage={event.user.userImage}
+          ></UserAllEventsCard>
+        )}
         <div className="pt-6 lg:hidden"></div>
         <div className="flex items-center lg:hidden">
           <div className="relative size-24 overflow-hidden rounded-xl border-[6px] border-accent-yellow lg:size-44">

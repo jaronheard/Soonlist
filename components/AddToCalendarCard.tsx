@@ -89,10 +89,8 @@ export function AddToCalendarCard({
     initialProps.timeZone || "America/Los_Angeles"
   );
   const [link, setLink] = useState<string>("");
-  const [mentions, setMentions] = useState<string[]>(
-    initialProps?.metadata?.mentions || []
-  );
-  const [source, setSource] = useState<string>(
+  const [mentions] = useState<string[]>(initialProps?.metadata?.mentions || []);
+  const [source] = useState<string>(
     initialProps?.metadata?.source || "unknown"
   );
   const [price, setPrice] = useState<number>(

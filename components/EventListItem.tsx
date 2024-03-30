@@ -72,7 +72,7 @@ function EventDateDisplaySimple({
   startDate,
   startTime,
   endDate,
-  endTime,
+  // endTime,
   timezone,
 }: {
   startDate?: string;
@@ -95,9 +95,9 @@ function EventDateDisplaySimple({
   const startDateInfo = startTime
     ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
     : getDateInfoUTC(startDate);
-  const endDateInfo = endTime
-    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
-    : getDateInfoUTC(endDate);
+  // const endDateInfo = endTime
+  //   ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+  //   : getDateInfoUTC(endDate);
   // const showMultiDay = showMultipleDays(startDateInfo, endDateInfo);
   // const showNightIcon =
   //   endsNextDayBeforeMorning(startDateInfo, endDateInfo) && !showMultiDay;

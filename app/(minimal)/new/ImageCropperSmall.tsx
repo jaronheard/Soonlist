@@ -182,7 +182,6 @@ export default function ImageCropperSmall({
   const { naturalHeight, naturalWidth } = fullImageRef.current || {};
   const hasNaturalDimensions =
     naturalHeight && naturalWidth && naturalHeight > 0 && naturalWidth > 0;
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const prevImageUrlRef = useRef<string | undefined>(undefined);
 

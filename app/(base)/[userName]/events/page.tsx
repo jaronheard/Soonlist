@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { type Metadata, type ResolvingMetadata } from "next/types";
 import { currentUser } from "@clerk/nextjs";
 import { UserInfo } from "@/components/UserInfo";
