@@ -231,6 +231,18 @@ export const users = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
+    goals: json("goals").$type<{
+      hasBio: boolean;
+      hasContact: boolean;
+      createdEvent: boolean;
+      createdList: boolean;
+      addedEventToList: boolean;
+      sharedEvent: boolean;
+      sharedList: boolean;
+      savedEvent: boolean;
+      savedList: boolean;
+      referredFriend: boolean;
+    }>(),
   },
   (table) => {
     return {
