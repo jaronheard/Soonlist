@@ -67,15 +67,15 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         neutral: {
-          1: "var(--neutral-1)",
-          2: "var(--neutral-2)",
-          3: "var(--neutral-3)",
-          4: "var(--neutral-4)",
+          1: "rgb(var(--neutral-1) / <alpha-value>)",
+          2: "rgb(var(--neutral-2) / <alpha-value>)",
+          3: "rgb(var(--neutral-3) / <alpha-value>)",
+          4: "rgb(var(--neutral-4) / <alpha-value>)",
         },
         interactive: {
-          1: "var(--interactive-1)",
-          2: "var(--interactive-2)",
-          3: "var(--interactive-3)",
+          1: "rgb(var(--interactive-1) / <alpha-value>)",
+          2: "rgb(var(--interactive-2) / <alpha-value>)",
+          3: "rgb(var(--interactive-3) / <alpha-value>)",
         },
       },
       borderRadius: {
