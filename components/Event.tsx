@@ -11,6 +11,7 @@ import { ShareButton } from "./ShareButton";
 import { FollowEventButton } from "./FollowButtons";
 import { type EventWithUser } from "./EventList";
 import ListCard from "./ListCard";
+import PersonalNote from "./PersonalNote";
 import UserAllEventsCard from "./UserAllEventsCard";
 import {
   type User,
@@ -199,14 +200,27 @@ export function Event(props: EventProps) {
     setIsClient(true);
   }, []);
 
-  const { user, eventFollows, id, event, image, singleEvent, children, lists } =
-    props;
+  const {
+    user,
+    eventFollows,
+    id,
+    event,
+    image,
+    singleEvent,
+    children,
+    lists,
+  } = props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf =
     clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
   const isOwner = isSelf || roles?.includes("admin");
   const isFollowing = !!eventFollows.find(
-    (item) => item.userId === clerkUser?.id
+    (item) =>
+      clerkUser?.id === item.userId || clerkUser?.externalId === item.userId
+  );
+  const comment = props.comments?.findLast(
+    (item) =>
+      clerkUser?.id === item.userId || clerkUser?.externalId === item.userId
   );
   const hasLists = user && lists && lists.length > 0;
 
@@ -284,6 +298,7 @@ export function Event(props: EventProps) {
                 </Link>
               )}
             </div>
+            <PersonalNote text={comment?.content} />
             {!hasLists && user && (
               <UserAllEventsCard
                 username={user.username}
