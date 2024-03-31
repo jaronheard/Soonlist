@@ -5,7 +5,7 @@ import {
   AddToCalendarCard,
   type AddToCalendarCardProps,
 } from "@/components/AddToCalendarCard";
-import { EventPreview } from "@/components/EventListItem";
+import { EventPreview } from "@/components/EventDisplays";
 import {
   Mode,
   useNewEventProgressContext,

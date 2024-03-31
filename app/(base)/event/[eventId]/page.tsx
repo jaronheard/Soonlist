@@ -1,6 +1,6 @@
 import { type Metadata, type ResolvingMetadata } from "next/types";
 import ResetNewEventContext from "./ResetNewEventContext";
-import { EventPage } from "@/components/EventListItem";
+import { EventPage } from "@/components/EventDisplays";
 import { UserInfo } from "@/components/UserInfo";
 import {
   type AddToCalendarButtonPropsRestricted,
