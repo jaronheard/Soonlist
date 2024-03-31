@@ -371,7 +371,7 @@ export function valueToOption(value: string): { value: string; label: string } {
 }
 
 export function valuesToOptions(
-  values: string[]
+  values: readonly string[]
 ): { value: string; label: string }[] {
   return values.map((value) => valueToOption(value));
 }

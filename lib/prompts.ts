@@ -1,5 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import soft from "timezone-soft";
+import { z } from "zod";
 
 // parse the response text into array of events. response format is:
 interface Response {
@@ -7,10 +8,12 @@ interface Response {
 }
 
 export const PLATFORMS = ["instagram", "unknown"] as const;
-export type Platform = (typeof PLATFORMS)[number];
+export const PlatformSchema = z.enum(PLATFORMS);
+export type Platform = z.infer<typeof PlatformSchema>;
 
 export const AGE_RESTRICTIONS = ["all-ages", "18+", "21+", "unknown"] as const;
-export type AgeRestriction = (typeof AGE_RESTRICTIONS)[number];
+export const AgeRestrictionSchema = z.enum(AGE_RESTRICTIONS);
+export type AgeRestriction = z.infer<typeof AgeRestrictionSchema>;
 
 export const PRICE_TYPE = [
   "free",
@@ -19,7 +22,8 @@ export const PRICE_TYPE = [
   "paid",
   "unknown",
 ] as const;
-export type PriceType = (typeof PRICE_TYPE)[number];
+export const PriceTypeSchema = z.enum(PRICE_TYPE);
+export type PriceType = z.infer<typeof PriceTypeSchema>;
 
 export const EVENT_CATEGORIES = [
   "music",
@@ -40,7 +44,8 @@ export const EVENT_CATEGORIES = [
   "culture",
   "unknown",
 ] as const;
-export type EventCategory = (typeof EVENT_CATEGORIES)[number];
+export const EventCategorySchema = z.enum(EVENT_CATEGORIES);
+export type EventCategory = z.infer<typeof EventCategorySchema>;
 
 export const EVENT_TYPES = [
   "concert",
@@ -60,7 +65,8 @@ export const EVENT_TYPES = [
   "opening",
   "unknown",
 ] as const;
-export type EventType = (typeof EVENT_TYPES)[number];
+export const EventTypeSchema = z.enum(EVENT_TYPES);
+export type EventType = z.infer<typeof EventTypeSchema>;
 
 export const ACCESSIBILITY_TYPES = [
   "masksRequired",
@@ -68,21 +74,23 @@ export const ACCESSIBILITY_TYPES = [
   "wheelchairAccessible",
   "signLanguageInterpretation",
   "closedCaptioning",
-];
-export type AccessibilityType = (typeof ACCESSIBILITY_TYPES)[number];
+] as const;
+export const AccessibilityTypeSchema = z.enum(ACCESSIBILITY_TYPES);
+export type AccessibilityType = z.infer<typeof AccessibilityTypeSchema>;
 
-export interface EventMetadata {
-  mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
-  source?: Platform; // The source platform from which the input text was extracted.
-  price?: number; // The cost of the event in dollars.
-  priceType: PriceType;
-  ageRestriction: AgeRestriction;
-  category: EventCategory;
-  type: EventType;
-  performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
-  accessibility?: AccessibilityType[]; // An array of known accessibility features available at the event.
-  accessibilityNotes?: string; // Any additional notes about the event's accessibility.
-}
+export const EventMetadataSchema = z.object({
+  mentions: z.array(z.string()).optional(),
+  source: PlatformSchema.optional(),
+  price: z.number().optional(),
+  priceType: PriceTypeSchema,
+  ageRestriction: AgeRestrictionSchema,
+  category: EventCategorySchema,
+  type: EventTypeSchema,
+  performers: z.array(z.string()).optional(),
+  accessibility: z.array(AccessibilityTypeSchema).optional(),
+  accessibilityNotes: z.string().optional(),
+});
+export type EventMetadata = z.infer<typeof EventMetadataSchema>;
 export interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.

@@ -23,9 +23,11 @@ import {
   type UpdateEvent,
 } from "@/server/db/types";
 import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
+import { EventMetadata, EventMetadataSchema } from "@/lib/prompts";
 
 const eventCreateSchema = z.object({
   event: AddToCalendarButtonPropsSchema,
+  eventMetadata: EventMetadataSchema.optional(),
   comment: z.string().optional(),
   lists: z.array(z.record(z.string().trim())),
   visibility: z.enum(["public", "private"]).optional(),
@@ -443,7 +445,7 @@ export const eventRouter = createTRPCRouter({
         });
       }
 
-      const { event } = input;
+      const { event, eventMetadata } = input;
       const hasComment = input.comment && input.comment.length > 0;
       const hasLists = input.lists && input.lists.length > 0;
       const hasVisibility = input.visibility && input.visibility.length > 0;
@@ -481,6 +483,7 @@ export const eventRouter = createTRPCRouter({
         userId: userId,
         userName: username || "unknown",
         event: event,
+        eventMeta: eventMetadata || {},
         startDateTime: startUtcDate,
         endDateTime: endUtcDate,
         ...(hasVisibility && {
