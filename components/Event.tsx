@@ -200,16 +200,8 @@ export function Event(props: EventProps) {
     setIsClient(true);
   }, []);
 
-  const {
-    user,
-    eventFollows,
-    id,
-    event,
-    image,
-    singleEvent,
-    children,
-    lists,
-  } = props;
+  const { user, eventFollows, id, event, image, singleEvent, children, lists } =
+    props;
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf =
     clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
@@ -218,10 +210,7 @@ export function Event(props: EventProps) {
     (item) =>
       clerkUser?.id === item.userId || clerkUser?.externalId === item.userId
   );
-  const comment = props.comments?.findLast(
-    (item) =>
-      clerkUser?.id === item.userId || clerkUser?.externalId === item.userId
-  );
+  const comment = props.comments?.findLast((item) => user?.id === item.userId);
   const hasLists = user && lists && lists.length > 0;
 
   const {
