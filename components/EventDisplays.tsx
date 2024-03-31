@@ -49,7 +49,7 @@ import {
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
-import { type Metadata } from "@/lib/prompts";
+import { type EventMetadata } from "@/lib/prompts";
 
 function buildDefaultUrl(filePath: string) {
   return Bytescale.UrlBuilder.url({
@@ -95,6 +95,7 @@ type EventPageProps = {
   }[];
   lists?: List[];
   children?: React.ReactNode;
+  metadata?: EventMetadata;
 };
 
 function EventDateDisplaySimple({
@@ -242,7 +243,7 @@ function EventDetailsCard({
   );
 }
 
-function EventAccessibility({ metadata }: { metadata?: Metadata }) {
+function EventAccessibility({ metadata }: { metadata?: EventMetadata }) {
   return (
     <div className="col-span-2 flex flex-col gap-0.5">
       <Label className="flex items-center" htmlFor="accessibility">
@@ -303,7 +304,7 @@ function EventAccessibility({ metadata }: { metadata?: Metadata }) {
   );
 }
 
-function EventMetadata({ metadata }: { metadata?: Metadata }) {
+function EventMetadata({ metadata }: { metadata?: EventMetadata }) {
   return (
     <div className="relative -m-2 mt-3 grid grid-cols-2 gap-x-1 gap-y-3 rounded-2xl border border-interactive-2 p-2 text-neutral-2 md:grid-cols-4">
       <Badge className="absolute bottom-2 right-2" variant={"secondary"}>
@@ -409,7 +410,7 @@ function EventDetails({
   location?: string;
   EventActionButtons?: React.ReactNode;
   preview?: boolean;
-  metadata?: Metadata;
+  metadata?: EventMetadata;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   const [isClient, setIsClient] = useState(false);
@@ -788,8 +789,19 @@ export function EventPage(props: EventPageProps) {
     setIsClient(true);
   }, []);
 
-  const { user, eventFollows, id, event, image, singleEvent, children, lists } =
-    props;
+  const {
+    user,
+    eventFollows,
+    id,
+    event,
+    image,
+    singleEvent,
+    children,
+    lists,
+    metadata,
+  } = props;
+  console.log("eventMetadata", metadata);
+  console.log("event", event);
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf =
     clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
@@ -920,6 +932,11 @@ export function EventPage(props: EventPageProps) {
             )}
           </div>
         </div>
+        {metadata && (
+          <div className="w-full">
+            <EventMetadata metadata={metadata} />
+          </div>
+        )}
         {image && (
           <Image
             src={image}

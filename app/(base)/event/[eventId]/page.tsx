@@ -9,6 +9,7 @@ import {
 import { collapseSimilarEvents } from "@/lib/similarEvents";
 import EventList, { type EventWithUser } from "@/components/EventList";
 import { api } from "@/trpc/server";
+import { type EventMetadata } from "@/lib/prompts";
 
 type Props = {
   params: {
@@ -62,7 +63,9 @@ export default async function Page({ params }: Props) {
     .filter((item) => item.id !== event.id)
     .slice(0, 3);
 
-  const eventData = event?.event as AddToCalendarButtonProps;
+  const eventData = event?.event as AddToCalendarButtonPropsRestricted & {
+    metadata?: EventMetadata;
+  };
   const fullImageUrl = eventData.images?.[3];
 
   const possibleDuplicateEvents = (await api.event.getPossibleDuplicates.query({
@@ -85,7 +88,8 @@ export default async function Page({ params }: Props) {
         comments={event.comments}
         key={event.id}
         id={event.id}
-        event={event.event as AddToCalendarButtonPropsRestricted}
+        event={eventData}
+        metadata={eventData?.metadata}
         createdAt={event.createdAt}
         visibility={event.visibility}
         similarEvents={similarEvents}

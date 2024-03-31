@@ -71,7 +71,7 @@ export const ACCESSIBILITY_TYPES = [
 ];
 export type AccessibilityType = (typeof ACCESSIBILITY_TYPES)[number];
 
-export interface Metadata {
+export interface EventMetadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.
   price?: number; // The cost of the event in dollars.
@@ -92,7 +92,7 @@ export interface Event {
   endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
-  metadata: Metadata;
+  metadata: EventMetadata;
 }
 
 export const extractJsonFromResponse = (response: string) => {

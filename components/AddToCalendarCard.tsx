@@ -26,7 +26,7 @@ import { useNewEventContext } from "@/context/NewEventContext";
 import {
   EVENT_CATEGORIES,
   EVENT_TYPES,
-  type Metadata,
+  type EventMetadata,
   // PLATFORMS,
   PRICE_TYPE,
   ACCESSIBILITY_TYPES,
@@ -40,7 +40,7 @@ export type AddToCalendarCardProps = AddToCalendarButtonType & {
   children?: React.ReactNode;
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
-  metadata?: Metadata;
+  metadata?: EventMetadata;
   onUpdate?: (props: AddToCalendarButtonType) => void;
 };
 
