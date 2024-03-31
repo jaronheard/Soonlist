@@ -30,7 +30,8 @@
     }
   },
   "rules": {
-    "import/order": 2,
+    "import/no-default-export": "warn",
+    "import/order": "error",
     "tailwindcss/no-custom-classname": "off",
     "tailwindcss/classnames-order": "error",
     "@typescript-eslint/array-type": "off",
@@ -60,6 +61,33 @@
     {
       "files": ["*.ts", "*.tsx"],
       "parser": "@typescript-eslint/parser"
+    },
+    // Varies file convention from libraries, e.g. Next.js App Router and Prettier
+    // Must use default export
+    {
+      "files": [
+        "next.config.mjs",
+        "prettier.config.mjs",
+        "unlighthouse.config.ts",
+        "app/**/page.tsx",
+        "app/**/layout.tsx",
+        "app/**/not-found.tsx",
+        "app/**/loading.tsx",
+        "app/**/*error.tsx",
+        "app/apple-icon.tsx",
+        "app/**/opengraph-image.tsx",
+        "app/sitemap.ts",
+        "app/robots.ts"
+      ],
+      "rules": {
+        "import/no-default-export": "off",
+        "import/prefer-default-export": ["error", { "target": "any" }]
+      }
+    },
+    // module declarations
+    {
+      "files": ["**/*.d.ts"],
+      "rules": { "import/no-default-export": "off" }
     }
   ]
 }
