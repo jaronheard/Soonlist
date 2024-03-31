@@ -1,6 +1,6 @@
 import { type Metadata, type ResolvingMetadata } from "next/types";
 import ResetNewEventContext from "./ResetNewEventContext";
-import { Event } from "@/components/Event";
+import { EventPage } from "@/components/Event";
 import { UserInfo } from "@/components/UserInfo";
 import {
   type AddToCalendarButtonPropsRestricted,
@@ -79,7 +79,7 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <ResetNewEventContext />
-      <Event
+      <EventPage
         user={event.user}
         eventFollows={event.eventFollows}
         comments={event.comments}

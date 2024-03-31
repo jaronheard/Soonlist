@@ -192,7 +192,7 @@ function EventDescription({
 //   return <> and others {userEventLinks}</>;
 // }
 
-export function Event(props: EventProps) {
+export function EventPage(props: EventProps) {
   const { user: clerkUser } = useUser();
   const [isClient, setIsClient] = useState(false);
 
