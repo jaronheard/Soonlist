@@ -26,7 +26,16 @@ import { buttonVariants } from "./ui/button";
 import { Label } from "./ui/label";
 import { type AddToCalendarCardProps } from "./AddToCalendarCard";
 import { Badge } from "./ui/badge";
-import { type User, type EventFollow, type Comment } from "@/server/db/types";
+import PersonalNote from "./PersonalNote";
+import UserAllEventsCard from "./UserAllEventsCard";
+import ListCard from "./ListCard";
+import { FollowEventButton } from "./FollowButtons";
+import {
+  type User,
+  type EventFollow,
+  type Comment,
+  type List,
+} from "@/server/db/types";
 import {
   translateToHtml,
   getDateInfoUTC,
@@ -66,6 +75,26 @@ type EventListItemProps = {
     similarityDetails: SimilarityDetails;
   }[];
   filePath?: string;
+};
+
+type EventPageProps = {
+  user?: User;
+  eventFollows: EventFollow[];
+  comments: Comment[];
+  id: string;
+  createdAt?: Date;
+  event: AddToCalendarButtonPropsRestricted;
+  image?: string;
+  visibility: "public" | "private";
+  singleEvent?: boolean;
+  hideCurator?: boolean;
+  showOtherCurators?: boolean;
+  similarEvents?: {
+    event: EventWithUser;
+    similarityDetails: SimilarityDetails;
+  }[];
+  lists?: List[];
+  children?: React.ReactNode;
 };
 
 function EventDateDisplaySimple({
@@ -747,6 +776,174 @@ export function EventPreview(
           metadata={event.metadata}
         />
       </div>
+    </div>
+  );
+}
+
+export function EventPage(props: EventPageProps) {
+  const { user: clerkUser } = useUser();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const { user, eventFollows, id, event, image, singleEvent, children, lists } =
+    props;
+  const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
+  const isSelf =
+    clerkUser?.id === user?.id || clerkUser?.externalId === user?.id;
+  const isOwner = isSelf || roles?.includes("admin");
+  const isFollowing = !!eventFollows.find(
+    (item) =>
+      clerkUser?.id === item.userId || clerkUser?.externalId === item.userId
+  );
+  const comment = props.comments?.findLast((item) => user?.id === item.userId);
+  const hasLists = user && lists && lists.length > 0;
+
+  const {
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    timeZone: timezone,
+    location,
+  } = event;
+
+  const { timezone: userTimezone } = useContext(TimezoneContext);
+  if (!startDate || !endDate) {
+    console.error("startDate or endDate is missing");
+    return null;
+  }
+
+  if (!timezone) {
+    console.error("timezone is missing");
+    return null;
+  }
+
+  const startDateInfo = startTime
+    ? getDateTimeInfo(startDate, startTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(startDate);
+  const endDateInfo = endTime
+    ? getDateTimeInfo(endDate, endTime, timezone, userTimezone.toString())
+    : getDateInfoUTC(endDate);
+
+  if (!startDateInfo || !endDateInfo) {
+    console.error("startDateInfo or endDateInfo is missing");
+    return null;
+  }
+
+  return (
+    <div className="">
+      {/* {visibility === "private" && (
+        <>
+          <Badge className="max-w-fit" variant="destructive">
+            Unlisted Event
+          </Badge>
+        </>
+      )} */}
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
+        <div>
+          <div className="flex flex-col gap-5">
+            {/* duplicated with EventListItem */}
+            <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
+              {isClient && eventTimesAreDefined(startTime, endTime) && (
+                <>
+                  <div className="shrink-0 text-neutral-2">
+                    {startDateInfo?.dayOfWeek.substring(0, 3)}
+                    {", "}
+                    {startDateInfo?.month}/{startDateInfo?.day}/
+                    {startDateInfo?.year.toString().substring(2, 4)}{" "}
+                    <span className="text-neutral-3">{"//"}</span>{" "}
+                    {timeFormatDateInfo(startDateInfo)}-
+                    {timeFormatDateInfo(endDateInfo)}
+                  </div>
+                </>
+              )}
+            </div>
+            {/* end duplicated with EventListItem */}
+            <h1 className="font-heading text-5xl font-bold leading-[3.5rem]">
+              {event.name}
+            </h1>
+            <div className="flex-start flex gap-2 pr-12 text-lg font-medium leading-none">
+              {location && (
+                <Link
+                  href={`https://www.google.com/maps/search/?api=1&query=${location}`}
+                  className={"line-clamp-1 shrink break-all text-neutral-2"}
+                >
+                  {location}
+                </Link>
+              )}
+            </div>
+            <PersonalNote text={comment?.content} />
+            {!hasLists && user && (
+              <UserAllEventsCard
+                username={user.username}
+                userImage={user.userImage}
+              />
+            )}
+            {hasLists &&
+              lists.map((list) => (
+                <ListCard
+                  key={list.id}
+                  name={list.name}
+                  username={user?.username}
+                  id={list.id}
+                />
+              ))}
+          </div>
+          <div className="flex flex-col gap-8 pt-8">
+            <EventDescription
+              description={event.description!}
+              singleEvent={singleEvent}
+            />
+            {!children && (
+              <div className="flex flex-wrap gap-2">
+                <ShareButton type="button" event={event} id={id} />
+                <CalendarButton
+                  type="button"
+                  event={event}
+                  id={id}
+                  username={user?.username}
+                />
+
+                {user && !isSelf && (
+                  <FollowEventButton eventId={id} following={isFollowing} />
+                )}
+                {user && isOwner && (
+                  <EditButton type="icon" userId={user.id} id={id} />
+                )}
+                {user && isOwner && (
+                  <DeleteButton type="icon" userId={user.id} id={id} />
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        {image && (
+          <Image
+            src={image}
+            className="mx-auto h-auto max-h-96 w-full object-contain"
+            alt=""
+            width={640}
+            height={480}
+          />
+        )}
+        {children}
+      </div>
+      {/* <div className="absolute right-2 top-6">
+        {isOwner && (
+          <SignedIn>
+            <EventActionButton
+              user={user}
+              event={event}
+              id={id}
+              isOwner={!!isOwner}
+              isFollowing={isFollowing}
+            />
+          </SignedIn>
+        )}
+      </div> */}
     </div>
   );
 }
