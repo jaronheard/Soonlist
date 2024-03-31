@@ -91,6 +91,16 @@ export const EventMetadataSchema = z.object({
   accessibilityNotes: z.string().optional(),
 });
 export type EventMetadata = z.infer<typeof EventMetadataSchema>;
+export const EventMetadataSchemaLoose = EventMetadataSchema.extend({
+  source: z.string().optional(),
+  priceType: z.string().optional(),
+  ageRestriction: z.string().optional(),
+  category: z.string().optional(),
+  type: z.string().optional(),
+  accessibility: z.array(z.string()).optional(),
+});
+export type EventMetadataLoose = z.infer<typeof EventMetadataSchemaLoose>;
+
 export interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
@@ -100,7 +110,7 @@ export interface Event {
   endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
-  metadata: EventMetadata;
+  eventMetadata: EventMetadata;
 }
 
 export const extractJsonFromResponse = (response: string) => {
@@ -149,7 +159,7 @@ export const addCommonAddToCalendarProps = (events: Event[]) => {
       startTime: event.startTime || undefined,
       endTime: event.endTime || undefined,
       timeZone: event.timeZone,
-      metadata: event.metadata || undefined,
+      eventMetadata: event.eventMetadata || undefined,
     };
   });
 };
@@ -254,7 +264,7 @@ enum AccessibilityTypes {
   "closedCaptioning",
 }
   
-interface Metadata {
+interface EventMetadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.
   price?: number; // The cost of the event in dollars.
@@ -276,7 +286,7 @@ interface Event {
   endTime?: string; // Start time, only the time portion (HH:MM:SS) of ISO 8601 format. Do not include the date or time zone. Infer based on start time and event type if not specified. Only omit if known to be an all-day event. CANNOT BE UNKNOWN.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
-  metadata: Metadata;
+  eventMetadata: EventMetadata;
 }
 
 Below, your report, following the JSON schema exactly:`;
@@ -293,7 +303,7 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 
   return {
     text: getText(date, timezoneIANA),
-    version: "v2024.3.28.1",
+    version: "v2024.3.31.1",
   };
 };
 

@@ -9,9 +9,11 @@ import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useNewEventContext } from "@/context/NewEventContext";
 import { api } from "@/trpc/react";
+import { type EventMetadataLoose } from "@/lib/prompts";
 
 type UpdateButtonProps = {
   event: AddToCalendarButtonType;
+  eventMetadata?: EventMetadataLoose;
   id: string;
   update?: boolean;
   notes?: string;
@@ -56,6 +58,7 @@ export function UpdateButton(props: UpdateButtonProps) {
               updateEvent.mutate({
                 id: props.id,
                 event: props.event,
+                eventMetadata: props.eventMetadata,
                 comment: props.notes,
                 visibility: props.visibility,
                 lists: props.lists,

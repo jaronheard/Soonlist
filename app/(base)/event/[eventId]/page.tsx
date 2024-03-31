@@ -63,9 +63,8 @@ export default async function Page({ params }: Props) {
     .filter((item) => item.id !== event.id)
     .slice(0, 3);
 
-  const eventData = event?.event as AddToCalendarButtonPropsRestricted & {
-    metadata?: EventMetadata;
-  };
+  const eventData = event?.event as AddToCalendarButtonPropsRestricted;
+  const eventMetadata = event?.eventMetadata as EventMetadata;
   const fullImageUrl = eventData.images?.[3];
 
   const possibleDuplicateEvents = (await api.event.getPossibleDuplicates.query({
@@ -89,7 +88,7 @@ export default async function Page({ params }: Props) {
         key={event.id}
         id={event.id}
         event={eventData}
-        metadata={eventData?.metadata}
+        eventMetadata={eventMetadata}
         createdAt={event.createdAt}
         visibility={event.visibility}
         similarEvents={similarEvents}

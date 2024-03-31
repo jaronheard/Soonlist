@@ -61,6 +61,7 @@ export function NewEventFooterButtons({
           {eventData && (
             <SaveButton
               event={{ ...eventData, images }}
+              eventMetadata={eventData.eventMetadata}
               notes={organizeData.notes}
               visibility={organizeData.visibility}
               lists={organizeData.lists}

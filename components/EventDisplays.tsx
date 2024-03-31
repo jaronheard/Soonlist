@@ -95,7 +95,7 @@ type EventPageProps = {
   }[];
   lists?: List[];
   children?: React.ReactNode;
-  metadata?: EventMetadata;
+  eventMetadata?: EventMetadata;
 };
 
 function EventDateDisplaySimple({
@@ -774,7 +774,7 @@ export function EventPreview(
           timezone={event.timeZone || "America/Los_Angeles"}
           location={event.location}
           description={event.description}
-          metadata={event.metadata}
+          metadata={event.eventMetadata}
         />
       </div>
     </div>
@@ -798,9 +798,9 @@ export function EventPage(props: EventPageProps) {
     singleEvent,
     children,
     lists,
-    metadata,
+    eventMetadata,
   } = props;
-  console.log("eventMetadata", metadata);
+  console.log("eventMetadata", eventMetadata);
   console.log("event", event);
   const roles = clerkUser?.unsafeMetadata.roles as string[] | undefined;
   const isSelf =
@@ -909,6 +909,11 @@ export function EventPage(props: EventPageProps) {
               description={event.description!}
               singleEvent={singleEvent}
             />
+            {eventMetadata && (
+              <div className="w-full">
+                <EventMetadata metadata={eventMetadata} />
+              </div>
+            )}
             {!children && (
               <div className="flex flex-wrap gap-2">
                 <ShareButton type="button" event={event} id={id} />
@@ -932,11 +937,6 @@ export function EventPage(props: EventPageProps) {
             )}
           </div>
         </div>
-        {metadata && (
-          <div className="w-full">
-            <EventMetadata metadata={metadata} />
-          </div>
-        )}
         {image && (
           <Image
             src={image}

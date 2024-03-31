@@ -40,7 +40,7 @@ export type AddToCalendarCardProps = AddToCalendarButtonType & {
   children?: React.ReactNode;
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
-  metadata?: EventMetadata;
+  eventMetadata?: EventMetadata;
   onUpdate?: (props: AddToCalendarButtonType) => void;
 };
 
@@ -89,31 +89,35 @@ export function AddToCalendarCard({
     initialProps.timeZone || "America/Los_Angeles"
   );
   const [link, setLink] = useState<string>("");
-  const [mentions] = useState<string[]>(initialProps?.metadata?.mentions || []);
+  const [mentions] = useState<string[]>(
+    initialProps?.eventMetadata?.mentions || []
+  );
   const [source] = useState<string>(
-    initialProps?.metadata?.source || "unknown"
+    initialProps?.eventMetadata?.source || "unknown"
   );
   const [price, setPrice] = useState<number>(
-    initialProps?.metadata?.price || 0
+    initialProps?.eventMetadata?.price || 0
   );
   const [priceType, setPriceType] = useState<string>(
-    initialProps.metadata?.priceType || "unknown"
+    initialProps.eventMetadata?.priceType || "unknown"
   );
   const [ageRestriction, setAgeRestriction] = useState(
-    (initialProps.metadata?.ageRestriction || "none") as string
+    (initialProps.eventMetadata?.ageRestriction || "none") as string
   );
   const [category, setCategory] = useState(
-    (initialProps?.metadata?.category || "unknown") as string
+    (initialProps?.eventMetadata?.category || "unknown") as string
   );
-  const [type, setType] = useState(initialProps?.metadata?.type || "event");
+  const [type, setType] = useState(
+    initialProps?.eventMetadata?.type || "event"
+  );
   const [performers, setPerformers] = useState(
-    initialProps?.metadata?.performers || []
+    initialProps?.eventMetadata?.performers || []
   );
   const [accessibility, setAccessibility] = useState<
     Record<"value" | "label", string>[]
   >(
-    initialProps?.metadata?.accessibility
-      ? valuesToOptions(initialProps.metadata.accessibility)
+    initialProps?.eventMetadata?.accessibility
+      ? valuesToOptions(initialProps.eventMetadata.accessibility)
       : []
   );
   const [accessibilityNotes, setAccessibilityNotes] = useState<string>("");
@@ -137,7 +141,7 @@ export function AddToCalendarCard({
     endTime,
     timeZone,
     images,
-    metadata: {
+    eventMetadata: {
       mentions,
       source,
       price,
@@ -434,6 +438,7 @@ export function AddToCalendarCard({
                 visibility={visibility}
                 lists={lists}
                 event={updatedProps}
+                eventMetadata={updatedProps.eventMetadata}
               />
             )}
             {initialProps.update && initialProps.updateId && (
@@ -443,6 +448,7 @@ export function AddToCalendarCard({
                 visibility={visibility}
                 lists={lists}
                 event={updatedProps}
+                eventMetadata={updatedProps.eventMetadata}
               />
             )}
             <CalendarButton
