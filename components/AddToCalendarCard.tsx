@@ -95,8 +95,11 @@ export function AddToCalendarCard({
   const [source] = useState<string>(
     initialProps?.eventMetadata?.source || "unknown"
   );
-  const [price, setPrice] = useState<number>(
-    initialProps?.eventMetadata?.price || 0
+  const [priceMin, setPriceMin] = useState<number>(
+    initialProps?.eventMetadata?.priceMin || 0
+  );
+  const [priceMax, setPriceMax] = useState<number>(
+    initialProps?.eventMetadata?.priceMax || 0
   );
   const [priceType, setPriceType] = useState<string>(
     initialProps.eventMetadata?.priceType || "unknown"
@@ -144,7 +147,8 @@ export function AddToCalendarCard({
     eventMetadata: {
       mentions,
       source,
-      price,
+      priceMin,
+      priceMax,
       priceType,
       ageRestriction,
       category,
@@ -337,13 +341,24 @@ export function AddToCalendarCard({
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="price">Price ($)</Label>
+                <Label htmlFor="price">Price Min($)</Label>
                 <Input
                   id="price"
-                  placeholder="Enter price"
-                  value={price}
+                  placeholder="Enter lowest possible price"
+                  value={priceMin}
                   // type="number"
-                  onChange={(e) => setPrice(Number(e.target.value))}
+                  onChange={(e) => setPriceMin(Number(e.target.value))}
+                  className="w-[180px]"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="price">Price Max($)</Label>
+                <Input
+                  id="price"
+                  placeholder="Enter highest possible price"
+                  value={priceMax}
+                  // type="number"
+                  onChange={(e) => setPriceMax(Number(e.target.value))}
                   className="w-[180px]"
                 />
               </div>

@@ -81,7 +81,8 @@ export type AccessibilityType = z.infer<typeof AccessibilityTypeSchema>;
 export const EventMetadataSchema = z.object({
   mentions: z.array(z.string()).optional(),
   source: PlatformSchema.optional(),
-  price: z.number().optional(),
+  priceMin: z.number().optional(),
+  priceMax: z.number().optional(),
   priceType: PriceTypeSchema,
   ageRestriction: AgeRestrictionSchema,
   category: EventCategorySchema,
@@ -267,7 +268,8 @@ enum AccessibilityTypes {
 interface EventMetadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.
-  price: number; // The cost of the event in dollars. Use 0 if unknown.
+  priceMin: number; // The minimum cost of the event in dollars. Use 0 if unknown.
+  priceMax: number; // The maximum cost of the event in dollars. Use 0 if unknown.
   priceType: PriceType;
   ageRestriction: AgeRestriction;
   category: EventCategory;

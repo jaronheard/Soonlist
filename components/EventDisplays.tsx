@@ -309,6 +309,20 @@ function EventMetadataDisplay({
 }: {
   metadata?: EventMetadataDisplay;
 }) {
+  const hasPriceMin = metadata?.priceMin && metadata.priceMin > 0;
+  const hasPriceMax = metadata?.priceMax && metadata.priceMax > 0;
+  const hasPrices = hasPriceMin && hasPriceMax;
+  const isPriceRange = hasPrices && metadata?.priceMin !== metadata?.priceMax;
+  const singlePriceText = `$${metadata?.priceMin};`;
+  const priceRangeText = `$${metadata?.priceMin}-$${metadata?.priceMax};`;
+  const priceText = isPriceRange ? priceRangeText : singlePriceText;
+  const isPaidPriceType = metadata?.priceType === "paid";
+  const isUnknownPriceType = metadata?.priceType === "unknown";
+  const showPriceType = isUnknownPriceType ? !hasPrices : !isPaidPriceType;
+  const showPrice = hasPrices;
+  const priceTypeText = showPriceType ? metadata?.priceType : "";
+  const showSpace = showPrice && showPriceType;
+
   return (
     <div className="relative -m-2 mt-3 grid grid-cols-2 gap-x-1 gap-y-3 rounded-2xl border border-interactive-2 p-2 text-neutral-2 md:grid-cols-4">
       <Badge className="absolute bottom-2 right-2" variant={"secondary"}>
@@ -338,11 +352,10 @@ function EventMetadataDisplay({
           Price
         </Label>
         <p className="text-sm capitalize text-neutral-1" id="price">
-          {metadata?.price && metadata.price > 0 ? `$${metadata.price} ` : ""}
-          {metadata?.priceType !== "paid" &&
-            metadata?.priceType !== "unknown" && (
-              <p className="inline capitalize">{metadata?.priceType}</p>
-            )}
+          {`${showPrice ? priceText : ""}${showSpace ? " " : ""}`}
+          {showPriceType && (
+            <p className="inline capitalize">{priceTypeText}</p>
+          )}
         </p>
       </div>
       <div className="flex flex-col gap-0.5">
