@@ -342,7 +342,7 @@ export function AddToCalendarCard({
                   id="price"
                   placeholder="Enter price"
                   value={price}
-                  type="number"
+                  // type="number"
                   onChange={(e) => setPrice(Number(e.target.value))}
                   className="w-[180px]"
                 />

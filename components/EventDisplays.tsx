@@ -49,7 +49,7 @@ import {
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
-import { type EventMetadata } from "@/lib/prompts";
+import { type EventMetadata as EventMetadataDisplay } from "@/lib/prompts";
 
 function buildDefaultUrl(filePath: string) {
   return Bytescale.UrlBuilder.url({
@@ -95,7 +95,7 @@ type EventPageProps = {
   }[];
   lists?: List[];
   children?: React.ReactNode;
-  eventMetadata?: EventMetadata;
+  eventMetadata?: EventMetadataDisplay;
 };
 
 function EventDateDisplaySimple({
@@ -243,7 +243,7 @@ function EventDetailsCard({
   );
 }
 
-function EventAccessibility({ metadata }: { metadata?: EventMetadata }) {
+function EventAccessibility({ metadata }: { metadata?: EventMetadataDisplay }) {
   return (
     <div className="col-span-2 flex flex-col gap-0.5">
       <Label className="flex items-center" htmlFor="accessibility">
@@ -304,7 +304,11 @@ function EventAccessibility({ metadata }: { metadata?: EventMetadata }) {
   );
 }
 
-function EventMetadata({ metadata }: { metadata?: EventMetadata }) {
+function EventMetadataDisplay({
+  metadata,
+}: {
+  metadata?: EventMetadataDisplay;
+}) {
   return (
     <div className="relative -m-2 mt-3 grid grid-cols-2 gap-x-1 gap-y-3 rounded-2xl border border-interactive-2 p-2 text-neutral-2 md:grid-cols-4">
       <Badge className="absolute bottom-2 right-2" variant={"secondary"}>
@@ -334,12 +338,11 @@ function EventMetadata({ metadata }: { metadata?: EventMetadata }) {
           Price
         </Label>
         <p className="text-sm capitalize text-neutral-1" id="price">
-          {metadata?.priceType === "paid" && "$"}
-          {metadata?.price}
-          <span className="capitalize">{metadata?.priceType && " "}</span>
-          {metadata?.priceType !== "paid" && (
-            <span className="capitalize">{metadata?.priceType}</span>
-          )}
+          {metadata?.price && metadata.price > 0 ? `$${metadata.price} ` : ""}
+          {metadata?.priceType !== "paid" &&
+            metadata?.priceType !== "unknown" && (
+              <p className="inline capitalize">{metadata?.priceType}</p>
+            )}
         </p>
       </div>
       <div className="flex flex-col gap-0.5">
@@ -410,7 +413,7 @@ function EventDetails({
   location?: string;
   EventActionButtons?: React.ReactNode;
   preview?: boolean;
-  metadata?: EventMetadata;
+  metadata?: EventMetadataDisplay;
 }) {
   const { timezone: userTimezone } = useContext(TimezoneContext);
   const [isClient, setIsClient] = useState(false);
@@ -512,7 +515,7 @@ function EventDetails({
         )}
         {preview && (
           <div className="w-full">
-            <EventMetadata metadata={metadata} />
+            <EventMetadataDisplay metadata={metadata} />
           </div>
         )}
         <div className="w-full">
@@ -911,7 +914,7 @@ export function EventPage(props: EventPageProps) {
             />
             {eventMetadata && (
               <div className="w-full">
-                <EventMetadata metadata={eventMetadata} />
+                <EventMetadataDisplay metadata={eventMetadata} />
               </div>
             )}
             {!children && (

@@ -267,7 +267,7 @@ enum AccessibilityTypes {
 interface EventMetadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.
-  price?: number; // The cost of the event in dollars.
+  price: number; // The cost of the event in dollars. Use 0 if unknown.
   priceType: PriceType;
   ageRestriction: AgeRestriction;
   category: EventCategory;
