@@ -309,18 +309,21 @@ function EventMetadataDisplay({
 }: {
   metadata?: EventMetadataDisplay;
 }) {
-  const hasPriceMin = metadata?.priceMin && metadata.priceMin > 0;
+  const hasPriceMin =
+    (metadata?.priceMin && metadata.priceMin > 0) || metadata?.priceMin === 0;
   const hasPriceMax = metadata?.priceMax && metadata.priceMax > 0;
   const hasPrices = hasPriceMin && hasPriceMax;
   const isPriceRange = hasPrices && metadata?.priceMin !== metadata?.priceMax;
-  const singlePriceText = `$${metadata?.priceMin};`;
-  const priceRangeText = `$${metadata?.priceMin}-$${metadata?.priceMax};`;
+  const singlePriceText = `$${metadata?.priceMin}`;
+  const priceRangeText = `$${metadata?.priceMin}-$${metadata?.priceMax}`;
   const priceText = isPriceRange ? priceRangeText : singlePriceText;
   const isPaidPriceType = metadata?.priceType === "paid";
   const isUnknownPriceType = metadata?.priceType === "unknown";
   const showPriceType = isUnknownPriceType ? !hasPrices : !isPaidPriceType;
   const showPrice = hasPrices;
-  const priceTypeText = showPriceType ? metadata?.priceType : "";
+  const adjustedPriceTypeText =
+    metadata?.priceType === "notaflof" ? "NOTAFLOF" : metadata?.priceType;
+  const priceTypeText = showPriceType ? adjustedPriceTypeText : "";
   const showSpace = showPrice && showPriceType;
 
   return (
@@ -352,9 +355,9 @@ function EventMetadataDisplay({
           Price
         </Label>
         <p className="text-sm capitalize text-neutral-1" id="price">
-          {`${showPrice ? priceText : ""}${showSpace ? " " : ""}`}
+          {`${showPrice ? priceText : ""}${showSpace ? ", " : ""}`}
           {showPriceType && (
-            <p className="inline capitalize">{priceTypeText}</p>
+            <div className="inline capitalize">{priceTypeText}</div>
           )}
         </p>
       </div>
