@@ -542,7 +542,7 @@ function EventDetails({
           </div>
         )}
         <div className="pt-2">
-          <EventDescription description={description} />
+          <EventDescription description={description} truncate />
         </div>
         {!preview && (
           <Link
@@ -571,12 +571,18 @@ function EventDetails({
 
 function EventDescription({
   description,
+  truncate,
 }: {
   description: string;
   singleEvent?: boolean;
+  truncate?: boolean;
 }) {
   return (
-    <div className={"line-clamp-3 text-lg leading-7 text-neutral-1"}>
+    <div
+      className={cn("text-lg leading-7 text-neutral-1", {
+        "line-clamp-3": truncate,
+      })}
+    >
       <span
         dangerouslySetInnerHTML={{
           __html: translateToHtml(description),
