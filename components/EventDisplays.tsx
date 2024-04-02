@@ -50,6 +50,7 @@ import { type AddToCalendarButtonPropsRestricted } from "@/types";
 import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 import { type EventMetadata as EventMetadataDisplay } from "@/lib/prompts";
+import { feedback } from "@/lib/intercom/intercom";
 
 function buildDefaultUrl(filePath: string) {
   return Bytescale.UrlBuilder.url({
@@ -326,9 +327,17 @@ function EventMetadataDisplay({
   const priceTypeText = showPriceType ? adjustedPriceTypeText : "";
   const showSpace = showPrice && showPriceType;
 
+  const performersCharacterLength = metadata?.performers?.join(", ").length;
+  const performersSpanMultipleColumns =
+    performersCharacterLength && performersCharacterLength > 15;
+
   return (
-    <div className="relative -m-2 mt-3 grid grid-cols-2 gap-x-1 gap-y-3 rounded-2xl border border-interactive-2 p-2 text-neutral-2 md:grid-cols-4">
-      <Badge className="absolute bottom-2 right-2" variant={"secondary"}>
+    <div className="relative -m-2 mt-3 grid grid-cols-2 gap-x-1 gap-y-3 rounded-2xl border border-interactive-2 p-4 text-neutral-2 md:grid-cols-4">
+      <Badge
+        className="absolute bottom-2 right-2 hover:cursor-pointer"
+        variant={"secondary"}
+        onClick={() => feedback("Event Metadata")}
+      >
         Experimental
       </Badge>
       <div className="flex flex-col gap-0.5">
@@ -370,7 +379,12 @@ function EventMetadataDisplay({
           {metadata?.ageRestriction}
         </p>
       </div>
-      <div className="col-span-2 flex flex-col gap-0.5">
+      <div
+        className={cn("col-span-2 flex flex-col gap-0.5", {
+          "col-span-1": !performersSpanMultipleColumns,
+          "col-span-2": performersSpanMultipleColumns,
+        })}
+      >
         <Label className="flex items-center" htmlFor="performers">
           <Mic className="mr-1.5 size-4" />
           Performers
