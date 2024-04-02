@@ -118,6 +118,11 @@ module.exports = {
       fontSize: {
         "2.5xl": "1.75rem",
       },
+      hyphens: { 
+        'hyphens-none': 'none',
+        'hyphens-manual': 'manual',
+        'hyphens-auto': 'auto',
+      }
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

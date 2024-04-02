@@ -252,7 +252,7 @@ function EventAccessibility({ metadata }: { metadata?: EventMetadataDisplay }) {
         Accessibility
       </Label>
       <div
-        className="flex gap-1 text-sm capitalize text-neutral-1"
+        className="flex flex-wrap gap-1 text-sm capitalize text-neutral-1"
         id="accessibility"
       >
         {(metadata?.accessibility?.length === 0 ||
@@ -380,7 +380,7 @@ function EventMetadataDisplay({
         </p>
       </div>
       <div
-        className={cn("col-span-2 flex flex-col gap-0.5", {
+        className={cn("col-span-2 flex flex-col gap-0.5 hyphens-auto", {
           "col-span-1": !performersSpanMultipleColumns,
           "col-span-2": performersSpanMultipleColumns,
         })}
