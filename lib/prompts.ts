@@ -1,5 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import soft from "timezone-soft";
+import { z } from "zod";
 
 // parse the response text into array of events. response format is:
 interface Response {
@@ -7,10 +8,12 @@ interface Response {
 }
 
 export const PLATFORMS = ["instagram", "unknown"] as const;
-export type Platform = (typeof PLATFORMS)[number];
+export const PlatformSchema = z.enum(PLATFORMS);
+export type Platform = z.infer<typeof PlatformSchema>;
 
 export const AGE_RESTRICTIONS = ["all-ages", "18+", "21+", "unknown"] as const;
-export type AgeRestriction = (typeof AGE_RESTRICTIONS)[number];
+export const AgeRestrictionSchema = z.enum(AGE_RESTRICTIONS);
+export type AgeRestriction = z.infer<typeof AgeRestrictionSchema>;
 
 export const PRICE_TYPE = [
   "free",
@@ -19,7 +22,8 @@ export const PRICE_TYPE = [
   "paid",
   "unknown",
 ] as const;
-export type PriceType = (typeof PRICE_TYPE)[number];
+export const PriceTypeSchema = z.enum(PRICE_TYPE);
+export type PriceType = z.infer<typeof PriceTypeSchema>;
 
 export const EVENT_CATEGORIES = [
   "music",
@@ -40,7 +44,8 @@ export const EVENT_CATEGORIES = [
   "culture",
   "unknown",
 ] as const;
-export type EventCategory = (typeof EVENT_CATEGORIES)[number];
+export const EventCategorySchema = z.enum(EVENT_CATEGORIES);
+export type EventCategory = z.infer<typeof EventCategorySchema>;
 
 export const EVENT_TYPES = [
   "concert",
@@ -60,7 +65,8 @@ export const EVENT_TYPES = [
   "opening",
   "unknown",
 ] as const;
-export type EventType = (typeof EVENT_TYPES)[number];
+export const EventTypeSchema = z.enum(EVENT_TYPES);
+export type EventType = z.infer<typeof EventTypeSchema>;
 
 export const ACCESSIBILITY_TYPES = [
   "masksRequired",
@@ -68,21 +74,44 @@ export const ACCESSIBILITY_TYPES = [
   "wheelchairAccessible",
   "signLanguageInterpretation",
   "closedCaptioning",
+] as const;
+export const AccessibilityTypeSchema = z.enum(ACCESSIBILITY_TYPES);
+export type AccessibilityType = z.infer<typeof AccessibilityTypeSchema>;
+export const ACCESSIBILITY_TYPES_OPTIONS = [
+  { value: "masksRequired", label: "Masks Required" },
+  { value: "masksSuggested", label: "Masks Suggested" },
+  { value: "wheelchairAccessible", label: "Wheelchair Accessible" },
+  {
+    value: "signLanguageInterpretation",
+    label: "Sign Language Interpretation",
+  },
+  { value: "closedCaptioning", label: "Closed Captioning" },
 ];
-export type AccessibilityType = (typeof ACCESSIBILITY_TYPES)[number];
 
-export interface Metadata {
-  mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
-  source?: Platform; // The source platform from which the input text was extracted.
-  price?: number; // The cost of the event in dollars.
-  priceType: PriceType;
-  ageRestriction: AgeRestriction;
-  category: EventCategory;
-  type: EventType;
-  performers?: string[]; // An array of performers or speakers at the event, if known. Infer if not explicitly stated.
-  accessibility?: AccessibilityType[]; // An array of known accessibility features available at the event.
-  accessibilityNotes?: string; // Any additional notes about the event's accessibility.
-}
+export const EventMetadataSchema = z.object({
+  mentions: z.array(z.string()).optional(),
+  source: PlatformSchema.optional(),
+  priceMin: z.number().optional(),
+  priceMax: z.number().optional(),
+  priceType: PriceTypeSchema,
+  ageRestriction: AgeRestrictionSchema,
+  category: EventCategorySchema,
+  type: EventTypeSchema,
+  performers: z.array(z.string()).optional(),
+  accessibility: z.array(AccessibilityTypeSchema).optional(),
+  accessibilityNotes: z.string().optional(),
+});
+export type EventMetadata = z.infer<typeof EventMetadataSchema>;
+export const EventMetadataSchemaLoose = EventMetadataSchema.extend({
+  source: z.string().optional(),
+  priceType: z.string().optional(),
+  ageRestriction: z.string().optional(),
+  category: z.string().optional(),
+  type: z.string().optional(),
+  accessibility: z.array(z.string()).optional(),
+});
+export type EventMetadataLoose = z.infer<typeof EventMetadataSchemaLoose>;
+
 export interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
@@ -92,7 +121,7 @@ export interface Event {
   endTime?: string; // End time. ALWAYS include, inferring if necessary. Omit ONLY known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
-  metadata: Metadata;
+  eventMetadata: EventMetadata;
 }
 
 export const extractJsonFromResponse = (response: string) => {
@@ -141,7 +170,7 @@ export const addCommonAddToCalendarProps = (events: Event[]) => {
       startTime: event.startTime || undefined,
       endTime: event.endTime || undefined,
       timeZone: event.timeZone,
-      metadata: event.metadata || undefined,
+      eventMetadata: event.eventMetadata || undefined,
     };
   });
 };
@@ -246,10 +275,11 @@ enum AccessibilityTypes {
   "closedCaptioning",
 }
   
-interface Metadata {
+interface EventMetadata {
   mentions?: string[]; // An array of mentions of usernames or handles in the input text, excluding at sign.
   source?: Platform; // The source platform from which the input text was extracted.
-  price?: number; // The cost of the event in dollars.
+  priceMin: number; // The minimum cost of the event in dollars. Use 0 if unknown.
+  priceMax: number; // The maximum cost of the event in dollars. Use 0 if unknown.
   priceType: PriceType;
   ageRestriction: AgeRestriction;
   category: EventCategory;
@@ -268,7 +298,7 @@ interface Event {
   endTime?: string; // Start time, only the time portion (HH:MM:SS) of ISO 8601 format. Do not include the date or time zone. Infer based on start time and event type if not specified. Only omit if known to be an all-day event. CANNOT BE UNKNOWN.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
-  metadata: Metadata;
+  eventMetadata: EventMetadata;
 }
 
 Below, your report, following the JSON schema exactly:`;
@@ -285,7 +315,7 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 
   return {
     text: getText(date, timezoneIANA),
-    version: "v2024.3.28.1",
+    version: "v2024.3.31.1",
   };
 };
 

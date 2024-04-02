@@ -1,7 +1,7 @@
 "use client";
 
 import { atcb_action } from "add-to-calendar-button";
-import { CalendarIcon, CalendarPlus } from "lucide-react";
+import { CalendarPlus } from "lucide-react";
 import { DropdownMenuItem } from "./DropdownMenu";
 import { Button } from "./ui/button";
 import { type AddToCalendarButtonPropsRestricted } from "@/types";
@@ -51,7 +51,7 @@ export function CalendarButton(props: CalendarButtonProps) {
         variant={"secondary"}
         size={"icon"}
       >
-        <CalendarIcon className="size-6" />
+        <CalendarPlus className="size-6" />
       </Button>
     );
   }

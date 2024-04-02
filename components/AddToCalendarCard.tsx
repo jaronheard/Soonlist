@@ -26,12 +26,11 @@ import { useNewEventContext } from "@/context/NewEventContext";
 import {
   EVENT_CATEGORIES,
   EVENT_TYPES,
-  type Metadata,
+  type EventMetadata,
   // PLATFORMS,
   PRICE_TYPE,
-  ACCESSIBILITY_TYPES,
+  ACCESSIBILITY_TYPES_OPTIONS,
 } from "@/lib/prompts";
-import { valuesToOptions } from "@/lib/utils";
 
 export type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
@@ -40,7 +39,7 @@ export type AddToCalendarCardProps = AddToCalendarButtonType & {
   children?: React.ReactNode;
   firstInputRef?: React.RefObject<HTMLInputElement>;
   setAddToCalendarButtonProps?: (props: AddToCalendarButtonType) => void;
-  metadata?: Metadata;
+  eventMetadata?: EventMetadata;
   onUpdate?: (props: AddToCalendarButtonType) => void;
 };
 
@@ -89,31 +88,43 @@ export function AddToCalendarCard({
     initialProps.timeZone || "America/Los_Angeles"
   );
   const [link, setLink] = useState<string>("");
-  const [mentions] = useState<string[]>(initialProps?.metadata?.mentions || []);
-  const [source] = useState<string>(
-    initialProps?.metadata?.source || "unknown"
+  const [mentions] = useState<string[]>(
+    initialProps?.eventMetadata?.mentions || []
   );
-  const [price, setPrice] = useState<number>(
-    initialProps?.metadata?.price || 0
+  const [source] = useState<string>(
+    initialProps?.eventMetadata?.source || "unknown"
+  );
+  const [priceMin, setPriceMin] = useState<number>(
+    initialProps?.eventMetadata?.priceMin || 0
+  );
+  const [priceMax, setPriceMax] = useState<number>(
+    initialProps?.eventMetadata?.priceMax || 0
   );
   const [priceType, setPriceType] = useState<string>(
-    initialProps.metadata?.priceType || "unknown"
+    initialProps.eventMetadata?.priceType || "unknown"
   );
   const [ageRestriction, setAgeRestriction] = useState(
-    (initialProps.metadata?.ageRestriction || "none") as string
+    (initialProps.eventMetadata?.ageRestriction || "none") as string
   );
   const [category, setCategory] = useState(
-    (initialProps?.metadata?.category || "unknown") as string
+    (initialProps?.eventMetadata?.category || "unknown") as string
   );
-  const [type, setType] = useState(initialProps?.metadata?.type || "event");
+  const [type, setType] = useState(
+    initialProps?.eventMetadata?.type || "event"
+  );
   const [performers, setPerformers] = useState(
-    initialProps?.metadata?.performers || []
+    initialProps?.eventMetadata?.performers || []
   );
   const [accessibility, setAccessibility] = useState<
     Record<"value" | "label", string>[]
   >(
-    initialProps?.metadata?.accessibility
-      ? valuesToOptions(initialProps.metadata.accessibility)
+    initialProps?.eventMetadata?.accessibility
+      ? initialProps.eventMetadata.accessibility.map(
+          (value) =>
+            ACCESSIBILITY_TYPES_OPTIONS.find(
+              (option) => option.value === value
+            ) as Record<"value" | "label", string>
+        )
       : []
   );
   const [accessibilityNotes, setAccessibilityNotes] = useState<string>("");
@@ -137,10 +148,11 @@ export function AddToCalendarCard({
     endTime,
     timeZone,
     images,
-    metadata: {
+    eventMetadata: {
       mentions,
       source,
-      price,
+      priceMin,
+      priceMax,
       priceType,
       ageRestriction,
       category,
@@ -333,13 +345,24 @@ export function AddToCalendarCard({
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="price">Price ($)</Label>
+                <Label htmlFor="price">Price Min($)</Label>
                 <Input
                   id="price"
-                  placeholder="Enter price"
-                  value={price}
-                  type="number"
-                  onChange={(e) => setPrice(Number(e.target.value))}
+                  placeholder="Enter lowest possible price"
+                  value={priceMin}
+                  // type="number"
+                  onChange={(e) => setPriceMin(Number(e.target.value))}
+                  className="w-[180px]"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="price">Price Max($)</Label>
+                <Input
+                  id="price"
+                  placeholder="Enter highest possible price"
+                  value={priceMax}
+                  // type="number"
+                  onChange={(e) => setPriceMax(Number(e.target.value))}
                   className="w-[180px]"
                 />
               </div>
@@ -374,7 +397,7 @@ export function AddToCalendarCard({
               <div className="grid gap-2">
                 <Label htmlFor="performers">Accessibility</Label>
                 <MultiSelect
-                  options={valuesToOptions(ACCESSIBILITY_TYPES)}
+                  options={ACCESSIBILITY_TYPES_OPTIONS}
                   selected={accessibility}
                   onChange={setAccessibility}
                 />
@@ -434,6 +457,7 @@ export function AddToCalendarCard({
                 visibility={visibility}
                 lists={lists}
                 event={updatedProps}
+                eventMetadata={updatedProps.eventMetadata}
               />
             )}
             {initialProps.update && initialProps.updateId && (
@@ -443,6 +467,7 @@ export function AddToCalendarCard({
                 visibility={visibility}
                 lists={lists}
                 event={updatedProps}
+                eventMetadata={updatedProps.eventMetadata}
               />
             )}
             <CalendarButton

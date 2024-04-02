@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { EventListItem } from "./EventListItem";
+import { EventListItem } from "./EventDisplays";
 import ListCard from "./ListCard";
 import UserAllEventsCard from "./UserAllEventsCard";
 import { api } from "@/trpc/server";

@@ -23,9 +23,11 @@ import {
   type UpdateEvent,
 } from "@/server/db/types";
 import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
+import { EventMetadataSchemaLoose } from "@/lib/prompts";
 
 const eventCreateSchema = z.object({
   event: AddToCalendarButtonPropsSchema,
+  eventMetadata: EventMetadataSchemaLoose.optional(),
   comment: z.string().optional(),
   lists: z.array(z.record(z.string().trim())),
   visibility: z.enum(["public", "private"]).optional(),
@@ -35,6 +37,7 @@ const eventUpdateSchema = z.object({
   id: z.string(),
   // event infers type of AddToCalendarButtonProps
   event: AddToCalendarButtonPropsSchema,
+  eventMetadata: EventMetadataSchemaLoose.optional(),
   comment: z.string().optional(),
   lists: z.array(z.record(z.string().trim())),
   visibility: z.enum(["public", "private"]).optional(),
@@ -320,7 +323,7 @@ export const eventRouter = createTRPCRouter({
       const roles = sessionClaims?.roles || [];
       const isAdmin = roles?.includes("admin");
 
-      const { event } = input;
+      const { event, eventMetadata } = input;
       const hasComment = input.comment && input.comment.length > 0;
       const hasLists = input.lists && input.lists.length > 0;
       const hasVisibility = input.visibility && input.visibility.length > 0;
@@ -389,6 +392,7 @@ export const eventRouter = createTRPCRouter({
             {
               userId: userId,
               event: event,
+              eventMetadata: eventMetadata,
               startDateTime: startUtcDate,
               endDateTime: endUtcDate,
               ...(hasVisibility && {
@@ -443,7 +447,7 @@ export const eventRouter = createTRPCRouter({
         });
       }
 
-      const { event } = input;
+      const { event, eventMetadata } = input;
       const hasComment = input.comment && input.comment.length > 0;
       const hasLists = input.lists && input.lists.length > 0;
       const hasVisibility = input.visibility && input.visibility.length > 0;
@@ -481,6 +485,7 @@ export const eventRouter = createTRPCRouter({
         userId: userId,
         userName: username || "unknown",
         event: event,
+        eventMetadata: eventMetadata,
         startDateTime: startUtcDate,
         endDateTime: endUtcDate,
         ...(hasVisibility && {
