@@ -29,10 +29,8 @@ import {
   type EventMetadata,
   // PLATFORMS,
   PRICE_TYPE,
-  ACCESSIBILITY_TYPES,
   ACCESSIBILITY_TYPES_OPTIONS,
 } from "@/lib/prompts";
-import { valuesToOptions } from "@/lib/utils";
 
 export type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
