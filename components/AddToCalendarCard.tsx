@@ -30,6 +30,7 @@ import {
   // PLATFORMS,
   PRICE_TYPE,
   ACCESSIBILITY_TYPES,
+  ACCESSIBILITY_TYPES_OPTIONS,
 } from "@/lib/prompts";
 import { valuesToOptions } from "@/lib/utils";
 
@@ -120,7 +121,12 @@ export function AddToCalendarCard({
     Record<"value" | "label", string>[]
   >(
     initialProps?.eventMetadata?.accessibility
-      ? valuesToOptions(initialProps.eventMetadata.accessibility)
+      ? initialProps.eventMetadata.accessibility.map(
+          (value) =>
+            ACCESSIBILITY_TYPES_OPTIONS.find(
+              (option) => option.value === value
+            ) as Record<"value" | "label", string>
+        )
       : []
   );
   const [accessibilityNotes, setAccessibilityNotes] = useState<string>("");
@@ -393,7 +399,7 @@ export function AddToCalendarCard({
               <div className="grid gap-2">
                 <Label htmlFor="performers">Accessibility</Label>
                 <MultiSelect
-                  options={valuesToOptions(ACCESSIBILITY_TYPES)}
+                  options={ACCESSIBILITY_TYPES_OPTIONS}
                   selected={accessibility}
                   onChange={setAccessibility}
                 />

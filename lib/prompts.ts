@@ -77,6 +77,16 @@ export const ACCESSIBILITY_TYPES = [
 ] as const;
 export const AccessibilityTypeSchema = z.enum(ACCESSIBILITY_TYPES);
 export type AccessibilityType = z.infer<typeof AccessibilityTypeSchema>;
+export const ACCESSIBILITY_TYPES_OPTIONS = [
+  { value: "masksRequired", label: "Masks Required" },
+  { value: "masksSuggested", label: "Masks Suggested" },
+  { value: "wheelchairAccessible", label: "Wheelchair Accessible" },
+  {
+    value: "signLanguageInterpretation",
+    label: "Sign Language Interpretation",
+  },
+  { value: "closedCaptioning", label: "Closed Captioning" },
+];
 
 export const EventMetadataSchema = z.object({
   mentions: z.array(z.string()).optional(),
