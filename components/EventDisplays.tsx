@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -15,7 +15,6 @@ import {
   TagIcon,
   Ear,
   Accessibility,
-  Sparkle,
   Sparkles,
   MessageSquareIcon,
 } from "lucide-react";
@@ -344,14 +343,16 @@ function EventMetadataDisplay({
         <Sparkles size={16} className="mr-1" />
         Experimental
       </Badge>
-      <Badge
-        className="absolute -bottom-3 left-1/2 -translate-x-1/2 hover:cursor-pointer"
-        variant={"secondary"}
-        onClick={() => feedback("Event Metadata")}
-      >
-        <MessageSquareIcon size={16} className="mr-1 scale-x-[-1]" />
-        Feedback
-      </Badge>
+      <SignedIn>
+        <Badge
+          className="absolute -bottom-3 left-1/2 -translate-x-1/2 hover:cursor-pointer"
+          variant={"secondary"}
+          onClick={() => feedback("Event Metadata")}
+        >
+          <MessageSquareIcon size={16} className="mr-1 scale-x-[-1]" />
+          Feedback
+        </Badge>
+      </SignedIn>
       <div className="flex flex-col gap-0.5">
         <Label className="flex items-center" htmlFor="category">
           <CalendarIcon className="mr-1.5 size-4" />
@@ -633,6 +634,7 @@ function EventActionButtons({
           />
         </Link>
       </div>
+      <ShareButton type="icon" event={event} id={id} />
       <CalendarButton
         type="icon"
         event={event}
@@ -640,7 +642,6 @@ function EventActionButtons({
         username={user.username}
       />
       {/* <FollowEventDropdownButton eventId={id} following={isFollowing} /> */}
-      <ShareButton type="icon" event={event} id={id} />
       {isOwner && (
         <>
           <EditButton type="icon" userId={user.id} id={id} />

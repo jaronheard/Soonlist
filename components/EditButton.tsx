@@ -27,7 +27,7 @@ export function EditButton(props: EditButtonProps) {
   if (props.type === "icon") {
     return (
       <SignedIn>
-        <Button size={"icon"} asChild>
+        <Button size={"icon"} asChild variant={"secondary"}>
           <Link href={`/event/${props.id}/edit`}>
             <Pencil className="size-6" />
           </Link>
