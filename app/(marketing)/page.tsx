@@ -233,7 +233,7 @@ export default function Page() {
                 href="/explore"
                 className={buttonVariants({ variant: "secondary" })}
               >
-                Explore <ArrowRight className="ml-1 size-4" />
+                Discover Events <ArrowRight className="ml-1 size-4" />
               </Link>
             </div>
           </div>
