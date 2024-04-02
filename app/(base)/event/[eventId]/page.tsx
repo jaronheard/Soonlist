@@ -1,6 +1,6 @@
 import { type Metadata, type ResolvingMetadata } from "next/types";
 import ResetNewEventContext from "./ResetNewEventContext";
-import { Event } from "@/components/Event";
+import { EventPage } from "@/components/EventDisplays";
 import { UserInfo } from "@/components/UserInfo";
 import {
   type AddToCalendarButtonPropsRestricted,
@@ -9,6 +9,7 @@ import {
 import { collapseSimilarEvents } from "@/lib/similarEvents";
 import EventList, { type EventWithUser } from "@/components/EventList";
 import { api } from "@/trpc/server";
+import { type EventMetadata } from "@/lib/prompts";
 
 type Props = {
   params: {
@@ -62,7 +63,8 @@ export default async function Page({ params }: Props) {
     .filter((item) => item.id !== event.id)
     .slice(0, 3);
 
-  const eventData = event?.event as AddToCalendarButtonProps;
+  const eventData = event?.event as AddToCalendarButtonPropsRestricted;
+  const eventMetadata = event?.eventMetadata as EventMetadata;
   const fullImageUrl = eventData.images?.[3];
 
   const possibleDuplicateEvents = (await api.event.getPossibleDuplicates.query({
@@ -79,13 +81,14 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <ResetNewEventContext />
-      <Event
+      <EventPage
         user={event.user}
         eventFollows={event.eventFollows}
         comments={event.comments}
         key={event.id}
         id={event.id}
-        event={event.event as AddToCalendarButtonPropsRestricted}
+        event={eventData}
+        eventMetadata={eventMetadata}
         createdAt={event.createdAt}
         visibility={event.visibility}
         similarEvents={similarEvents}

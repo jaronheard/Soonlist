@@ -5,7 +5,7 @@ import {
   type Event,
   type Comment,
 } from "@/server/db/types";
-import { EventListItem } from "@/components/EventListItem";
+import { EventListItem } from "@/components/EventDisplays";
 import {
   Accordion,
   AccordionItem,

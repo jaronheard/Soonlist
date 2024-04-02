@@ -4,6 +4,7 @@ import { type AddToCalendarButtonProps } from "@/types";
 import ImageUpload from "@/components/ImageUpload";
 import { YourDetails } from "@/components/YourDetails";
 import { api } from "@/trpc/server";
+import { type EventMetadata } from "@/lib/prompts";
 
 export default async function Page({
   params,
@@ -17,6 +18,7 @@ export default async function Page({
   }
 
   const eventData = event.event as AddToCalendarButtonProps;
+  const eventMetadata = event.eventMetadata as EventMetadata;
   const mostRecentComment = event.comments?.findLast(
     (comment) => comment.content
   )?.content;
@@ -36,6 +38,7 @@ export default async function Page({
           <div className="p-4"></div>
           <AddToCalendarCard
             {...eventData}
+            eventMetadata={eventMetadata}
             key={event.id}
             update
             updateId={params.eventId}

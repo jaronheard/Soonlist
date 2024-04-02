@@ -87,6 +87,12 @@ export function getDateTimeInfo(
   timezone: string,
   userTimezone?: string
 ): DateInfo | null {
+  // timezone cannot be "unknown"
+  const timezonePattern = /^((?!unknown).)*$/;
+  if (!timezonePattern.test(timezone)) {
+    console.error("Invalid timezone, assuming America/Los_Angeles.");
+    timezone = "America/Los_Angeles";
+  }
   const zonedDateTime = Temporal.ZonedDateTime.from(
     `${dateString}T${timeString}[${timezone}]`
   );
@@ -371,7 +377,7 @@ export function valueToOption(value: string): { value: string; label: string } {
 }
 
 export function valuesToOptions(
-  values: string[]
+  values: readonly string[]
 ): { value: string; label: string }[] {
   return values.map((value) => valueToOption(value));
 }

@@ -64,3 +64,12 @@ export const boot = (options: Intercom_.IntercomSettings) => {
 export const update = () => {
   window && window.Intercom && window.Intercom("update");
 };
+
+export const newMessage = (text?: string) => {
+  window && window.Intercom && window.Intercom("showNewMessage", text);
+};
+
+export const feedback = (subject: string) => {
+  const newMessageText = `Feedback: ${subject}\n\n`;
+  newMessage(newMessageText);
+};
