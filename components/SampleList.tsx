@@ -8,8 +8,19 @@ export default async function SampleList({ listId }: { listId: string }) {
   if (!list) {
     return <> </>;
   }
-  // limit to 3 events
-  const events = list.eventToLists.slice(-3).map((item) => item.event);
+
+  const events = list.eventToLists
+    .map((item) => item.event)
+    // filter out null events
+    .filter((event) => event.startDateTime)
+    // sort by startDateTime
+    .sort(
+      (a, b) =>
+        new Date(a.startDateTime).getTime() -
+        new Date(b.startDateTime).getTime()
+    )
+    // limit to 3 events
+    .slice(-3);
 
   return (
     <div>

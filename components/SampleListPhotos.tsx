@@ -9,11 +9,24 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
   if (!list) {
     return <> </>;
   }
+
   // limit to 3 events from the end of the array
-  const eventData = list.eventToLists.map(
-    (item) => item.event.event as AddToCalendarButtonProps
-  );
-  const events = eventData.slice(-3);
+  const events = list.eventToLists
+    .map((item) => item.event)
+    // filter out null events
+    .filter((event) => event.startDateTime)
+    // sort by startDateTime
+    .sort(
+      (a, b) =>
+        new Date(a.startDateTime).getTime() -
+        new Date(b.startDateTime).getTime()
+    )
+    // limit to 3 events
+    .slice(-3)
+    // get event as AddToCalendarButtonProps
+    .map((item) => {
+      return item.event as AddToCalendarButtonProps;
+    });
 
   const [firstImage, secondImage, thirdImage] = [
     events[0]?.images?.[3],
