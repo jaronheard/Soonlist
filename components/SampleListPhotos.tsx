@@ -16,7 +16,11 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
     // filter out null events
     .filter((event) => event.startDateTime)
     // sort by startDateTime
-    .sort((a, b) => Number(a.startDateTime) - Number(b.startDateTime))
+    .sort(
+      (a, b) =>
+        new Date(a.startDateTime).getTime() -
+        new Date(b.startDateTime).getTime()
+    )
     // limit to 3 events
     .slice(-3)
     // get event as AddToCalendarButtonProps

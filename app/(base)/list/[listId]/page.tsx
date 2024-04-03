@@ -24,7 +24,13 @@ export async function generateMetadata(
   const events = list.eventToLists
     .map((item) => item.event)
     // filter out null events
-    .filter((event) => event);
+    .filter((event) => event.startDateTime)
+    // sort by startDateTime
+    .sort(
+      (a, b) =>
+        new Date(a.startDateTime).getTime() -
+        new Date(b.startDateTime).getTime()
+    );
 
   const futureEvents = events.filter(
     (event) => event.startDateTime >= new Date()
@@ -57,7 +63,11 @@ export default async function Page({ params }: Props) {
     // filter out null events
     .filter((event) => event.startDateTime)
     // sort by startDateTime
-    .sort((a, b) => Number(a.startDateTime) - Number(b.startDateTime));
+    .sort(
+      (a, b) =>
+        new Date(a.startDateTime).getTime() -
+        new Date(b.startDateTime).getTime()
+    );
 
   const pastEvents = events.filter((item) => item.endDateTime < new Date());
 
