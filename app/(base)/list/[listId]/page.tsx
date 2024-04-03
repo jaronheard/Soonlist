@@ -55,7 +55,9 @@ export default async function Page({ params }: Props) {
   const events = list.eventToLists
     .map((item) => item.event)
     // filter out null events
-    .filter((event) => event);
+    .filter((event) => event.startDateTime)
+    // sort by startDateTime
+    .sort((a, b) => Number(a.startDateTime) - Number(b.startDateTime));
 
   const pastEvents = events.filter((item) => item.endDateTime < new Date());
 
