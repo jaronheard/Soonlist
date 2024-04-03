@@ -14,7 +14,7 @@ export default async function SampleListPhotos({ listId }: { listId: string }) {
   const events = list.eventToLists
     .map((item) => item.event)
     // filter out null events
-    .filter((event) => event.startDateTime)
+    .filter((event) => event?.startDateTime)
     // sort by startDateTime
     .sort(
       (a, b) =>
