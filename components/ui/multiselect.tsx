@@ -28,6 +28,7 @@ interface MultiSelectProps {
     React.SetStateAction<Record<"value" | "label", string>[]>
   >;
   AdditionalPopoverAction?: React.FC;
+  side?: "top" | "right" | "bottom" | "left";
   className?: string;
   placeholder?: string;
 }
@@ -40,6 +41,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
       onChange,
       className,
       AdditionalPopoverAction,
+      side = "top",
       ...props
     },
     ref
@@ -125,7 +127,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
             <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0">
+        <PopoverContent className="w-full p-0" side={side}>
           <Command className={className}>
             <CommandInput placeholder="Search ..." />
             <CommandEmpty>No item found.</CommandEmpty>
