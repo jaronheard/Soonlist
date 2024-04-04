@@ -369,6 +369,11 @@ export default function ImageCropperSmall({
                   preview: true,
                 },
               },
+              styles: {
+                colors: {
+                  primary: "#5A32FB",
+                },
+              },
             }}
             onComplete={(files) => {
               if (files.length > 0) {

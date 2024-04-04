@@ -12,7 +12,7 @@ const widgetOptions = {
   showFinishButton: true,
   styles: {
     colors: {
-      primary: "rgb(17, 24, 39)",
+      primary: "#5A32FB",
     },
   },
   editor: {
