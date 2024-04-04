@@ -3,26 +3,9 @@ import { UploadDropzone } from "@bytescale/upload-widget-react";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { TimezoneContext } from "@/context/TimezoneContext";
+import { bytescaleWidgetOptions } from "@/components/ImageUpload";
 
-const widgetOptions = {
-  apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
-  maxFileCount: 1,
-  showFinishButton: true,
-  styles: {
-    colors: {
-      primary: "#5A32FB",
-    },
-    fontFamilies: {
-      base: "var(--font-plex-sans)",
-    },
-  },
-  editor: {
-    images: {
-      crop: false,
-      preview: false,
-    },
-  },
-};
+const widgetOptions = { ...bytescaleWidgetOptions, showFinishButton: true };
 
 export const UploadImageForProcessingButton = () => {
   const router = useRouter();

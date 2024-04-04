@@ -16,6 +16,7 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { cn, extractFilePath } from "@/lib/utils";
+import { bytescaleWidgetOptions } from "@/components/ImageUpload";
 
 function buildDefaultUrl(filePath: string) {
   return Bytescale.UrlBuilder.url({
@@ -361,23 +362,7 @@ export default function ImageCropperSmall({
             </Button>
           )}
           <UploadButton
-            options={{
-              apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
-              editor: {
-                images: {
-                  crop: true,
-                  preview: true,
-                },
-              },
-              styles: {
-                colors: {
-                  primary: "#5A32FB",
-                },
-                fontFamilies: {
-                  base: "var(--font-plex-sans)",
-                },
-              },
-            }}
+            options={bytescaleWidgetOptions}
             onComplete={(files) => {
               if (files.length > 0) {
                 // push the file path to the search params
