@@ -1,9 +1,7 @@
 "use client";
-import { UploadButton } from "@bytescale/upload-widget-react";
+import { UploadDropzone } from "@bytescale/upload-widget-react";
 import { useRouter } from "next/navigation";
-import { Image as ImageIcon } from "lucide-react";
 import { useContext } from "react";
-import { Button } from "@/components/ui/button";
 import { TimezoneContext } from "@/context/TimezoneContext";
 
 const widgetOptions = {
@@ -30,7 +28,7 @@ export const UploadImageForProcessingButton = () => {
   const router = useRouter();
   const { timezone } = useContext(TimezoneContext);
   return (
-    <UploadButton
+    <UploadDropzone
       options={widgetOptions}
       onComplete={(files) => {
         if (files.length > 0) {
@@ -40,12 +38,6 @@ export const UploadImageForProcessingButton = () => {
           }
         }
       }}
-    >
-      {({ onClick }) => (
-        <Button className="w-full" onClick={onClick}>
-          <ImageIcon className="mr-2 size-4" /> Upload Image
-        </Button>
-      )}
-    </UploadButton>
+    ></UploadDropzone>
   );
 };
