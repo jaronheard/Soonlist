@@ -7,7 +7,16 @@ import { api } from "@/trpc/react";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { blankEvent } from "@/lib/utils";
 
-export default function NewEventFromRawText({
+const queryOptions = {
+  // don't refetch on mount, window focus, or reconnect
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+  // stale time of 1 day
+  staleTime: 1000 * 60 * 60 * 24,
+};
+
+export default function EventsFromRawText({
   rawText,
   timezone,
 }: {
@@ -19,14 +28,7 @@ export default function NewEventFromRawText({
       rawText,
       timezone,
     },
-    {
-      // don't refetch on mount, window focus, or reconnect
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      // stale time of 1 day
-      staleTime: 1000 * 60 * 60 * 24,
-    }
+    queryOptions
   );
 
   const { events, response } = fromRawText.data ?? {};
@@ -48,11 +50,9 @@ export default function NewEventFromRawText({
   if (events.length >= 0) {
     return (
       <div className="flex flex-wrap items-center gap-8">
-        {events.length > 0 &&
-          events?.map((props) => (
-            <NewEventPreview key={props.name} {...props} />
-          ))}
-        {events.length === 0 && <></>}
+        {events?.map((props) => (
+          <NewEventPreview key={props.name} {...props} />
+        ))}
       </div>
     );
   }

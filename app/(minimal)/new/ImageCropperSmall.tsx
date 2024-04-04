@@ -16,15 +16,10 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { cn, extractFilePath } from "@/lib/utils";
-import { bytescaleWidgetOptions } from "@/components/ImageUpload";
-
-function buildDefaultUrl(filePath: string) {
-  return Bytescale.UrlBuilder.url({
-    accountId: "12a1yek",
-    filePath: filePath,
-    options: {},
-  });
-}
+import {
+  buildDefaultUrl,
+  bytescaleWidgetOptions,
+} from "@/components/ImageUpload";
 
 const buildCroppedUrl = (
   filePath: string,
@@ -194,10 +189,8 @@ export default function ImageCropperSmall({
         setIsImageLoading(false);
       };
 
-      if (prevImageUrlRef.current !== imageUrl) {
-        setIsImageLoading(true);
-        imageElement.addEventListener("load", handleLoad);
-      }
+      setIsImageLoading(true);
+      imageElement.addEventListener("load", handleLoad);
 
       // Check if image is already loaded (cached images)
       if (imageElement.complete && imageElement.naturalWidth) {
@@ -233,7 +226,7 @@ export default function ImageCropperSmall({
       setCroppedImagesUrls(cropUrls);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isImageLoading]);
+  }, [isImageLoading, hasNaturalDimensions]);
 
   const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
     if (!hasNaturalDimensions) {

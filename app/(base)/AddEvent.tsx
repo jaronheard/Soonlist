@@ -6,8 +6,6 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Download, Share, Sparkles } from "lucide-react";
 import { UploadImageForProcessingButton } from "./UploadImageForProcessingButton";
-import { YourDetails } from "@/components/YourDetails";
-import ImageUpload from "@/components/ImageUpload";
 import { Form } from "@/components/Form";
 import { Output } from "@/components/Output";
 import { cn, getLastMessages } from "@/lib/utils";
@@ -21,9 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { TimezoneContext } from "@/context/TimezoneContext";
-import { type List } from "@/server/db/types";
 import { addCommonAddToCalendarPropsFromResponse } from "@/lib/prompts";
 
 function Code({
@@ -45,7 +41,7 @@ function Code({
   );
 }
 
-export default function AddEvent({ lists }: { lists?: List[] }) {
+export default function AddEvent() {
   // State variables
   const [finished, setFinished] = useState(false);
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);
@@ -195,13 +191,6 @@ export default function AddEvent({ lists }: { lists?: List[] }) {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="p-4"></div>
-      <YourDetails lists={lists || undefined} />
-      <div className="p-4"></div>
-      <ImageUpload />
-      <div className="p-4"></div>
-      {isLoading && <AddToCalendarCardSkeleton />}
-      <Output events={events} finished={finished} setEvents={setEvents} />
     </div>
   );
 }

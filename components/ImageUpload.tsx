@@ -17,6 +17,14 @@ import { Button } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { cn, extractFilePath } from "@/lib/utils";
 
+export function buildDefaultUrl(filePath: string) {
+  return Bytescale.UrlBuilder.url({
+    accountId: "12a1yek",
+    filePath: filePath,
+    options: {},
+  });
+}
+
 export const bytescaleWidgetOptions = {
   apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
   editor: {
@@ -50,14 +58,6 @@ export const bytescaleWidgetOptions = {
     },
   },
 };
-
-function buildDefaultUrl(filePath: string) {
-  return Bytescale.UrlBuilder.url({
-    accountId: "12a1yek",
-    filePath: filePath,
-    options: {},
-  });
-}
 
 const buildCroppedUrl = (
   filePath: string,

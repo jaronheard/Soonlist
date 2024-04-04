@@ -14,7 +14,6 @@ const config = {
 const openai = new OpenAI(config);
 
 export const aiRouter = createTRPCRouter({
-  // This is a public procedure, meaning it can be called by anyone
   eventFromRawText: protectedProcedure
     .input(
       z.object({
@@ -39,6 +38,53 @@ export const aiRouter = createTRPCRouter({
           {
             role: "user",
             content: input.rawText,
+          },
+          { role: "system", content: prompt.text },
+        ],
+      });
+
+      const choice = res.choices[0];
+      if (!choice) {
+        throw new Error("No response from OpenAI (choices[0])");
+      }
+      const response = choice.message.content;
+      if (!response) {
+        throw new Error("No response from OpenAI (choice.message.content)");
+      }
+
+      const events = addCommonAddToCalendarPropsFromResponse(response);
+      return { events, response };
+    }),
+  eventFromImage: protectedProcedure
+    .input(
+      z.object({
+        imageUrl: z.string(),
+        timezone: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const system = getSystemMessage();
+      const prompt = getPrompt(input.timezone);
+
+      const res = await openai.chat.completions.create({
+        model: "gpt-4-vision-preview",
+        max_tokens: 1000,
+        seed: 42069,
+        messages: [
+          {
+            role: "system",
+            content: system.text,
+          },
+          {
+            role: "user",
+            content: [
+              {
+                type: "image_url",
+                image_url: {
+                  url: input.imageUrl,
+                },
+              },
+            ],
           },
           { role: "system", content: prompt.text },
         ],

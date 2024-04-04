@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { TimezoneContext } from "@/context/TimezoneContext";
 import { bytescaleWidgetOptions } from "@/components/ImageUpload";
 
-const widgetOptions = { ...bytescaleWidgetOptions, showFinishButton: true };
+const widgetOptions = { ...bytescaleWidgetOptions };
 
 export const UploadImageForProcessingButton = () => {
   const router = useRouter();
@@ -13,9 +13,9 @@ export const UploadImageForProcessingButton = () => {
   return (
     <UploadDropzone
       options={widgetOptions}
-      onComplete={(files) => {
-        if (files.length > 0) {
-          const filePath = files[0]?.filePath;
+      onUpdate={({ uploadedFiles }) => {
+        if (uploadedFiles.length > 0) {
+          const filePath = uploadedFiles[0]?.filePath;
           if (filePath) {
             router.push(`/new?filePath=${filePath}&timezone=${timezone}`);
           }
