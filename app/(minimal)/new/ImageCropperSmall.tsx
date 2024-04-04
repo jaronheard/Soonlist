@@ -373,6 +373,9 @@ export default function ImageCropperSmall({
                 colors: {
                   primary: "#5A32FB",
                 },
+                fontFamilies: {
+                  base: "var(--font-plex-sans)",
+                },
               },
             }}
             onComplete={(files) => {
