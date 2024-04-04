@@ -18,7 +18,6 @@ import {
   Sparkles,
   MessageSquareIcon,
 } from "lucide-react";
-import * as Bytescale from "@bytescale/sdk";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import { CalendarButton } from "./CalendarButton";
@@ -32,6 +31,7 @@ import PersonalNote from "./PersonalNote";
 import UserAllEventsCard from "./UserAllEventsCard";
 import ListCard from "./ListCard";
 import { FollowEventButton } from "./FollowButtons";
+import { buildDefaultUrl } from "./ImageUpload";
 import {
   type User,
   type EventFollow,
@@ -53,14 +53,6 @@ import { type SimilarityDetails } from "@/lib/similarEvents";
 import { TimezoneContext } from "@/context/TimezoneContext";
 import { type EventMetadata as EventMetadataDisplay } from "@/lib/prompts";
 import { feedback } from "@/lib/intercom/intercom";
-
-function buildDefaultUrl(filePath: string) {
-  return Bytescale.UrlBuilder.url({
-    accountId: "12a1yek",
-    filePath: filePath,
-    options: {},
-  });
-}
 
 type EventListItemProps = {
   variant?: "card";

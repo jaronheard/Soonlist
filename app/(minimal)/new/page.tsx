@@ -15,7 +15,7 @@ const EventsFromImage = dynamic(() => import("./EventsFromImage"), {
   ssr: false,
 });
 
-const EventFromRawText = dynamic(() => import("./EventFromRawText"), {
+const EventFromRawText = dynamic(() => import("./EventsFromRawText"), {
   ssr: false,
 });
 
