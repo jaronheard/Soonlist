@@ -8,12 +8,12 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { userFollows, users } from "@/server/db/schema";
+import { userAdditionalInfoSchema } from "@/lib/schemas";
 import {
-  Goals,
-  goalSchema,
-  userAdditionalInfoSchema,
   userGoalsSchema,
-} from "@/lib/schemas";
+  goalSchema,
+  goalsToFruits,
+} from "@/lib/goalsAndFruit";
 
 export const userRouter = createTRPCRouter({
   getById: publicProcedure
@@ -185,12 +185,38 @@ export const userRouter = createTRPCRouter({
       }
       const goals = user.goals || {};
       goals[input.goal] = true;
-      return ctx.db
+      console.log(input.goal);
+      console.log(goalsToFruits);
+      console.log(goalsToFruits[input.goal]);
+      const fruitToIncrement = goalsToFruits[input.goal].key;
+      console.log("fruitToIncrement", fruitToIncrement);
+      const fruits = user.fruits || {};
+      fruits[fruitToIncrement] = (fruits[fruitToIncrement] || 0) + 1;
+      const updateUser = await ctx.db
         .update(users)
         .set({
           goals,
+          fruits,
         })
         .where(eq(users.id, userId));
+      if (!updateUser) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "update user failed",
+        });
+      }
+      const updatedUser = await ctx.db.query.users
+        .findMany({
+          where: eq(users.id, userId),
+        })
+        .then((users) => users[0] || null);
+      if (!updatedUser) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No updatedUser found",
+        });
+      }
+      return updatedUser;
     }),
   // getTopUsersByUpcomingEvents: publicProcedure
   //   .input(z.object({ limit: z.number() }))

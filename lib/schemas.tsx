@@ -16,33 +16,3 @@ export const userAdditionalInfoSchema = z.object({
     .max(1083, "Website url must be 2083 characters or less")
     .optional(),
 });
-
-export const GOALS = [
-  "hasBio",
-  "hasContact",
-  "createdEvent",
-  "createdList",
-  "addedEventToList",
-  "sharedEvent",
-  "sharedList",
-  "savedEvent",
-  "savedList",
-  "referredFriend",
-] as const;
-
-export const goalSchema = z.enum(GOALS);
-export type Goal = z.infer<typeof goalSchema>;
-
-export const userGoalsSchema = z.object({
-  hasBio: z.boolean().optional(),
-  hasContact: z.boolean().optional(),
-  createdEvent: z.boolean().optional(),
-  createdList: z.boolean().optional(),
-  addedEventToList: z.boolean().optional(),
-  sharedEvent: z.boolean().optional(),
-  sharedList: z.boolean().optional(),
-  savedEvent: z.boolean().optional(),
-  savedList: z.boolean().optional(),
-  referredFriend: z.boolean().optional(),
-});
-export type Goals = z.infer<typeof userGoalsSchema>;
