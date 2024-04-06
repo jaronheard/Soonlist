@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 
 import { currentUser } from "@clerk/nextjs";
+import { FruitDisplay } from "./FruitDisplay";
 import FruitEmojiGoals from "@/components/FruitEmojiGoals";
 import { api } from "@/trpc/server";
-import { FRUITS, fruits } from "@/lib/goalsAndFruit";
 import { UserInfo } from "@/components/UserInfo";
 import Logo from "@/components/Logo";
 
@@ -32,22 +32,7 @@ export default async function Page() {
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-8 bg-gradient-to-br from-accent-yellow to-background p-4">
       <Logo />
       <UserInfo userId={user.id} variant="default" />
-      <div className="mx-auto max-w-2xl">
-        <div className="flex flex-wrap justify-center gap-4">
-          {FRUITS.map((fruit) => {
-            const count = user?.fruits?.[fruit] || 0;
-            const emojis = Array(count).fill(fruits[fruit].emoji);
-            return emojis.map((emoji, index) => (
-              <div
-                key={`${fruit}-${index}`}
-                className="cursor-pointer rounded-full bg-transparent p-4 transition duration-300 ease-in-out hover:scale-125"
-              >
-                <div className="text-4xl">{emoji}</div>
-              </div>
-            ));
-          })}
-        </div>
-      </div>
+      <FruitDisplay user={user} />
     </div>
     // <>
     //   {/* display total of each fruit */}
