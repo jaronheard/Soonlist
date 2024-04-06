@@ -16,14 +16,10 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { cn, extractFilePath } from "@/lib/utils";
-
-function buildDefaultUrl(filePath: string) {
-  return Bytescale.UrlBuilder.url({
-    accountId: "12a1yek",
-    filePath: filePath,
-    options: {},
-  });
-}
+import {
+  buildDefaultUrl,
+  bytescaleWidgetOptions,
+} from "@/components/ImageUpload";
 
 const buildCroppedUrl = (
   filePath: string,
@@ -193,10 +189,8 @@ export default function ImageCropperSmall({
         setIsImageLoading(false);
       };
 
-      if (prevImageUrlRef.current !== imageUrl) {
-        setIsImageLoading(true);
-        imageElement.addEventListener("load", handleLoad);
-      }
+      setIsImageLoading(true);
+      imageElement.addEventListener("load", handleLoad);
 
       // Check if image is already loaded (cached images)
       if (imageElement.complete && imageElement.naturalWidth) {
@@ -232,7 +226,7 @@ export default function ImageCropperSmall({
       setCroppedImagesUrls(cropUrls);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isImageLoading]);
+  }, [isImageLoading, hasNaturalDimensions]);
 
   const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
     if (!hasNaturalDimensions) {
@@ -361,15 +355,7 @@ export default function ImageCropperSmall({
             </Button>
           )}
           <UploadButton
-            options={{
-              apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
-              editor: {
-                images: {
-                  crop: true,
-                  preview: true,
-                },
-              },
-            }}
+            options={bytescaleWidgetOptions}
             onComplete={(files) => {
               if (files.length > 0) {
                 // push the file path to the search params

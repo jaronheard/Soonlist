@@ -17,13 +17,47 @@ import { Button } from "@/components/ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { cn, extractFilePath } from "@/lib/utils";
 
-function buildDefaultUrl(filePath: string) {
+export function buildDefaultUrl(filePath: string) {
   return Bytescale.UrlBuilder.url({
     accountId: "12a1yek",
     filePath: filePath,
     options: {},
   });
 }
+
+export const bytescaleWidgetOptions = {
+  apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
+  editor: {
+    images: {
+      crop: true,
+      preview: true,
+    },
+  },
+  mimeTypes: [
+    "image/avif",
+    "image/bmp",
+    "image/gif",
+    "image/heic",
+    "image/heif",
+    "image/jpeg",
+    "image/jp2",
+    "image/jpeg",
+    "image/jpx",
+    "image/png",
+    "application/octet-stream",
+    "image/svg+xml",
+    "image/tiff",
+    "image/webp",
+  ],
+  styles: {
+    colors: {
+      primary: "#5A32FB",
+    },
+    fontFamilies: {
+      base: "var(--font-plex-sans)",
+    },
+  },
+};
 
 const buildCroppedUrl = (
   filePath: string,
@@ -334,15 +368,7 @@ export default function ImageUpload({
           </Button>
         )}
         <UploadButton
-          options={{
-            apiKey: "public_12a1yekATNiLj4VVnREZ8c7LM8V8",
-            editor: {
-              images: {
-                crop: true,
-                preview: true,
-              },
-            },
-          }}
+          options={bytescaleWidgetOptions}
           onComplete={(files) => {
             if (files.length > 0) {
               // push the file path to the search params

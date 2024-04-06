@@ -1,15 +1,21 @@
 import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
-import EventsFromImage from "./EventsFromImage";
+import Link from "next/link";
+import { X } from "lucide-react";
 import { ProgressStages } from "./ProgressStages";
 import ImageUpload from "@/components/ImageUpload";
 import { YourDetails } from "@/components/YourDetails";
 import AddEvent from "@/app/(base)/AddEvent";
-import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { api } from "@/trpc/server";
+import { Button } from "@/components/ui/button";
+import Logo from "@/components/Logo";
 
-const EventFromRawText = dynamic(() => import("./EventFromRawText"), {
+const EventsFromImage = dynamic(() => import("./EventsFromImage"), {
+  ssr: false,
+});
+
+const EventFromRawText = dynamic(() => import("./EventsFromRawText"), {
   ssr: false,
 });
 
@@ -55,16 +61,16 @@ export default async function Page({ searchParams }: Props) {
   // image only
   if (searchParams.filePath && !searchParams.rawText) {
     return (
-      <div className="flex w-full flex-col items-center gap-8">
-        <YourDetails lists={lists || undefined} />
-        <ImageUpload filePath={searchParams.filePath} />
-        <Suspense fallback={<AddToCalendarCardSkeleton />}>
+      <ProgressStages
+        filePath={searchParams.filePath}
+        lists={lists || undefined}
+        Preview={
           <EventsFromImage
             timezone={timezone}
             filePath={searchParams.filePath}
           />
-        </Suspense>
-      </div>
+        }
+      ></ProgressStages>
     );
   }
 
@@ -86,9 +92,28 @@ export default async function Page({ searchParams }: Props) {
 
   // default
   return (
-    <div className="flex w-full flex-col items-center gap-8">
-      <YourDetails lists={lists || undefined} />
-      <AddEvent />
-    </div>
+    <>
+      <header className="fixed inset-x-0 top-2 z-10 flex flex-col items-center justify-center">
+        <Button
+          asChild
+          className="absolute -top-2 right-0"
+          variant={"ghost"}
+          size={"icon"}
+        >
+          <Link href="/">
+            <X />
+          </Link>
+        </Button>
+        <div className="absolute top-0 z-20 flex flex-col items-center">
+          <Logo className="origin-top scale-50" />
+          <h1 className="-mt-2 hidden font-heading text-2.5xl font-bold leading-9 tracking-wide text-gray-700 lg:block">
+            Add Event
+          </h1>
+        </div>
+      </header>
+      <div className="flex w-full flex-col items-center gap-8 pt-4">
+        <AddEvent />
+      </div>
+    </>
   );
 }
