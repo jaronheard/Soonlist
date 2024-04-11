@@ -2,7 +2,6 @@
 
 import { currentUser } from "@clerk/nextjs";
 import { FruitDisplay } from "./FruitDisplay";
-import FruitEmojiGoals from "@/components/FruitEmojiGoals";
 import { api } from "@/trpc/server";
 import { UserInfo } from "@/components/UserInfo";
 import Logo from "@/components/Logo";
@@ -34,18 +33,5 @@ export default async function Page() {
       <UserInfo userId={user.id} variant="default" />
       <FruitDisplay user={user} />
     </div>
-    // <>
-    //   {/* display total of each fruit */}
-    //   <h1>Total Fruit</h1>
-    //   <div className="w-[10ch] break-all text-6xl">
-    //     {FRUITS.map((fruit) => {
-    //       const count = user?.fruits?.[fruit] || 0;
-    //       const emojis = fruits[fruit].emoji.repeat(count);
-    //       return emojis;
-    //     }).join("")}
-    //   </div>
-    //   {/* display goals */}
-    //   <FruitEmojiGoals goals={user?.goals || {}} />;
-    // </>
   );
 }

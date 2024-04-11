@@ -4,6 +4,13 @@ import { useState } from "react";
 import { FRUITS, fruits } from "@/lib/goalsAndFruit";
 import { type User } from "@/server/db/types";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function FruitDisplay({ user }: { user: User }) {
   const [randomizedFruits, setRandomizedFruits] = useState<string[]>([]);
@@ -45,10 +52,19 @@ export function FruitDisplay({ user }: { user: User }) {
   return (
     <div className="relative mx-auto max-w-2xl pb-16">
       <div className="mb-4 flex justify-center space-x-4">
-        {/* total number of fruit */}
-        <Button onClick={() => null} variant="outline" size="icon">
-          {totalFruitCount}
-        </Button>
+        <Dialog>
+          <DialogTrigger>
+            <Button variant="outline" size="icon">
+              {totalFruitCount}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-background">
+            <DialogHeader>
+              <DialogTitle>You have {totalFruitCount} fruit</DialogTitle>
+              <FruitChart user={user} />
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
         <Button onClick={handleRandomize}>Randomize</Button>
         <Button onClick={handleShare} variant={"secondary"}>
           Share
@@ -77,6 +93,35 @@ export function FruitDisplay({ user }: { user: User }) {
               </div>
             ))}
       </div>
+      <FruitChart user={user} />
+    </div>
+  );
+}
+
+function FruitChart({ user }: { user: User }) {
+  return (
+    <div className="mt-8">
+      {FRUITS.map((fruit) => {
+        const count = user?.fruits?.[fruit] || 0;
+        const maxCount = FRUITS.reduce((max, fruit) => {
+          const count = user?.fruits?.[fruit] || 0;
+          return Math.max(max, count);
+        }, 0);
+        const percentage = (count / (maxCount + 10)) * 100;
+
+        return (
+          <div key={fruit} className="mb-4 flex items-center">
+            <div className="mr-2 text-2xl">{fruits[fruit].emoji}</div>
+            <div className="w-full overflow-hidden rounded-full bg-gray-200">
+              <div
+                className="h-4 rounded-full bg-primary transition-all duration-500 ease-in-out"
+                style={{ width: `${percentage}%` }}
+              ></div>
+            </div>
+            <div className="ml-2 text-lg font-bold">{count}</div>
+          </div>
+        );
+      })}
     </div>
   );
 }
