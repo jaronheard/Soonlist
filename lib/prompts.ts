@@ -192,9 +192,10 @@ Above, I pasted a text or image from which to extract calendar event details for
 You will
 1. Identify the event details that need to be captured.
 2. Identify the platform from which the input text was extracted, and extract all usernames @-mentioned.
-3. Extract and format these details into a JSON response, strictly following the schema below. JSON comments are not allowed.
+3. Extract and format these details into a valid JSON response, strictly following the schema below. 
 4. Infer any missing information based on event context, type, or general conventions.
-5. Write your JSON response by summarizing the event details from the provided data or your own inferred knowledge. Your response must be detailed, specific, and directly relevant to the JSON schema requirements.
+5. NO COMMENTS ALLOWED in the JSON response, only the required fields and values.
+6. Write your JSON response by summarizing the event details from the provided data or your own inferred knowledge. Your response must be detailed, specific, and directly relevant to the JSON schema requirements.
 
 Your answer should be fact-filled and SPECIFIC, providing information like ticket prices, main attractions, performers/speakers, registration link, contact information, official hashtags age restrictions, dress code, amenities available, sponsors.
 Stylistically write as though a Professor or The Economist would, in short, approachable, and professional language.
