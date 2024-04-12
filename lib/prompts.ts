@@ -16,9 +16,9 @@ export const AgeRestrictionSchema = z.enum(AGE_RESTRICTIONS);
 export type AgeRestriction = z.infer<typeof AgeRestrictionSchema>;
 
 export const PRICE_TYPE = [
+  "donation",
   "free",
   "notaflof",
-  "donation",
   "paid",
   "unknown",
 ] as const;
@@ -26,66 +26,66 @@ export const PriceTypeSchema = z.enum(PRICE_TYPE);
 export type PriceType = z.infer<typeof PriceTypeSchema>;
 
 export const EVENT_CATEGORIES = [
-  "music",
   "arts",
-  "food",
-  "sports",
   "business",
-  "tech",
+  "civic",
+  "community",
+  "culture",
   "education",
   "entertainment",
+  "food",
   "health",
   "lifestyle",
   "literature",
-  "science",
+  "music",
   "religion",
-  "community",
-  "civic",
-  "culture",
+  "science",
+  "sports",
+  "tech",
   "unknown",
 ] as const;
 export const EventCategorySchema = z.enum(EVENT_CATEGORIES);
 export type EventCategory = z.infer<typeof EventCategorySchema>;
 
 export const EVENT_TYPES = [
-  "concert",
-  "festival",
-  "conference",
-  "seminar",
-  "workshop",
-  "webinar",
-  "meeting",
-  "party",
-  "show",
-  "performance",
-  "exhibition",
-  "competition",
-  "game",
   "action",
+  "competition",
+  "concert",
+  "conference",
+  "exhibition",
+  "festival",
+  "game",
+  "meeting",
   "opening",
+  "party",
+  "performance",
+  "seminar",
+  "show",
   "unknown",
+  "webinar",
+  "workshop",
 ] as const;
 export const EventTypeSchema = z.enum(EVENT_TYPES);
 export type EventType = z.infer<typeof EventTypeSchema>;
 
 export const ACCESSIBILITY_TYPES = [
+  "closedCaptioning",
   "masksRequired",
   "masksSuggested",
-  "wheelchairAccessible",
   "signLanguageInterpretation",
-  "closedCaptioning",
+  "wheelchairAccessible",
 ] as const;
 export const AccessibilityTypeSchema = z.enum(ACCESSIBILITY_TYPES);
 export type AccessibilityType = z.infer<typeof AccessibilityTypeSchema>;
 export const ACCESSIBILITY_TYPES_OPTIONS = [
+  { value: "closedCaptioning", label: "Closed Captioning" },
   { value: "masksRequired", label: "Masks Required" },
   { value: "masksSuggested", label: "Masks Suggested" },
-  { value: "wheelchairAccessible", label: "Wheelchair Accessible" },
   {
     value: "signLanguageInterpretation",
     label: "Sign Language Interpretation",
   },
-  { value: "closedCaptioning", label: "Closed Captioning" },
+  { value: "wheelchairAccessible", label: "Wheelchair Accessible" },
 ];
 
 export const EventMetadataSchema = z.object({
