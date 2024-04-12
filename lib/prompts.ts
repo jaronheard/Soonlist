@@ -28,7 +28,6 @@ export type PriceType = z.infer<typeof PriceTypeSchema>;
 export const EVENT_CATEGORIES = [
   "arts",
   "business",
-  "civic",
   "community",
   "culture",
   "education",
@@ -48,7 +47,6 @@ export const EventCategorySchema = z.enum(EVENT_CATEGORIES);
 export type EventCategory = z.infer<typeof EventCategorySchema>;
 
 export const EVENT_TYPES = [
-  "action",
   "competition",
   "concert",
   "conference",
@@ -229,42 +227,40 @@ enum PriceType {
 }
 
 enum EventCategory {
-  "music",
   "arts",
-  "food",
-  "sports",
   "business",
-  "tech",
+  "community",
+  "culture",
   "education",
   "entertainment",
+  "food",
   "health",
   "lifestyle",
   "literature",
-  "science",
+  "music",
   "religion",
-  "community",
-  "civic",
-  "culture",
+  "science",
+  "sports",
+  "tech",
   "unknown",
 }
 
 enum EventType {
-  "concert",
-  "festival",
-  "conference",
-  "seminar",
-  "workshop",
-  "webinar",
-  "meeting",
-  "party",
-  "show",
-  "performance",
-  "exhibition",
   "competition",
+  "concert",
+  "conference",
+  "exhibition",
+  "festival",
   "game",
-  "action",
+  "meeting",
   "opening",
+  "party",
+  "performance",
+  "seminar",
+  "show",
   "unknown",
+  "webinar",
+  "workshop",
 }
 
 enum AccessibilityTypes {
