@@ -218,7 +218,7 @@ function EventDetailsCard({
         <Link
           href={`/event/${id}`}
           className={
-            "line-clamp-2 pr-12 text-2xl font-bold leading-9 tracking-wide text-interactive-1"
+            "line-clamp-3 pr-12 text-2xl font-bold leading-9 tracking-wide text-interactive-1"
           }
         >
           {name}
@@ -506,7 +506,7 @@ function EventDetails({
         <Link
           href={preview ? "" : `/event/${id}`}
           className={
-            "line-clamp-2 pr-12 text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
+            "line-clamp-3 pr-12 text-2.5xl font-bold leading-9 tracking-[0.56px] text-neutral-1"
           }
         >
           {name}
