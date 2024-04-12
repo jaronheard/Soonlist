@@ -2,6 +2,7 @@
 
 import EventsError from "./EventsError";
 import { EventPreviewLoadingSpinner } from "./EventPreviewLoadingSpinner";
+import { NewEventPreview } from "./NewEventPreview";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { blankEvent } from "@/lib/utils";
 import { buildDefaultUrl } from "@/components/ImageUpload";
@@ -52,9 +53,9 @@ export default function EventsFromImage({
 
   if (events.length >= 0) {
     return (
-      <div className="flex flex-wrap justify-center gap-8">
+      <div className="flex flex-wrap items-center gap-8">
         {events?.map((props) => (
-          <AddToCalendarCard {...props} key={props.name} />
+          <NewEventPreview key={props.name} {...props} />
         ))}
       </div>
     );
