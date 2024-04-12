@@ -311,7 +311,7 @@ export const getPrompt = (timezone = "America/Los_Angeles") => {
 
   return {
     text: getText(date, timezoneIANA),
-    version: "v2024.4.13.1",
+    version: "v2024.4.13.2",
   };
 };
 
