@@ -20,6 +20,7 @@ import {
 } from "./ui/select";
 import { InputTags } from "./ui/input-tags";
 import { MultiSelect } from "./ui/multiselect";
+import { Button } from "./ui/button";
 import { useCroppedImageContext } from "@/context/CroppedImageContext";
 import { useNewEventContext } from "@/context/NewEventContext";
 
@@ -31,6 +32,7 @@ import {
   PRICE_TYPE,
   ACCESSIBILITY_TYPES_OPTIONS,
 } from "@/lib/prompts";
+import { feedback } from "@/lib/intercom/intercom";
 
 export type AddToCalendarCardProps = AddToCalendarButtonType & {
   update?: boolean;
@@ -291,38 +293,60 @@ export function AddToCalendarCard({
             <CardContent className="flex flex-col gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="type">Event Type</Label>
-                <Select name="type" value={type} onValueChange={setType}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {EVENT_TYPES.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        <span className="capitalize">{type}</span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center justify-between">
+                  <Select name="type" value={type} onValueChange={setType}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {EVENT_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          <span className="capitalize">{type}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size={"sm"}
+                    className="ml-2 h-12"
+                    onClick={() => feedback("Suggested Event Type")}
+                  >
+                    Add
+                  </Button>
+                </div>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="category">Category</Label>
-                <Select
-                  defaultValue="unknown"
-                  name="category"
-                  value={category}
-                  onValueChange={setCategory}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {EVENT_CATEGORIES.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        <span className="capitalize">{category}</span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center justify-between">
+                  <Select
+                    defaultValue="unknown"
+                    name="category"
+                    value={category}
+                    onValueChange={setCategory}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {EVENT_CATEGORIES.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          <span className="capitalize">{category}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size={"sm"}
+                    className="ml-2 h-12"
+                    onClick={() => feedback("Suggested Event Category")}
+                  >
+                    Add
+                  </Button>
+                </div>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="price-type">Payment</Label>
