@@ -290,9 +290,9 @@ interface Event {
   name: string; // The event's name. Be specific and include any subtitle or edition. Do not include the location. Use proper capitalization, ignoring all caps in the source text.
   description: string; // Short description of the event, its significance, and what attendees can expect. If included in the source text, include the cost, allowed ages, rsvp details, performers, speakers, and any known times.
   startDate: string; // Start date in YYYY-MM-DD format.
-  startTime?: string; // Start time, only the time portion (HH:MM:SS) of ISO 8601 format. Do not include the date or time zone. Infer based on event type if not specified. Only omit if known to be an all-day event. CANNOT BE UNKNOWN.
+  startTime?: string; // Start time, only the time portion (HH:MM:SS) of ISO 8601 format. CANNOT BE UNKNOWN. Do not include the date or time zone. Infer based on event type if not specified. Only omit if known to be an all-day event. 
   endDate: string; // End date in YYYY-MM-DD format.
-  endTime?: string; // Start time, only the time portion (HH:MM:SS) of ISO 8601 format. Do not include the date or time zone. Infer based on start time and event type if not specified. Only omit if known to be an all-day event. CANNOT BE UNKNOWN.
+  endTime?: string; // End time (estimated), only the time portion (HH:MM:SS) of ISO 8601 format. CANNOT BE UNKNOWN. Do not include the date or time zone. Infer based on start time and event type if not specified. Only omit if known to be an all-day event.
   timeZone: string; // Timezone in IANA format.
   location: string; // Location of the event.
   eventMetadata: EventMetadata;
