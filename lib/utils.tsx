@@ -1,3 +1,4 @@
+import { time } from "console";
 import * as Bytescale from "@bytescale/sdk";
 import { type Message } from "ai";
 import { type ClassValue, clsx } from "clsx";
@@ -94,8 +95,24 @@ export function getDateTimeInfo(
     console.error("Invalid timezone, assuming America/Los_Angeles.");
     timezone = "America/Los_Angeles";
   }
+  if (!userTimezone) {
+    userTimezone = timezone;
+  }
+  if (!timezonePattern.test(userTimezone)) {
+    console.error("Invalid userTimezone, assuming America/Los_Angeles.");
+    userTimezone = "America/Los_Angeles";
+  }
+
+  // check is timestring is valid (HH:MM:SS)
+  const timePattern = /^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/;
+  if (!timePattern.test(timeString)) {
+    console.error("Invalid time format. Use HH:MM:SS.");
+    timeString = "23:59:59``";
+  }
+
+  const hasTime = timeString !== "";
   const zonedDateTime = Temporal.ZonedDateTime.from(
-    `${dateString}T${timeString}[${timezone}]`
+    `${dateString}${hasTime ? "T" : ""}${timeString}[${timezone}]`
   );
   const userZonedDateTime = zonedDateTime.withTimeZone(
     userTimezone || timezone

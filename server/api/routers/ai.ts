@@ -28,7 +28,7 @@ export const aiRouter = createTRPCRouter({
       const res = await openai.chat.completions.create({
         model: "gpt-3.5-turbo-0125",
         response_format: { type: "json_object" },
-        seed: 42069,
+        seed: 4206969,
 
         messages: [
           {
@@ -67,9 +67,10 @@ export const aiRouter = createTRPCRouter({
       const prompt = getPrompt(input.timezone);
 
       const res = await openai.chat.completions.create({
-        model: "gpt-4-vision-preview",
+        model: "gpt-4-turbo",
+        response_format: { type: "json_object" },
         max_tokens: 1000,
-        seed: 42069,
+        seed: 4206969,
         messages: [
           {
             role: "system",
