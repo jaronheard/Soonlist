@@ -6,7 +6,6 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { ClerkProvider, useUser } from "@clerk/nextjs";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { VercelToolbar } from "@/components/VercelToolbar";
 import { IntercomProvider } from "@/lib/intercom/IntercomProvider";
 import ContextProvider from "@/context/ContextProvider";
 
@@ -69,7 +68,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
           {children}
           {process.env.NODE_ENV === "production" ? <SpeedInsights /> : <></>}
           {process.env.NODE_ENV === "production" ? <UserAnalytics /> : <></>}
-          <VercelToolbar />
         </ContextProvider>
       </IntercomProvider>
     </ClerkProvider>
