@@ -150,7 +150,7 @@ const defaultCrop = (opts: { naturalWidth: number; naturalHeight: number }) => {
   );
 };
 
-export default function ImageCropperSmall({
+export function ImageCropperSmall({
   images,
   filePath: filePathFromSearchParam,
   showActions,

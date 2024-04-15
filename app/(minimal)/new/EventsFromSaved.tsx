@@ -9,7 +9,7 @@ import { AddToCalendarButtonPropsSchema } from "@/types/zodSchema";
 import { AddToCalendarCardSkeleton } from "@/components/AddToCalendarCardSkeleton";
 import { blankEvent } from "@/lib/utils";
 
-export default function EventsFromSaved() {
+export function EventsFromSaved() {
   const [data, setData] = useState<AddToCalendarButtonProps>(blankEvent);
   const [loadedSavedData, setLoadedSavedData] = useState(false);
 

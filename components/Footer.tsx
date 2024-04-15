@@ -7,7 +7,7 @@ import { SignedOut } from "@clerk/nextjs";
 import { Button, buttonVariants } from "./ui/button";
 import { WaitlistSignup } from "./WaitlistSignup";
 
-export default function Footer() {
+export function Footer() {
   return (
     <div className="">
       <SignedOut>

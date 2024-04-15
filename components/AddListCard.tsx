@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import ListSaveButton from "./ListSaveButton";
-import ListUpdateButton from "./ListUpdateButton";
+import { ListSaveButton } from "./ListSaveButton";
+import { ListUpdateButton } from "./ListUpdateButton";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 
@@ -15,7 +15,7 @@ type AddListCardProps = {
   afterSuccessFunction?: () => void;
 };
 
-export default function AddListCard({ ...initialProps }: AddListCardProps) {
+export function AddListCard({ ...initialProps }: AddListCardProps) {
   const [name, setName] = useState(initialProps.name);
   const [description, setDescription] = useState(initialProps.description);
 

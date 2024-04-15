@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { type Metadata, type ResolvingMetadata } from "next/types";
 import { UserInfo } from "@/components/UserInfo";
-import EventList from "@/components/EventList";
+import { EventList } from "@/components/EventList";
 import { api } from "@/trpc/server";
 
 type Props = { params: { userName: string } };

@@ -8,7 +8,7 @@ import { ChevronLeft, X } from "lucide-react";
 import Link from "next/link";
 import { Organize } from "./Organize";
 import { NewEventFooterButtons } from "./NewEventFooterButtons";
-import ImageCropperSmall from "./ImageCropperSmall";
+import { ImageCropperSmall } from "./ImageCropperSmall";
 import { organizeFormSchema } from "@/components/YourDetails";
 import {
   Status,
@@ -18,7 +18,7 @@ import { type List } from "@/server/db/types";
 import { useNewEventContext } from "@/context/NewEventContext";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Logo from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 
 function ProgressStagesWrapper({
   filePath,

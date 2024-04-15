@@ -5,7 +5,7 @@ import { SignUpButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function OnboardingContinueButton() {
+export function OnboardingContinueButton() {
   const { user } = useUser();
   const searchParams = useSearchParams();
   const saveIntent = searchParams.get("saveIntent") || "";

@@ -3,7 +3,7 @@ import { ArrowBigRight } from "lucide-react";
 import { api } from "@/trpc/server";
 import { type AddToCalendarButtonProps } from "@/types";
 
-export default async function SampleListPhotos({ listId }: { listId: string }) {
+export async function SampleListPhotos({ listId }: { listId: string }) {
   const list = await api.list.get.query({ listId });
 
   if (!list) {

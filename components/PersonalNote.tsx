@@ -12,7 +12,7 @@ const getRainbowColorFromString = (initials: string) => {
   return colors[initials.charCodeAt(0) % colors.length];
 };
 
-export default function PersonalNote({
+export function PersonalNote({
   text,
   className,
 }: {

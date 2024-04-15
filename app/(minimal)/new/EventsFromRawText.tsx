@@ -1,6 +1,6 @@
 "use client";
 
-import EventsError from "./EventsError";
+import { EventsError } from "./EventsError";
 import { NewEventPreview } from "./NewEventPreview";
 import { EventPreviewLoadingSpinner } from "./EventPreviewLoadingSpinner";
 import { api } from "@/trpc/react";
@@ -16,7 +16,7 @@ const queryOptions = {
   staleTime: 1000 * 60 * 60 * 24,
 };
 
-export default function EventsFromRawText({
+export function EventsFromRawText({
   rawText,
   timezone,
 }: {

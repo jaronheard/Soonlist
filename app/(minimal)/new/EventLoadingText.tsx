@@ -42,7 +42,7 @@ const PROGRESS_TEXTS = [
   "Prepping your adventure...",
 ];
 
-export default function EventLoadingText() {
+export function EventLoadingText() {
   // State variables
   const [loadingText, setLoadingText] = useState(
     "Sketching temporal canvas..."

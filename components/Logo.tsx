@@ -1,5 +1,5 @@
 // use the lucide calendar icon for now
-export default function Logo({
+export function Logo({
   className,
   variant,
 }: {

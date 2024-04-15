@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs";
 import { UserInfo } from "@/components/UserInfo";
 import { ListEditButton } from "@/components/ListEditButton";
 import { ListDeleteButton } from "@/components/ListDeleteButton";
-import EventList from "@/components/EventList";
+import { EventList } from "@/components/EventList";
 import { FollowListButton } from "@/components/FollowButtons";
 import { api } from "@/trpc/server";
 

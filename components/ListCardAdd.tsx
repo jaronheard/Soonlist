@@ -2,7 +2,7 @@ import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
 import Link from "next/link";
 
-export default function ListCardAdd() {
+export function ListCardAdd() {
   return (
     <Link
       href={`/list/new`}

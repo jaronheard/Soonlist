@@ -25,7 +25,7 @@ function LoadingEvent() {
   );
 }
 
-export default async function NextEventsLoading({ limit = 5 } = {}) {
+export async function NextEventsLoading({ limit = 5 } = {}) {
   return (
     <div className="grid place-items-center">
       <div className="mr-auto flex place-items-center gap-2.5 px-6 font-medium">

@@ -12,7 +12,7 @@ import Image from "next/image";
 import { CalendarPlus, Menu, Star } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
-import Logo from "./Logo";
+import { Logo } from "./Logo";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -79,7 +79,7 @@ const allUsers: { title: string; href: string; description: string }[] = [
   },
 ];
 
-export default function Header() {
+export function Header() {
   return (
     <div className="sticky top-0 z-50 bg-interactive-3">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between pb-4 pl-2 pt-3 sm:px-4 sm:pb-7 sm:pt-5">

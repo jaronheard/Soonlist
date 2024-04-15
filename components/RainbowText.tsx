@@ -10,7 +10,7 @@ const colors = [
   "text-purple-500",
 ];
 
-export default function RainbowText({
+export function RainbowText({
   children,
   className,
 }: {

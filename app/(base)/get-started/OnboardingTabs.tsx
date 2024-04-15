@@ -156,7 +156,7 @@ export function OnboardingTabs({
   );
 }
 
-export default function UserProfileForm({
+export function UserProfileForm({
   defaultValues,
   onSubmitSuccess,
 }: {

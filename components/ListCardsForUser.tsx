@@ -1,6 +1,6 @@
 import { currentUser } from "@clerk/nextjs";
-import ListCard from "./ListCard";
-import ListCardAdd from "./ListCardAdd";
+import { ListCard } from "./ListCard";
+import { ListCardAdd } from "./ListCardAdd";
 import { api } from "@/trpc/server";
 
 type ListCardsForUserProps = {
@@ -8,7 +8,7 @@ type ListCardsForUserProps = {
   limit: number;
 };
 
-export default async function ListCardsForUser({
+export async function ListCardsForUser({
   userName,
 }: // TODO: implement limit
 ListCardsForUserProps) {

@@ -1,6 +1,6 @@
 "use client";
 
-import EventsError from "./EventsError";
+import { EventsError } from "./EventsError";
 import { EventPreviewLoadingSpinner } from "./EventPreviewLoadingSpinner";
 import { NewEventPreview } from "./NewEventPreview";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
@@ -17,7 +17,7 @@ const queryOptions = {
   staleTime: 1000 * 60 * 60 * 24,
 };
 
-export default function EventsFromImage({
+export function EventsFromImage({
   filePath,
   timezone,
 }: {

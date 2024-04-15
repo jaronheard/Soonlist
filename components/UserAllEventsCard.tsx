@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export default function UserAllEventsCard(props: {
+export function UserAllEventsCard(props: {
   username: string;
   userImage: string;
 }) {

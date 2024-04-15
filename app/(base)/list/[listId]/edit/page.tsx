@@ -1,4 +1,4 @@
-import AddListCard from "@/components/AddListCard";
+import { AddListCard } from "@/components/AddListCard";
 import { api } from "@/trpc/server";
 
 export default async function Page({ params }: { params: { listId: string } }) {

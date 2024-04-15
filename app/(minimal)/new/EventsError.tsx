@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/Accordian";
 
-export default function EventsError({
+export function EventsError({
   rawText,
   response,
 }: {

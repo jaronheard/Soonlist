@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import AddListCard from "./AddListCard";
+import { AddListCard } from "./AddListCard";
 import { type List } from "@/server/db/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
