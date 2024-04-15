@@ -11,8 +11,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { CTAButton } from "@/components/CallToActions";
 import { buttonVariants } from "@/components/ui/button";
-import SampleEvent from "@/components/SampleEvent";
-import SampleList from "@/components/SampleList";
+import { SampleEvent } from "@/components/SampleEvent";
+import { SampleList } from "@/components/SampleList";
 
 const sampleEventId =
   process.env.NODE_ENV === "production"

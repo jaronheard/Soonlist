@@ -1,5 +1,5 @@
 import { type Metadata, type ResolvingMetadata } from "next/types";
-import ResetNewEventContext from "./ResetNewEventContext";
+import { ResetNewEventContext } from "./ResetNewEventContext";
 import { EventPage } from "@/components/EventDisplays";
 import { UserInfo } from "@/components/UserInfo";
 import {
@@ -7,7 +7,7 @@ import {
   type AddToCalendarButtonProps,
 } from "@/types";
 import { collapseSimilarEvents } from "@/lib/similarEvents";
-import EventList, { type EventWithUser } from "@/components/EventList";
+import { type EventWithUser, EventList } from "@/components/EventList";
 import { api } from "@/trpc/server";
 import { type EventMetadata } from "@/lib/prompts";
 

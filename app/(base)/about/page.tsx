@@ -2,7 +2,7 @@ import React from "react";
 import { CurrencyDollarIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { CTAButton } from "@/components/CallToActions";
-import RainbowText from "@/components/RainbowText";
+import { RainbowText } from "@/components/RainbowText";
 import { Button } from "@/components/ui/button";
 import { ContactUs } from "@/components/ContactUs";
 

@@ -1,4 +1,4 @@
-import EventList from "@/components/EventList";
+import { EventList } from "@/components/EventList";
 import { api } from "@/trpc/server";
 
 export default async function Page() {

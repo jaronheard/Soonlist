@@ -1,8 +1,8 @@
-import ListCard from "./ListCard";
-import EventList from "@/components/EventList";
+import { ListCard } from "./ListCard";
+import { EventList } from "@/components/EventList";
 import { api } from "@/trpc/server";
 
-export default async function SampleList({ listId }: { listId: string }) {
+export async function SampleList({ listId }: { listId: string }) {
   const list = await api.list.get.query({ listId });
 
   if (!list) {

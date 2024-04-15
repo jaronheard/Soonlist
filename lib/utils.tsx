@@ -1,5 +1,3 @@
-import { time } from "console";
-import * as Bytescale from "@bytescale/sdk";
 import { type Message } from "ai";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";

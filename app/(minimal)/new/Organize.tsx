@@ -35,7 +35,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddListCard from "@/components/AddListCard";
+import { AddListCard } from "@/components/AddListCard";
 
 export function Organize({
   form,

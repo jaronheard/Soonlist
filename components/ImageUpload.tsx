@@ -188,7 +188,7 @@ const defaultCrop = (opts: { naturalWidth: number; naturalHeight: number }) => {
   );
 };
 
-export default function ImageUpload({
+export function ImageUpload({
   images,
   filePath: filePathFromSearchParam,
 }: {

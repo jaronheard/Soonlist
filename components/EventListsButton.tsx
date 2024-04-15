@@ -24,7 +24,7 @@ type EventListsButtonProps = {
   eventLists: List[];
 };
 
-export default function EventListsButton({
+export function EventListsButton({
   userLists,
   eventId,
   eventLists,

@@ -1,4 +1,4 @@
-export default function LeaderboardSkeleton() {
+export function LeaderboardSkeleton() {
   return (
     <ul role="list" className="divide-y divide-gray-100">
       {/* This part is the loading skeleton */}

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import EventList from "@/components/EventList";
+import { EventList } from "@/components/EventList";
 import { api } from "@/trpc/server";
 
-export default async function NextEvents({ limit = 5, upcoming = false } = {}) {
+export async function NextEvents({ limit = 5, upcoming = false } = {}) {
   const excludeCurrent = !upcoming;
   const events = await api.event.getNext.query({ limit, excludeCurrent });
 

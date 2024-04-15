@@ -15,7 +15,7 @@ type ListUpdateButtonProps = {
   afterSuccess?: string;
 };
 
-export default function ListUpdateButton(props: ListUpdateButtonProps) {
+export function ListUpdateButton(props: ListUpdateButtonProps) {
   const router = useRouter();
   const updateList = api.list.update.useMutation({
     onError: () => {

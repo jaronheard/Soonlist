@@ -1,5 +1,5 @@
 "use client";
-import EventLoadingText from "./EventLoadingText";
+import { EventLoadingText } from "./EventLoadingText";
 
 // this is a simple loading spinner component that takes a className prop for sizing
 export function EventPreviewLoadingSpinner({

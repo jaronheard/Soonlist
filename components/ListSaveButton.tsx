@@ -15,7 +15,7 @@ type ListSaveButtonProps = {
   afterSuccessFunction?: () => void;
 };
 
-export default function ListSaveButton(props: ListSaveButtonProps) {
+export function ListSaveButton(props: ListSaveButtonProps) {
   const router = useRouter();
   const createList = api.list.create.useMutation({
     onError: () => {

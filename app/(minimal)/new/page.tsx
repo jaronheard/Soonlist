@@ -1,27 +1,17 @@
 import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { ProgressStages } from "./ProgressStages";
-import ImageUpload from "@/components/ImageUpload";
+import { EventsFromRawText } from "./EventsFromRawText";
+import { EventsFromImage } from "./EventsFromImage";
+import { EventsFromSaved } from "./EventsFromSaved";
+import { ImageUpload } from "@/components/ImageUpload";
 import { YourDetails } from "@/components/YourDetails";
-import AddEvent from "@/app/(base)/AddEvent";
+import { AddEvent } from "@/app/(base)/AddEvent";
 import { api } from "@/trpc/server";
 import { Button } from "@/components/ui/button";
-import Logo from "@/components/Logo";
-
-const EventsFromImage = dynamic(() => import("./EventsFromImage"), {
-  ssr: false,
-});
-
-const EventFromRawText = dynamic(() => import("./EventsFromRawText"), {
-  ssr: false,
-});
-
-const EventsFromSaved = dynamic(() => import("./EventsFromSaved"), {
-  ssr: false,
-});
+import { Logo } from "@/components/Logo";
 
 export const maxDuration = 60;
 
@@ -81,7 +71,7 @@ export default async function Page({ searchParams }: Props) {
         filePath={searchParams.filePath}
         lists={lists || undefined}
         Preview={
-          <EventFromRawText
+          <EventsFromRawText
             timezone={timezone}
             rawText={searchParams.rawText}
           />

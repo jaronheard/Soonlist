@@ -27,9 +27,9 @@ import { buttonVariants } from "./ui/button";
 import { Label } from "./ui/label";
 import { type AddToCalendarCardProps } from "./AddToCalendarCard";
 import { Badge } from "./ui/badge";
-import PersonalNote from "./PersonalNote";
-import UserAllEventsCard from "./UserAllEventsCard";
-import ListCard from "./ListCard";
+import { PersonalNote } from "./PersonalNote";
+import { UserAllEventsCard } from "./UserAllEventsCard";
+import { ListCard } from "./ListCard";
 import { FollowEventButton } from "./FollowButtons";
 import { buildDefaultUrl } from "./ImageUpload";
 import {

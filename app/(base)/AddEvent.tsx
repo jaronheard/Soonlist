@@ -41,7 +41,7 @@ function Code({
   );
 }
 
-export default function AddEvent() {
+export function AddEvent() {
   // State variables
   const [finished, setFinished] = useState(false);
   const [events, setEvents] = useState<AddToCalendarButtonType[] | null>(null);

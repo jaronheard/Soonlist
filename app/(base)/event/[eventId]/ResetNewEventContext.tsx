@@ -10,7 +10,7 @@ import {
 } from "@/context/NewEventProgressContext";
 import { useNewEventContext } from "@/context/NewEventContext";
 
-export default function ResetNewEventContext() {
+export function ResetNewEventContext() {
   const pathName = usePathname();
   const { setCroppedImagesUrls } = useCroppedImageContext();
   const { setOrganizeData, setEventData } = useNewEventContext();

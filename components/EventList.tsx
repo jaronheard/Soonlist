@@ -46,7 +46,7 @@ export type EventWithUser = Event & {
   comments: Comment[];
 };
 
-export default function EventList({
+export function EventList({
   currentEvents,
   futureEvents,
   pastEvents,

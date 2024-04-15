@@ -20,7 +20,7 @@ const getRainbowColorFromString = (initials: string) => {
   return colors[initials.charCodeAt(0) % colors.length];
 };
 
-export default function ListCard(props: {
+export function ListCard(props: {
   name: string;
   id?: string;
   username: string;
