@@ -1,6 +1,11 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
 
 type CroppedImagesUrls = {
   original?: string;
@@ -19,7 +24,9 @@ type CroppedImageContextType = {
 // Create context with a default value
 const defaultValue: CroppedImageContextType = {
   croppedImagesUrls: {},
-  setCroppedImagesUrls: () => {},
+  setCroppedImagesUrls: () => {
+    return null;
+  },
 };
 
 const CroppedImageContext =
