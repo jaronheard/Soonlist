@@ -19,6 +19,8 @@ export async function SampleList({ listId }: { listId: string }) {
         new Date(a.startDateTime).getTime() -
         new Date(b.startDateTime).getTime()
     )
+    // filter out past events
+    .filter((event) => new Date(event.startDateTime) > new Date())
     // limit to 3 events
     .slice(-3);
 
