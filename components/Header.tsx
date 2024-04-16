@@ -455,7 +455,13 @@ export function MobileNav() {
             <SignInButton
               afterSignUpUrl={`${process.env.NEXT_PUBLIC_URL}/get-started`}
             >
-              <Button variant="secondary" className="w-full">
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
                 Log In
               </Button>
             </SignInButton>
