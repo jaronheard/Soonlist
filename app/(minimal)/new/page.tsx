@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { ProgressStages } from "./ProgressStages";
