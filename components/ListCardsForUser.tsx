@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { ListCard } from "./ListCard";
 import { ListCardAdd } from "./ListCardAdd";
 import { api } from "@/trpc/server";

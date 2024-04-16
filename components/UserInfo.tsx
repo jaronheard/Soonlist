@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { Instagram, LinkIcon, Mail, MessageSquare } from "lucide-react";
 import { FollowUserButton } from "./FollowButtons";
 import { Button, buttonVariants } from "./ui/button";

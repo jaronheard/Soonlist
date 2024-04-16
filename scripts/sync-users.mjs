@@ -12,7 +12,7 @@ const clerkDev = Clerk({ secretKey: process.env.CLERK_SECRET_KEY_DEV });
 async function getClerkUsersProd() {
   try {
     // Fetch users from Clerk
-    const users = await clerkProd.users.getUserList({ limit: 500 });
+    const { data: users } = await clerkProd.users.getUserList({ limit: 500 });
     console.log(`Fetched ${users.length} users from Clerk prod instance.`);
     return users;
   } catch (error) {
@@ -24,7 +24,7 @@ async function getClerkUsersProd() {
 async function deleteAllClerkUsersDev() {
   try {
     // Fetch users from Clerk
-    const users = await clerkDev.users.getUserList({ limit: 500 });
+    const { data: users } = await clerkDev.users.getUserList({ limit: 500 });
     console.log(`Fetched ${users.length} users from Clerk dev instance.`);
     let deletedUsersCount = 0; // Initialize as let to increment it.
     // Delete all users from Clerk

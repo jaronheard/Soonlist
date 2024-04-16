@@ -2,7 +2,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { auth, currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { db } from "@/server/db";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
@@ -12,9 +12,9 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 
   const externalId = session.sessionClaims?.externalId;
   const authToUse = externalId ? { ...session, userId: externalId } : session;
-  let userToUse = user;
-  if (user && externalId) {
-    userToUse = { ...user, id: externalId };
+  const userToUse = { ...user };
+  if (externalId) {
+    userToUse.id = externalId;
   }
 
   return {
