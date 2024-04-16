@@ -48,7 +48,7 @@ const testimonials = [
       name: "Jennifer Batchelor",
       handle: "jennybatch",
       imageUrl:
-        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWE45MmZWcW5PdUE2T0VCalVBMVRRM3ViaEMifQ&w=750&q=75",
+        "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJjQUNWUDZhWVVpUUV6Q1NFaXlucHRDb2txOSJ9",
     },
   },
   {
@@ -67,7 +67,7 @@ const testimonials = [
       name: "Sarah Baker",
       handle: "boogiebuffet",
       imageUrl:
-        "https://www.soonlist.com/_next/image?url=https%3A%2F%2Fimg.clerk.com%2FeyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yWEJKQ0oxZDdVc05BcW9tUHhielljR0t0QmQifQ&w=750&q=75",
+        "https://upcdn.io/12a1yek/raw/uploads/Soonlist/sarah_profile.webp",
     },
   },
   {
