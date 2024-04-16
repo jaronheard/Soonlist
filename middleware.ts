@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher([
   "/",
@@ -28,6 +27,8 @@ const isPublicRoute = createRouteMatcher([
   "/ingest",
   "/ingest/(.*)",
   "/monitoring(.*)",
+  "/sign-in",
+  "/sign-up",
 ]);
 
 const isIgnoredRoute = createRouteMatcher([
@@ -37,14 +38,11 @@ const isIgnoredRoute = createRouteMatcher([
   "/__nextjs_original-stack-frame",
 ]);
 
-export default clerkMiddleware((auth, request) => {
-  if (!isPublicRoute(request) && !isIgnoredRoute(request)) {
-    auth().protect();
-  }
-
-  return NextResponse.next();
+export default clerkMiddleware((auth, req) => {
+  if (isPublicRoute(req) || isIgnoredRoute(req)) return; // if it's a public route, do nothing
+  auth().protect(); // for any other route, require auth
 });
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next)._)", "/", "/(api|trpc)(._)"],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
