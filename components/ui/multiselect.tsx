@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown, X } from "lucide-react";
+import { ScrollArea } from "./scroll-area";
 import { cn } from "@/lib/utils";
 
 import { Badge } from "@/components/ui/badge";
@@ -131,31 +132,35 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
           <Command className={className}>
             <CommandInput placeholder="Search ..." />
             <CommandEmpty>No item found.</CommandEmpty>
-            <CommandGroup className="max-h-64 overflow-auto">
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  onSelect={() => {
-                    onChange(
-                      selected.some((item) => item.value === option.value)
-                        ? selected.filter((item) => item.value !== option.value)
-                        : [...selected, option]
-                    );
-                    setOpen(true);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 size-4",
-                      selected.some((item) => item.value === option.value)
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                  {option.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            <ScrollArea className="max-h-48 overflow-auto">
+              <CommandGroup>
+                {options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    onSelect={() => {
+                      onChange(
+                        selected.some((item) => item.value === option.value)
+                          ? selected.filter(
+                              (item) => item.value !== option.value
+                            )
+                          : [...selected, option]
+                      );
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 size-4",
+                        selected.some((item) => item.value === option.value)
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                    {option.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </ScrollArea>
           </Command>
           {AdditionalPopoverAction && <AdditionalPopoverAction />}
         </PopoverContent>

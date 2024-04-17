@@ -44,10 +44,12 @@ export function Organize({
   form: ReturnType<typeof useForm<z.infer<typeof organizeFormSchema>>>;
   lists?: List[];
 }) {
-  const listOptions = lists?.map((list) => ({
-    label: list.name,
-    value: list.id,
-  }));
+  const listOptions = lists
+    ?.map((list) => ({
+      label: list.name,
+      value: list.id,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   return (
     <SignedIn>
