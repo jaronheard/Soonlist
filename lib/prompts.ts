@@ -198,7 +198,9 @@ You will
 6. Write your JSON response by summarizing the event details from the provided data or your own inferred knowledge. Your response must be detailed, specific, and directly relevant to the JSON schema requirements.
 
 Stylistically write in short, approachable, and professional language, like an editor of the Village Voice event section.
-No new adjectives, stick to known facts, and be concise. Use proper capitalization for all fields.
+Stick to known facts, and be concise. Use proper capitalization for all fields.
+No new adjectives not in source text. No editorializing. No fluff. Nothing should be described as "engaging", "compelling", etc...
+The title, location and first 2 sentences of description should tell what attendees should expect. The remaining 2 sentences can be used for further description of the content of the event.
 
 ## JSON Schema
 
