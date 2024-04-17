@@ -43,30 +43,26 @@ const PROGRESS_TEXTS = [
 ];
 
 export function EventLoadingText() {
-  // State variables
   const [loadingText, setLoadingText] = useState(
-    "Sketching temporal canvas..."
+    "Moments away..."
   );
+  const [randomLoadingText, setRandomLoadingText] = useState("");
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * LOADING_TEXTS.length);
+    setRandomLoadingText(LOADING_TEXTS[randomIndex] || "Gathering moments");
+  }, []);
 
   useEffect(() => {
     let index = 0;
 
     const interval = setInterval(() => {
       index = (index + 1) % PROGRESS_TEXTS.length;
-      setLoadingText(PROGRESS_TEXTS[index] || "Sketching temporal canvas...");
+      setLoadingText(PROGRESS_TEXTS[index] || "Moments away...");
     }, 2000);
 
     return () => clearInterval(interval);
   }, []);
-
-  // random integer that doesn't change between renders
-  const randomLoadingTextIndex = Math.floor(
-    Math.random() * LOADING_TEXTS.length
-  );
-
-  // base on rawText length, pick a random loading text
-  const randomLoadingText =
-    LOADING_TEXTS[randomLoadingTextIndex % LOADING_TEXTS.length];
 
   return (
     <div className="text-center">
