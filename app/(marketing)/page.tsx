@@ -18,7 +18,10 @@ const sampleEventId =
   process.env.NODE_ENV === "production"
     ? "4f5so1os92o0"
     : "clpiq9ohe0005vt8uksvndxq3";
-const sampleEventListId = "cloetmfc60001jr0ays7hsxum";
+const sampleEventListId =
+  process.env.NODE_ENV === "production"
+    ? "cloetmfc60001jr0ays7hsxum"
+    : "tlmtav2fb70t";
 
 const advancedFeatures = [
   {

@@ -257,35 +257,35 @@ function EventAccessibility({ metadata }: { metadata?: EventMetadataDisplay }) {
           switch (item) {
             case "masksRequired":
               return (
-                <div className="flex items-center">
+                <div className="flex items-center" key={item}>
                   <ShieldPlus className="mr-0.5 inline-block size-4"></ShieldPlus>
                   Masks Required
                 </div>
               );
             case "masksSuggested":
               return (
-                <div className="flex items-center">
+                <div className="flex items-center" key={item}>
                   <ShieldPlus className="mr-0.5 inline-block size-4"></ShieldPlus>
                   Masks Suggested
                 </div>
               );
             case "wheelchairAccessible":
               return (
-                <div className="flex items-center">
+                <div className="flex items-center" key={item}>
                   <Accessibility className="mr-0.5 inline-block size-4"></Accessibility>
                   Wheelchair Accessible
                 </div>
               );
             case "signLanguageInterpretation":
               return (
-                <div className="flex items-center">
+                <div className="flex items-center" key={item}>
                   <Ear className="mr-0.5 inline-block size-4"></Ear>
                   Sign Language Interpretation
                 </div>
               );
             case "closedCaptioning":
               return (
-                <div className="flex items-center">
+                <div className="flex items-center" key={item}>
                   <Ear className="mr-0.5 inline-block size-4"></Ear>
                   Closed Captioning
                 </div>
