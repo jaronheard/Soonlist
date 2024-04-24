@@ -178,6 +178,8 @@ export function ImageCropperSmall({
   const { naturalHeight, naturalWidth } = fullImageRef.current || {};
   const hasNaturalDimensions =
     naturalHeight && naturalWidth && naturalHeight > 0 && naturalWidth > 0;
+  const [imageCheckInterval, setImageCheckInterval] =
+    useState<NodeJS.Timeout | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const prevImageUrlRef = useRef<string | undefined>(undefined);
 
@@ -187,10 +189,22 @@ export function ImageCropperSmall({
     if (imageElement && imageUrl) {
       const handleLoad = () => {
         setIsImageLoading(false);
+        if (imageCheckInterval) {
+          clearInterval(imageCheckInterval);
+          setImageCheckInterval(null);
+        }
       };
 
       setIsImageLoading(true);
       imageElement.addEventListener("load", handleLoad);
+
+      // Start an interval to check for the image availability if not loaded yet
+      if (!imageElement.complete || !imageElement.naturalWidth) {
+        const interval = setInterval(() => {
+          imageElement.src += ""; // Trigger a re-check by reassigning the src
+        }, 1000);
+        setImageCheckInterval(interval);
+      }
 
       // Check if image is already loaded (cached images)
       if (imageElement.complete && imageElement.naturalWidth) {
@@ -200,9 +214,12 @@ export function ImageCropperSmall({
       // Clean up
       return () => {
         imageElement.removeEventListener("load", handleLoad);
+        if (imageCheckInterval) {
+          clearInterval(imageCheckInterval);
+        }
       };
     }
-  }, [imageUrl]);
+  }, [imageCheckInterval, imageUrl]);
 
   useEffect(() => {
     prevImageUrlRef.current = imageUrl;
