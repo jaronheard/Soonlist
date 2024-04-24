@@ -661,7 +661,7 @@ export function EventListItem(props: EventListItemProps) {
   const image =
     event.images?.[3] ||
     (filePath ? buildDefaultUrl(props.filePath || "") : undefined);
-  // const comment = props.comments?.findLast((item) => item.userId === user?.id);
+  // const comment = props.comments?.filter((item) => item.userId === user?.id).pop();
   // always show curator if !isSelf
   // const showOtherCurators = !isSelf && props.showOtherCurators;
   // const showCurator = showOtherCurators || !props.hideCurator;
@@ -854,7 +854,9 @@ export function EventPage(props: EventPageProps) {
     (item) =>
       clerkUser?.id === item.userId || clerkUser?.externalId === item.userId
   );
-  const comment = props.comments?.findLast((item) => user?.id === item.userId);
+  const comment = props.comments
+    ?.filter((item) => user?.id === item.userId)
+    .pop();
   const hasLists = user && lists && lists.length > 0;
 
   const {

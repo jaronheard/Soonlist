@@ -1,3 +1,4 @@
+import { comment } from "postcss";
 import { UserInfo } from "@/components/UserInfo";
 import { AddToCalendarCard } from "@/components/AddToCalendarCard";
 import { type AddToCalendarButtonProps } from "@/types";
@@ -19,9 +20,9 @@ export default async function Page({
 
   const eventData = event.event as AddToCalendarButtonProps;
   const eventMetadata = event.eventMetadata as EventMetadata;
-  const mostRecentComment = event.comments?.findLast(
-    (comment) => comment.content
-  )?.content;
+  const mostRecentComment = event.comments
+    ?.filter((comment) => comment?.content)
+    .pop()?.content;
   const eventLists = event.eventToLists?.map((eventToList) => eventToList.list);
   return (
     <div className="flex flex-col items-center">
